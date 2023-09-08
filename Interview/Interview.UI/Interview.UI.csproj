@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\HomeController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Shared\Error.cshtml" />
   </ItemGroup>
 
@@ -21,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Interview.Entities\Interview.Entities.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Interview.Entities\Interview.Entities.csproj" />
   </ItemGroup>
 
 </Project>

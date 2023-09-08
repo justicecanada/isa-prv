@@ -1,15 +1,15 @@
 ﻿
-@inject IViewLocalizer localizer
+@*@inject IViewLocalizer localizer
 
 @{
 
-    List<VmContest> vmContests = ViewBag.VmContests;
+    //List<VmContest> vmContests = ViewBag.VmContests;
 
-}
+}*@
 
 <h1>Index</h1>
 
-<div class="row mb-3">
+@*<div class="row mb-3">
     <div class="col-md-12 pull-left">
         <a id="btnAddItem" href="#modalContainer" class="btn btn-primary">@localizer["AddButton"]</a>
     </div>
@@ -19,7 +19,6 @@
     <table id="tblItems" class="table table-striped">
         <thead>
             <tr>
-                @*<th class="tableActionColumn">&nbsp;</th>*@
                 <th>@localizer["lblTitreGroupNiv"]</th>
                 <th>@localizer["groupNiv"]</th>
                 <th>@localizer["lblTitreStartDate"]</th>
@@ -29,4 +28,4 @@
             </tr>
         </thead>
     </table>
-</div>
+</div>*@
