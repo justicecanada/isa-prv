@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20230908122051_InterviewInitial")]
+    [Migration("20230911142715_InterviewInitial")]
     partial class InterviewInitial
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace Interview.UI.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTimeOffset?>("DSeadlineCandidate")
+                    b.Property<DateTimeOffset?>("DeadlineCandidate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset?>("DeadlineInterviewer")

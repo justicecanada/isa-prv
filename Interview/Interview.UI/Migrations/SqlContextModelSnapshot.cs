@@ -43,7 +43,7 @@ namespace Interview.UI.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTimeOffset?>("DSeadlineCandidate")
+                    b.Property<DateTimeOffset?>("DeadlineCandidate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset?>("DeadlineInterviewer")

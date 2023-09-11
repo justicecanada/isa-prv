@@ -1,0 +1,49 @@
+﻿@using System.Collections
+@inject IViewLocalizer localizer
+
+@{
+
+    string id = ViewData["id"] == null ? "validationSummary" : ViewData["id"].ToString();
+    List<string> fieldOrder = ViewBag.FieldOrder;
+    var errors = ViewData.ModelState.Select(x => new { Order = fieldOrder.IndexOf(x.Key.ToLower()), Error = x })
+        .Where(x => x.Error.Value.Errors.Count != 0)
+        .OrderBy(x => x.Order).ToList();
+
+    // Remove items from errors that are not in fieldOrder
+    //var exclude = errors.Where(x => !fieldOrder.Any(y => y.ToLower() == x.Error.Key.ToLower()));
+    //errors.RemoveAll(x => exclude.Any());
+
+}
+
+@if (errors.Count > 0)
+{
+
+    int i = 1;
+
+    <section id="@id" class="alert alert-danger validation-summary-errors">
+        <h2>
+            @Html.Raw(string.Format(localizer["Heading"].Value, ViewData.ModelState.ErrorCount))
+        </h2>
+        <ul>
+            @foreach (var error in errors)
+            {
+                <li>
+                    <a class="text-danger" href="#@error.Error.Key">
+                        <span>@localizer["Error"].Value @i.ToString(): </span>
+                        @error.Error.Value.Errors.FirstOrDefault().ErrorMessage
+                    </a>
+                </li>
+                i++;
+            }
+        </ul>
+    </section>
+
+}
+else
+{
+
+    string createValidation = ViewBag.CreateValidation;
+
+    <section id="@id" class="validation-summary-errors" data-createValidation="@createValidation"></section>
+
+}

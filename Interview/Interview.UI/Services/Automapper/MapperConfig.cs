@@ -12,6 +12,7 @@ namespace Interview.UI.Services.Automapper
         {
 
             CreateMap<Contest, VmContest>();
+            CreateMap<VmContest, Contest>();
 
 
         }
