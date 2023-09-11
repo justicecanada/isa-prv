@@ -5,9 +5,13 @@ using Interview.UI.Filters;
 using Interview.UI.Models;
 using Interview.UI.Services.Automapper;
 using Interview.UI.Services.DAL;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System.Data.SqlTypes;
+using System.Globalization;
 
 namespace Interview.UI
 {
@@ -25,6 +29,9 @@ namespace Interview.UI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            IMvcBuilder builder = services.AddMvc();
+            ConfigureLocalizationServices(services, builder);
+
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
@@ -34,6 +41,37 @@ namespace Interview.UI
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
+            });
+
+        }
+
+        public void ConfigureLocalizationServices(IServiceCollection services, IMvcBuilder builder)
+        {
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.SupportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-CA"),
+                    new CultureInfo("fr-CA")
+                };
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-CA");
+                //options.SetDefaultCulture("en-CA");
+            });
+            CultureInfo cultureInfo = new CultureInfo("en-CA");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            builder.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
+                options =>
+                {
+                    options.ResourcesPath = "Resources";
+                })
+                .AddDataAnnotationsLocalization(); ;
+
+            services.Configure<LocalizationOptions>(options =>
+            {
+                options.ResourcesPath = "Resources";
             });
 
         }
@@ -51,7 +89,7 @@ namespace Interview.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Contests}/{action=Index}");
+                    pattern: "{controller=Default}/{action=Index}");
             });
 
         }

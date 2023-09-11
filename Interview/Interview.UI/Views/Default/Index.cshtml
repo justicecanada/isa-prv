@@ -1,0 +1,22 @@
+﻿@using Interview.UI.Models
+@inject IViewLocalizer localizer
+
+@{
+
+
+
+}
+
+<h1>@localizer["Title"]</h1>
+
+<form>
+
+    <div>
+
+        @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-primary" })
+
+    </div>
+
+</form>

@@ -1,0 +1,27 @@
+﻿@model VmContest
+@using Interview.UI.Models
+@inject IViewLocalizer localizer
+
+@{
+
+
+
+}
+
+<h1>@localizer["Title"]</h1>
+
+<form>
+
+    @Html.HiddenFor(x => x.Id)
+
+    <div>
+
+        <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
+               formmethod="post" /> 
+        <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-secondary" formaction=@Url.Action("ContestSave", "Contests")
+               formmethod="post" />
+        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", null, new { @class = "btn btn-secondary" })
+
+    </div>
+
+</form>

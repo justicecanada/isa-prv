@@ -30,6 +30,7 @@ namespace Interview.UI.Controllers
 
         #region Index Methods
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
 
@@ -44,11 +45,37 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Details Methods
+        #region Manage Methods
 
+        [HttpGet]   
+        public async Task<IActionResult> Contest(Guid id)
+        {
 
+            var contest = await _dal.GetEntity<Contest>(id, true) as Contest;
+            var vmContest = _mapper.Map<VmContest>(contest);
+
+            return View(vmContest);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ContestNext(VmContest vmConest)
+        {
+
+            return RedirectToAction("Index", "Emails", new { id = vmConest.Id });
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ContestSave(VmContest vmConest)
+        {
+
+            return RedirectToAction("Index", "Default");
+
+        }
 
         #endregion
 
     }
+
 }
