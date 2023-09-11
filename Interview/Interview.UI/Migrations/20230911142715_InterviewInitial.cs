@@ -26,7 +26,7 @@ namespace Interview.UI.Migrations
                     MaxTime = table.Column<TimeSpan>(type: "time", nullable: true),
                     InterviewDuration = table.Column<TimeSpan>(type: "time", nullable: true),
                     DeadlineInterviewer = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DSeadlineCandidate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeadlineCandidate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),

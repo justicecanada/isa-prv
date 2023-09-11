@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Html
+@using Interview.UI.Helpers
+
+@{
+
+    TagBuilder inputControl = (TagBuilder)ViewData["inputControl"];
+    string divId = $"div{inputControl.Attributes["id"]}";
+
+}
+
+<div id="@divId" class="row form-group">
+    <div class="col-md-12">
+        @Html.JusLabelFor(x => x)
+    </div>
+    <div class="col-md-12">
+        @Html.ValidationMessageFor(x => x, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-12">
+        @inputControl
+    </div>
+</div>

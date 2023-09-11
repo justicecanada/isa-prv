@@ -43,34 +43,87 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeleteContest(Guid id)
+        {
+
+            await _dal.DeleteEntity<Contest>(id);
+
+            return RedirectToAction("Index");
+
+        }
+
         #endregion
 
         #region Manage Methods
 
         [HttpGet]   
-        public async Task<IActionResult> Contest(Guid id)
+        public async Task<IActionResult> Contest(Guid? id)
         {
 
-            var contest = await _dal.GetEntity<Contest>(id, true) as Contest;
-            var vmContest = _mapper.Map<VmContest>(contest);
+            VmContest vmContest = null;
+
+            if (id == null)
+            {
+                vmContest = new VmContest();
+            }
+            else
+            {
+                var contest = await _dal.GetEntity<Contest>((Guid)id, true) as Contest;
+                vmContest = _mapper.Map<VmContest>(contest);
+            }
 
             return View(vmContest);
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> ContestNext(VmContest vmConest)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ContestNext(VmContest vmContest)
         {
+            
+            if (ModelState.IsValid)
+            {
 
-            return RedirectToAction("Index", "Emails", new { id = vmConest.Id });
+                var contest = _mapper.Map<Contest>(vmContest);
+
+                if (vmContest.Id == null)
+                    await _dal.AddEntity(contest);
+                else
+                    await _dal.UpdateEntity(contest);
+
+                return RedirectToAction("Index", "Emails", new { id = vmContest.Id });
+
+            }
+            else
+            {
+                return View("Contest", vmContest);
+            }
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> ContestSave(VmContest vmConest)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ContestSave(VmContest vmContest)
         {
 
-            return RedirectToAction("Index", "Default");
+            if (ModelState.IsValid)
+            {
+
+                var contest = _mapper.Map<Contest>(vmContest);
+
+                if (vmContest.Id == null)
+                    await _dal.AddEntity(contest);
+                else
+                    await _dal.UpdateEntity(contest);
+
+                return RedirectToAction("Index", "Default");
+
+            }
+            else
+            {
+                return View("Contest", vmContest);
+            }
 
         }
 

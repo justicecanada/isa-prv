@@ -4,17 +4,99 @@
 
 @{
 
+    ViewBag.Title = localizer["Title"].Value;
 
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "NoProcessus", "GroupNiv", "StartDate", "EndDate", "MinTime", "MaxTime", "DeadlineInterviewer", "DeadlineCandidate", "ContactName",
+        "ContactNumber", "InterviewDuration", "MembersIntroEN", "MembersIntroFR", "CandidatesIntroEN", "CandidatesIntroFR"
+    }).Select(x => x.ToLower()).ToList();
 
 }
 
 <h1>@localizer["Title"]</h1>
 
+@*@{ await Html.RenderPartialAsync("ValidationSummary"); }*@
+
 <form>
+
+    @Html.AntiForgeryToken()
 
     @Html.HiddenFor(x => x.Id)
 
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.NoProcessus, "Question", new { inputControl = Html.TextBoxFor(x => x.NoProcessus, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.GroupNiv, "Question", new { inputControl = Html.TextBoxFor(x => x.GroupNiv, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.TextBoxFor(x => x.StartDate, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.TextBoxFor(x => x.EndDate, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.MinTime, "Question", new { inputControl = Html.TextBoxFor(x => x.MinTime, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.MaxTime, "Question", new { inputControl = Html.TextBoxFor(x => x.MaxTime, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.DeadlineInterviewer, "Question", new { inputControl = Html.TextBoxFor(x => x.DeadlineInterviewer, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.DeadlineCandidate, "Question", new { inputControl = Html.TextBoxFor(x => x.DeadlineCandidate, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.ContactName, "Question", new { inputControl = Html.TextBoxFor(x => x.ContactName, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.ContactNumber, "Question", new { inputControl = Html.TextBoxFor(x => x.ContactNumber, new { @class = "form-control" }) })
+        </div>
+    </div>
+
     <div>
+        <div class="row">
+            <p>Put slider in this section...</p>
+        </div>
+        <div class="row">
+            @Html.EditorFor(x => x.InterviewDuration, "Question", new { inputControl = Html.TextBoxFor(x => x.InterviewDuration, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroEN, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.MembersIntroFR, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroFR, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.CandidatesIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.CandidatesIntroEN, new { @class = "form-control" }) })
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x => x.CandidatesIntroFR, "Question", new { inputControl = Html.TextBoxFor(x => x.CandidatesIntroFR, new { @class = "form-control" }) })
+        </div>
+    </div>
+
+    <div class="mt-3">
 
         <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
                formmethod="post" /> 
