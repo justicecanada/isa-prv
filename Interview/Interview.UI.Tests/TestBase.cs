@@ -20,17 +20,14 @@ namespace Interview.UI.Tests
             foreach (PropertyInfo property in properties)
             {
 
-                    if (property.PropertyType.FullName.ToLower() == "system.string")
-                    {
-                        property.SetValue(result, Guid.NewGuid().ToString().Substring(0, 3));
-                    }
-                    else if (property.PropertyType.FullName.ToLower().Contains("system.int"))
-                        if (!(property.Name.ToLower().EndsWith("id") || property.Name.ToLower() == "refno"))
-                            property.SetValue(result, GetRandomNumber(property.PropertyType.FullName.ToLower()));
-                        else if (property.PropertyType.FullName.ToLower().Contains("system.double"))
-                            property.SetValue(result, GetRandomNumber(property.PropertyType.FullName.ToLower()));
-                        else if (property.PropertyType.FullName.ToLower().Contains("system.datetime"))
-                            property.SetValue(result, DateTime.Now);
+                if (property.PropertyType.FullName.ToLower() == "system.string")
+                    property.SetValue(result, Guid.NewGuid().ToString().Substring(0, 3));
+                else if (property.PropertyType.FullName.ToLower().Contains("system.int"))
+                    property.SetValue(result, GetRandomNumber(property.PropertyType.FullName.ToLower()));
+                else if (property.PropertyType.FullName.ToLower().Contains("system.datetimeoffset"))
+                    property.SetValue(result, DateTimeOffset.Now);
+                else if (property.PropertyType.FullName.ToLower().Contains("system.datetime"))
+                    property.SetValue(result, DateTime.Now);
             }
 
             return result;

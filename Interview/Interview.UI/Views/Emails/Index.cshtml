@@ -1,0 +1,24 @@
+﻿@using Interview.UI.Models
+@inject IViewLocalizer localizer
+
+@{
+
+
+
+}
+
+<h1>@localizer["Title"]</h1>
+
+<form>
+
+    @*@Html.HiddenFor(x => x.Id)*@
+
+    <div>
+ 
+        <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
+               formmethod="post" />
+        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
+
+    </div>
+
+</form>
