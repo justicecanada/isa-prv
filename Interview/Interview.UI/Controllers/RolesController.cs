@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Interview.Entities;
+using Interview.UI.Models;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +29,14 @@ namespace Interview.UI.Controllers
 
         #region Index Methods
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(Guid contestId)
         {
+
+            var contest = await _dal.GetEntity<Contest>(contestId, true);
+            var vmContest = _mapper.Map<VmContest>(contest);
+            
             return View();
+
         }
 
         #endregion

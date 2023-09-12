@@ -5,18 +5,41 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
+    List<VmContest> vmContests = ViewBag.VmContests;
+    List<SelectListItem> vmContestItems = new List<SelectListItem>();
+    vmContestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var vmContest in vmContests)
+    {
+        vmContestItems.Add(new SelectListItem()
+        {         
+            Value = vmContest.Id.ToString(),
+            Text = vmContest.NoProcessus
+        });
+    }
+
 }
 
 <h1>@localizer["Title"]</h1>
 
-<form>
+<div>
 
-    <div>
+    @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-primary" })
 
-        @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-primary" })
-        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-primary" })
-        @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-primary" })
+</div>
 
+<div class="row form-group mt-3">
+    <div class="col-md-12">
+        @Html.Label("lblContests", localizer["Contests"].Value, new { @for = "Contests" })
     </div>
+    <div class="col-md-12">
+        @Html.DropDownList("Contests", vmContestItems, new { @class = "form-control" })
+    </div>
+</div>
 
-</form>
+
+
+
+
+<script src="~/js/default/index.js" asp-append-version="true"></script>

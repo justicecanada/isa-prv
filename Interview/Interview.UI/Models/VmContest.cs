@@ -81,7 +81,7 @@ namespace Interview.UI.Models
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview> Interviews { get; set; }
-        //public List<UserSetting> UserSettings { get; set; }
+        public List<VmUserSetting> UserSettings { get; set; }
         //public List<Schedule> Schedules { get; set; }
 
     }
