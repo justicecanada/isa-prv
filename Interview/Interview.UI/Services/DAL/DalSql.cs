@@ -243,6 +243,18 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles()
+        {
+
+            var result = await _context.Contests.Where(x => !x.IsDeleted)
+                .Include(x => x.UserSettings)
+                .ThenInclude(x => x.Role)
+                .ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
     }

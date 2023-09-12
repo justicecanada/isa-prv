@@ -1,0 +1,607 @@
+---
+{
+	"title": "Utilities",
+	"language": "en",
+	"category": "Other",
+	"description": "Utilities page including working examples.",
+	"tag": "utility",
+	"parentdir": "utility",
+	"altLangPrefix": "utility",
+	"dateModified": "2023-08-15"
+}
+---
+
+<div class="wb-prettify all-pre hide"></div>
+
+<p>This page showcases wet-boew utility features including some integration from Bootstrap 4 such as: <code>p-0</code>, <code>pl-2</code>, <code>text-white</code> and others.</p>
+<p>Please note that some backported Bootstrap 4 classes have been adjusted to follow Bootstrap 3.4's view breakpoints. For example, small (<code>sm</code>) view's minimum width is 768px in Bootstrap 3.4, as opposed to 576px in Bootstrap 4.</p>
+
+<h2>On this page:</h2>
+
+<ul>
+	<li><a href="#alignment">Alignment</a></li>
+	<li><a href="#background">Background</a></li>
+	<li><a href="#colors">Color schemes</a></li>
+	<li><a href="#spacing">Spacing</a></li>
+	<li><a href="#sizing">Sizing</a></li>
+	<li><a href="#flexbox">Flexbox</a></li>
+	<li><a href="#positioning">Positioning</a></li>
+	<li><a href="#tables">Tables</a></li>
+	<li><a href="#miscellaneous">Miscellaneous</a></li>
+	<li><a href="#dl-horizontal">Horizontal description list</a></li>
+	<li><a href="#dl-inline">Inline description list</a></li>
+</ul>
+
+<h2 id="alignment">Alignment</h2>
+
+<h3><code>text-sm-left</code></h3>
+<p>Align text to the left in small view and over.</p>
+<h4>Working example</h4>
+<p class="text-right text-sm-left">Left-aligned in small view and over</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="text-right <strong>text-sm-left</strong>"&gt;Left-aligned in small view and over&lt;/p&gt;</code></pre>
+
+<h3><code>text-sm-right</code></h3>
+<p>Align text to the right in small view and over.</p>
+<h4>Working example</h4>
+<p class="text-sm-right">Right-aligned in small view and over</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>text-sm-right</strong>"&gt;Right-aligned in small view and over&lt;/p&gt;</code></pre>
+
+<h2 id="background">Background</h2>
+
+<h3><code>bg-cover</code></h3>
+<p>Set background image to fully cover the box size.</p>
+<h4>Working example</h4>
+<div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md">
+		<h4 class="mrgn-tp-md">Heading</h4>
+		<p>Paragraph</p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="<strong>bg-cover</strong> well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;Heading&lt;/h4&gt;
+		&lt;p&gt;Paragraph&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-center</code></h3>
+<p>Set background image in the center of the container.</p>
+<h4>Working example</h4>
+<div class="bg-center well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md">
+		<h4 class="mrgn-tp-md">Heading</h4>
+		<p>Paragraph</p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="<strong>bg-center</strong> well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;Heading&lt;/h4&gt;
+		&lt;p&gt;Paragraph&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-norepeat</code></h3>
+<p>Prevent background image to be repeated in the container.</p>
+<h4>Working example</h4>
+<div class="bg-norepeat well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md">
+		<h4 class="mrgn-tp-md">Heading</h4>
+		<p>Paragraph</p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="<strong>bg-norepeat</strong> well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;Heading&lt;/h4&gt;
+		&lt;p&gt;Paragraph&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-darker</code></h3>
+<p>Set a black background to an element.</p>
+<h4>Working example</h4>
+<div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md bg-darker text-white">
+		<h4 class="mrgn-tp-md">Heading</h4>
+		<p>Paragraph</p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md <strong>bg-darker</strong> text-white"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;Heading&lt;/h4&gt;
+		&lt;p&gt;Paragraph&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-dark</code></h3>
+<p>Set a dark background to an element.</p>
+<h4>Working example</h4>
+<div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md bg-dark text-white">
+		<h4 class="mrgn-tp-md">Heading</h4>
+		<p>Paragraph</p>
+	</div>
+</div>
+<button type="button" class="btn text-white bg-dark">Button</button>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md <strong>bg-dark</strong> text-white"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;Heading&lt;/h4&gt;
+		&lt;p&gt;Paragraph&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;button type="button" class="btn text-white bg-dark"&gt;Button&lt;button&gt;</code></pre>
+
+<h2 id="colors">Color Schemes</h2>
+
+<h3><code>text-white</code></h3>
+<p>Set text in white. Works jointly with darker backgrounds.</p>
+<h4>Working example</h4>
+<p class="bg-darker text-white">Suspendisse faucibus nisl at consectetur. Lorem ipsum <a href="#" class="text-white">dolor sit amet, consectetur.</a></p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="bg-darker <strong>text-white</strong>"&gt;Suspendisse faucibus nisl at consectetur. Lorem ipsum &lt;a href="#" class="text-white"&gt;dolor sit amet, consectetur.&lt;/a&gt;&lt;/p&gt;</code></pre>
+
+<h2 id="spacing">Spacing</h2>
+
+<h3><code>p-0</code></h3>
+<p>Set a padding of 0px.</p>
+<h4>Working example</h4>
+<p class="p-0 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>p-0</strong> primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>p-sm-3</code></h3>
+<p>Set a padding of 15px in small view and over.</p>
+<h4>Working example</h4>
+<p class="p-sm-3 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>p-sm-3</strong> primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pl-2</code></h3>
+<p>Set a left padding of 5px.</p>
+<h4>Working example</h4>
+<p class="pl-2 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>pl-2</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>px-2</code></h3>
+<p>Set a left and right padding of 5px.</p>
+<h4>Working example</h4>
+<p class="px-2 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>px-2</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>px-sm-3</code></h3>
+<p>Set a left and right padding of 15px in small view and over.</p>
+<h4>Working example</h4>
+<p class="px-sm-3 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>px-sm-3</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pr-2</code></h3>
+<p>Set a right padding of 5px.</p>
+<h4>Working example</h4>
+<p class="pr-2 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>pr-2</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pr-sm-3</code></h3>
+<p>Set a right padding of 15px in small view and over.</p>
+<h4>Working example</h4>
+<p class="pr-sm-3 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>pr-sm-3</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pt-4</code></h3>
+<p>Set a top padding of 30px.</p>
+<h4>Working example</h4>
+<p class="pt-4 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>pt-4</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>py-4</code></h3>
+<p>Set a top and bottom padding of 30px.</p>
+<h4>Working example</h4>
+<p class="py-4 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>py-4</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pb-4</code></h3>
+<p>Set a bottom padding of 30px.</p>
+<h4>Working example</h4>
+<p class="pb-4 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>pb-4</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>mb-sm-5</code></h3>
+<p>Set a bottom margin of 50px in small view and over.</p>
+<h4>Working example</h4>
+<p class="mb-sm-5 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>mb-sm-5</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>mt-auto</code></h3>
+<p>Set a top margin to auto. When used jointly with flexbox, it will stick an element to the bottom.</p>
+<h4>Working example</h4>
+<p>Please test on a tablet or desktop to get the full picture of this utility.</p>
+<div class="row wb-eqht-grd">
+	<div class="col-xs-6">
+		<p class="mt-auto mrgn-bttm-0 bg-primary">I'm at the bottom.</p>
+	</div>
+	<div class="col-xs-6">
+			<p class="mrgn-bttm-0 bg-primary">Example text. Example text. Example text. Example text.<span class="hidden-xs hidden-sm"> Example text. Example text. Example text. Example text.</span></p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="row wb-eqht-grd"&gt;
+	&lt;div class="col-xs-6"&gt;
+		&lt;p class="<strong>mt-auto</strong> mrgn-bttm-0 bg-primary"&gt;Example text.&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-6"&gt;
+			&lt;p class="mrgn-bttm-0 bg-primary"&gt;Example text. Example text. Example text. Example text.&lt;span class="hidden-xs hidden-sm"&gt; Example text. Example text. Example text. Example text.&lt;/span&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="sizing">Sizing</h2>
+
+<h3><code>h-100</code></h3>
+<p>Set an element to 100% height. When used in flexbox context, it will force a child element to match its parent height.</p>
+<h4>Working example</h4>
+<p>Please test on a tablet or desktop to get the full picture of this utility.</p>
+<div class="row wb-eqht-grd">
+	<div class="col-xs-6">
+		<p class="h-100 mrgn-bttm-0 bg-primary">I'm taking the full height.</p>
+	</div>
+	<div class="col-xs-6">
+			<p class="mrgn-bttm-0 bg-primary">Example text. Example text. Example text. Example text.<span class="hidden-xs hidden-sm"> Example text. Example text. Example text. Example text.</span></p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="row wb-eqht-grd"&gt;
+	&lt;div class="col-xs-6"&gt;
+		&lt;p class="<strong>h-100</strong> mrgn-bttm-0 bg-primary"&gt;Example text.&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-6"&gt;
+			&lt;p class="mrgn-bttm-0 bg-primary"&gt;Example text. Example text. Example text. Example text.&lt;span class="hidden-xs hidden-sm"&gt; Example text. Example text. Example text. Example text.&lt;/span&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="flexbox">Flexbox</h2>
+
+<h3 id="d-flex"><code>d-flex</code></h3>
+<p>Set an element as a flexbox container and change its direct children into flex items.</p>
+<h4>Working example</h4>
+<div class="d-flex">
+	<p class="well">Flex item</p>
+	<p class="well">Flex item</p>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="<strong>d-flex</strong>"&gt;
+	&lt;p class="well"&gt;Flex item&lt;/p&gt;
+	&lt;p class="well"&gt;Flex item&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>d-sm-flex</code></h3>
+<p>Set an element as a flexbox container and change its direct children into flex items. To use when you only want the style applied for <code>sm</code> breakpoint and up.</p>
+<h4>Working example</h4>
+<div class="d-sm-flex">
+	<p class="well">Flex item</p>
+	<p class="well">Flex item</p>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="<strong>d-sm-flex</strong>"&gt;
+	&lt;p class="well"&gt;Flex item&lt;/p&gt;
+	&lt;p class="well"&gt;Flex item&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>flex-sm-wrap</code></h3>
+<p>Allow a flexbox container's flex items to wrap across multiple lines in small view and over. Useful for grid layouts.</p>
+<h4>Working example</h4>
+<div class="row d-sm-flex flex-sm-wrap">
+	<div class="col-xs-12">
+		<p class="well"><code>col-xs-12</code></p>
+	</div>
+	<div class="col-xs-12">
+		<p class="well"><code>col-xs-12</code></p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="row d-sm-flex <strong>flex-sm-wrap</strong>"&gt;
+	&lt;div class="col-sm-12"&gt;
+		&lt;p class="well"&gt;&lt;code&gt;col-xs-12&lt;/code&gt;&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-sm-12"&gt;
+		&lt;p class="well"&gt;&lt;code&gt;col-xs-12&lt;/code&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3 id="flex-column"><code>flex-column</code></h3>
+<p>Set a flexbox container's direction to vertical instead of horizontal.</p>
+<h4>Working example</h4>
+<div class="d-flex flex-column">
+	<p class="well">Flex item</p>
+	<p class="well">Flex item</p>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="d-flex <strong>flex-column</strong>"&gt;
+	&lt;p class="well"&gt;Flex item&lt;/p&gt;
+	&lt;p class="well"&gt;Flex item&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-self-center</code></h3>
+<p>Vertically centers an element. This is to be used jointly with the <a href="#d-flex"><code>d-flex</code> utility</a>.</p>
+<h4>Working example</h4>
+<div class="d-flex">
+	<img src="https://via.placeholder.com/100" alt="" class="d-flex align-self-center mrgn-rght-md" />
+	<p class="d-flex align-self-center mrgn-lft-md">Paragraph is vertically aligned with sibling image.</p>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="d-flex"&gt;
+	&lt;img src="https://via.placeholder.com/80" alt="" class="d-flex <strong>align-self-center</strong> mrgn-rght-md" /&gt;
+	&lt;p class="d-flex <strong>align-self-center</strong> mrgn-lft-md"&gt;Paragraph is vertically aligned with sibling image.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-self-end</code></h3>
+<p>Vertically moves an element to the bottom. This is to be used jointly with the <a href="#d-flex"><code>d-flex</code> utility</a>.</p>
+<h4>Working example</h4>
+<div class="d-flex">
+	<img src="https://via.placeholder.com/100" alt="" class="d-flex mrgn-rght-md" />
+	<p class="d-flex align-self-end mrgn-lft-md">Paragraph is vertically moved to the bottom.</p>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="d-flex"&gt;
+	&lt;img src="https://via.placeholder.com/80" alt="" class="d-flex mrgn-rght-md" /&gt;
+	&lt;p class="d-flex <strong>align-self-end</strong> mrgn-lft-md"&gt;Paragraph is vertically moved to the bottom.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-items-center</code></h3>
+<p>Center-align a flexbox container's flex items. Useful for middle-aligning.</p>
+<h4>Working example</h4>
+<div class="row d-flex align-items-center">
+	<div class="col-xs-4">
+		<p class="well">Line 1<br />Line 2<br />Line 3<br />Line 4<br />Line 5</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Line 1<br />Line 2<br />Line 3</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Line 1</p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="row d-flex <strong>align-items-center</strong>"&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Line 1&lt;br /&gt;Line 2&lt;br /&gt;Line 3&lt;br /&gt;Line 4&lt;br /&gt;Line 5&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Line 1&lt;br /&gt;Line 2&lt;br /&gt;Line 3&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Line 1&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-items-sm-center</code></h3>
+<p>Center-align a flexbox container's flex items. Useful for middle-aligning. To use when you only want the style applied for <code>sm</code> breakpoint and up.</p>
+<h4>Working example</h4>
+<div class="row d-sm-flex align-items-sm-center">
+	<div class="col-xs-4">
+		<p class="well">Line 1<br />Line 2<br />Line 3<br />Line 4<br />Line 5</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Line 1<br />Line 2<br />Line 3</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Line 1</p>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="row d-sm-flex <strong>align-items-sm-center</strong>"&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Line 1&lt;br /&gt;Line 2&lt;br /&gt;Line 3&lt;br /&gt;Line 4&lt;br /&gt;Line 5&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Line 1&lt;br /&gt;Line 2&lt;br /&gt;Line 3&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Line 1&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="positioning">Positioning</h2>
+
+<h3><code>position-relative</code></h3>
+<p>Set an element in a relative position. This was created in support of the <code>stretched-link</code> utility. For a better visualisation effect, refer to the <a href="#sl">streched-link utility section</a> below.</p>
+<h4>Working example</h4>
+<p class="position-relative">This is a paragraph relatively positioned.</p>
+<h4>Code sample</h4>
+<pre><code>&lt;p class="<strong>position-relative</strong>"&gt;This is a paragraph relatively positioned.&lt;/p&gt;</code></pre>
+
+<h2 id="tables">Tables</h2>
+<h3><code>table-responsive</code></h3>
+<p>Not ported from, but inline with Bootstrap 4: Makes the content wrap in any viewport including small devices (under 768px).</p>
+<h4>Working example</h4>
+<div class="table-responsive">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Rendering engine</th>
+				<th>Browser</th>
+				<th>Platform(s)</th>
+				<th>Engine version</th>
+				<th>CSS grade</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="gradeX">
+				<td>Trident</td>
+				<td>Internet
+					Explorer 4.0</td>
+				<td>Win 95+</td>
+				<td class="center">4</td>
+				<td class="center">X</td>
+			</tr>
+			<tr class="gradeC">
+				<td>Trident</td>
+				<td>Internet
+					Explorer 5.0</td>
+				<td>Win 95+</td>
+				<td class="center">5</td>
+				<td class="center">C</td>
+			</tr>
+			<tr class="gradeA">
+				<td>Trident</td>
+				<td>Internet
+					Explorer 5.5</td>
+				<td>Win 95+</td>
+				<td class="center">5.5</td>
+				<td class="center">A</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="<strong>table-responsive</strong>"&gt;
+	&lt;!-- Table here --&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="miscellaneous">Miscellaneous</h2>
+
+<h3><code>max-content</code></h3>
+<p>Limits the width of an element to the width of its largest content inside.</p>
+<h4>Working example</h4>
+<details class="max-content">
+	<summary>List items</summary>
+	<ul class="list-unstyled mrgn-bttm-0 mrgn-tp-sm">
+		<li><a href="#">Lorem ipsum</a></li>
+		<li><a href="#">Proin porta vehicula</a></li>
+		<li><a href="#">consectetur adipiscing elitDuis porttitor fermentum semper</a></li>
+		<li><a href="#">consectetur adipiscing elit</a></li>
+	</ul>
+</details>
+<h4>Code sample</h4>
+<pre><code>&lt;details class="<strong>max-content</strong>"&gt;
+	&lt;summary&gt;List items&lt;/summary&gt;
+	&lt;ul class="list-unstyled mrgn-bttm-0 mrgn-tp-sm"&gt;
+		&lt;li&gt;&lt;a href="#"&gt;Lorem ipsum&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;Proin porta vehicula&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;consectetur adipiscing elitDuis porttitor fermentum semper&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;consectetur adipiscing elit&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/details&gt;</code></pre>
+
+<h3 id="sl"><code>stretched-link</code></h3>
+<p>Expands the clickable area of an hyperlink to its nearest parent element.</p>
+<h4>Working example</h4>
+<div class="row">
+	<div class="col-md-4">
+		<section>
+			<img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+			<h3 class="h5"><a href="#" class="stretched-link">[Hyperlink text]</a></h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</section>
+	</div>
+	<div class="col-md-4">
+		<section class="panel panel-default position-relative">
+			<header class="panel-heading">
+				<h3 class="panel-title"><a href="#" class="stretched-link">[Hyperlink text]</a></h3>
+			</header>
+			<div class="panel-body">
+				<img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+		</section>
+	</div>
+	<div class="col-md-4">
+		<section class="well position-relative">
+			<img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+			<h3 class="h5"><a href="#" class="stretched-link">[Hyperlink text]</a></h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</section>
+	</div>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;div class="row">
+	&lt;div class="col-md-4">
+		&lt;img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+		&lt;h3 class="h5">&lt;a href="#" class="stretched-link">[Hyperlink text]&lt;/a>&lt;/h3>
+		&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p>
+	&lt;/div>
+	&lt;div class="col-md-4">
+		&lt;div class="panel panel-default position-relative">
+			&lt;div class="panel-body">
+				&lt;img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+				&lt;h3 class="h5">&lt;a href="#" class="stretched-link">[Hyperlink text]&lt;/a>&lt;/h3>
+				&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p>
+			&lt;/div>
+		&lt;/div>
+	&lt;/div>
+	&lt;div class="col-md-4">
+		&lt;div class="well position-relative">
+			&lt;img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+			&lt;h3 class="h5">&lt;a href="#" class="stretched-link">[Hyperlink text]&lt;/a>&lt;/h3>
+			&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p>
+		&lt;/div>
+	&lt;/div>
+&lt;/div></code></pre>
+
+<h3><code>test-textSpacing</code></h3>
+<div class="test-textSpacing">
+	<p>Add this class to the <code>body</code> element in order to test <a href="https://www.w3.org/TR/WCAG21/#text-spacing">WCAG 2.1 success Criterion 1.4.12 Text Spacing</a>. This helper class will have the following effects:</p>
+	<ul>
+		<li>Line height of 1.5 times the font size.</li>
+		<li>Spacing following paragraphs 2 times the font size.</li>
+		<li>Letter spacing to 0.12 times the font size.</li>
+		<li>Word spacing to 0.16 times the font size.</li>
+	</ul>
+	<p>After setting the class, ensure there is no loss of content or functionality.</p>
+</div>
+<h4>Code sample</h4>
+<pre><code>&lt;body class="<strong>test-textSpacing</strong>" vocab="http://schema.org/" typeof="WebPage" resource="#wb-webpage" class="home page-type-nav "&gt;
+...
+&lt;/body&gt;</code></pre>
+
+<h2 id="dl-horizontal">Horizontal description list</h2>
+<h3>Word wrap</h3>
+<p>This test a special egde case where the word in the description title (<code>&lt;dt></code>) are larger than the available space.</p>
+
+<dl class="dl-horizontal">
+	<dt>Description title</dt>
+	<dd>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</dd>
+	<dt>Long word: supercalifragilisticexpialidocious</dt>
+	<dd>Sed vitae mattis metus. Donec vel nisi lobortis, pretium ante in, porta odio. Duis blandit turpis neque, in interdum mi cursus nec. Cras pharetra ipsum at felis venenatis pellentesque. Vivamus facilisis sollicitudin enim, ac condimentum orci. Aenean tempor elit sit amet tellus gravida, et dignissim magna mollis. Vivamus rhoncus ligula nulla, sit amet maximus sem rutrum scelerisque. Etiam ac lacus rutrum, placerat orci et, dignissim arcu. Praesent eu vulputate tortor, eu porta neque. Fusce commodo tempus ipsum ac rhoncus. Phasellus laoreet aliquam nulla non accumsan. Etiam eu lacinia augue, eget posuere lectus. Curabitur ultricies dolor ante, vel elementum nulla pellentesque nec.</dd>
+	<dt>A fews filling words that take space</dt>
+	<dd>Quisque tristique dui in ante mattis, nec commodo tortor eleifend.</dd>
+</dl>
+<p>If the longest word is capitalized, some browsers may not display a hyphen.</p>
+<p>If you wish to self work break to create a hyphen, you can use the soft hyphen (<code>&shy;</code>) entity.</p>
+<h3>Maximum term width</h3>
+<p>Add the class <code>dt-max</code> with the <code>dl-horizontal</code> class and the longest word in any of the term (<code>&lt;dt&gt;</code>) elements will determine the width of all the terms.</p>
+<dl class="dl-horizontal dt-max">
+	<dt>Description title</dt>
+	<dd>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</dd>
+	<dt>Long word: supercalifragilisticexpialidocious</dt>
+	<dd>Sed vitae mattis metus. Donec vel nisi lobortis, pretium ante in, porta odio. Duis blandit turpis neque, in interdum mi cursus nec. Cras pharetra ipsum at felis venenatis pellentesque. Vivamus facilisis sollicitudin enim, ac condimentum orci. Aenean tempor elit sit amet tellus gravida, et dignissim magna mollis. Vivamus rhoncus ligula nulla, sit amet maximus sem rutrum scelerisque. Etiam ac lacus rutrum, placerat orci et, dignissim arcu. Praesent eu vulputate tortor, eu porta neque. Fusce commodo tempus ipsum ac rhoncus. Phasellus laoreet aliquam nulla non accumsan. Etiam eu lacinia augue, eget posuere lectus. Curabitur ultricies dolor ante, vel elementum nulla pellentesque nec.</dd>
+	<dt>A fews filling words that take space</dt>
+	<dd>Quisque tristique dui in ante mattis, nec commodo tortor eleifend.</dd>
+</dl>
+<h2 id="dl-inline">Inline description list</h2>
+<p>Inline description list used to display short terms and descriptions.</p>
+
+<dl class="dl-inline">
+	<dt>Term&nbsp;:</dt>
+	<dd>Short description</dd>
+	<dt>Term&nbsp;:</dt>
+	<dd>Short description</dd>
+	<dt>Term&nbsp;:</dt>
+	<dd>Short description</dd>
+	<dt>Term&nbsp;:</dt>
+	<dd>Short description</dd>
+	<dt>Term&nbsp;:</dt>
+	<dd>Short description</dd>
+</dl>

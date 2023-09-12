@@ -20,6 +20,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetAllContests();
 
+        Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
+
         #endregion
 
     }

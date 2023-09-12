@@ -1,0 +1,605 @@
+---
+{
+	"title": "Utilitaires",
+	"language": "fr",
+	"category": "Autre",
+	"description": "Page d'utilitaires ainsi que leurs examples pratiques.",
+	"tag": "utility",
+	"parentdir": "utility",
+	"altLangPrefix": "utility",
+	"dateModified": "2023-08-15"
+}
+---
+
+<div class="wb-prettify all-pre hide"></div>
+
+<p>Cette page présente certaines fonctionnalités utilitaires wet-boew, y compris certaines intégrations à partir de Bootstrap 4 telles que: <code>p-0</code>, <code>pl-2</code>, <code>text-white</code> et autres.</p>
+<p>Veuillez noter que certaines classes rétroportées de Bootstrap 4 ont été ajustées pour suivre les points d'arrêt de vue de Bootstrap 3.4. Par exemple, la largeur minimale de la petite (<code>sm</code>) vue est 768px dans Bootstrap 3.4, par rapport à 576px dans Boostrap 4.</p>
+
+<h2>Sur cette page:</h2>
+<ul>
+	<li><a href="#alignment">Alignement</a></li>
+	<li><a href="#arriere-plan">Arrière-plan</a></li>
+	<li><a href="#couleurs">Schémas de couleurs</a></li>
+	<li><a href="#espacement">Espacement</a></li>
+	<li><a href="#dimension">Dimensionnement</a></li>
+	<li><a href="#flexbox" lang="en">Flexbox</a></li>
+	<li><a href="#positionnement">Positionnement</a></li>
+	<li><a href="#tables">Tables</a></li>
+	<li><a href="#divers">Divers</a></li>
+	<li><a href="#dl-horizontal">Liste descriptive horizontale</a></li>
+	<li><a href="#dl-inline">Liste descriptive en ligne</a></li>
+</ul>
+
+<h2 id="alignment">Alignement</h2>
+
+<h3><code>text-sm-left</code></h3>
+<p>Aligne le text vers la gauche dans la petite vue et plus.</p>
+<h4>Example pratique</h4>
+<p class="text-right text-sm-left">Aligné vers la gauche dans la petite vue et plus</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="text-right <strong>text-sm-left</strong>"&gt;Aligné vers la gauche dans la petite vue et plus&lt;/p&gt;</code></pre>
+
+<h3><code>text-sm-right</code></h3>
+<p>Aligne le text vers la droite dans la petite vue et plus.</p>
+<h4>Example pratique</h4>
+<p class="text-sm-right">Aligné vers la droite dans la petite vue et plus</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>text-sm-right</strong>"&gt;Aligné vers la droite dans la petite vue et plus&lt;/p&gt;</code></pre>
+
+<h2 id="arriere-plan">Arrière-plan</h2>
+
+<h3><code>bg-cover</code></h3>
+<p>Défini l'image d'arrière-plan afin qu'elle couvre entièrement la taille de la case.</p>
+<h4>Exemple pratique</h4>
+<div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md">
+		<h4 class="mrgn-tp-md">En-tête</h4>
+		<p>Paragraphe</p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="<strong>bg-cover</strong> well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;En-tête&lt;/h4&gt;
+		&lt;p&gt;Paragraphe&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-center</code></h3>
+<p>Défini l'image d'arrière-plan au centre de la case.</p>
+<h4>Exemple pratique</h4>
+<div class="bg-center well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md">
+		<h4 class="mrgn-tp-md">En-tête</h4>
+		<p>Paragraphe</p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="<strong>bg-center</strong> well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;En-tête&lt;/h4&gt;
+		&lt;p&gt;Paragraphe&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-norepeat</code></h3>
+<p>Prévient l'image d'arrière-plan de se répéter dans la case.</p>
+<h4>Exemple pratique</h4>
+<div class="bg-norepeat well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md">
+		<h4 class="mrgn-tp-md">En-tête</h4>
+		<p>Paragraphe</p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="<strong>bg-norepeat</strong> well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;En-tête&lt;/h4&gt;
+		&lt;p&gt;Paragraphe&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-darker</code></h3>
+<p>Défini un arrère-plan noir à un élément.</p>
+<h4>Exemple pratique</h4>
+<div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md bg-darker text-white">
+		<h4 class="mrgn-tp-md">En-tête</h4>
+		<p>Paragraphe</p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md <strong>bg-darker</strong> text-white"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;En-tête&lt;/h4&gt;
+		&lt;p&gt;Paragraphe&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>bg-dark</code></h3>
+<p>Défini un arrère-plan foncé à un élément.</p>
+<h4>Exemple pratique</h4>
+<div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg">
+	<div class="well mrgn-tp-md mrgn-bttm-md bg-dark text-white">
+		<h4 class="mrgn-tp-md">En-tête</h4>
+		<p>Paragraphe</p>
+	</div>
+</div>
+<button type="button" class="btn text-white bg-dark">Bouton</button>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="bg-cover well" data-bgimg="../../demos/tabs/img/investinourfuture.jpg"&gt;
+	&lt;div class="well mrgn-tp-md mrgn-bttm-md <strong>bg-dark</strong> text-white"&gt;
+		&lt;h4 class="mrgn-tp-md"&gt;En-tête&lt;/h4&gt;
+		&lt;p&gt;Paragraphe&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;button type="button" class="btn text-white bg-dark"&gt;Bouton&lt;/button&gt;</code></pre>
+
+<h2 id="couleurs">Schémas de couleurs</h2>
+<h3><code>text-white</code></h3>
+<p>Définir le texte en blanc. Fonctionne conjointement avec des arrière-plans plus sombres.</p>
+<h4>Exemple pratique</h4>
+<p class="bg-darker text-white">Suspendisse faucibus nisl at consectetur. Lorem ipsum <a href="#" class="text-white">dolor sit amet, consectetur.</a></p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="bg-darker <strong>text-white</strong>"&gt;Suspendisse faucibus nisl at consectetur. Lorem ipsum &lt;a href="#" class="text-white"&gt;dolor sit amet, consectetur.&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;</code></pre>
+
+<h2 id="espacement">Espacement</h2>
+<h3><code>p-0</code></h3>
+<p>Défini un remplissage de 0px.</p>
+<h4>Exemple pratique</h4>
+<p class="p-0 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>p-0</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>p-sm-3</code></h3>
+<p>Défini un remplissage de 15px dans la petite vue et plus.</p>
+<h4>Exemple pratique</h4>
+<p class="p-sm-3 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>p-sm-3</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pl-2</code></h3>
+<p>Défini un remplissage à gauche de 5px.</p>
+<h4>Exemple pratique</h4>
+<p class="pl-2 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>pl-2</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>px-2</code></h3>
+<p>Défini un remplissage à gauche et à droite de 5px.</p>
+<h4>Exemple pratique</h4>
+<p class="px-2 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>px-2</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>px-sm-3</code></h3>
+<p>Défini un remplissage à gauche et à droite de 15px dans la petite vue et plus.</p>
+<h4>Exemple pratique</h4>
+<p class="px-sm-3 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>px-sm-3</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pr-2</code></h3>
+<p>Défini un remplissage à droite de 5px.</p>
+<h4>Exemple pratique</h4>
+<p class="pr-2 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>pr-2</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pr-sm-3</code></h3>
+<p>Défini un remplissage à droite de 15px dans la petite vue et plus.</p>
+<h4>Exemple pratique</h4>
+<p class="pr-sm-3 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>pr-sm-3</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pt-4</code></h3>
+<p>Défini un remplissage au-dessus de 30px.</p>
+<h4>Exemple pratique</h4>
+<p class="pt-4 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>pt-4</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>py-4</code></h3>
+<p>Défini un remplissage au-dessus et en-dessous de 30px.</p>
+<h4>Exemple pratique</h4>
+<p class="py-4 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>py-4</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>pb-4</code></h3>
+<p>Défini un remplissage en-dessous de 30px.</p>
+<h4>Exemple pratique</h4>
+<p class="pb-4 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>pb-4</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>mb-sm-5</code></h3>
+<p>Défini une marge en-dessous de 50px dans la petite vue et plus.</p>
+<h4>Exemple pratique</h4>
+<p class="mb-sm-5 bg-primary max-content">Suspendisse faucibus nisl at consectetur.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>mb-sm-5</strong> bg-primary max-content"&gt;Suspendisse faucibus nisl at consectetur.&lt;/p&gt;</code></pre>
+
+<h3><code>mt-auto</code></h3>
+<p>Défini une marge au-dessus automatique. Lorsque utilisé conjointement avec "flex", l'élément ira se coller au bas de son conteneur.</p>
+<h4>Exemple pratique</h4>
+<p>Veuillez tester sur tablette ou ordinateur de bureau afin d'obtenir l'effet escompté de cet utilitaire.</p>
+<div class="row wb-eqht-grd">
+	<div class="col-xs-6">
+		<p class="mt-auto mrgn-bttm-0 bg-primary">Exemple de texte.</p>
+	</div>
+	<div class="col-xs-6">
+			<p class="mrgn-bttm-0 bg-primary">Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.<span class="hidden-xs hidden-sm"> Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.</span></p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="row wb-eqht-grd"&gt;
+	&lt;div class="col-xs-6"&gt;
+		&lt;p class="<strong>mt-auto</strong> mrgn-bttm-0 bg-primary"&gt;Exemple de texte.&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-6"&gt;
+			&lt;p class="mrgn-bttm-0 bg-primary"&gt;Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.&lt;span class="hidden-xs hidden-sm"&gt; Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.&lt;/span&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="dimension">Dimensionnement</h2>
+
+<h3><code>h-100</code></h3>
+<p>Défini une grandeur de 100&nbsp;% sur l'élément. Lorsque utilisé dans le contexte de "flex", cela forcera l'élément a avoir la grandeur de son parent.</p>
+<h4>Exemple pratique</h4>
+<p>Veuillez tester sur tablette ou ordinateur de bureau afin d'obtenir l'effet escompté de cet utilitaire.</p>
+<div class="row wb-eqht-grd">
+	<div class="col-xs-6">
+		<p class="h-100 mrgn-bttm-0 bg-primary">Exemple de texte.</p>
+	</div>
+	<div class="col-xs-6">
+			<p class="mrgn-bttm-0 bg-primary">Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.<span class="hidden-xs hidden-sm"> Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.</span></p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="row wb-eqht-grd"&gt;
+	&lt;div class="col-xs-6"&gt;
+		&lt;p class="<strong>h-100</strong> mrgn-bttm-0 bg-primary"&gt;Exemple de texte.&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-6"&gt;
+			&lt;p class="mrgn-bttm-0 bg-primary"&gt;Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.&lt;span class="hidden-xs hidden-sm"&gt; Exemple de texte. Exemple de texte. Exemple de texte. Exemple de texte.&lt;/span&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="flexbox" lang="en">Flexbox</h2>
+
+<h3 id="d-flex"><code>d-flex</code></h3>
+<p>Défini un élément en tant que conteneur "flex" et change ses enfants directs en tant qu'éléments "flex".</p>
+<h4>Exemple pratique</h4>
+<div class="d-flex">
+	<p class="well">Élément flex</p>
+	<p class="well">Élément flex</p>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="<strong>d-flex</strong>"&gt;
+	&lt;p class="well"&gt;Élément flex&lt;/p&gt;
+	&lt;p class="well"&gt;Élément flex&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>d-sm-flex</code></h3>
+<p>Défini un élément en tant que conteneur "flex" et change ses enfants directs en tant qu'éléments "flex". À utiliser lorsque vous souhaitez que le style soit appliqué uniquement pour les points d'arrêt <code>sm</code> et plus.</p>
+<h4>Exemple pratique</h4>
+<div class="d-sm-flex">
+	<p class="well">Élément flex</p>
+	<p class="well">Élément flex</p>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="<strong>d-sm-flex</strong>"&gt;
+	&lt;p class="well"&gt;Élément flex&lt;/p&gt;
+	&lt;p class="well"&gt;Élément flex&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>flex-sm-wrap</code></h3>
+<p>Permet les éléments flex d'un conteneur «&nbsp;<span lang="en">flexbox</span>&nbsp;» de retourner à travers plusieurs lignes dans la petite vue et plus. Utile pour les dispositions en grille.</p>
+<h4>Example pratique</h4>
+<div class="row d-sm-flex flex-sm-wrap">
+	<div class="col-xs-12">
+		<p class="well"><code>col-xs-12</code></p>
+	</div>
+	<div class="col-xs-12">
+		<p class="well"><code>col-xs-12</code></p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="row d-sm-flex <strong>flex-sm-wrap</strong>"&gt;
+	&lt;div class="col-sm-12"&gt;
+		&lt;p class="well"&gt;&lt;code&gt;col-xs-12&lt;/code&gt;&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-sm-12"&gt;
+		&lt;p class="well"&gt;&lt;code&gt;col-xs-12&lt;/code&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3 id="flex-column"><code>flex-column</code></h3>
+<p>Défini la direction d'un conteneur "flex" à la vertical au lieu de l'horizontal.</p>
+<h4>Exemple pratique</h4>
+<div class="d-flex flex-column">
+	<p class="well">Élément flex</p>
+	<p class="well">Élément flex</p>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="d-flex <strong>flex-column</strong>"&gt;
+	&lt;p class="well"&gt;Élément flex&lt;/p&gt;
+	&lt;p class="well"&gt;Élément flex&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-self-center</code></h3>
+<p>Aligne un élément au centre verticalement. Cet utilitaire doit être utilisé conjointement avec <a href="#d-flex">l'utilitaire <code>d-flex</code></a>.</p>
+<h4>Exemple pratique</h4>
+<div class="d-flex">
+	<img src="https://via.placeholder.com/100" alt="" class="d-flex align-self-center mrgn-rght-md" />
+	<p class="d-flex align-self-center mrgn-lft-md">Paragraphe centré verticalement avec l'image à côté.</p>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="d-flex"&gt;
+	&lt;img src="https://via.placeholder.com/80" alt="" class="d-flex <strong>align-self-center</strong> mrgn-rght-md" /&gt;
+	&lt;p class="d-flex <strong>align-self-center</strong> mrgn-lft-md"&gt;Paragraphe centré verticalement avec l'image à côté.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-self-end</code></h3>
+<p>Aligne un élément au bas. Cet utilitaire doit être utilisé conjointement avec <a href="#d-flex">l'utilitaire <code>d-flex</code></a>.</p>
+<h4>Exemple pratique</h4>
+<div class="d-flex">
+	<img src="https://via.placeholder.com/100" alt="" class="d-flex mrgn-rght-md" />
+	<p class="d-flex align-self-end mrgn-lft-md">Paragraphe placé au bas verticalement avec l'image à côté.</p>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="d-flex"&gt;
+	&lt;img src="https://via.placeholder.com/80" alt="" class="d-flex mrgn-rght-md" /&gt;
+	&lt;p class="d-flex <strong>align-self-end</strong> mrgn-lft-md"&gt;Paragraphe placé au bas verticalement avec l'image à côté.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-items-center</code></h3>
+<p>Aligner au centre les éléments flex d'un conteneur flexbox. Utile pour l'alignement au centre.</p>
+<h4>Example pratique</h4>
+<div class="row d-flex align-items-center">
+	<div class="col-xs-4">
+		<p class="well">Ligne 1<br />Ligne 2<br />Ligne 3<br />Ligne 4<br />Ligne 5</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Ligne 1<br />Ligne 2<br />Ligne 3</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Ligne 1</p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="row d-flex <strong>align-items-center</strong>"&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Ligne 1&lt;br /&gt;Ligne 2&lt;br /&gt;Ligne 3&lt;br /&gt;Ligne 4&lt;br /&gt;Ligne 5&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Ligne 1&lt;br /&gt;Ligne 2&lt;br /&gt;Ligne 3&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Ligne 1&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3><code>align-items-sm-center</code></h3>
+<p>Aligner au centre les éléments flex d'un conteneur flexbox. Utile pour l'alignement au centre. À utiliser lorsque vous souhaitez que le style soit appliqué uniquement pour les points d'arrêt <code>sm</code> et plus.</p>
+<h4>Example pratique</h4>
+<div class="row d-sm-flex align-items-sm-center">
+	<div class="col-xs-4">
+		<p class="well">Ligne 1<br />Ligne 2<br />Ligne 3<br />Ligne 4<br />Ligne 5</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Ligne 1<br />Ligne 2<br />Ligne 3</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="well">Ligne 1</p>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="row d-sm-flex <strong>align-items-sm-center</strong>"&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Ligne 1&lt;br /&gt;Ligne 2&lt;br /&gt;Ligne 3&lt;br /&gt;Ligne 4&lt;br /&gt;Ligne 5&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Ligne 1&lt;br /&gt;Ligne 2&lt;br /&gt;Ligne 3&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;div class="col-xs-4"&gt;
+		&lt;p class="well"&gt;Ligne 1&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="positionnement">Positionnement</h2>
+<h3><code>position-relative</code></h3>
+<p>Défini une position relative pour un élément. Ceci a été créée afin de supporter l'utilitaire <code>stretched-link</code>. Afin d'obtenir un meilleur effet visuel, référez vous à la <a href="#sl">section de l'utilitaire 'streched-link'</a> ci-desous.  </p>
+<h4>Exemple pratique</h4>
+<p class="position-relative">Ceci est un paragraphe relativement positionné.</p>
+<h4>Exemple de code</h4>
+<pre><code>&lt;p class="<strong>position-relative</strong>"&gt;Ceci est un paragraphe relativement positionné.&lt;/p&gt;</code></pre>
+
+<h2 id="tables">Tables</h2>
+<h3><code>table-responsive</code></h3>
+<p>Non porté de, mais en ligne avec Bootstrap 4: renvoie le texte automatiquement à la ligne suivante dans n'importe quelle fenêtre d'affichage incluant les petits appareils (sous 768px)</p>
+<h4>Exemple pratique</h4>
+<div class="table-responsive">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Moteur de rendu</th>
+				<th>Navigateur</th>
+				<th>Platformes</th>
+				<th>Version de moteur</th>
+				<th>Niveau de CSS</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="gradeX">
+				<td>Trident</td>
+				<td>Internet
+					Explorer 4.0</td>
+				<td>Win 95+</td>
+				<td class="center">4</td>
+				<td class="center">X</td>
+			</tr>
+			<tr class="gradeC">
+				<td>Trident</td>
+				<td>Internet
+					Explorer 5.0</td>
+				<td>Win 95+</td>
+				<td class="center">5</td>
+				<td class="center">C</td>
+			</tr>
+			<tr class="gradeA">
+				<td>Trident</td>
+				<td>Internet
+					Explorer 5.5</td>
+				<td>Win 95+</td>
+				<td class="center">5.5</td>
+				<td class="center">A</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="<strong>table-responsive</strong>"&gt;
+	&lt;!-- Tableau ici --&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="divers">Divers</h2>
+<h3><code>max-content</code></h3>
+<p>Limite la largeur d'un élément à la largeur de son contenu le plus grand.</p>
+<h4>Exemple pratique</h4>
+<details class="max-content">
+	<summary>Liste d'éléments</summary>
+	<ul class="list-unstyled mrgn-bttm-0 mrgn-tp-sm">
+		<li><a href="#">Lorem ipsum</a></li>
+		<li><a href="#">Proin porta vehicula</a></li>
+		<li><a href="#">consectetur adipiscing elitDuis porttitor fermentum semper</a></li>
+		<li><a href="#">consectetur adipiscing elit</a></li>
+	</ul>
+</details>
+<h4>Exemple de code</h4>
+<pre><code>&lt;details class="<strong>max-content</strong>"&gt;
+	&lt;summary&gt;Liste d'éléments&lt;/summary&gt;
+	&lt;ul class="list-unstyled mrgn-bttm-0 mrgn-tp-sm"&gt;
+		&lt;li&gt;&lt;a href="#"&gt;Lorem ipsum&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;Proin porta vehicula&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;consectetur adipiscing elitDuis porttitor fermentum semper&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="#"&gt;consectetur adipiscing elit&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/details&gt;</code></pre>
+
+<h3 id="sl"><code>stretched-link</code></h3>
+<p>Agrandit la zone cliquable d'un hyperlien jusqu'à son plus proche parent.</p>
+<h4>Exemple pratique</h4>
+<div class="row">
+	<div class="col-md-4">
+		<section>
+			<img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+			<h3 class="h5"><a href="#" class="stretched-link">[Lien hypertexte]</a></h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</section>
+	</div>
+	<div class="col-md-4">
+		<section class="panel panel-default position-relative">
+			<header class="panel-heading">
+				<h3 class="panel-title"><a href="#" class="stretched-link">[Lien hypertexte]</a></h3>
+			</header>
+			<div class="panel-body">
+				<img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+		</section>
+	</div>
+	<div class="col-md-4">
+		<section class="well position-relative">
+			<img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+			<h3 class="h5"><a href="#" class="stretched-link">[Lien hypertexte]</a></h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</section>
+	</div>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;div class="row">
+	&lt;div class="col-md-4">
+		&lt;img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+		&lt;h3 class="h5">&lt;a href="#" class="stretched-link">[Lien hypertexte]&lt;/a>&lt;/h3>
+		&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p>
+	&lt;/div>
+	&lt;div class="col-md-4">
+		&lt;div class="panel panel-default position-relative">
+			&lt;div class="panel-body">
+				&lt;img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+				&lt;h3 class="h5">&lt;a href="#" class="stretched-link">[Lien hypertexte]&lt;/a>&lt;/h3>
+				&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p>
+			&lt;/div>
+		&lt;/div>
+	&lt;/div>
+	&lt;div class="col-md-4">
+		&lt;div class="well position-relative">
+			&lt;img src="https://via.placeholder.com/360x203/000000/FFFFFF.png" alt="" class="img-responsive thumbnail mrgn-bttm-sm">
+			&lt;h3 class="h5">&lt;a href="#" class="stretched-link">[Lien hypertexte]&lt;/a>&lt;/h3>
+			&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p>
+		&lt;/div>
+	&lt;/div>
+&lt;/div></code></pre>
+
+<h3><code>test-textSpacing</code></h3>
+<div class="test-textSpacing">
+	<p>Ajoutez cette classe à l'élément <code>body</code> afin de tester le <a href="https://www.w3.org/TR/WCAG21/#text-spacing" lang="en">critère de réussite 1.4.12 Espacement du texte de WCAG 2.1</a> (Anglais seulement). Cette classe d'assistance aura les effets suivants :</p>
+	<ul>
+		<li>Hauteur de ligne de 1,5 fois la taille de la police.</li>
+		<li>Espacement des paragraphes suivants 2 fois la taille de la police.</li>
+		<li>Espacement des lettres à 0,12 fois la taille de la police.</li>
+		<li>Espacement des mots à 0,16 fois la taille de la police.</li>
+	</ul>
+	<p>Après avoir défini la classe, assurez-vous qu'il n'y a aucune perte de contenu ou de fonctionnalité.</p>
+</div>
+<h4>Exemple de code</h4>
+<pre><code>&lt;body class="<strong>test-textSpacing</strong>" vocab="http://schema.org/" typeof="WebPage" resource="#wb-webpage" class="home page-type-nav "&gt;
+...
+&lt;/body&gt;</code></pre>
+
+<h2 id="dl-horizontal">Liste descriptive horizontale</h2>
+
+<h3>Renvoi à la ligne</h3>
+
+<p>Ceci est la mise à l'essaie d'un cas d'utilisation spécifique où le mot est tronqué dans le titre de la description lorsque ce dernier est long et prend toute l'espace disponible.</p>
+
+<dl class="dl-horizontal">
+	<dt>Titre de la description</dt>
+	<dd>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</dd>
+	<dt>Un long mot : anticonstitutionnellement</dt>
+	<dd>Sed vitae mattis metus. Donec vel nisi lobortis, pretium ante in, porta odio. Duis blandit turpis neque, in interdum mi cursus nec. Cras pharetra ipsum at felis venenatis pellentesque. Vivamus facilisis sollicitudin enim, ac condimentum orci. Aenean tempor elit sit amet tellus gravida, et dignissim magna mollis. Vivamus rhoncus ligula nulla, sit amet maximus sem rutrum scelerisque. Etiam ac lacus rutrum, placerat orci et, dignissim arcu. Praesent eu vulputate tortor, eu porta neque. Fusce commodo tempus ipsum ac rhoncus. Phasellus laoreet aliquam nulla non accumsan. Etiam eu lacinia augue, eget posuere lectus. Curabitur ultricies dolor ante, vel elementum nulla pellentesque nec.</dd>
+	<dt>Quelques mots afin de remplir de l'espace</dt>
+	<dd>Quisque tristique dui in ante mattis, nec commodo tortor eleifend.</dd>
+</dl>
+<p>Si le mot le plus long est en majuscule, certains navigateurs peuvent ne pas afficher de trait d'union.</p>
+<p>Si vous souhaitez définir l'endroit où il y aura une opportunité de créer un trait d'union pour faire un renvoie à la ligne en cas de manque d'espace, vous pouvez utiliser l'entité du trait d'union souple  (<code>&shy;</code>).</p>
+<h3>Largeur maximal de la colonne des termes</h3>
+<p>Ajouter la classe CSS <code>dt-max</code> avec la classe CSS <code>dl-horizontal</code> afin que le plus long mot dans la colonne des termes (l'élément <code>&lt;dt&gt;</code>) détermine la largeur pour l'ensemble des termes.</p>
+<dl class="dl-horizontal dt-max">
+	<dt>Titre du terme</dt>
+	<dd>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</dd>
+	<dt>Un long mot : anticonstitutionnellement</dt>
+	<dd>Sed vitae mattis metus. Donec vel nisi lobortis, pretium ante in, porta odio. Duis blandit turpis neque, in interdum mi cursus nec. Cras pharetra ipsum at felis venenatis pellentesque. Vivamus facilisis sollicitudin enim, ac condimentum orci. Aenean tempor elit sit amet tellus gravida, et dignissim magna mollis. Vivamus rhoncus ligula nulla, sit amet maximus sem rutrum scelerisque. Etiam ac lacus rutrum, placerat orci et, dignissim arcu. Praesent eu vulputate tortor, eu porta neque. Fusce commodo tempus ipsum ac rhoncus. Phasellus laoreet aliquam nulla non accumsan. Etiam eu lacinia augue, eget posuere lectus. Curabitur ultricies dolor ante, vel elementum nulla pellentesque nec.</dd>
+	<dt>Quelques mots de remplissage qui prennent de l'espace</dt>
+	<dd>Quisque tristique dui in ante mattis, nec commodo tortor eleifend.</dd>
+</dl>
+
+<h2 id="dl-inline">Liste descriptive en ligne</h2>
+<p>List descriptive en ligne utilisée pour afficher des termes et descriptions courts.</p>
+
+<dl class="dl-inline">
+	<dt>Terme&nbsp;:</dt>
+	<dd>Description courte</dd>
+	<dt>Terme&nbsp;:</dt>
+	<dd>Description courte</dd>
+	<dt>Terme&nbsp;:</dt>
+	<dd>Description courte</dd>
+	<dt>Terme&nbsp;:</dt>
+	<dd>Description courte</dd>
+	<dt>Terme&nbsp;:</dt>
+	<dd>Description courte</dd>
+</dl>

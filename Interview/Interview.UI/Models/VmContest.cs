@@ -1,4 +1,5 @@
 ﻿using Interview.Entities;
+using Interview.UI.Models.CustomValidation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Interview.UI.Models
@@ -9,10 +10,12 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "NoProcessus")]
+        [MaxLength(128, ErrorMessage = "NoProcessusMaxLength")]
         public string? NoProcessus { get; set; }
 
         [Required]
         [Display(Name = "GroupNiv")]
+        [MaxLength(128, ErrorMessage = "GroupNivMaxLength")]
         public string? GroupNiv { get; set; }
 
         [Display(Name = "InitUserId")]
@@ -27,6 +30,7 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "EndDate")]
+        [CompareDateTimeOffsets(">", "StartDate", null, ErrorMessage = "StartDateAfterEndDate")]
         public DateTimeOffset? EndDate { get; set; }
 
         [Required]
@@ -35,6 +39,7 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "MaxTime")]
+        [CompareTimeSpans(">", "MinTime", null, ErrorMessage = "MinTimeAfterMaxTime")]
         public TimeSpan? MaxTime { get; set; }
 
         [Required]
@@ -57,9 +62,11 @@ namespace Interview.UI.Models
         public bool IsDeleted { get; set; }
 
         [Display(Name = "MembersIntroEN")]
+        [MaxLength(4000, ErrorMessage = "MembersIntroEnMaxLength")]
         public string? MembersIntroEN { get; set; }
 
         [Display(Name = "MembersIntroFR")]
+        [MaxLength(4000, ErrorMessage = "MembersIntroFrMaxLength")]
         public string? MembersIntroFR { get; set; }
 
         [Display(Name = "CandidatesIntroEN")]
@@ -74,7 +81,7 @@ namespace Interview.UI.Models
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview> Interviews { get; set; }
-        //public List<UserSetting> UserSettings { get; set; }
+        public List<VmUserSetting> UserSettings { get; set; }
         //public List<Schedule> Schedules { get; set; }
 
     }

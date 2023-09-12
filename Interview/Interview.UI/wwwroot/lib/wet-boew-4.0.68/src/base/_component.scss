@@ -1,0 +1,56 @@
+/*
+ *
+ * Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW)
+ * wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html
+ *
+ * Components and helpers style for WET-BOEW
+ */
+
+/*
+ Background Utility CSS
+ */
+.bg-cover {
+	background-size: cover;
+}
+.bg-center {
+	background-position: center;
+}
+.bg-norepeat {
+	background-repeat: no-repeat;
+}
+
+/*
+ Additional color
+ */
+.bg-darker {
+	background-color: #000;
+}
+
+.bg-dark {
+	background-color: #343a40;
+}
+button {
+	&.bg-dark {
+		&:hover, &:focus {
+			background-color: #1d2124;
+		}
+	}
+}
+
+/*
+Panels
+ */
+.panel, .well {
+	&:not(:has(.panel, .well)) {
+		&:has(.stretched-link):hover, &:has(.stretched-link:focus) {
+			box-shadow: 1px 5px 7px rgba(0,0,0,.15);
+		}
+	}
+}
+
+/*
+Miscellaneous Utiliy CSS
+ */
+.max-content {
+	max-width: max-content;
+}

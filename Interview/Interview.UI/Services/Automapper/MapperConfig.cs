@@ -14,6 +14,12 @@ namespace Interview.UI.Services.Automapper
             CreateMap<Contest, VmContest>();
             CreateMap<VmContest, Contest>();
 
+            CreateMap<UserSetting, VmUserSetting>();
+            CreateMap<VmUserSetting, UserSetting>();
+
+            CreateMap<Role, VmRole>();
+            CreateMap<VmRole, Role>();
+
 
         }
 

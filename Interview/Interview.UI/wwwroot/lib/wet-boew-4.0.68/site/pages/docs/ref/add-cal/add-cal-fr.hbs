@@ -1,0 +1,133 @@
+---
+{
+	"title": "Ajouter au calendrier",
+	"language": "fr",
+	"category": "Plugiciels",
+	"categoryfile": "plugins",
+	"description": "Ajouter un événement à un calendrier (google, Apple, Android, Outlook ou autres).",
+	"altLangPrefix": "add-cal",
+	"dateModified": "2022-07-25"
+}
+---
+
+<div lang="en" class="alert alert-warning">
+	<h2>Unstable feature</h2>
+	<p>To be used at <strong>your own risk</strong>. This feature described below can be removed in any subsequent minor/major release</p>
+	<p><small><a href="https://wet-boew.github.io/wet-boew-documentation/decision/7.html">Learn more about the design decision around provisional features.</a></small></p>
+	<p><small><a href="../provisional-fr.html">Check other provisional features available.</a></small></p>
+</div>
+
+<span class="wb-prettify all-pre"></span>
+
+<h2>But</h2>
+<p>Ajouter un événement à un calendrier (Google, Apple, Android, Outlook ou autres).</p>
+
+<h2>Exemples pratiques</h2>
+<ul>
+	<li><a href="../../../demos/add-cal/add-cal-en.html">Exemple en anglais</a></li>
+	<li><a href="../../../demos/add-cal/add-cal-fr.html">Exemple en français</a></li>
+</ul>
+
+<h2>Évaluation et rapport</h2>
+<ul>
+	<li>Évaluation d'accessibilité
+		<ul>
+			<li><a href="../../../demos/add-cal/reports/1-assessment-wcag21-fr.html">Rapport français</a></li>
+			<li><a href="../../../demos/add-cal/reports/1-assessment-wcag21-en.html" hreflang="en">Rapport anglais</a></li>
+		</ul>
+	</li>
+	<li>Raport de conformance à l'accessibilité
+		<ul>
+			<li><a href="../../../demos/add-cal/reports/1-acr-wcag21-fr.html">Rapport français</a></li>
+			<li><a href="../../../demos/add-cal/reports/1-acr-wcag21-en.html" hreflang="en">Raport anglais</a></li>
+		</ul>
+	</li>
+</ul>
+
+<h2>API (Version 1.0)</h2>
+<dl class="dl-horizontal">
+	<dt>Fonction</dt>
+	<dd>Provisoire</dd>
+	<dt>Configuration</dt>
+	<dd>N'est pas applicable</dd>
+	<dt>Interface utilisateur (Modèle)</dt>
+	<dd>Provisoire</dd>
+	<dt>Source de données</dt>
+	<dd>Provisoire</dd>
+	<dt>Affichage et style</dt>
+	<dd>Provisoire</dd>
+	<dt>Chaîne de caractères i18n</dt>
+	<dd>Provisoire</dd>
+</dl>
+
+<h3>Fonction</h3>
+<p>(Version 1.0)</p>
+<table class="table">
+	<tr>
+		<th>Type de fonction</th>
+		<th>Nom</th>
+		<th>Comment implémenter</th>
+		<th>Fonction</th>
+	</tr>
+	<tr>
+		<td>Événement jQuery</td>
+		<td><code>wb-init.wb-addcal</code></td>
+		<td>Déclenché manuellement (par exemple&nbsp;: <code>$( ".wb-addcal" ).trigger( "wb-init.wb-addcal" );</code>).</td>
+		<td>Initialise la composante <code>.wb-addcal</code>. Cette composante sera initialisée automatiquement sauf si l'élément <code>.wb-addcal</code> est ajouté après le chargement de la page et l'initialisation de wet-boew.</td>
+	</tr>
+	<tr>
+		<td>Événement jQuery</td>
+		<td><code>wb-ready.wb-addcal</code></td>
+		<td>Déclenché automatiquement après l'initialisation du plugin.</td>
+		<td>Utilisé pour identifier quand et où la composante s'initialise (cible de l'événement).
+			<pre><code>$( document ).on( "wb-ready.wb-addcal", ".wb-addcal", function( event ) {
+});</code></pre>
+			<pre><code>$elm.on( "wb-ready.wb-addcal", function( event ) {
+});</code></pre>
+		</td>
+	</tr>
+</table>
+
+<h3>Configuration</h3>
+<p>N'est pas applicable pour cette composante.</p>
+
+<h3>Interface utilisateur (Modèle)</h3>
+<p>(Provisoire)</p>
+
+<p>Le type Schema.org <code>Event</code> noté dans RDFa est requis lors de la mise en œuvre de cette composante d'ajout au calendrier. Il identifie un événement qui se déroule à un certain moment et à un certain endroit. Voici les types et propriétés de Schema.org&nbsp;:</p>
+<dl>
+	<dt><code>name</code> (Event)</dt>
+	<dd>Requis - Texte court définissant le titre de l'événement.</dd>
+	<dt><code>description</code> (Event)</dt>
+	<dd>Optionnel - Texte court qui fournit une brève description de l'événement.</dd>
+	<dt><code>startDate</code> (Event)</dt>
+	<dd>Requis - Spécifie la date et/ou l'heure de début de l'événement. Il doit être utilisé dans un élément <code>&lt;time&gt;</code> et la valeur doit être définie dans le texte ou en ajoutant l'attribut <code>datetime</code> en suivant ce modèle&nbsp;: "YYYY-MM-DD&nbsp;HH:MMZ"</dd>
+	<dt><code>endDate</code> (Event)</dt>
+	<dd>Requis - Indique la date et/ou l'heure de fin de l'événement. Il doit être utilisé dans un élément <code>&lt;time&gt;</code> et la valeur doit être définie dans le texte ou en ajoutant l'attribut <code>datetime</code> soit en suivant ce modèle&nbsp;: "YYYY-MM-DD&nbsp;HH:MMZ"</dd>
+	<dt><code>location</code> (Event)</dt>
+	<dd>Recommandé - Texte court qui identifie le lieu de l'événement. Celui-ci peut être affiné avec le type <strong>Place</strong> pour fournir une adresse détaillée ou <strong>VirtualLocation</strong> pour un événement en ligne.</dd>
+	<dt><code>name</code> (Place)</dt>
+	<dd>Optionnel - Texte court qui identifie le nom d'un lieu pour l'événement.</dd>
+	<dt><code>address</code> (Place)</dt>
+	<dd>Optionnel - Texte court qui identifie l'adresse. Celui-ci peut être affiné avec <strong>PostalAddress</strong> pour initier un emplacement détaillé.</dd>
+	<dt><code>streetAddress</code> (PostalAddress)</dt>
+	<dd>Optionnel - Texte qui identifie l'adresse municipale.</dd>
+	<dt><code>addressLocality</code> (PostalAddress)</dt>
+	<dd>Optionnel - Texte qui spécifie l'emplacement (ville).</dd>
+	<dt><code>addressRegion</code> (PostalAddress)</dt>
+	<dd>Optionnel - Texte qui précise la région (province) de l'événement.</dd>
+	<dt><code>postalCode</code> (PostalAddress)</dt>
+	<dd>Optionnel - Texte qui spécifie le code postal.</dd>
+	<dt><code>url</code> (VirtualLocation)</dt>
+	<dd>Recommandé - URL de l'événement en ligne.</dd>
+</dl>
+
+<p>L'élément HTML <code>time</code> doit être utilisé lors de la spécification d'une date et/ou d'une heure dans un format lisible par machine ou lors de l'ajout de l'attribut <code>datetime</code> lors de l'utilisation de texte. Le modèle de date ISO suivant noté dans RDFa doit être appliqué lors de l'utilisation du format lisible par machine dans l'élément d'heure ou comme valeur pour l'attribut datetime&nbsp;: "YYYY-MM-DD&nbsp;HH:MMZ".</p>
+
+<p>La propriété "datemodified" doit être présente dans la page web.</p>
+
+<h3>Affichage et style</h3>
+<p>La balise <code>&lt;details&gt;</code> de la composante Ajout au calendrier utilise la classe utilitaire <code>.max-content</code>, qui limite la largeur de l'élément à la largeur de son plus grand contenu à l'intérieur.</p>
+
+<h2>Code source</h2>
+<p><a href="https://github.com/wet-boew/wet-boew/tree/master/src/plugins/add-cal">Code source d'Ajout au calendrier sur GitHub</a></p>
