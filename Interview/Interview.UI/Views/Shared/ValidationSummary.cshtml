@@ -9,10 +9,6 @@
         .Where(x => x.Error.Value.Errors.Count != 0)
         .OrderBy(x => x.Order).ToList();
 
-    // Remove items from errors that are not in fieldOrder
-    //var exclude = errors.Where(x => !fieldOrder.Any(y => y.ToLower() == x.Error.Key.ToLower()));
-    //errors.RemoveAll(x => exclude.Any());
-
 }
 
 @if (errors.Count > 0)

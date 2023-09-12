@@ -3,8 +3,10 @@ using Interview.Entities;
 using Interview.UI.Data;
 using Interview.UI.Filters;
 using Interview.UI.Models;
+using Interview.UI.Models.CustomValidation;
 using Interview.UI.Services.Automapper;
 using Interview.UI.Services.DAL;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,6 +75,8 @@ namespace Interview.UI
             {
                 options.ResourcesPath = "Resources";
             });
+
+            services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
 
         }
 

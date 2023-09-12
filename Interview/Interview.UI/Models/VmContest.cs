@@ -1,4 +1,5 @@
 ﻿using Interview.Entities;
+using Interview.UI.Models.CustomValidation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Interview.UI.Models
@@ -27,6 +28,7 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "EndDate")]
+        [CompareDateTimeOffsets(">", "StartDate", null, ErrorMessage = "StartDateAfterEndDate")]
         public DateTimeOffset? EndDate { get; set; }
 
         [Required]
@@ -35,6 +37,7 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "MaxTime")]
+        [CompareTimeSpans(">", "MinTime", null, ErrorMessage = "MinTimeAfterMaxTime")]
         public TimeSpan? MaxTime { get; set; }
 
         [Required]
