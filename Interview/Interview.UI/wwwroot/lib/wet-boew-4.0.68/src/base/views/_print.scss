@@ -1,0 +1,19 @@
+/*
+  WET-BOEW
+  @title: Print view
+ */
+.pg-brk-aft {
+	page-break-after: always;
+}
+
+a {
+	&[href] {
+		&:after {
+			content: none;
+		}
+	}
+}
+
+#wb-tphp {
+	display: none;
+}
