@@ -10,10 +10,12 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "NoProcessus")]
+        [MaxLength(128, ErrorMessage = "NoProcessusMaxLength")]
         public string? NoProcessus { get; set; }
 
         [Required]
         [Display(Name = "GroupNiv")]
+        [MaxLength(128, ErrorMessage = "GroupNivMaxLength")]
         public string? GroupNiv { get; set; }
 
         [Display(Name = "InitUserId")]
@@ -60,9 +62,11 @@ namespace Interview.UI.Models
         public bool IsDeleted { get; set; }
 
         [Display(Name = "MembersIntroEN")]
+        [MaxLength(4000, ErrorMessage = "MembersIntroEnMaxLength")]
         public string? MembersIntroEN { get; set; }
 
         [Display(Name = "MembersIntroFR")]
+        [MaxLength(4000, ErrorMessage = "MembersIntroFrMaxLength")]
         public string? MembersIntroFR { get; set; }
 
         [Display(Name = "CandidatesIntroEN")]
