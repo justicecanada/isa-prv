@@ -20,7 +20,7 @@
     <table id="contests" class="table table-striped" data-toggle="table" data-pagination="true">
         <thead>
             <tr>
-                <th>@localizer["GroupNiv"]</th>
+                <th>@localizer["NoProcessus"]</th>
                 <th>@localizer["StartDate"]</th>
                 <th>@localizer["EndDate"]</th>
                 <th></th>
@@ -30,7 +30,7 @@
             @foreach (VmContest vmContest in vmContests)
             {
                 <tr>
-                    <td>@vmContest.GroupNiv</td>
+                    <td>@vmContest.NoProcessus</td>
                     <td>@vmContest.StartDate.Value.ToString(Constants.DateTimeFormat)</td>
                     <td>@vmContest.EndDate.Value.ToString(Constants.DateTimeFormat)</td>
                     <td>
