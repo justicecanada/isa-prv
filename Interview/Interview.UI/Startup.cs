@@ -43,11 +43,12 @@ namespace Interview.UI
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
+                options.Filters.Add(typeof(AssemblyVersionFilter));
             });
 
         }
 
-        public void ConfigureLocalizationServices(IServiceCollection services, IMvcBuilder builder)
+        private void ConfigureLocalizationServices(IServiceCollection services, IMvcBuilder builder)
         {
 
             services.Configure<RequestLocalizationOptions>(options =>
