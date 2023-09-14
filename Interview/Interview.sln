@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interview.Entities", "Inter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interview.UI", "Interview.UI\Interview.UI.csproj", "{EC25CA9D-3C66-4F5C-88AE-8755218E97DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interview.UI.Tests", "Interview.UI.Tests\Interview.UI.Tests.csproj", "{F0591AE7-6E9B-437F-856B-8850D045F048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interview.UI.Tests", "Interview.UI.Tests\Interview.UI.Tests.csproj", "{F0591AE7-6E9B-437F-856B-8850D045F048}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0B5263D4-A10E-43EE-87EB-8315D0D66D51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F0591AE7-6E9B-437F-856B-8850D045F048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0591AE7-6E9B-437F-856B-8850D045F048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0591AE7-6E9B-437F-856B-8850D045F048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
