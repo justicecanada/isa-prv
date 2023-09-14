@@ -14,6 +14,7 @@ namespace Interview.Entities
         public string? RoleNameFR { get; set; }
         public string? RoleNameEN { get; set; }
         public bool? IsDeleted { get; set; }
+        public string? DemoProperty { get; set; }
 
     }
 
