@@ -20,6 +20,8 @@ namespace Interview.UI.Data
 
             _connectionString = config.GetConnectionString("SQLConnectionString");
 
+            Database.Migrate();
+
         }
 
         public SqlContext(DbContextOptions<SqlContext> options, string connectionString) : base(options)
