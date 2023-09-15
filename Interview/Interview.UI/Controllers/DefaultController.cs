@@ -33,7 +33,7 @@ namespace Interview.UI.Controllers
         {
 
             var contests = await _dal.GetAllContestsWithUserSettingsAndRoles();
-            var vmContests = _mapper.Map(contests, typeof(List<Contest>), typeof(List<VmContest>));
+            var vmContests = contests == null ? new List<VmContest>() : _mapper.Map(contests, typeof(List<Contest>), typeof(List<VmContest>));
 
             ViewBag.VmContests = vmContests;
 

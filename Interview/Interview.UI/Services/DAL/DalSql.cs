@@ -279,7 +279,7 @@ namespace Interview.UI.Services.DAL
                 //.ThenInclude(x => x.Role)
                 .ToListAsync();
 
-            return null;
+            return result;
 
         }
 
