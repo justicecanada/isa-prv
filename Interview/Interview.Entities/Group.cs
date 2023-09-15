@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 namespace Interview.Entities
 {
     
-    public class Schedule : EntityBase
+    public class Group : EntityBase
     {
 
         public Guid ContestId { get; set; }
-        public Guid ScheduleTypeId { get; set; }
-        public int? StartValue { get; set; }
+        public string? NameFr { get; set; }
+        public string? NameEn { get; set; }
         public bool? IsDeleted { get; set; }
+
+        public List<GroupOwner> GroupOwners { get; set; }   
 
     }
 

@@ -31,11 +31,13 @@
         public string? CandidatesIntroEN { get; set; }
         public string? CandidatesIntroFR { get; set; }
         public string? EmailServiceSentFrom { get; set; }
+        public Guid? DepartmentId { get; set; }
 
         public List<EmailTemplate> EmailTemplates { get; set; }
         public List<Interview> Interviews { get; set; }
         public List<UserSetting> UserSettings { get; set; }
         public List<Schedule> Schedules { get; set; }
+        public List<Group> Groups { get; set; }
 
     }
 

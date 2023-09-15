@@ -10,11 +10,12 @@ namespace Interview.Entities
     public class EmailType : EntityBase
     {
 
-        public Guid EmailTemplateId { get; set; }
         public string? NameFR { get; set; }
         public string? NameEN { get; set; }
         public string? DescFR { get; set; }
         public string? DescEN { get; set; }
+
+        public List<EmailTemplate> EmailTemplates { get; set; }
 
     }
 

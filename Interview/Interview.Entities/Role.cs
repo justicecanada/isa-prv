@@ -15,6 +15,8 @@ namespace Interview.Entities
         public string? RoleNameEN { get; set; }
         public bool? IsDeleted { get; set; }
 
+        public List<UserSetting> UserSettings { get; set; } 
+
     }
 
 }

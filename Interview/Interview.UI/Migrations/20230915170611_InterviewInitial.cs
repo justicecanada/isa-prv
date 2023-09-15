@@ -34,11 +34,43 @@ namespace Interview.UI.Migrations
                     MembersIntroFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CandidatesIntroEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CandidatesIntroFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailServiceSentFrom = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    EmailServiceSentFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmailTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DescFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DescEN = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Equities",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ViewFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ViewEN = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Equities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,6 +89,22 @@ namespace Interview.UI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ScheduleTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduleTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserLanguages",
                 columns: table => new
                 {
@@ -71,20 +119,20 @@ namespace Interview.UI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmailTemplates",
+                name: "Groups",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmailSubject = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailBody = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailCC = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NameFr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmailTemplates", x => x.Id);
+                    table.PrimaryKey("PK_Groups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmailTemplates_Contests_ContestId",
+                        name: "FK_Groups_Contests_ContestId",
                         column: x => x.ContestId,
                         principalTable: "Contests",
                         principalColumn: "Id",
@@ -117,11 +165,40 @@ namespace Interview.UI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmailTemplates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmailTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmailSubject = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailBody = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailCC = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailTemplates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmailTemplates_Contests_ContestId",
+                        column: x => x.ContestId,
+                        principalTable: "Contests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmailTemplates_EmailTypes_EmailTypeId",
+                        column: x => x.EmailTypeId,
+                        principalTable: "EmailTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Schedules",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StartValue = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
@@ -134,6 +211,12 @@ namespace Interview.UI.Migrations
                         principalTable: "Contests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Schedules_ScheduleTypes_ScheduleTypeId",
+                        column: x => x.ScheduleTypeId,
+                        principalTable: "ScheduleTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,13 +225,14 @@ namespace Interview.UI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserLanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EquityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserFirstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserLastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsExternal = table.Column<bool>(type: "bit", nullable: true),
-                    DateInserted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    UserLanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DateInserted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -157,6 +241,12 @@ namespace Interview.UI.Migrations
                         name: "FK_UserSettings_Contests_ContestId",
                         column: x => x.ContestId,
                         principalTable: "Contests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserSettings_Equities_EquityId",
+                        column: x => x.EquityId,
+                        principalTable: "Equities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -174,23 +264,21 @@ namespace Interview.UI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmailTypes",
+                name: "GroupsOwners",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmailTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DescFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DescEN = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    HasAccessEE = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmailTypes", x => x.Id);
+                    table.PrimaryKey("PK_GroupsOwners", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmailTypes_EmailTemplates_EmailTemplateId",
-                        column: x => x.EmailTemplateId,
-                        principalTable: "EmailTemplates",
+                        name: "FK_GroupsOwners_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -215,65 +303,25 @@ namespace Interview.UI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ScheduleTypes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ScheduleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ScheduleTypes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ScheduleTypes_Schedules_ScheduleId",
-                        column: x => x.ScheduleId,
-                        principalTable: "Schedules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Equities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ViewFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ViewEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserSettingId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Equities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Equities_UserSettings_UserSettingId",
-                        column: x => x.UserSettingId,
-                        principalTable: "UserSettings",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_ContestId",
                 table: "EmailTemplates",
                 column: "ContestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailTypes_EmailTemplateId",
-                table: "EmailTypes",
-                column: "EmailTemplateId",
-                unique: true);
+                name: "IX_EmailTemplates_EmailTypeId",
+                table: "EmailTemplates",
+                column: "EmailTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equities_UserSettingId",
-                table: "Equities",
-                column: "UserSettingId");
+                name: "IX_Groups_ContestId",
+                table: "Groups",
+                column: "ContestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupsOwners_GroupId",
+                table: "GroupsOwners",
+                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Interviews_ContestId",
@@ -291,15 +339,19 @@ namespace Interview.UI.Migrations
                 column: "ContestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduleTypes_ScheduleId",
-                table: "ScheduleTypes",
-                column: "ScheduleId",
-                unique: true);
+                name: "IX_Schedules_ScheduleTypeId",
+                table: "Schedules",
+                column: "ScheduleTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSettings_ContestId",
                 table: "UserSettings",
                 column: "ContestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSettings_EquityId",
+                table: "UserSettings",
+                column: "EquityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSettings_RoleId",
@@ -316,28 +368,34 @@ namespace Interview.UI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmailTypes");
+                name: "EmailTemplates");
 
             migrationBuilder.DropTable(
-                name: "Equities");
+                name: "GroupsOwners");
 
             migrationBuilder.DropTable(
                 name: "InterviewUsers");
 
             migrationBuilder.DropTable(
-                name: "ScheduleTypes");
-
-            migrationBuilder.DropTable(
-                name: "EmailTemplates");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "UserSettings");
 
             migrationBuilder.DropTable(
+                name: "EmailTypes");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
+
+            migrationBuilder.DropTable(
                 name: "Interviews");
 
             migrationBuilder.DropTable(
-                name: "Schedules");
+                name: "ScheduleTypes");
+
+            migrationBuilder.DropTable(
+                name: "Equities");
 
             migrationBuilder.DropTable(
                 name: "Roles");

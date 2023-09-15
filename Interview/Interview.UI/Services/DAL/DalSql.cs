@@ -51,28 +51,64 @@ namespace Interview.UI.Services.DAL
 
             EntityBase? result = null;
 
-            switch(typeof(t).Name)
+            switch (typeof(t).Name)
             {
-                case nameof(EmailTemplate):
+
+                case nameof(Contest):
 
                     if (getChildObjects)
-                        result = await _context.EmailTemplates.Where(x => x.Id == id)
-                            .Include(x => x.EmailType)
+                        result = await _context.Contests.Where(x => x.Id == id)
+                            .Include(x => x.EmailTemplates)
+                            .Include(x => x.Interviews)
+                            .ThenInclude(x => x.InterviewUsers)
+                            .Include(x => x.UserSettings)
+                            .Include(x => x.Schedules)
+                            .Include(x => x.Groups)
+                            .ThenInclude(x => x.GroupOwners)
                             .FirstOrDefaultAsync();
                     else
-                        result = await _context.EmailTemplates.FindAsync(id);
+                        result = await _context.Contests.FindAsync(id);
+                    break;
+
+                case nameof(EmailTemplate):
+
+                    // No child objects
+                    result = await _context.EmailTemplates.FindAsync(id);
                     break;
 
                 case nameof(EmailType):
 
-                    // No child objects
-                    result = await _context.EmailTypes.FindAsync(id);
+                    if (getChildObjects)
+                        result = await _context.EmailTypes.Where(x => x.Id == id)
+                            .Include(x => x.EmailTemplates)
+                            .FirstOrDefaultAsync();
+                    else
+                        result = await _context.EmailTypes.FindAsync(id);
                     break;
 
                 case nameof(Equity):
 
-                    // No child objects
-                    result = await _context.Equities.FindAsync(id);
+                    if (getChildObjects)
+                        result = await _context.Equities.Where(x => x.Id == id)
+                            .Include(x => x.UserSettings)
+                            .FirstOrDefaultAsync();
+                    else
+                        result = await _context.Equities.FindAsync(id);
+                    break;
+
+                case nameof(Group):
+
+                    if (getChildObjects)
+                        result = await _context.Groups.Where(x => x.Id == id)
+                            .Include(x => x.GroupOwners)
+                            .FirstOrDefaultAsync();
+                    else
+                        result = await _context.Groups.FindAsync(id);
+                    break;
+
+                case nameof(GroupOwner):
+
+                    result = await _context.GroupsOwners.FindAsync(id);
                     break;
 
                 case nameof(Interview):
@@ -91,66 +127,48 @@ namespace Interview.UI.Services.DAL
                     result = await _context.InterviewUsers.FindAsync(id);
                     break;
 
-                case nameof(Contest):
-
-                    if (getChildObjects)
-                        result = await _context.Contests.Where(x => x.Id == id)
-                            .Include(x => x.EmailTemplates)
-                            .ThenInclude(x => x.EmailType)
-                            .Include(x => x.Interviews)
-                            .ThenInclude(x => x.InterviewUsers)
-                            .Include(x => x.UserSettings)
-                            .ThenInclude(x => x.Equities)
-                            .Include(x => x.UserSettings)
-                            .ThenInclude(x => x.UserLanguage)
-                            .Include(x => x.UserSettings)
-                            .ThenInclude(x => x.Role)
-                            .Include(x => x.Schedules)
-                            .ThenInclude(x => x.ScheduleType)
-                            .FirstOrDefaultAsync();
-                    else
-                        result = await _context.Contests.FindAsync(id);
-                    break;
-
                 case nameof(Role):
 
-                    // No child objects
-                    result = await _context.Roles.FindAsync(id);
+                    if (getChildObjects)
+                        result = await _context.Roles.Where(x => x.Id == id)
+                            .Include(x => x.UserSettings)
+                            .FirstOrDefaultAsync();
+                    else
+                        result = await _context.Roles.FindAsync(id);
                     break;
 
                 case nameof(Schedule):
 
-                    if (getChildObjects)
-                        result = await _context.Schedules.Where(x => x.Id == id)
-                            .Include(x => x.ScheduleType)
-                            .FirstOrDefaultAsync();
-                    else
-                        result = await _context.Schedules.FindAsync(id);
+                    // No child objects
+                    result = await _context.Schedules.FindAsync(id);
                     break;
 
                 case nameof(ScheduleType):
 
-                    // No child objects
-                    result = await _context.ScheduleTypes.FindAsync(id);
+                    if (getChildObjects)
+                        result = await _context.ScheduleTypes.Where(x => x.Id == id)
+                            .Include(x => x.Schedules)
+                            .FirstOrDefaultAsync();
+                    else
+                        result = await _context.ScheduleTypes.FindAsync(id);
                     break;
 
                 case nameof(UserLanguage):
 
-                    // No child objects
-                    result = await _context.UserLanguages.FindAsync(id);
+                    if (getChildObjects)
+                        result = await _context.UserLanguages.Where(x => x.Id == id)
+                            .Include(x => x.UserSettings)
+                            .FirstOrDefaultAsync();
+                    else
+                        result = await _context.UserLanguages.FindAsync(id);
                     break;
 
                 case nameof(UserSetting):
 
-                    if (getChildObjects)
-                        result = await _context.UserSettings.Where(x => x.Id == id)
-                            .Include(x => x.Role)
-                            .Include(x => x.Equities)
-                            .Include(x => x.UserLanguage)
-                            .FirstOrDefaultAsync();
-                    else
-                        result = await _context.UserSettings.FindAsync(id);
+                    // No child objects
+                    result = await _context.UserSettings.FindAsync(id);
                     break;
+
             }
 
             return result;
@@ -175,6 +193,16 @@ namespace Interview.UI.Services.DAL
                 case nameof(Equity):
                     Equity? equity = await _context.Equities.FindAsync(id);
                     _context.Equities.Remove(equity);
+                    break;
+
+                case nameof(Group):
+                    Group? group = await _context.Groups.FindAsync(id);
+                    _context.Groups.Remove(group);
+                    break;
+
+                case nameof(GroupOwner):
+                    GroupOwner groupOwner = await _context.GroupsOwners.FindAsync(id);
+                    _context.GroupsOwners.Remove(groupOwner);
                     break;
 
                 case nameof(Interview.Entities.Interview):
@@ -248,10 +276,10 @@ namespace Interview.UI.Services.DAL
 
             var result = await _context.Contests.Where(x => !x.IsDeleted)
                 .Include(x => x.UserSettings)
-                .ThenInclude(x => x.Role)
+                //.ThenInclude(x => x.Role)
                 .ToListAsync();
 
-            return result;
+            return null;
 
         }
 
