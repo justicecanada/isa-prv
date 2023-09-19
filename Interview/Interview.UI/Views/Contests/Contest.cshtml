@@ -59,12 +59,21 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.TextBoxFor(x => x.StartDate, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.StartDate, new { date = Model.StartDate }) })
                 </div>
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.TextBoxFor(x => x.EndDate, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.EndDate, new { date = Model.EndDate }) })
                 </div>
             </div>
+
+            @*<div class="row">
+                <div class="col-md-6">
+                    @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", @type = "date", @value = Model.StartDate.ToString(Constants.DateFormat) }) })
+                </div>
+                <div class="col-md-6">
+                    @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", @type = "date" }) })
+                </div>
+            </div>*@
 
             <div class="row">
                 <div class="col-md-6">
