@@ -26,6 +26,7 @@
     @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-primary" })
     @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-primary" })
     @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
 
 </div>
 
@@ -37,9 +38,5 @@
         @Html.DropDownList("Contests", vmContestItems, new { @class = "form-control" })
     </div>
 </div>
-
-
-
-
 
 <script src="~/js/default/index.js" asp-append-version="true"></script>
