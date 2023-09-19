@@ -117,8 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddProcess" xml:space="preserve">
+    <value>Add a new Process (fr)</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel (fr)</value>
+  </data>
+  <data name="EditProcess" xml:space="preserve">
+    <value>Edit an Existing Process (fr)</value>
+  </data>
+  <data name="h3CandidatesIntro" xml:space="preserve">
+    <value>Candidates Introduction (fr)</value>
+  </data>
+  <data name="h3GeneralInformation" xml:space="preserve">
+    <value>General Information (fr)</value>
+  </data>
+  <data name="h3ManageTimeslot" xml:space="preserve">
+    <value>Planning a Time Slot (fr)</value>
+  </data>
+  <data name="h3MembersIntro" xml:space="preserve">
+    <value>Board Members Introduction (fr)</value>
+  </data>
+  <data name="ManageEmails" xml:space="preserve">
+    <value>Manage Sending Emails (fr)</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next (fr)</value>

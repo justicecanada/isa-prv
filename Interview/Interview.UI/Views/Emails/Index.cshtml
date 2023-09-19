@@ -5,6 +5,8 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
+    string contestId = ViewData["contestId"].ToString();
+
 }
 
 <h1>@localizer["Title"]</h1>
@@ -17,7 +19,7 @@
  
         <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
                formmethod="post" />
-        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", new { contestId = contestId }, new { @class = "btn btn-primary" })
 
     </div>
 

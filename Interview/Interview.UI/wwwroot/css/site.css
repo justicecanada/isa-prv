@@ -21,7 +21,26 @@ body {
   margin-bottom: 60px;
 }
 
-label.required::after {
-    content: " *";
+label.required-en::before {
+    content: "* ";
     color: #dc3545;
+    font-weight: 500;
+}
+
+label.required-en::after {
+    content: " (Required)";
+    color: #dc3545;
+    font-weight: 500;
+}
+
+label.required-fr::before {
+    content: "* ";
+    color: #dc3545;
+    font-weight: 500;
+}
+
+label.required-fr::after {
+    content: " (Required fr)";
+    color: #dc3545;
+    font-weight: 500;
 }

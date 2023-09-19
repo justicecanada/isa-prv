@@ -16,8 +16,8 @@
         public string? GroupNiv { get; set; }
         public Guid? InitUserId { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public DateTimeOffset? StartDate { get; set; }
-        public DateTimeOffset? EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public TimeSpan? MinTime { get; set; }
         public TimeSpan? MaxTime { get; set; }
         public TimeSpan? InterviewDuration { get; set; }

@@ -1,4 +1,37 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿
+$(document).ready(function () {
+    datePickers.Init();
+});
 
-// Write your JavaScript code.
+var datePickers = {
+
+    MinVal: "0001-01-01",
+    Format: "yy-mm-dd",
+
+    Init: function () {
+
+        var date = new Date();
+
+        $(".date-picker.date").each(function () {
+
+            $(this).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: datePickers.Format,
+                language: "en",
+                autoclose: true,
+                //date: date
+                //startView: "month"
+                //defaultViewDate: date
+                //todayHighlight: true,
+                //assumeNearbyYear: true
+            });
+
+            //if ($(this).val() == datePickers.MinVal)
+            //    $(this).val("");
+
+        });
+
+    },
+
+}

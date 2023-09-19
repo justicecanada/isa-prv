@@ -26,12 +26,12 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "StartDate")]
-        public DateTimeOffset? StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [Required]
         [Display(Name = "EndDate")]
         [CompareDateTimeOffsets(">", "StartDate", null, ErrorMessage = "StartDateAfterEndDate")]
-        public DateTimeOffset? EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
         [Display(Name = "MinTime")]

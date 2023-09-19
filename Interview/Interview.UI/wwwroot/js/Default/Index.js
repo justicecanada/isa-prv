@@ -5,7 +5,7 @@
         val = $(this).val();
 
         if (val != '');
-            window.location.href = "Contests/Contest?id=" + val;
+            window.location.href = "Contests/Contest?contestId=" + val;
 
     });
 

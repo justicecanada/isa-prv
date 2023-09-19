@@ -5,6 +5,7 @@
     ViewBag.Title = localizer["Title"].Value;
 
     List<VmContest> vmContests = ViewBag.VmContests;
+    string contestId = ViewData["contestId"].ToString();
 
 }
 
@@ -12,7 +13,7 @@
 
 <div class="row mb-3">
     <div class="col-md-12 pull-left">
-        @Html.ActionLink(localizer["AddContest"].Value, "Contest", "Contests", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(localizer["AddContest"].Value, "Contest", "Contests", new { contestId = contestId }, new { @class = "btn btn-primary" })
     </div>
 </div>
 
@@ -34,8 +35,8 @@
                     <td>@vmContest.StartDate.Value.ToString(Constants.DateTimeFormat)</td>
                     <td>@vmContest.EndDate.Value.ToString(Constants.DateTimeFormat)</td>
                     <td>
-                        @Html.ActionLink(localizer["Manage"].Value, "Contest", "Contests", new { id = vmContest.Id })
-                        @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { id = vmContest.Id })
+                        @Html.ActionLink(localizer["Manage"].Value, "Contest", "Contests", new { contestId = vmContest.Id })
+                        @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { contestId = vmContest.Id })
                     </td>
                 </tr>
             }

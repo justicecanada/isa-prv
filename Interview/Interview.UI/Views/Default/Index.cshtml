@@ -5,6 +5,8 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
+    string contestId = ViewData["contestId"].ToString();
+
     List<VmContest> vmContests = ViewBag.VmContests;
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
     vmContestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
@@ -23,10 +25,10 @@
 
 <div>
 
-    @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = contestId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", new { contestId = contestId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", new { contestId = contestId }, new { @class = "btn btn-primary" })
 
 </div>
 
