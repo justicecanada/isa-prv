@@ -14,6 +14,7 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System.Data.SqlTypes;
 using System.Globalization;
+using GoC.WebTemplate.Components.Core.Services;
 
 namespace Interview.UI
 {
@@ -46,6 +47,9 @@ namespace Interview.UI
                 options.Filters.Add(typeof(AssemblyVersionFilter));
             });
 
+            // WET
+            services.AddModelAccessor();
+            services.ConfigureGoCTemplateRequestLocalization(); // >= v2.3.0
         }
 
         private void ConfigureLocalizationServices(IServiceCollection services, IMvcBuilder builder)
@@ -96,6 +100,10 @@ namespace Interview.UI
                     name: "default",
                     pattern: "{controller=Default}/{action=Index}");
             });
+
+            // WET
+            app.UseRequestLocalization(); // >= v2.3.0
+            app.UseRequestLocalization(CultureConfiguration.GetLocalizationOptions()); // <= v2.3.0
 
         }
 
