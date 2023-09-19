@@ -33,14 +33,16 @@ namespace Interview.UI.Data
 
         public DbSet<Interview.Entities.Contest> Contests { get; set; }
         public DbSet<Interview.Entities.EmailTemplate> EmailTemplates { get; set; }
-        public DbSet<Interview.Entities.EmailType> EmailTypes { get; set; }
-        public DbSet<Interview.Entities.Equity> Equities { get; set; }
+        public DbSet<Interview.Entities.EmailType> EmailTypes { get; set; }                     // Shared system table
+        public DbSet<Interview.Entities.Equity> Equities { get; set; }                          // Shared system table
+        public DbSet<Interview.Entities.Group> Groups { get; set; }
+        public DbSet<Interview.Entities.GroupOwner> GroupsOwners { get; set; }
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }
         public DbSet<Interview.Entities.InterviewUser> InterviewUsers { get; set; }     
-        public DbSet<Interview.Entities.Role> Roles { get; set; }
+        public DbSet<Interview.Entities.Role> Roles { get; set; }                               // Shared system table
         public DbSet<Interview.Entities.Schedule> Schedules { get; set; }
-        public DbSet<Interview.Entities.ScheduleType> ScheduleTypes { get; set; }
-        public DbSet<Interview.Entities.UserLanguage> UserLanguages { get; set; }
+        public DbSet<Interview.Entities.ScheduleType> ScheduleTypes { get; set; }               // Shared system table
+        public DbSet<Interview.Entities.UserLanguage> UserLanguages { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserSetting> UserSettings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

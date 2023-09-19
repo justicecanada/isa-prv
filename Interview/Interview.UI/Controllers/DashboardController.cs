@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Interview.Entities;
-using Interview.UI.Models;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Interview.UI.Controllers
 {
-    public class DefaultController : Controller
+    
+    public class DashboardController : Controller
     {
 
         #region Declarations
@@ -18,7 +17,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DefaultController(DalSql dal, IMapper mapper)
+        public DashboardController(DalSql dal, IMapper mapper)
         {
             _dal = dal;
             _mapper = mapper;
@@ -29,13 +28,8 @@ namespace Interview.UI.Controllers
         #region Public Index Methods
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-
-            var contests = await _dal.GetAllContestsWithUserSettingsAndRoles();
-            var vmContests = contests == null ? new List<VmContest>() : _mapper.Map(contests, typeof(List<Contest>), typeof(List<VmContest>));
-
-            ViewBag.VmContests = vmContests;
 
             return View();
 
@@ -44,4 +38,5 @@ namespace Interview.UI.Controllers
         #endregion
 
     }
+
 }

@@ -16,6 +16,9 @@ namespace Interview.Entities
         public string? NameEN { get; set; }
         public bool? IsDeleted { get; set; }
 
+        public List<Schedule> Schedules { get; set; }
+
+
     }
 
 }

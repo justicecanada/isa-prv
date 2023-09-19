@@ -117,19 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ManageContest" xml:space="preserve">
-    <value>Contests (fr)</value>
-  </data>
-  <data name="ManageEmails" xml:space="preserve">
-    <value>Emails (fr)</value>
-  </data>
-  <data name="ManageRoles" xml:space="preserve">
-    <value>Roles (fr)</value>
-  </data>
-  <data name="Stats" xml:space="preserve">
-    <value>Stats (fr)</value>
-  </data>
   <data name="Title" xml:space="preserve">
-    <value>Default (fr)</value>
+    <value>Dashboard (fr)</value>
   </data>
 </root>

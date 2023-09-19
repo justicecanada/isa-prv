@@ -14,6 +14,8 @@ namespace Interview.Entities
         public string? NameFR { get; set; }
         public string? NameEN { get; set;  }
 
+        public List<UserSetting> UserSettings { get; set; }
+
     }
 
 }
