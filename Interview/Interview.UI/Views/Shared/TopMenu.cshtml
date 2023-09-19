@@ -1,0 +1,38 @@
+﻿
+@inject IViewLocalizer localizer
+
+<nav role="navigation" id="wb-sm" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg" typeof="SiteNavigationElement">
+
+    <div class="container nvbar">
+        <h2>Topics menu</h2>
+        <div class="row">
+            <ul id="ctl00_TopMenu_WETULMenuHaut" class="list-inline menu" role="menubar">
+
+                <li class="">
+                    <a href="/Entrevue/default.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl00_aMenuTitle" class="item">
+                        @Html.ActionLink(localizer["Home"].Value, "Index", "Default")
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/Entrevue/contestlist.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl01_aMenuTitle" class="item">
+                        @Html.ActionLink(localizer["ProcessList"].Value, "Index", "Contests")
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/Entrevue/groups.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl02_aMenuTitle" class="item">
+                        @Html.ActionLink(localizer["GroupList"].Value, "Index", "Groups")
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/Entrevue/dashboard.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl03_aMenuTitle" class="item">
+                        @Html.ActionLink(localizer["Dashboard"].Value, "Index", "Dashboard")
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
