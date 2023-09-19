@@ -44,6 +44,7 @@ namespace Interview.UI
             {
                 options.Filters.Add(typeof(ExceptionFilter));
                 options.Filters.Add(typeof(AssemblyVersionFilter));
+                options.Filters.Add(typeof(ContestIdFilter));
             });
 
         }

@@ -12,6 +12,8 @@
         "ContactNumber", "InterviewDuration", "MembersIntroEN", "MembersIntroFR", "CandidatesIntroEN", "CandidatesIntroFR"
     }).Select(x => x.ToLower()).ToList();
 
+    string contestId = ViewData["contestId"].ToString();
+
 }
 
 <h1>@localizer["Title"]</h1>
@@ -102,7 +104,7 @@
                formmethod="post" /> 
         <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-secondary" formaction=@Url.Action("ContestSave", "Contests")
                formmethod="post" />
-        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", null, new { @class = "btn btn-secondary" })
+        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-secondary" })
 
     </div>
 

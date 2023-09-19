@@ -44,10 +44,10 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteContest(Guid id)
+        public async Task<IActionResult> DeleteContest(Guid contestId)
         {
 
-            await _dal.DeleteEntity<Contest>(id);
+            await _dal.DeleteEntity<Contest>(contestId);
 
             return RedirectToAction("Index");
 
@@ -58,18 +58,18 @@ namespace Interview.UI.Controllers
         #region Manage Methods
 
         [HttpGet]   
-        public async Task<IActionResult> Contest(Guid? id)
+        public async Task<IActionResult> Contest(Guid? contestId)
         {
 
             VmContest vmContest = null;
 
-            if (id == null)
+            if (contestId == null)
             {
                 vmContest = new VmContest();
             }
             else
             {
-                var contest = await _dal.GetEntity<Contest>((Guid)id, true) as Contest;
+                var contest = await _dal.GetEntity<Contest>((Guid)contestId, true) as Contest;
                 vmContest = _mapper.Map<VmContest>(contest);
             }
 

@@ -1,6 +1,12 @@
 ﻿
 @inject IViewLocalizer localizer
 
+@{
+
+    string contestId = ViewData["contestId"].ToString();
+
+}
+
 <nav role="navigation" id="wb-sm" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg" typeof="SiteNavigationElement">
 
     <div class="container nvbar">
@@ -10,25 +16,25 @@
 
                 <li class="">
                     <a href="/Entrevue/default.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl00_aMenuTitle" class="item">
-                        @Html.ActionLink(localizer["Home"].Value, "Index", "Default")
+                        @Html.ActionLink(localizer["Home"].Value, "Index", "Default", new { contestId = contestId })
                     </a>
                 </li>
 
                 <li class="">
                     <a href="/Entrevue/contestlist.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl01_aMenuTitle" class="item">
-                        @Html.ActionLink(localizer["ProcessList"].Value, "Index", "Contests")
+                        @Html.ActionLink(localizer["ProcessList"].Value, "Index", "Contests", new { contestId = contestId })
                     </a>
                 </li>
 
                 <li class="">
                     <a href="/Entrevue/groups.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl02_aMenuTitle" class="item">
-                        @Html.ActionLink(localizer["GroupList"].Value, "Index", "Groups")
+                        @Html.ActionLink(localizer["GroupList"].Value, "Index", "Groups", new { contestId = contestId })
                     </a>
                 </li>
 
                 <li class="">
                     <a href="/Entrevue/dashboard.aspx" id="ctl00_TopMenu_dtMenuHaut_ctl03_aMenuTitle" class="item">
-                        @Html.ActionLink(localizer["Dashboard"].Value, "Index", "Dashboard")
+                        @Html.ActionLink(localizer["Dashboard"].Value, "Index", "Dashboard", new { contestId = contestId })
                     </a>
                 </li>
 
