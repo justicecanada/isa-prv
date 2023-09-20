@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Interview.UI.Controllers
 {
-    public class DefaultController : Controller
+    public class DefaultController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
     {
 
         #region Declarations
@@ -18,7 +18,8 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DefaultController(DalSql dal, IMapper mapper)
+        public DefaultController(DalSql dal, IMapper mapper, GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
+            : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;

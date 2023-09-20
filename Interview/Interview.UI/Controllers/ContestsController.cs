@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Interview.UI.Controllers
 {
-    public class ContestsController : Controller
+    public class ContestsController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
     {
 
         #region Declarations
@@ -20,7 +20,8 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ContestsController(DalSql dal, IMapper mapper)
+        public ContestsController(DalSql dal, IMapper mapper, GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
+            : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
