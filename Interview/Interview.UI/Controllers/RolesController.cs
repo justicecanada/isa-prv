@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Interview.UI.Controllers
 {
     
-    public class RolesController : Controller
+    public class RolesController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
     {
 
         #region Declarations
@@ -19,7 +19,8 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public RolesController(DalSql dal, IMapper mapper)
+        public RolesController(DalSql dal, IMapper mapper, GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
+            : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
