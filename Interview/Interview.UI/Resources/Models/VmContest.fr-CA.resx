@@ -117,8 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CandidatesIntroEN" xml:space="preserve">
+    <value>Version anglaise</value>
+  </data>
+  <data name="CandidatesIntroFR" xml:space="preserve">
+    <value>Version française</value>
+  </data>
+  <data name="ContactName" xml:space="preserve">
+    <value>Nom du contact pour les entrevues</value>
+  </data>
+  <data name="ContactNumber" xml:space="preserve">
+    <value>Numéro de téléphone de contact</value>
+  </data>
+  <data name="DeadlineCandidate" xml:space="preserve">
+    <value>Date limite pour qu'un candidat applique pour une entrevue</value>
+  </data>
+  <data name="DeadlineInterviewer" xml:space="preserve">
+    <value>Date limite pour qu'un intervieweur applique sur une plage horaire</value>
+  </data>
+  <data name="EmailServiceSentFrom" xml:space="preserve">
+    <value>Courriel principal relié au processus</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Date de fin des entrevues</value>
+  </data>
+  <data name="GroupNiv" xml:space="preserve">
+    <value>Groupe et niveau</value>
+  </data>
+  <data name="InterviewDuration" xml:space="preserve">
+    <value>Durée de l'entrevue (minutes)</value>
+  </data>
+  <data name="MaxTime" xml:space="preserve">
+    <value>Heure de fin de journée (HH:MM:SS)</value>
+  </data>
+  <data name="MembersIntroEN" xml:space="preserve">
+    <value>Version anglaise</value>
+  </data>
+  <data name="MembersIntroFR" xml:space="preserve">
+    <value>Version française</value>
+  </data>
+  <data name="MinTime" xml:space="preserve">
+    <value>Heure de début de journée (HH:MM:SS)</value>
+  </data>
   <data name="MinTimeAfterMaxTime" xml:space="preserve">
     <value>Min Time cannot be after Max Time (fr)</value>
+  </data>
+  <data name="NoProcessus" xml:space="preserve">
+    <value>Numéro du processus de sélection</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Date de début des entrevues</value>
   </data>
   <data name="StartDateAfterEndDate" xml:space="preserve">
     <value>Start Date cannot be after End Date (fr)</value>
