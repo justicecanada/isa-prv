@@ -3,8 +3,11 @@ var slider = {
 
     Txt: $('#InterviewDuration')[0],
     Slider: null,
+    Schedules: null,
 
-    Init: function () {
+    Init: function (schedules) {
+
+        this.Schedules = schedules;
 
         this.Slider = $('#slider').slider({
             // set min and maximum values
@@ -31,22 +34,22 @@ var slider = {
                 tickShowLabelSide: false
             },
             // current data
-            //handles: [{
-            //    value: <%=Schedules.ElementAt(0).startValue %>,
-            //    type: "candidat"
-            //}, {
-            //    value: <%=Schedules.ElementAt(1).startValue %>,
-            //    type: "members"
-            //}, {
-            //    value: <%=Schedules.ElementAt(2).startValue %>,
-            //    type: "marking"
-            //}],
+            handles: [{
+                value: slider.Schedules[0].StartValue,
+                type: "candidat"
+            }, {
+                value: slider.Schedules[1].StartValue,
+                type: "members"
+            }, {
+                value: slider.Schedules[2].StartValue,
+                type: "marking"
+            }],
             // display type names
             showTypeNames: true,
             typeNames: {
-                //'candidat': '<%=GetLocalResourceObject("ArriveCandidat").ToString()%>',
-                //'members': '<%=GetLocalResourceObject("ArriveComite").ToString()%>',
-                //'marking': '<%=GetLocalResourceObject("EvaluationComite").ToString()%>'
+                'candidat': Resources.Contest.ArriveCandidat,
+                'members': Resources.Contest.ArriveComite,
+                'marking': Resources.Contest.EvaluationComite
             },
             // slide callback
             slide: function (e, ui) {
