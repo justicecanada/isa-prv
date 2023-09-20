@@ -73,6 +73,8 @@ namespace Interview.UI.Controllers
                 vmContest = _mapper.Map<VmContest>(contest);
             }
 
+            ViewBag.Schedules = GetSchedules();
+
             return View(vmContest);
 
         }
@@ -97,6 +99,8 @@ namespace Interview.UI.Controllers
             }
             else
             {
+                ViewBag.Schedules = GetSchedules();
+
                 return View("Contest", vmContest);
             }
 
@@ -122,8 +126,23 @@ namespace Interview.UI.Controllers
             }
             else
             {
+                ViewBag.Schedules = GetSchedules();
+
                 return View("Contest", vmContest);
             }
+
+        }
+
+        private List<VmSchedule> GetSchedules()
+        {
+
+            var result = new List<VmSchedule>();
+
+            result.Add(new VmSchedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = 0 });
+            result.Add(new VmSchedule() { ScheduleType = ScheduleTypes.Members, StartValue = 45 });
+            result.Add(new VmSchedule() { ScheduleType = ScheduleTypes.Marking, StartValue = 90 });
+
+            return result;
 
         }
 

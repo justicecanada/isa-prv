@@ -20,6 +20,12 @@ namespace Interview.UI.Services.Automapper
             CreateMap<Role, VmRole>();
             CreateMap<VmRole, Role>();
 
+            CreateMap<Schedule, VmSchedule>();
+            CreateMap<VmSchedule, Schedule>();
+
+            CreateMap<ScheduleType, VmScheduleType>();
+            CreateMap<VmScheduleType, ScheduleType>();
+
 
         }
 
