@@ -40,13 +40,5 @@
       "applicationUrl": "http://localhost:51087",
       "sslPort": 44335
     }
-  },
-  "Interview.UI": {
-    "commandName": "Project",
-    "launchBrowser": true,
-    "applicationUrl": "http://localhost:51087",
-    "environmentVariables": {
-      "ASPNETCORE_ENVIRONMENT": "Development"
-    }
   }
 }
