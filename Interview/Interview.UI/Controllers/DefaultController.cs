@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Services.DAL;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Interview.UI.Controllers
 {
-    public class DefaultController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
+    public class DefaultController : BaseController
     {
 
         #region Declarations
@@ -18,8 +19,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DefaultController(DalSql dal, IMapper mapper, GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
-            : base(modelAccessor)
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;

@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
+using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Interview.UI.Controllers
 {
     
-    public class ErrorController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
+    public class ErrorController : BaseController
     {
-        public ErrorController(GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
-            : base(modelAccessor)
+        public ErrorController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
         {
 
         }

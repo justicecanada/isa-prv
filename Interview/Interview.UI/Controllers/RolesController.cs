@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Services.DAL;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Interview.UI.Controllers
 {
     
-    public class RolesController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
+    public class RolesController : BaseController
     {
 
         #region Declarations
@@ -19,8 +20,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public RolesController(DalSql dal, IMapper mapper, GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
-            : base(modelAccessor)
+        public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Interview.UI.Controllers
 {
     
-    public class GroupsController : Controller
+    public class GroupsController : BaseController
     {
 
         #region Declarations
@@ -17,7 +18,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public GroupsController(DalSql dal, IMapper mapper)
+        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
