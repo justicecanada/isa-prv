@@ -11,7 +11,8 @@ namespace Interview.Entities
     {
 
         public Guid ContestId { get; set; }
-        public Guid ScheduleTypeId { get; set; }
+        //public Guid ScheduleTypeId { get; set; }
+        public ScheduleTypes ScheduleType { get; set; }
         public int? StartValue { get; set; }
         public bool? IsDeleted { get; set; }
 

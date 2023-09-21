@@ -1,6 +1,7 @@
 ﻿@model VmContest
 @using Interview.UI.Models
 @using Interview.UI.Helpers
+@using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
 @{
@@ -15,6 +16,9 @@
     string contestId = ViewData["contestId"].ToString();
     string h3 = Model.Id == null ? localizer["AddProcess"].Value : localizer["EditProcess"].Value;
 
+    List<VmSchedule> schedules = ViewBag.Schedules;
+    string schedulesJson = JsonConvert.SerializeObject(schedules);
+
 }
 
 @{
@@ -25,7 +29,12 @@
     <span class="text-primary">@h3</span>
 </h3>
 
-@Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = contestId }, new { @class = "btn btn-secondary" })
+@if (Model.Id != null)
+{
+    <div class="row">
+        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = Model.Id }, new { @class = "btn btn-secondary" })
+   </div>
+}
 
 @{ await Html.RenderPartialAsync("ValidationSummary"); }
 
@@ -35,7 +44,7 @@
 
     @Html.HiddenFor(x => x.Id)
 
-    <section class="panel panel-default mrgn-tp-md">
+    <section class="panel panel-default mt-3">
 
         <div class="panel-heading">
             <h3 class="panel-title">
@@ -45,9 +54,9 @@
 
         <div class="panel-body">
 
-            <div class="row hide">
+            <div class="row">
                 <div class="col-md-12">
-                    Placeholder for ddlDepartments...
+                    <div class="text-info">Placeholder for ddlDepartment...</div>
                 </div>
             </div>
 
@@ -69,15 +78,6 @@
                 </div>
             </div>
 
-            @*<div class="row">
-                <div class="col-md-6">
-                    @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", @type = "date", @value = Model.StartDate.ToString(Constants.DateFormat) }) })
-                </div>
-                <div class="col-md-6">
-                    @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", @type = "date" }) })
-                </div>
-            </div>*@
-
             <div class="row">
                 <div class="col-md-6">
                     @Html.EditorFor(x => x.MinTime, "Question", new { inputControl = Html.TextBoxFor(x => x.MinTime, new { @class = "form-control" }) })
@@ -89,10 +89,10 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.DeadlineInterviewer, "Question", new { inputControl = Html.TextBoxFor(x => x.DeadlineInterviewer, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.DeadlineInterviewer, "Question", new { inputControl = Html.JusDatePickerFor(x => x.DeadlineInterviewer, new { date = Model.DeadlineInterviewer }) })
                 </div>
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.DeadlineCandidate, "Question", new { inputControl = Html.TextBoxFor(x => x.DeadlineCandidate, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.DeadlineCandidate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.DeadlineCandidate, new { date = Model.DeadlineCandidate }) })
                 </div>
             </div>
 
@@ -120,22 +120,23 @@
                     @Html.EditorFor(x => x.InterviewDuration, "Question", new { inputControl = Html.TextBoxFor(x => x.InterviewDuration, new { @class = "form-control" }) })
                 </div>
             </div>
-            <div class="row mrgn-tp-lg">
+            <div class="row mt-3">
                 <div class="col-md-12">
-                    <p>Put slider in this section...</p>
+                    <div class="text-info">Placeholder for slider...</div>
+                    @*<div id="slider" class="slider default"></div>*@
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="panel panel-default mrgn-tp-md">
+    <div class="panel panel-default mt-3">
         <div class="panel-heading">
             <h3 class="panel-title">
                 @localizer["h3MembersIntro"]
             </h3>
         </div>
         <div class="panel-body">
-            <div class="row mrgn-tp-0">
+            <div class="row mt-0">
                 <div class="col-md-6">
                     @Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroEN, new { @class = "form-control" }) })
                 </div>
@@ -153,7 +154,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="row mrgn-tp-0">
+            <div class="row mt-0">
                 <div class="col-md-6">
                     @Html.EditorFor(x => x.CandidatesIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.CandidatesIntroEN, new { @class = "form-control" }) })
                 </div>
@@ -166,12 +167,29 @@
 
     <div class="mt-3">
 
-        <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
-               formmethod="post" /> 
-        <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-secondary" formaction=@Url.Action("ContestSave", "Contests")
+        
+        @if (Model.Id == null)
+        {
+            <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
                formmethod="post" />
+        }
+        else
+        {
+            <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ContestSave", "Contests")
+               formmethod="post" />
+        }
         @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-secondary" })
 
     </div>
 
 </form>
+
+<script type="text/javascript" defer>
+
+    $(document).ready(function () {
+        //slider.Init(@Html.Raw(schedulesJson));
+    });
+
+</script>
+
+@*<script src="~/js/contests/contest.js" asp-append-version="true"></script>*@

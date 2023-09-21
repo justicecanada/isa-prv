@@ -14,7 +14,9 @@ namespace Interview.UI.Models.CustomValidation
         public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
         {
 
-            if (attribute is CompareDateTimeOffsets)
+            if (attribute is CompareDateTimes)
+                return new CompareDateTimesAdapter(attribute as CompareDateTimes, stringLocalizer);
+            else if (attribute is CompareDateTimeOffsets)
                 return new CompareDateTimeOffsetsAdapter(attribute as CompareDateTimeOffsets, stringLocalizer);
             else if (attribute is CompareTimeSpans)
                 return new CompareTimeSpansAdapter(attribute as CompareTimeSpans, stringLocalizer);
@@ -24,6 +26,26 @@ namespace Interview.UI.Models.CustomValidation
         }
 
     }
+
+    public class CompareDateTimesAdapter : AttributeAdapterBase<CompareDateTimes> {
+
+        public CompareDateTimesAdapter(CompareDateTimes attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer)
+        {
+
+        }
+
+        public override void AddValidation(ClientModelValidationContext context)
+        {
+
+        }
+
+        public override string GetErrorMessage(ModelValidationContextBase validationContext)
+        {
+            return GetErrorMessage(validationContext.ModelMetadata, validationContext.ModelMetadata.GetDisplayName());
+        }
+
+    }
+
 
     public class CompareDateTimeOffsetsAdapter : AttributeAdapterBase<CompareDateTimeOffsets>
     {

@@ -121,31 +121,31 @@
     <value>Add a new Process (fr)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel (fr)</value>
+    <value>Annuller</value>
   </data>
   <data name="EditProcess" xml:space="preserve">
-    <value>Edit an Existing Process (fr)</value>
+    <value>Modifier un concours existant</value>
   </data>
   <data name="h3CandidatesIntro" xml:space="preserve">
-    <value>Candidates Introduction (fr)</value>
+    <value>Introduction pour les candidats</value>
   </data>
   <data name="h3GeneralInformation" xml:space="preserve">
-    <value>General Information (fr)</value>
+    <value>Information générale</value>
   </data>
   <data name="h3ManageTimeslot" xml:space="preserve">
-    <value>Planning a Time Slot (fr)</value>
+    <value>Planification d'une plage horaire</value>
   </data>
   <data name="h3MembersIntro" xml:space="preserve">
-    <value>Board Members Introduction (fr)</value>
+    <value>Introduction pour les membres du comités</value>
   </data>
   <data name="ManageEmails" xml:space="preserve">
-    <value>Manage Sending Emails (fr)</value>
+    <value>Gérer l'envoie de emails</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next (fr)</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save (fr)</value>
+    <value>Sauvegarder</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Manage Contest (fr)</value>
