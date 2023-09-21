@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Interview.Entities;
 using Interview.UI.Models;
+using System.Xml;
 
 namespace Interview.UI.Services.Automapper
 {
@@ -11,8 +12,10 @@ namespace Interview.UI.Services.Automapper
         public MapperConfig()
         {
 
-            CreateMap<Contest, VmContest>();
-            CreateMap<VmContest, Contest>();
+            CreateMap<Contest, VmContest>()
+                .ForMember(d => d.InterviewDuration, opt => opt.ConvertUsing(new TimeSpanToIntConverter()));
+            CreateMap<VmContest, Contest>()
+                .ForMember(d => d.InterviewDuration, opt => opt.ConvertUsing(new IntToTimeSpanConverter()));
 
             CreateMap<UserSetting, VmUserSetting>();
             CreateMap<VmUserSetting, UserSetting>();

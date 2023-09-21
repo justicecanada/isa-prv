@@ -41,10 +41,13 @@ namespace Interview.UI.Models
         [Display(Name = "MaxTime")]
         [CompareTimeSpans(">=", "MinTime", null, ErrorMessage = "MinTimeAfterMaxTime")]
         public TimeSpan? MaxTime { get; set; }
+      
+        //public TimeSpan? InterviewDuration { get; set; }
 
         [Required]
         [Display(Name = "InterviewDuration")]
-        public TimeSpan? InterviewDuration { get; set; }
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
+        public string? InterviewDuration { get; set; }
 
         [Display(Name = "DeadlineInterviewer")]
         [CompareDateTimes("<", "EndDate", null, ErrorMessage = "DeadlineInterviewerAfterEndDate")]
