@@ -84,10 +84,10 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.DeadlineInterviewer, "Question", new { inputControl = Html.TextBoxFor(x => x.DeadlineInterviewer, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.DeadlineInterviewer, "Question", new { inputControl = Html.JusDatePickerFor(x => x.DeadlineInterviewer, new { date = Model.DeadlineInterviewer }) })
                 </div>
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.DeadlineCandidate, "Question", new { inputControl = Html.TextBoxFor(x => x.DeadlineCandidate, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.DeadlineCandidate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.DeadlineCandidate, new { date = Model.DeadlineCandidate }) })
                 </div>
             </div>
 
