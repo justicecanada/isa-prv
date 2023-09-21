@@ -5,10 +5,11 @@ using Interview.UI.Models;
 using Interview.UI.Services.Automapper;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
+using GoC.WebTemplate.Components.Core.Services;
 
 namespace Interview.UI.Controllers
 {
-    public class ContestsController : GoC.WebTemplate.CoreMVC.Controllers.WebTemplateBaseController
+    public class ContestsController : BaseController
     {
 
         #region Declarations
@@ -20,8 +21,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ContestsController(DalSql dal, IMapper mapper, GoC.WebTemplate.Components.Core.Services.IModelAccessor modelAccessor)
-            : base(modelAccessor)
+        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
