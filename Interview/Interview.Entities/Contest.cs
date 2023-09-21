@@ -21,8 +21,8 @@
         public TimeSpan? MinTime { get; set; }
         public TimeSpan? MaxTime { get; set; }
         public TimeSpan? InterviewDuration { get; set; }
-        public DateTimeOffset? DeadlineInterviewer { get; set; }
-        public DateTimeOffset? DeadlineCandidate { get; set; }
+        public DateTime? DeadlineInterviewer { get; set; }
+        public DateTime? DeadlineCandidate { get; set; }
         public string? ContactName { get; set; }
         public string? ContactNumber { get; set; }
         public bool IsDeleted { get; set; }

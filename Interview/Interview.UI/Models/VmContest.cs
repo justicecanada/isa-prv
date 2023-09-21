@@ -39,7 +39,7 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "MaxTime")]
-        [CompareTimeSpans(">", "MinTime", null, ErrorMessage = "MinTimeAfterMaxTime")]
+        [CompareTimeSpans(">=", "MinTime", null, ErrorMessage = "MinTimeAfterMaxTime")]
         public TimeSpan? MaxTime { get; set; }
 
         [Required]
@@ -47,10 +47,12 @@ namespace Interview.UI.Models
         public TimeSpan? InterviewDuration { get; set; }
 
         [Display(Name = "DeadlineInterviewer")]
-        public DateTimeOffset? DeadlineInterviewer { get; set; }
+        [CompareDateTimes("<", "EndDate", null, ErrorMessage = "DeadlineInterviewerAfterEndDate")]
+        public DateTime? DeadlineInterviewer { get; set; }
 
         [Display(Name = "DeadlineCandidate")]
-        public DateTimeOffset? DeadlineCandidate { get; set; }
+        [CompareDateTimes("<", "EndDate", null, ErrorMessage = "DeadlineCandidateAfterEndDate")]
+        public DateTime? DeadlineCandidate { get; set; }
 
         [Display(Name = "ContactName")]
         public string? ContactName { get; set; }
