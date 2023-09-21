@@ -29,7 +29,12 @@
     <span class="text-primary">@h3</span>
 </h3>
 
-@Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = contestId }, new { @class = "btn btn-secondary" })
+@if (Model.Id != null)
+{
+    <div class="row">
+        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = Model.Id }, new { @class = "btn btn-secondary" })
+   </div>
+}
 
 @{ await Html.RenderPartialAsync("ValidationSummary"); }
 
@@ -162,10 +167,17 @@
 
     <div class="mt-3">
 
-        <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
-               formmethod="post" /> 
-        <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-secondary" formaction=@Url.Action("ContestSave", "Contests")
+        
+        @if (Model.Id == null)
+        {
+            <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
                formmethod="post" />
+        }
+        else
+        {
+            <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ContestSave", "Contests")
+               formmethod="post" />
+        }
         @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-secondary" })
 
     </div>
