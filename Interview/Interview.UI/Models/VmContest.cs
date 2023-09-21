@@ -30,7 +30,7 @@ namespace Interview.UI.Models
 
         [Required]
         [Display(Name = "EndDate")]
-        [CompareDateTimeOffsets(">", "StartDate", null, ErrorMessage = "StartDateAfterEndDate")]
+        [CompareDateTimes(">=", "StartDate", null, ErrorMessage = "StartDateAfterEndDate")]
         public DateTime? EndDate { get; set; }
 
         [Required]
