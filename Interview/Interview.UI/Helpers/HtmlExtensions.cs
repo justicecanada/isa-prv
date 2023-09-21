@@ -60,8 +60,11 @@ namespace Interview.UI.Helpers
 
             result.GenerateId(fieldName, "");
             result.Attributes.Add("name", fieldName);
-            result.Attributes.Add("placeholder", Constants.DateFormat.ToLower());
-            result.AddCssClass("date date-picker form-control");
+            //result.Attributes.Add("type", "text");
+            //result.Attributes.Add("placeholder", Constants.DateFormat.ToLower());
+            //result.AddCssClass("date date-picker form-control");
+            result.AddCssClass("form-control");
+            result.Attributes.Add("type", "date");
 
             if (obj != null)
             {

@@ -49,9 +49,9 @@
 
         <div class="panel-body">
 
-            <div class="row hide">
+            <div class="row">
                 <div class="col-md-12">
-                    Placeholder for ddlDepartments...
+                    <div class="text-info">Placeholder for ddlDepartment...</div>
                 </div>
             </div>
 
@@ -117,7 +117,8 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-12">
-                    <div id="slider" class="slider default"></div>
+                    <div class="text-info">Placeholder for slider...</div>
+                    @*<div id="slider" class="slider default"></div>*@
                 </div>
             </div>
         </div>
@@ -171,12 +172,12 @@
 
 </form>
 
-<script type="text/javascript">
+<script type="text/javascript" defer>
 
     $(document).ready(function () {
-        slider.Init(@Html.Raw(schedulesJson));
+        //slider.Init(@Html.Raw(schedulesJson));
     });
 
 </script>
 
-<script src="~/js/contests/contest.js" asp-append-version="true"></script>
+@*<script src="~/js/contests/contest.js" asp-append-version="true"></script>*@
