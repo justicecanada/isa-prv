@@ -44,7 +44,6 @@ namespace Interview.UI
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
-                options.Filters.Add(typeof(AssemblyVersionFilter));
                 options.Filters.Add(typeof(ContestIdFilter));
             });
 
