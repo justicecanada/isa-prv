@@ -3,19 +3,16 @@
 namespace Interview.UI.Services.Automapper
 {
 
-    public class IntToTimeSpanConverter : IValueConverter<string?, TimeSpan?>
+    public class IntToTimeSpanConverter : IValueConverter<int?, TimeSpan?>
     {
         
-        public TimeSpan? Convert(string? sourceMember, ResolutionContext context)
+        public TimeSpan? Convert(int? sourceMember, ResolutionContext context)
         {
 
             TimeSpan? result = null;
 
-            if (!string.IsNullOrEmpty(sourceMember))
-            {
-                var nonNullSourceMember = sourceMember.ToString();
-                result = TimeSpan.FromMinutes(System.Convert.ToInt32(nonNullSourceMember));
-            }
+            if (sourceMember != null)
+                result = TimeSpan.FromMinutes((int)sourceMember);
 
             return result;
 
@@ -23,19 +20,21 @@ namespace Interview.UI.Services.Automapper
 
     }
 
-    public class TimeSpanToIntConverter : IValueConverter<TimeSpan?, string?>
+    public class TimeSpanToIntConverter : IValueConverter<TimeSpan?, int?>
     {
-        public string? Convert(TimeSpan? sourceMember, ResolutionContext context)
+        
+        public int? Convert(TimeSpan? sourceMember, ResolutionContext context)
         {
 
-            string? result = null;
+            int? result = null;
 
             if (sourceMember != null)
-                result = sourceMember.Value.TotalMinutes.ToString();
+                result = (int)sourceMember.Value.TotalMinutes;
 
             return result;
 
         }
+
     }
 
 }
