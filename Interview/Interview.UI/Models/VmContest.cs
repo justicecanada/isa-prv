@@ -47,7 +47,7 @@ namespace Interview.UI.Models
         [Required]
         [Display(Name = "InterviewDuration")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
-        public string? InterviewDuration { get; set; }
+        public int? InterviewDuration { get; set; }
 
         [Display(Name = "DeadlineInterviewer")]
         [CompareDateTimes("<", "EndDate", null, ErrorMessage = "DeadlineInterviewerAfterEndDate")]
