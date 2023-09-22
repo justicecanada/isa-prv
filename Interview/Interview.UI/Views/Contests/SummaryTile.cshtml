@@ -16,7 +16,7 @@
             </h3>
         </div>
 
-        <div class="panel-body ml-3">
+        <div class="panel-body">
 
             <div>
                 @localizer["DepartmentId"]: <span class="h5">@vmContest.DepartmentId</span>
@@ -31,7 +31,10 @@
                 @localizer["EndDate"]: <span class="h5">@vmContest.EndDate.Value.ToString(Constants.DateFormat)</span>
             </div>
 
-
+            <div class="mrgn-tp-md">
+                @Html.ActionLink(localizer["ProcessManagement"].Value, "Contest", "Contests", new { contestId = vmContest.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { contestId = vmContest.Id }, new { @class = "btn btn-danger" })
+            </div>
 
         </div>
 

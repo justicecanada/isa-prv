@@ -11,9 +11,7 @@
     await Html.RenderPartialAsync("TopMenu");
 }
 
-<h1>@localizer["Title"]</h1>
-
-<div class="row mrgn-bttm-md">
+<div class="row mrgn-bttm-md mrgn-tp-md">
     <div class="col-md-12">
         @Html.ActionLink(localizer["AddContest"].Value, "Contest", "Contests", null, new { @class = "btn btn-primary" })
     </div>

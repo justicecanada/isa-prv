@@ -178,7 +178,7 @@
             <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ContestSave", "Contests")
                formmethod="post" />
         }
-        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-secondary" })
+        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-default" })
 
     </div>
 
