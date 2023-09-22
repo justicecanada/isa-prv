@@ -4,7 +4,6 @@
     ViewBag.Title = localizer["Title"].Value;
 
     List<VmContest> vmContests = ViewBag.VmContests;
-    string contestId = ViewData["contestId"].ToString();
 
 }
 
@@ -14,38 +13,16 @@
 
 <h1>@localizer["Title"]</h1>
 
-<div class="row mb-3">
-    <div class="col-md-12 pull-left">
+<div class="row mrgn-bttm-md">
+    <div class="col-md-12">
         @Html.ActionLink(localizer["AddContest"].Value, "Contest", "Contests", null, new { @class = "btn btn-primary" })
     </div>
 </div>
 
-<div class="table-responsive">
-    <table id="contests" class="table table-striped" data-toggle="table" data-pagination="true">
-        <thead>
-            <tr>
-                <th>@localizer["NoProcessus"]</th>
-                <th>@localizer["StartDate"]</th>
-                <th>@localizer["EndDate"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (VmContest vmContest in vmContests)
-            {
-                <tr>
-                    <td>@vmContest.NoProcessus</td>
-                    <td>@vmContest.StartDate.Value.ToString(Constants.DateTimeFormat)</td>
-                    <td>@vmContest.EndDate.Value.ToString(Constants.DateTimeFormat)</td>
-                    <td>
-                        @Html.ActionLink(localizer["Manage"].Value, "Contest", "Contests", new { contestId = vmContest.Id })
-                        @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { contestId = vmContest.Id })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="row">
+    @foreach (VmContest vmContest in vmContests)
+    {
+        ViewBag.vmContest = vmContest;
+        await Html.RenderPartialAsync("SummaryTile");
+    }
 </div>
-
-<link href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" rel="stylesheet">
-<script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>

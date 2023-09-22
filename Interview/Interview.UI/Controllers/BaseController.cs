@@ -5,7 +5,8 @@ using System.Reflection;
 
 namespace Interview.UI.Controllers
 {
-    
+
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public class BaseController : WebTemplateBaseController
     {
         
