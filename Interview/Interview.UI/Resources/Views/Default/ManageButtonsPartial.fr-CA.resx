@@ -117,10 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ListOfProcesses" xml:space="preserve">
-    <value>Liste des processus</value>
+  <data name="ManageContest" xml:space="preserve">
+    <value>Gestion du processus</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Default</value>
+  <data name="ManageEmails" xml:space="preserve">
+    <value>Emails (fr)</value>
+  </data>
+  <data name="ManageProcess" xml:space="preserve">
+    <value>Gestion de la configuration du processus</value>
+  </data>
+  <data name="ManageRoles" xml:space="preserve">
+    <value>Gestion des rôles</value>
+  </data>
+  <data name="RolesForProcess" xml:space="preserve">
+    <value>Rôles pour ce processus</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Accès aux statistiques</value>
+  </data>
+  <data name="StatsForInterviews" xml:space="preserve">
+    <value>Statistiques pour les interviews</value>
   </data>
 </root>

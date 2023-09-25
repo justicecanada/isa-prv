@@ -5,6 +5,7 @@
 @inject IViewLocalizer localizer
 
 @{
+    
     ViewBag.Title = localizer["Title"].Value;
 
     ViewBag.FieldOrder = new List<string>(new string[]
@@ -21,7 +22,7 @@
 }
 
 @{
-    await Html.RenderPartialAsync("TopMenu");
+    await Html.RenderPartialAsync("TopMenuPartial");
 }
 
 <h3>

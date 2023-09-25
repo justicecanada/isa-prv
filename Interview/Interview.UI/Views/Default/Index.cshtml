@@ -1,60 +1,36 @@
 ﻿@using Interview.UI.Models
+@using System.Linq
 @inject IViewLocalizer localizer
 
 @{
 
     ViewBag.Title = localizer["Title"].Value;
-
+    
     Guid? contestId = ViewBag.ContestId;
-
     List<VmContest> vmContests = ViewBag.VmContests;
+    VmContest? vmContest = contestId == null ? null : vmContests.Where(x => x.Id == contestId).First();
+
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
-    foreach (var vmContest in vmContests)
+    foreach (var contestItem in vmContests)
     {
         vmContestItems.Add(new SelectListItem()
         {         
-            Value = vmContest.Id.ToString(),
-            Text = vmContest.NoProcessus,
-            Selected = vmContest.Id == contestId
+            Value = contestItem.Id.ToString(),
+            Text = contestItem.NoProcessus,
+            Selected = contestItem.Id == contestId
         });
     }
+
+    ViewBag.vmContest = vmContest;
 
 }
 
 @{
-    await Html.RenderPartialAsync("TopMenu");
+    await Html.RenderPartialAsync("TopMenuPartial");
+    await Html.RenderPartialAsync("ManageButtonsPartial");
 }
 
-<div class="row mrgn-bttm-md">
-
-    <div class="col-md-4">
-        <section class="alert alert-danger">
-            <p>@localizer["ManageProcess"]</p>
-            <div>
-                @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-danger" })
-                @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-default" })
-            </div>
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section class="alert alert-warning">
-            <p>@localizer["RolesForProcess"]</p>
-            <div>
-                @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-warning" })
-            </div>
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section class="alert alert-info">
-            <p>@localizer["StatsForInterviews"]</p>
-            <div>
-                @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
-            </div>
-        </section>
-    </div>
-
-</div>
-
+@*Only form control*@
 <panel class="ui-tabs-panel panel-default mrgn-bttm-md">
     <div class="panel-body">
         <div class="col-md-12">
@@ -66,11 +42,9 @@
     </div>
 </panel>
 
-@*<section class="alert alert-info">
-    <p>@localizer["Welcome"]</p>
-    <div>
-        @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
-    </div>
-</section>*@
+@{
+    await Html.RenderPartialAsync("LegendPartial");
+    await Html.RenderPartialAsync("MembersWelcomePartial");
+}
 
 <script src="~/js/default/index.js" asp-append-version="true"></script>

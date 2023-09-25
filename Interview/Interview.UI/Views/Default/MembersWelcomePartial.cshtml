@@ -1,0 +1,30 @@
+﻿@using Interview.UI.Models
+@inject IViewLocalizer localizer
+
+@{
+
+    VmContest vmContest = ViewBag.vmContest;
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+    bool showWelcome = vmContest != null
+        && ((cultureName == Constants.EnglishCulture && !string.IsNullOrEmpty(vmContest.MembersIntroEN)
+        || (cultureName == Constants.FrenchCulture && !string.IsNullOrEmpty(vmContest.MembersIntroEN))));
+
+}
+
+@if (showWelcome)
+{
+    <section class="alert alert-info">
+        <p>@localizer["Welcome"]</p>
+        <div>
+            @if (cultureName == Constants.EnglishCulture)
+            {
+                <p>@vmContest.MembersIntroEN</p>
+            }
+            else if (cultureName == Constants.FrenchCulture)
+            {
+                <p>@vmContest.MembersIntroFR</p>
+            }
+        </div>
+    </section>
+}
