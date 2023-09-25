@@ -2,9 +2,8 @@
 @inject IViewLocalizer localizer
 
 @{
+    
     ViewBag.Title = localizer["Title"].Value;
-
-    string contestId = ViewData["contestId"].ToString();
 
     List<VmContest> vmContests = ViewBag.VmContests;
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
@@ -29,8 +28,8 @@
         <section class="alert alert-danger">
             <p>@localizer["ManageProcess"]</p>
             <div>
-                @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-danger" })
-                @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = contestId }, new { @class = "btn btn-default" })
+                @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-danger" })
+                @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-default" })
             </div>
         </section>
     </div>
@@ -38,7 +37,7 @@
         <section class="alert alert-warning">
             <p>@localizer["RolesForProcess"]</p>
             <div>
-                @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", new { contestId = contestId }, new { @class = "btn btn-warning" })
+                @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-warning" })
             </div>
         </section>
     </div>
@@ -46,7 +45,7 @@
         <section class="alert alert-info">
             <p>@localizer["StatsForInterviews"]</p>
             <div>
-                @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", new { contestId = contestId }, new { @class = "btn btn-primary" })
+                @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
             </div>
         </section>
     </div>
@@ -67,7 +66,7 @@
 <section class="alert alert-info">
     <p>@localizer["Welcome"]</p>
     <div>
-        @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", new { contestId = contestId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
     </div>
 </section>
 

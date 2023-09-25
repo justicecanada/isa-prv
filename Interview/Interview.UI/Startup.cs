@@ -15,6 +15,8 @@ using Newtonsoft.Json;
 using System.Data.SqlTypes;
 using System.Globalization;
 using GoC.WebTemplate.Components.Core.Services;
+using Interview.UI.Services.State;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Interview.UI
 {
@@ -41,12 +43,21 @@ namespace Interview.UI
 
             services.AddAutoMapper(typeof(MapperConfig));
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
-                options.Filters.Add(typeof(ContestIdFilter));
             })
                 .AddRazorRuntimeCompilation();
+
+            services.AddScoped<IState, SessionState>();
 
             // WET
             services.AddModelAccessor();
@@ -94,6 +105,7 @@ namespace Interview.UI
 
             app.UseRouting();
             //app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

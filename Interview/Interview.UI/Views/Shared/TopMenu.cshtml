@@ -3,8 +3,6 @@
 
 @{
 
-    string contestId = ViewData["contestId"].ToString();
-
 }
 
 <nav role="navigation" id="wb-sm" data-ajax-replace="ajax/menu-include-en.html" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg mrgn-bttm-md" typeof="SiteNavigationElement">
@@ -12,10 +10,10 @@
         @*<h2>Topics menu</h2>*@
         <div class="row">
             <ul class="list-inline menu">
-                <li>@Html.ActionLink(localizer["Home"].Value, "Index", "Default", new { contestId = contestId })</li>
-                <li>@Html.ActionLink(localizer["ProcessList"].Value, "Index", "Contests", new { contestId = contestId })</li>
-                <li>@Html.ActionLink(localizer["GroupList"].Value, "Index", "Groups", new { contestId = contestId })</li>
-                <li>@Html.ActionLink(localizer["Dashboard"].Value, "Index", "Dashboard", new { contestId = contestId })</li>
+                <li>@Html.ActionLink(localizer["Home"].Value, "Index", "Default")</li>
+                <li>@Html.ActionLink(localizer["ProcessList"].Value, "Index", "Contests")</li>
+                <li>@Html.ActionLink(localizer["GroupList"].Value, "Index", "Groups")</li>
+                <li>@Html.ActionLink(localizer["Dashboard"].Value, "Index", "Dashboard")</li>
             </ul>
         </div>
     </div>
