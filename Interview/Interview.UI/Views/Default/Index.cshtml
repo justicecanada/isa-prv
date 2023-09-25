@@ -2,8 +2,10 @@
 @inject IViewLocalizer localizer
 
 @{
-    
+
     ViewBag.Title = localizer["Title"].Value;
+
+    Guid? contestId = ViewBag.ContestId;
 
     List<VmContest> vmContests = ViewBag.VmContests;
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
@@ -12,7 +14,8 @@
         vmContestItems.Add(new SelectListItem()
         {         
             Value = vmContest.Id.ToString(),
-            Text = vmContest.NoProcessus
+            Text = vmContest.NoProcessus,
+            Selected = vmContest.Id == contestId
         });
     }
 
@@ -63,11 +66,11 @@
     </div>
 </panel>
 
-<section class="alert alert-info">
+@*<section class="alert alert-info">
     <p>@localizer["Welcome"]</p>
     <div>
         @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
     </div>
-</section>
+</section>*@
 
 <script src="~/js/default/index.js" asp-append-version="true"></script>

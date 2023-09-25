@@ -5,7 +5,7 @@
         val = $(this).val();
 
         if (val != '');
-            window.location.href = "Contests/Contest?contestId=" + val;
+        window.location.href = "Default/SwitchContest?contestId=" + val;
 
     });
 
