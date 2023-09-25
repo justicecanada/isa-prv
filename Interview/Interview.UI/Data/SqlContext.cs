@@ -20,7 +20,7 @@ namespace Interview.UI.Data
 
             _connectionString = config.GetConnectionString("SQLConnectionString");
 
-            Database.Migrate();
+            //Database.Migrate();
 
         }
 
