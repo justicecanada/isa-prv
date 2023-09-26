@@ -1,47 +1,52 @@
 ﻿@using Interview.UI.Models
+@using System.Linq
 @inject IViewLocalizer localizer
 
 @{
+
     ViewBag.Title = localizer["Title"].Value;
-
-    string contestId = ViewData["contestId"].ToString();
-
+    
+    Guid? contestId = ViewBag.ContestId;
     List<VmContest> vmContests = ViewBag.VmContests;
+    VmContest? vmContest = contestId == null ? null : vmContests.Where(x => x.Id == contestId).First();
+
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
-    vmContestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var vmContest in vmContests)
+    foreach (var contestItem in vmContests)
     {
         vmContestItems.Add(new SelectListItem()
         {         
-            Value = vmContest.Id.ToString(),
-            Text = vmContest.NoProcessus
+            Value = contestItem.Id.ToString(),
+            Text = contestItem.NoProcessus,
+            Selected = contestItem.Id == contestId
         });
     }
+
+    ViewBag.vmContest = vmContest;
 
 }
 
 @{
-    await Html.RenderPartialAsync("TopMenu");
+    await Html.RenderPartialAsync("TopMenuPartial");
+    await Html.RenderPartialAsync("ManageButtonsPartial");
 }
 
-<h1>@localizer["Title"]</h1>
-
-<div>
-
-    @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-danger" })
-    @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = contestId }, new { @class = "btn btn-default" })
-    @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", new { contestId = contestId }, new { @class = "btn btn-warning" })
-    @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", new { contestId = contestId }, new { @class = "btn btn-primary" })
-
-</div>
-
-<div class="row form-group mt-3">
-    <div class="col-md-12">
-        @Html.Label("lblContests", localizer["Contests"].Value, new { @for = "Contests" })
+@*Only form control*@
+<panel class="ui-tabs-panel panel-default mrgn-bttm-md">
+    <div class="panel-body">
+        <div class="col-md-12">
+            @Html.Label("lblContests", localizer["ListOfProcesses"].Value, new { @for = "Contests" }):
+        </div>
+        <div class="col-md-12">
+            @Html.DropDownList("Contests", vmContestItems, new { @class = "form-control" })
+        </div>
     </div>
-    <div class="col-md-12">
-        @Html.DropDownList("Contests", vmContestItems, new { @class = "form-control" })
-    </div>
-</div>
+</panel>
+
+@{
+    await Html.RenderPartialAsync("LegendPartial");
+    await Html.RenderPartialAsync("MembersWelcomePartial");
+    await Html.RenderPartialAsync("RulesPartial");
+    await Html.RenderPartialAsync("CalendarPartial");
+}
 
 <script src="~/js/default/index.js" asp-append-version="true"></script>

@@ -117,10 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ListOfProcesses" xml:space="preserve">
-    <value>Liste des processus</value>
+  <data name="Rules" xml:space="preserve">
+    <value>&lt;li&gt;
+                    &lt;span&gt;For a time spot to be created for the process, it must have 3 board members with at least 1 lead board member.&lt;/span&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;span&gt;There can be multiple interviews at the same time spot.&lt;/span&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;span&gt;If one board member is unilingual, the interview will be offered only in that official language.&lt;/span&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;span&gt;Board members will only be given a specific period of time to provide their availabilities.&lt;/span&gt;
+                &lt;/li&gt;</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Default</value>
+  <data name="Summary" xml:space="preserve">
+    <value>Rules and conditions</value>
   </data>
 </root>

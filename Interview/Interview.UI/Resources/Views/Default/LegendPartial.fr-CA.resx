@@ -117,10 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ListOfProcesses" xml:space="preserve">
-    <value>Liste des processus</value>
+  <data name="AvailableForCandidate" xml:space="preserve">
+    <value>Disponible pour un candidat</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Default</value>
+  <data name="BookedForInterview" xml:space="preserve">
+    <value>Réservé pour une entrevue</value>
+  </data>
+  <data name="DiabilityAbbr" xml:space="preserve">
+    <value>H</value>
+  </data>
+  <data name="Disability" xml:space="preserve">
+    <value>Personne en situation de handicap</value>
+  </data>
+  <data name="Diversity" xml:space="preserve">
+    <value>Diversité et équité en matière d'emploi</value>
+  </data>
+  <data name="IndigenousAbbr" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="IndigenousPerson" xml:space="preserve">
+    <value>Personne autochtone</value>
+  </data>
+  <data name="LegendAvailabilities" xml:space="preserve">
+    <value>Légende des disponibilités</value>
+  </data>
+  <data name="RacializedGroup" xml:space="preserve">
+    <value>Membre d’un groupe racialisé</value>
+  </data>
+  <data name="RacializedGroupAbbr" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="Sogie" xml:space="preserve">
+    <value>Orientation sexuelle, identité et expression du genre (OSIEG)</value>
+  </data>
+  <data name="SogieAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="Woman" xml:space="preserve">
+    <value>Femme</value>
+  </data>
+  <data name="WomanAbbr" xml:space="preserve">
+    <value>F</value>
   </data>
 </root>

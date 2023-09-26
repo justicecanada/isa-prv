@@ -117,10 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ListOfProcesses" xml:space="preserve">
-    <value>Liste des processus</value>
+  <data name="Rules" xml:space="preserve">
+    <value>&lt;li&gt;&lt;span id="ctl00_cphMainContent_lblRules1"&gt;Pour qu'une plage horaire soit créé pour le processus, il doit y avoir 3 membres du comité avec au moins un membre intervieweur principal.&lt;/span&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;span id="ctl00_cphMainContent_lblRules2"&gt;Il peut y avoir plusieurs plage horaire disponible au même moment.&lt;/span&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;span id="ctl00_cphMainContent_lblRules3"&gt;Si lʼun des membres du comité est unilingue, lʼentrevue ne sera offerte que dans cette langue officielle.&lt;/span&gt;&lt;/li&gt;
+                                
+                                &lt;li&gt;&lt;span id="ctl00_cphMainContent_lblRules5"&gt;Les membres du comité nʼauront quʼune période de temps spécifique pour fournir leurs disponibilités.&lt;/span&gt;&lt;/li&gt;</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Default</value>
+  <data name="Summary" xml:space="preserve">
+    <value>Règles et conditions</value>
   </data>
 </root>
