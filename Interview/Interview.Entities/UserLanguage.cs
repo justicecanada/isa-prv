@@ -11,6 +11,7 @@ namespace Interview.Entities
     {
 
         public Guid UserSettingsId { get; set; }
+        public string Name { get; set; }
         public string? NameFR { get; set; }
         public string? NameEN { get; set;  }
 

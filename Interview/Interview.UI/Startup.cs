@@ -61,7 +61,7 @@ namespace Interview.UI
             services.AddScoped<IState, SessionState>();
 
             // Mocked Services
-            services.AddTransient<RoleSeeder>();
+            services.AddTransient<MockSeeder>();
 
             // WET
             services.AddModelAccessor();

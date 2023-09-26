@@ -13,7 +13,7 @@ namespace Interview.UI
                 
                 IHost host = CreateHostBuilder(args).Build();
 
-                await SeedRoles(host);
+                await SeedMockedData(host);
                 host.Run();
 
             }
@@ -31,22 +31,19 @@ namespace Interview.UI
                     webBuilder.UseStartup<Startup>();
                 });
 
-        #region Mocked up data
-
-        private static async Task SeedRoles(IHost host)
+        private static async Task SeedMockedData(IHost host)
         {
 
             var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
 
             using (var scope = scopeFactory.CreateScope())
             {
-                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.RoleSeeder>();
+                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.MockSeeder>();
                 await seeder.EnsureRoles();
+                await seeder.EnsureUserLanguages();
             }
 
         }
-
-        #endregion
 
     }
 
