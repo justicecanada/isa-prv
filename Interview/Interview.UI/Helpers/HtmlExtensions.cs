@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using Interview.UI.Models.CustomValidation;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,8 @@ namespace Interview.UI.Helpers
 
             if (metaData.ContainerType != null)
             {
-                isRequired = metaData.ContainerType.GetProperty(metaData.PropertyName).GetCustomAttributes(typeof(RequiredAttribute), false).Length == 1;
+                isRequired = metaData.ContainerType.GetProperty(metaData.PropertyName).GetCustomAttributes(typeof(RequiredAttribute), false).Length == 1 ||
+                    metaData.ContainerType.GetProperty(metaData.PropertyName).GetCustomAttributes(typeof(RequiredIf), false).Length != 0;
             }
 
             result.InnerHtml.SetContent(metaData.DisplayName);

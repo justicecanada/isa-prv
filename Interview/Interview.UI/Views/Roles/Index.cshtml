@@ -1,9 +1,20 @@
-﻿
+﻿@model VmIndex
 @using Interview.UI.Models
+@using Interview.UI.Models.Roles;
+@using Interview.UI.Helpers
+@using Interview.Entities
 @inject IViewLocalizer localizer
 
 @{
+
     ViewBag.Title = localizer["Title"].Value;
+
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "UserType", "InternalName", "ExistingExternalName", "NewExternalFirstName", "NewExternalLastName", "NewExternalEmail"
+    }).Select(x => x.ToLower()).ToList();
+
+    VmContest vmContest = ViewBag.VmContest;
 
 }
 
@@ -11,4 +22,82 @@
     await Html.RenderPartialAsync("TopMenuPartial");
 }
 
-<h1>@localizer["Title"]</h1>
+<h2>@vmContest.NoProcessus</h2>
+
+@{
+    await Html.RenderPartialAsync("ValidationSummary");
+}
+
+<form>
+
+    @Html.AntiForgeryToken()
+
+    <section class="panel panel-default">
+
+        <header class="panel-heading">
+            <h5 class="pandel-title">@localizer["UserPanelHeading"]</h5>
+        </header>
+
+        <div class="panel-body">
+
+            <div class="col-md-4 brdr-rght">
+
+                <div class="row">
+                    @Html.LabelFor(x => x.UserType, new { @class = "required" })
+                </div>
+                <div class="row">
+                    @Html.ValidationMessageFor(x => x.UserType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    @Html.RadioButtonFor(x => x.UserType, (int)UserTypes.Internal, new { @id = "Internal", @class = "form-check-input" })
+                    <label for="Internal" class="form-check-label">@localizer["Internal"]</label>
+                </div>
+                <div id="internalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.Internal ? "" : "none")">
+                    @Html.EditorFor(x => x.InternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.InternalName, new { @class = "form-control" }) })
+                </div>
+
+                <div class="row">
+                    @Html.RadioButtonFor(x => x.UserType, (int)UserTypes.ExistingExternal, new { @id = "ExistingExternal", @class = "form-check-input" })
+                    <label for="ExistingExternal" class="form-check-label">@localizer["ExistingExternal"]</label>
+                </div>
+                <div id="existingExternalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.ExistingExternal ? "" : "none" )">
+                    // This will be a dropdown
+                    @Html.EditorFor(x => x.ExistingExternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.ExistingExternalName, new { @class = "form-control" }) })
+                </div>
+
+                <div class="row">
+                    @Html.RadioButtonFor(x => x.UserType, (int)UserTypes.NewExternal, new { @id = "NewExternal", @class = "form-check-input" })
+                    <label for="NewExternal" class="form-check-label">@localizer["NewExternal"]</label>
+                </div>
+                <div id="newExternalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.NewExternal ? "" : "none" )">
+                    @Html.EditorFor(x => x.NewExternalFirstName, "Question", new { inputControl = Html.TextBoxFor(x => x.NewExternalFirstName, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.NewExternalLastName, "Question", new { inputControl = Html.TextBoxFor(x => x.NewExternalLastName, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.NewExternalEmail, "Question", new { inputControl = Html.TextBoxFor(x => x.NewExternalEmail, new { @class = "form-control" }) })
+                </div>
+
+            </div>
+
+            <div class="col-md-8">
+
+
+            </div>
+
+        </div>
+
+        <div class="panel-footer">
+
+            <div>
+                <input type="submit" value="@localizer["Reset"]" id="btnReset" class="btn btn-default mr-2" formaction=@Url.Action("Index", "Roles")
+                        formmethod="get" />
+                <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("Index", "Roles")
+                        formmethod="post" />
+            </div>
+
+            </div>
+
+    </section>
+
+</form>
+
+<script src="~/js/roles/index.js" asp-append-version="true"></script>

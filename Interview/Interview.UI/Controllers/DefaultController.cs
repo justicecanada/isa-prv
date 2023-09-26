@@ -47,7 +47,10 @@ namespace Interview.UI.Controllers
                 contestId = _state.ContestId;
             // Look to first item in list if _state.ContestId isn't set by user
             else if (vmContests.Any())
+            {
                 contestId = vmContests.First().Id;
+                _state.ContestId = contestId;
+            }
 
             ViewBag.VmContests = vmContests;
             ViewBag.ContestId = contestId;
