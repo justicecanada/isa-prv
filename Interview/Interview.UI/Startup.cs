@@ -17,6 +17,7 @@ using System.Globalization;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Interview.UI.Services.Mock;
 
 namespace Interview.UI
 {
@@ -58,6 +59,9 @@ namespace Interview.UI
                 .AddRazorRuntimeCompilation();
 
             services.AddScoped<IState, SessionState>();
+
+            // Mocked Services
+            services.AddTransient<RoleSeeder>();
 
             // WET
             services.AddModelAccessor();

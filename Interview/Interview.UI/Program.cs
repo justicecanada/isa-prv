@@ -5,17 +5,21 @@ namespace Interview.UI
 
     public class Program
     {
-        public static int Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             try
             {
-                CreateHostBuilder(args).Build().Run();
-                return 0;
+                
+                IHost host = CreateHostBuilder(args).Build();
+
+                await SeedRoles(host);
+                host.Run();
+
             }
             catch (Exception ex)
             {
-                return 1;
+                throw ex;
             }
 
         }
@@ -26,6 +30,23 @@ namespace Interview.UI
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        #region Mocked up data
+
+        private static async Task SeedRoles(IHost host)
+        {
+
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.RoleSeeder>();
+                await seeder.EnsureRoles();
+            }
+
+        }
+
+        #endregion
 
     }
 

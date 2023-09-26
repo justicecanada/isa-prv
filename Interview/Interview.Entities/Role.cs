@@ -10,6 +10,7 @@ namespace Interview.Entities
     public class Role : EntityBase
     {
 
+        public string Name { get; set; }
         public Guid UserSettingsId { get; set; }
         public string? RoleNameFR { get; set; }
         public string? RoleNameEN { get; set; }
