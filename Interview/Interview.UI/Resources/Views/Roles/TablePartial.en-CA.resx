@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="NoRoles" xml:space="preserve">
     <value>No role is assigned</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Assigned Role</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User's Name</value>
   </data>
 </root>

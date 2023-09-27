@@ -20,6 +20,9 @@ namespace Interview.Entities
         public bool? IsExternal { get; set; }
         public DateTime DateInserted { get; set; }
 
+        public UserLanguage? UserLanguage { get; set;  }
+        public Role? Role { get; set;  }
+
     }
 
 }

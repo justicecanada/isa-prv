@@ -16,6 +16,9 @@ namespace Interview.UI.Models
         public bool? IsExternal { get; set; }
         public DateTime DateInserted { get; set; }
 
+        public VmUserLanguage? UserLanguage { get; set; }
+        public VmRole? Role { get; set; }
+
     }
 
 }

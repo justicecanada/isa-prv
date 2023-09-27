@@ -1,8 +1,10 @@
 ﻿
+@using Interview.UI
 @inject IViewLocalizer localizer
 
 @{
 
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     List<VmUserSetting> vmUserSettings = ViewBag.VmUserSettings;
 
 }
@@ -14,4 +16,44 @@
 else
 {
 
+    <div class="table-responsive">
+        <table id="userSettings" class="table table-striped" data-toggle="table" data-pagination="true">
+            <thead>
+                <tr>
+                    <th>@localizer["UserName"]</th>
+                    <th>@localizer["Role"]</th>
+                    <th>@localizer["Language"]</th>
+                    <th>@localizer["Action"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (VmUserSetting vmUserSetting in vmUserSettings)
+                {
+                    
+                    string userName = $"{vmUserSetting.UserLastname}, {vmUserSetting.UserFirstname}";
+                    string roleName = cultureName == Constants.EnglishCulture ? vmUserSetting.Role.RoleNameEN : vmUserSetting.Role.RoleNameFR;
+                    string language = null;
+                    if (vmUserSetting.UserLanguage != null)
+                        language = cultureName == Constants.EnglishCulture ? vmUserSetting.UserLanguage.NameEN : vmUserSetting.UserLanguage.NameFR;
+
+                    <tr>
+                        <td>
+                            <a href="#">@userName</a>
+                        </td>                        
+                        <td>@roleName</td>
+                        <td>@language</td>
+                        <td>
+                            <span class="glyphicon glyphicon-edit text-info"></span>
+                            <span class="glyphicon glyphicon-trash text-danger"></span>
+                            <span class="glyphicon glyphicon-send text-success"></span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 }
+<link href="~/lib/jquery-datatables/datatables.min.css" rel="stylesheet" />
+<script src="~/lib/jquery-datatables/datatables.min.js"></script>
+<script src="~/js/roles/tablepartial.js" asp-append-version="true"></script>
