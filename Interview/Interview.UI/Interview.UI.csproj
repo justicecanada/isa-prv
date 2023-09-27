@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <Content Remove="Views\Shared\Error.cshtml" />
+    <Content Remove="wwwroot\js\Dashboard.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\Dashboard.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\Dashboard.js" />
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.js" />
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.js" />
