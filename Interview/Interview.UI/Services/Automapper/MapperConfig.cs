@@ -32,6 +32,8 @@ namespace Interview.UI.Services.Automapper
             CreateMap<UserLanguage, VmUserLanguage>();
             CreateMap<VmUserLanguage, UserLanguage>();
 
+            CreateMap<UserSetting, VmUserSetting>();
+            CreateMap<VmUserSetting, UserSetting>();
 
         }
 

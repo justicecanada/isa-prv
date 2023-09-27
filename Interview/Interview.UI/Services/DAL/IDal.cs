@@ -26,6 +26,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<UserLanguage>> GetAllUserLanguages();
 
+        Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId);
+
         #endregion
 
     }

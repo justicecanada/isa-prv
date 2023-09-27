@@ -7,14 +7,14 @@ namespace Interview.UI.Models
     {
 
         public Guid ContestId { get; set; }
-        public Guid UserLanguageId { get; set; }
-        public Guid EquityId { get; set; }
+        public Guid? UserLanguageId { get; set; }
+        public Guid? EquityId { get; set; }
         public Guid RoleId { get; set; }
-        public string? UserId { get; set; }
+        public Guid UserId { get; set; }
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
         public bool? IsExternal { get; set; }
-        public DateTimeOffset? DateInserted { get; set; }
+        public DateTime DateInserted { get; set; }
 
     }
 

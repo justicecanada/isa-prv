@@ -117,34 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ExistingExternalName" xml:space="preserve">
-    <value>External User Name</value>
-  </data>
-  <data name="InternalName" xml:space="preserve">
-    <value>Employee Name</value>
-  </data>
-  <data name="InvalidEmail" xml:space="preserve">
-    <value>Please enter a valid email address.</value>
-  </data>
-  <data name="NewExternalEmail" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="NewExternalFirstName" xml:space="preserve">
-    <value>First Name</value>
-  </data>
-  <data name="NewExternalLastName" xml:space="preserve">
-    <value>Last Name</value>
-  </data>
-  <data name="RequiredError" xml:space="preserve">
-    <value>{0} is required.</value>
-  </data>
-  <data name="RoleId" xml:space="preserve">
-    <value>Role to Assign</value>
-  </data>
-  <data name="UserLanguageId" xml:space="preserve">
-    <value>Language of Preference</value>
-  </data>
-  <data name="UserType" xml:space="preserve">
-    <value>Select User Type</value>
+  <data name="NoRoles" xml:space="preserve">
+    <value>No role is assigned</value>
   </data>
 </root>

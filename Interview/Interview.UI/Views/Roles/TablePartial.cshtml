@@ -1,0 +1,17 @@
+﻿
+@inject IViewLocalizer localizer
+
+@{
+
+    List<VmUserSetting> vmUserSettings = ViewBag.VmUserSettings;
+
+}
+
+@if (vmUserSettings.Count == 0)
+{
+    <p>@localizer["NoRoles"]</p>
+}
+else
+{
+
+}

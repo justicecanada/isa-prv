@@ -139,4 +139,9 @@
 
 </form>
 
+@{
+    await Html.RenderPartialAsync("LegendPartial");
+    await Html.RenderPartialAsync("TablePartial");
+}
+
 <script src="~/js/roles/index.js" asp-append-version="true"></script>

@@ -7,7 +7,9 @@ using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System;
 
 namespace Interview.UI.Controllers
@@ -21,17 +23,22 @@ namespace Interview.UI.Controllers
         private readonly DalSql _dal;
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IStringLocalizer<RolesController> _localizer;
+
         private readonly MockIdentityContext _mockIdentityContext;
 
         #endregion
 
         #region Constructors
 
-        public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, MockIdentityContext mockIdentityContext) : base(modelAccessor)
+        public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, MockIdentityContext mockIdentityContext,
+            IStringLocalizer<RolesController> localizer) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
             _state = state;
+            _localizer = localizer;
+
             _mockIdentityContext = mockIdentityContext;
         }
 
@@ -56,9 +63,27 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index(VmIndex vmIndex)
         {
 
+            var mockUser = await GetMockUser(vmIndex);
+            
             if (ModelState.IsValid)
             {
-                return null;
+
+                UserSetting userSetting = new UserSetting()
+                {
+                    ContestId = (Guid)_state.ContestId,
+                    UserLanguageId = vmIndex.UserLanguageId,
+                    RoleId = (Guid)vmIndex.RoleId,
+                    UserId = (Guid)mockUser.Id,
+                    UserFirstname = mockUser.FirstName,
+                    UserLastname = mockUser.LastName,
+                    IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
+                    DateInserted = DateTime.Now
+                };
+
+                await _dal.AddEntity(userSetting);
+
+                return RedirectToAction("Index");
+
             }
             else
             {
@@ -79,6 +104,8 @@ namespace Interview.UI.Controllers
             var vmRoles = _mapper.Map(roles, typeof(List<Role>), typeof(List<VmRole>));
             var userLanguages = await _dal.GetAllUserLanguages();
             var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
+            var userSettings = await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
+            var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
             var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
 
             if (_state.ContestId == null)
@@ -92,7 +119,54 @@ namespace Interview.UI.Controllers
             ViewBag.VmContest = vmContest;
             ViewBag.VmRoles = vmRoles;
             ViewBag.VmUserLanguages = vmUserLanguages;
+            ViewBag.VmUserSettings = vmUserSettings;
             ViewBag.MockExistingExternalUsers = mockExistingExternalUsers;
+
+        }
+
+        private async Task<MockUser> GetMockUser(VmIndex vmIndex)
+        {
+
+            MockUser result = null;
+
+            switch (vmIndex.UserType)
+            {
+
+                case UserTypes.Internal:
+
+                    result = await _mockIdentityContext.MockUsers.Where(x => ( x.UserName == vmIndex.InternalName && 
+                        x.UserType == UserTypes.Internal)).FirstOrDefaultAsync();
+                    if (result == null)
+                        ModelState.AddModelError("InternalName", _localizer["InternalUserDoesNotExist"]);
+
+                    break;
+
+                case UserTypes.ExistingExternal:
+
+                    result = await _mockIdentityContext.MockUsers.Where(x => (x.Id == vmIndex.ExistingExternalId &&
+                        x.UserType == UserTypes.ExistingExternal)).FirstOrDefaultAsync();
+
+                    break;
+
+                case UserTypes.NewExternal:
+
+                    result = new MockUser()
+                    {
+                        UserName = vmIndex.NewExternalEmail,
+                        FirstName = vmIndex.NewExternalFirstName,
+                        LastName = vmIndex.NewExternalLastName,
+                        Email = vmIndex.NewExternalEmail,
+                        UserType = UserTypes.NewExternal
+                    };
+
+                    _mockIdentityContext.Entry(result).State = EntityState.Added;
+                    await _mockIdentityContext.SaveChangesAsync();
+
+                    break;
+
+            }
+
+            return result;
 
         }
 

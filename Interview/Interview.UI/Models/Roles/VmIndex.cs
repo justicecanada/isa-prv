@@ -32,6 +32,7 @@ namespace Interview.UI.Models.Roles
 
         [Display(Name = "NewExternalEmail")]
         [RequiredIf("UserType", "UserType", UserTypes.NewExternal, ErrorMessage = "RequiredError")]
+        [EmailAddress(ErrorMessage = "InvalidEmail")]
         public string? NewExternalEmail { get; set; }
 
         #endregion

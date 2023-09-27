@@ -301,6 +301,15 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId)
+        {
+
+            var result = await _context.UserSettings.Where(x => x.ContestId == contestId).ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
     }

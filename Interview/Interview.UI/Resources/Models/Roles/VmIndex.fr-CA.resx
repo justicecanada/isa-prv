@@ -123,6 +123,9 @@
   <data name="InternalName" xml:space="preserve">
     <value>Nom de l'employé</value>
   </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Veuillez fournir une adresse électronique valide.</value>
+  </data>
   <data name="NewExternalEmail" xml:space="preserve">
     <value>Courriel</value>
   </data>
