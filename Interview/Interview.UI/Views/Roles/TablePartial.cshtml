@@ -44,8 +44,12 @@ else
                         <td>@language</td>
                         <td>
                             <span class="glyphicon glyphicon-edit text-info"></span>
-                            <span class="glyphicon glyphicon-trash text-danger"></span>
-                            <span class="glyphicon glyphicon-send text-success"></span>
+                            <a href="@Url.Action("DeleteUserSetting", "Roles", new { userSettingsId = vmUserSetting.Id } )">
+                                <span class="glyphicon glyphicon-trash text-danger"></span>
+                            </a>
+
+                            @*<span class="glyphicon glyphicon-send text-success"></span>*@
+
                         </td>
                     </tr>
                 }

@@ -96,6 +96,16 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeleteUserSetting(Guid userSettingsId)
+        {
+
+            await _dal.DeleteEntity<UserSetting>(userSettingsId);
+
+            return RedirectToAction("Index");
+
+        }
+
         private async Task SetIndexViewBag()
         {
 
