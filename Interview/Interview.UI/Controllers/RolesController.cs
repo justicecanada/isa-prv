@@ -96,16 +96,6 @@ namespace Interview.UI.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteUserSetting(Guid userSettingsId)
-        {
-
-            await _dal.DeleteEntity<UserSetting>(userSettingsId);
-
-            return RedirectToAction("Index");
-
-        }
-
         private async Task SetIndexViewBag()
         {
 
@@ -181,6 +171,46 @@ namespace Interview.UI.Controllers
         }
 
         #endregion
+
+        #region TablePartial Methods
+
+        [HttpGet]
+        public IActionResult UpdateUserSettings(Guid userSettingsId)
+        {
+
+            TempData["UserSettingIdToUpdate"] = userSettingsId;
+
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateUserSettings(VmUserSetting vmUserSetting)
+        {
+
+            var dbUserSetting = await _dal.GetEntity<UserSetting>((Guid)vmUserSetting.Id) as UserSetting;
+
+            dbUserSetting.RoleId = vmUserSetting.RoleId;
+            dbUserSetting.UserLanguageId = vmUserSetting.UserLanguageId;
+            await _dal.UpdateEntity(dbUserSetting);
+
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUserSetting(Guid userSettingsId)
+        {
+
+            await _dal.DeleteEntity<UserSetting>(userSettingsId);
+
+            return RedirectToAction("Index");
+
+        }
+
+        #endregion
+
 
     }
 
