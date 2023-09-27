@@ -1,13 +1,10 @@
 ﻿
 @inject IViewLocalizer localizer
 
-@{
-
-}
-
-<nav role="navigation" id="wb-sm" data-ajax-replace="ajax/menu-include-en.html" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg mrgn-bttm-md" typeof="SiteNavigationElement">
-    <div class="container nvbar">
-        @*<h2>Topics menu</h2>*@
+<nav id="wb-sm" data-ajax-replace="../../wet-boew/ajax/sitemenu-en.html" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg wb-init wb-data-ajax-replace-inited wb-menu-inited wb-navcurr-inited" 
+    typeof="SiteNavigationElement">
+    <div class="pnl-strt container visible-md visible-lg nvbar">
+        <h2>Topics menu</h2>
         <div class="row">
             <ul class="list-inline menu">
                 <li>@Html.ActionLink(localizer["Home"].Value, "Index", "Default")</li>

@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     userType.Init();
+    //searchInternalUser.Init();
 });
 
 var userType = {
@@ -24,10 +25,30 @@ var userType = {
             else if (val === '2')
                 $(userType.NewExternalDetails).show();
 
-
-        })
+        });
 
     }
 
+}
+
+var searchInternalUser = {
+
+    InputSelector: "#InternalName",
+
+    Init: function () {
+
+        //debugger;
+
+        $(this.InputSelector).autocomplete({
+            minLength: 3,
+            source: function (request, response) {
+                debugger;
+            },
+            select: function (event, ui) {
+
+            },
+        });
+
+    }
 
 }
