@@ -18,6 +18,7 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Interview.UI.Services.Mock;
+using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI
 {
@@ -62,6 +63,9 @@ namespace Interview.UI
 
             // Mocked Services
             services.AddTransient<MockSeeder>();
+            services.AddDbContext<MockIdentityContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
+            services.AddTransient<MockIdentitySeeder>();
 
             // WET
             services.AddModelAccessor();

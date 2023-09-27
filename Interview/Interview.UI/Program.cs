@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-
 namespace Interview.UI
 {
 
@@ -10,10 +8,11 @@ namespace Interview.UI
 
             try
             {
-                
+
                 IHost host = CreateHostBuilder(args).Build();
 
                 await SeedMockedData(host);
+                await SeedMockUsers(host);
                 host.Run();
 
             }
@@ -41,6 +40,19 @@ namespace Interview.UI
                 var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.MockSeeder>();
                 await seeder.EnsureRoles();
                 await seeder.EnsureUserLanguages();
+            }
+
+        }
+
+        private static async Task SeedMockUsers(IHost host)
+        {
+
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.Identity.MockIdentitySeeder>();
+                await seeder.EnsureUsers();
             }
 
         }
