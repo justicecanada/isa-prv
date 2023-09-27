@@ -11,7 +11,7 @@ namespace Interview.UI.Models.Roles
         #region User Type Section
 
         [Display(Name = "UserType")]
-        [Required]      
+        [Required(ErrorMessage = "RequiredError")]      
         public UserTypes? UserType { get; set; }
 
         [Display(Name = "InternalName")]
@@ -20,7 +20,7 @@ namespace Interview.UI.Models.Roles
 
         [Display(Name = "ExistingExternalName")]
         [RequiredIf("UserType", "UserType", UserTypes.ExistingExternal, ErrorMessage = "RequiredError")]        
-        public string? ExistingExternalName { get; set; }
+        public Guid? ExistingExternalId { get; set; }
 
         [Display(Name = "NewExternalFirstName")]
         [RequiredIf("UserType", "UserType", UserTypes.NewExternal, ErrorMessage = "RequiredError")]       
@@ -35,6 +35,13 @@ namespace Interview.UI.Models.Roles
         public string? NewExternalEmail { get; set; }
 
         #endregion
+
+        [Display(Name = "RoleId")]
+        [Required(ErrorMessage = "RequiredError")]
+        public Guid? RoleId { get; set;  }
+
+        [Display(Name = "UserLanguageId")]
+        public Guid? UserLanguageId { get; set; }
 
     }
 

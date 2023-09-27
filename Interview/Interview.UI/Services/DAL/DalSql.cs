@@ -283,6 +283,24 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Role>> GetAllRoles()
+        {
+
+            var result = await _context.Roles.ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<UserLanguage>> GetAllUserLanguages()
+        {
+
+            var result = await _context.UserLanguages.ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
     }

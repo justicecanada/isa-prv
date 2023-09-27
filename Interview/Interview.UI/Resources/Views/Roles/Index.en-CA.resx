@@ -126,6 +126,9 @@
   <data name="NewExternal" xml:space="preserve">
     <value>Create New External User</value>
   </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>== Please Select ==</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>

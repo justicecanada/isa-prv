@@ -135,6 +135,12 @@
   <data name="RequiredError" xml:space="preserve">
     <value>{0} est obligatoire</value>
   </data>
+  <data name="RoleId" xml:space="preserve">
+    <value>Rôle à attribuer</value>
+  </data>
+  <data name="UserLanguageId" xml:space="preserve">
+    <value>Langue de préférence</value>
+  </data>
   <data name="UserType" xml:space="preserve">
     <value>Sélectionner le type d'utilisateur</value>
   </data>

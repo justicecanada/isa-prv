@@ -3,6 +3,7 @@
 @using Interview.UI.Models.Roles;
 @using Interview.UI.Helpers
 @using Interview.Entities
+@using Interview.UI.Services.Mock.Identity
 @inject IViewLocalizer localizer
 
 @{
@@ -11,10 +12,47 @@
 
     ViewBag.FieldOrder = new List<string>(new string[]
     {
-        "UserType", "InternalName", "ExistingExternalName", "NewExternalFirstName", "NewExternalLastName", "NewExternalEmail"
+        "UserType", "InternalName", "ExistingExternalName", "NewExternalFirstName", "NewExternalLastName", "NewExternalEmail", "RoleId", "UserLanguageId"
     }).Select(x => x.ToLower()).ToList();
 
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     VmContest vmContest = ViewBag.VmContest;
+
+    List<MockUser> mockExistingExternalUsers = ViewBag.MockExistingExternalUsers;
+    List<SelectListItem> mockExistingExternalUsersItems = new List<SelectListItem>();
+    mockExistingExternalUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var mockExistingUser in mockExistingExternalUsers)
+    {
+        mockExistingExternalUsersItems.Add(new SelectListItem()
+        {         
+            Value = mockExistingUser.Id.ToString(),
+            Text = $"{mockExistingUser.LastName}, {mockExistingUser.FirstName}"
+        });
+    }
+
+    List<VmRole> vmRoles =  ViewBag.VmRoles;
+    List<SelectListItem> rolesItems = new List<SelectListItem>();
+    rolesItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var vmRole in vmRoles)
+    {
+        rolesItems.Add(new SelectListItem()
+        {         
+            Value = vmRole.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? vmRole.RoleNameEN : vmRole.RoleNameFR
+        });
+    }
+
+    List<VmUserLanguage> vmUserLanguages = ViewBag.VmUserLanguages;
+    List<SelectListItem> userLanguageItems = new List<SelectListItem>();
+    userLanguageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var vmUserLanguage in vmUserLanguages)
+    {
+        userLanguageItems.Add(new SelectListItem()
+        {         
+            Value = vmUserLanguage.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? vmUserLanguage.NameEN : vmUserLanguage.NameFR
+        });
+    }
 
 }
 
@@ -62,8 +100,7 @@
                     <label for="ExistingExternal" class="form-check-label">@localizer["ExistingExternal"]</label>
                 </div>
                 <div id="existingExternalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.ExistingExternal ? "" : "none" )">
-                    // This will be a dropdown
-                    @Html.EditorFor(x => x.ExistingExternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.ExistingExternalName, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.ExistingExternalId, "Question", new { inputControl = @Html.DropDownList("ExistingExternalId", mockExistingExternalUsersItems, new { @class = "form-control" }) })
                 </div>
 
                 <div class="row">
@@ -80,6 +117,8 @@
 
             <div class="col-md-8">
 
+                @Html.EditorFor(x => x.RoleId, "Question", new { inputControl = @Html.DropDownList("RoleId", rolesItems, new { @class = "form-control" }) })
+                @Html.EditorFor(x => x.UserLanguageId, "Question", new { inputControl = @Html.DropDownList("UserLanguageId", userLanguageItems, new { @class = "form-control" }) })
 
             </div>
 

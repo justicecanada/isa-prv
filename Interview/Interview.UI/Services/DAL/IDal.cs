@@ -22,6 +22,10 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
 
+        Task<List<Role>> GetAllRoles();
+
+        Task<List<UserLanguage>> GetAllUserLanguages();
+
         #endregion
 
     }
