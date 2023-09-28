@@ -51,6 +51,9 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
+            var equities = await _dal.GetAllEquities();
+            List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
+            result.Equities = vmEquities;
 
             await SetIndexViewBag();
             
@@ -135,10 +138,10 @@ namespace Interview.UI.Controllers
             var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
             ViewBag.VmUserLanguages = vmUserLanguages;
 
-            // Equities
-            var equities = await _dal.GetAllEquities();
-            var vmEquities = _mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
-            ViewBag.VmEquities = vmEquities;
+            //// Equities
+            //var equities = await _dal.GetAllEquities();
+            //var vmEquities = _mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
+            //ViewBag.VmEquities = vmEquities;
 
             // MockUsers
             var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();

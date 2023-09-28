@@ -1,0 +1,15 @@
+﻿@model VmEquity
+@using Interview.UI.Models
+
+@{
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    string label = cultureName == Constants.EnglishCulture ? Model.NameEN : Model.NameEN;
+
+}
+
+<div class="col-md-12">
+    @Html.CheckBoxFor(x => x.IsSelected)
+    @Html.LabelFor(x => x.IsSelected, label)
+    @Html.HiddenFor(x => x.Id)
+</div>
