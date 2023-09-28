@@ -96,6 +96,23 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<JsonResult> LookupInteralUser(string query)
+        {
+
+            List<MockUser> result = null;
+
+            if (!string.IsNullOrEmpty(query))
+                result = await _mockIdentityContext.MockUsers.Where(x => ((x.FirstName.ToLower().StartsWith(query.ToLower()) || x.LastName.ToLower().StartsWith(query.ToLower()))
+                    && x.UserType == UserTypes.Internal)).ToListAsync();
+
+            return new JsonResult(new { result = true, results = result })
+            {
+                StatusCode = 200
+            };
+
+        }
+
         private async Task SetIndexViewBag()
         {
 
@@ -134,7 +151,7 @@ namespace Interview.UI.Controllers
 
                 case UserTypes.Internal:
 
-                    result = await _mockIdentityContext.MockUsers.Where(x => ( x.UserName == vmIndex.InternalName && 
+                    result = await _mockIdentityContext.MockUsers.Where(x => (x.UserName == vmIndex.InternalName && 
                         x.UserType == UserTypes.Internal)).FirstOrDefaultAsync();
                     if (result == null)
                         ModelState.AddModelError("InternalName", _localizer["InternalUserDoesNotExist"]);
