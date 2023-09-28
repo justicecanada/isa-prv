@@ -20,13 +20,13 @@ namespace Interview.UI.Migrations
                     GroupNiv = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InitUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MinTime = table.Column<TimeSpan>(type: "time", nullable: true),
                     MaxTime = table.Column<TimeSpan>(type: "time", nullable: true),
                     InterviewDuration = table.Column<TimeSpan>(type: "time", nullable: true),
-                    DeadlineInterviewer = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeadlineCandidate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeadlineInterviewer = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeadlineCandidate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -62,7 +62,7 @@ namespace Interview.UI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ViewFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -78,6 +78,7 @@ namespace Interview.UI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoleNameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleNameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -110,6 +111,7 @@ namespace Interview.UI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NameFR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -198,9 +200,10 @@ namespace Interview.UI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ScheduleTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleType = table.Column<int>(type: "int", nullable: false),
                     StartValue = table.Column<int>(type: "int", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
+                    ScheduleTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,8 +218,7 @@ namespace Interview.UI.Migrations
                         name: "FK_Schedules_ScheduleTypes_ScheduleTypeId",
                         column: x => x.ScheduleTypeId,
                         principalTable: "ScheduleTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -225,14 +227,13 @@ namespace Interview.UI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserLanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EquityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserLanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserFirstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserLastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsExternal = table.Column<bool>(type: "bit", nullable: true),
-                    DateInserted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    DateInserted = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,12 +242,6 @@ namespace Interview.UI.Migrations
                         name: "FK_UserSettings_Contests_ContestId",
                         column: x => x.ContestId,
                         principalTable: "Contests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserSettings_Equities_EquityId",
-                        column: x => x.EquityId,
-                        principalTable: "Equities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -259,8 +254,7 @@ namespace Interview.UI.Migrations
                         name: "FK_UserSettings_UserLanguages_UserLanguageId",
                         column: x => x.UserLanguageId,
                         principalTable: "UserLanguages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -303,6 +297,55 @@ namespace Interview.UI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EquityUserSetting",
+                columns: table => new
+                {
+                    EquitiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EquityUserSetting", x => new { x.EquitiesId, x.UserSettingsId });
+                    table.ForeignKey(
+                        name: "FK_EquityUserSetting_Equities_EquitiesId",
+                        column: x => x.EquitiesId,
+                        principalTable: "Equities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquityUserSetting_UserSettings_UserSettingsId",
+                        column: x => x.UserSettingsId,
+                        principalTable: "UserSettings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserSettingEquity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserSettingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EquityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSettingEquity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserSettingEquity_Equities_EquityId",
+                        column: x => x.EquityId,
+                        principalTable: "Equities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserSettingEquity_UserSettings_UserSettingId",
+                        column: x => x.UserSettingId,
+                        principalTable: "UserSettings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_ContestId",
                 table: "EmailTemplates",
@@ -312,6 +355,11 @@ namespace Interview.UI.Migrations
                 name: "IX_EmailTemplates_EmailTypeId",
                 table: "EmailTemplates",
                 column: "EmailTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquityUserSetting_UserSettingsId",
+                table: "EquityUserSetting",
+                column: "UserSettingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_ContestId",
@@ -344,14 +392,19 @@ namespace Interview.UI.Migrations
                 column: "ScheduleTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserSettingEquity_EquityId",
+                table: "UserSettingEquity",
+                column: "EquityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSettingEquity_UserSettingId",
+                table: "UserSettingEquity",
+                column: "UserSettingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserSettings_ContestId",
                 table: "UserSettings",
                 column: "ContestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSettings_EquityId",
-                table: "UserSettings",
-                column: "EquityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSettings_RoleId",
@@ -371,6 +424,9 @@ namespace Interview.UI.Migrations
                 name: "EmailTemplates");
 
             migrationBuilder.DropTable(
+                name: "EquityUserSetting");
+
+            migrationBuilder.DropTable(
                 name: "GroupsOwners");
 
             migrationBuilder.DropTable(
@@ -380,7 +436,7 @@ namespace Interview.UI.Migrations
                 name: "Schedules");
 
             migrationBuilder.DropTable(
-                name: "UserSettings");
+                name: "UserSettingEquity");
 
             migrationBuilder.DropTable(
                 name: "EmailTypes");
@@ -398,13 +454,16 @@ namespace Interview.UI.Migrations
                 name: "Equities");
 
             migrationBuilder.DropTable(
+                name: "UserSettings");
+
+            migrationBuilder.DropTable(
+                name: "Contests");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "UserLanguages");
-
-            migrationBuilder.DropTable(
-                name: "Contests");
         }
     }
 }

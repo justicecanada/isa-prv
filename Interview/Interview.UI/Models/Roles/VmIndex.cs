@@ -46,24 +46,7 @@ namespace Interview.UI.Models.Roles
         [Display(Name = "UserLanguageId")]
         public Guid? UserLanguageId { get; set; }
 
-        #region Equities
-
-        [Display(Name = "EquityWoman")]
-        public bool EquityWoman { get; set;  }
-
-        [Display(Name = "EquityIndigenous")]
-        public bool EquityIndigenous { get; set;  }
-
-        [Display(Name = "EquityDisability")]
-        public bool EquityDisability { get; set; }
-
-        [Display(Name = "EquityRacialized")]
-        public bool EquityRacialized { get; set; }
-
-        [Display(Name = "EquitySOGIE")]
-        public bool EquitySOGIE { get; set;  }
-
-        #endregion
+        public List<VmEquity> Equities { get; set; }
 
     }
 

@@ -116,30 +116,32 @@ namespace Interview.UI.Controllers
         private async Task SetIndexViewBag()
         {
 
-            VmContest vmContest;            
+            // Contest
+            var contest = _state.ContestId == null ? new Contest() : await _dal.GetEntity<Contest>((Guid)_state.ContestId, true);
+            var vmContest = _mapper.Map<VmContest>(contest);
+            ViewBag.VmContest = vmContest;
+
+            // UserSettings
+            var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
+            var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
+            ViewBag.VmUserSettings = vmUserSettings;
+
             var roles = await _dal.GetAllRoles();
             var vmRoles = _mapper.Map(roles, typeof(List<Role>), typeof(List<VmRole>));
+            ViewBag.VmRoles = vmRoles;
+
+            // UserLanguages
             var userLanguages = await _dal.GetAllUserLanguages();
             var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
-            var userSettings = await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
-            var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
+            ViewBag.VmUserLanguages = vmUserLanguages;
+
+            // Equities
             var equities = await _dal.GetAllEquities();
             var vmEquities = _mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
-            var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
-
-            if (_state.ContestId == null)
-                vmContest = new VmContest();
-            else
-            {
-                var contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId, true);
-                vmContest = _mapper.Map<VmContest>(contest);
-            }
-
-            ViewBag.VmContest = vmContest;
-            ViewBag.VmRoles = vmRoles;
-            ViewBag.VmUserLanguages = vmUserLanguages;
-            ViewBag.VmUserSettings = vmUserSettings;
             ViewBag.VmEquities = vmEquities;
+
+            // MockUsers
+            var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
             ViewBag.MockExistingExternalUsers = mockExistingExternalUsers;
 
         }

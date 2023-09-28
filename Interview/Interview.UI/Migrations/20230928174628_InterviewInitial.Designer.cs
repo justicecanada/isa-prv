@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20230926155502_UserLanguageName")]
-    partial class UserLanguageName
+    [Migration("20230928174628_InterviewInitial")]
+    partial class InterviewInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Interview.UI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("EquityUserSetting", b =>
+                {
+                    b.Property<Guid>("EquitiesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserSettingsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EquitiesId", "UserSettingsId");
+
+                    b.HasIndex("UserSettingsId");
+
+                    b.ToTable("EquityUserSetting");
+                });
 
             modelBuilder.Entity("Interview.Entities.Contest", b =>
                 {
@@ -155,14 +170,15 @@ namespace Interview.UI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NameEN")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameFR")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserSettingsId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ViewEN")
                         .HasColumnType("nvarchar(max)");
@@ -397,11 +413,8 @@ namespace Interview.UI.Migrations
                     b.Property<Guid>("ContestId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset?>("DateInserted")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid>("EquityId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("DateInserted")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("IsExternal")
                         .HasColumnType("bit");
@@ -412,10 +425,10 @@ namespace Interview.UI.Migrations
                     b.Property<string>("UserFirstname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserLanguageId")
+                    b.Property<Guid?>("UserLanguageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserLastname")
@@ -425,13 +438,47 @@ namespace Interview.UI.Migrations
 
                     b.HasIndex("ContestId");
 
-                    b.HasIndex("EquityId");
-
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserLanguageId");
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("Interview.Entities.UserSettingEquity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserSettingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquityId");
+
+                    b.HasIndex("UserSettingId");
+
+                    b.ToTable("UserSettingEquity");
+                });
+
+            modelBuilder.Entity("EquityUserSetting", b =>
+                {
+                    b.HasOne("Interview.Entities.Equity", null)
+                        .WithMany()
+                        .HasForeignKey("EquitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Interview.Entities.UserSetting", null)
+                        .WithMany()
+                        .HasForeignKey("UserSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Interview.Entities.EmailTemplate", b =>
@@ -506,23 +553,38 @@ namespace Interview.UI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Interview.Entities.Equity", null)
-                        .WithMany("UserSettings")
-                        .HasForeignKey("EquityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Interview.Entities.Role", null)
+                    b.HasOne("Interview.Entities.Role", "Role")
                         .WithMany("UserSettings")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Interview.Entities.UserLanguage", null)
+                    b.HasOne("Interview.Entities.UserLanguage", "UserLanguage")
                         .WithMany("UserSettings")
-                        .HasForeignKey("UserLanguageId")
+                        .HasForeignKey("UserLanguageId");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("UserLanguage");
+                });
+
+            modelBuilder.Entity("Interview.Entities.UserSettingEquity", b =>
+                {
+                    b.HasOne("Interview.Entities.Equity", "Equity")
+                        .WithMany("EmailTemplateEquities")
+                        .HasForeignKey("EquityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Interview.Entities.UserSetting", "UserSetting")
+                        .WithMany("EmailTemplateEquities")
+                        .HasForeignKey("UserSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equity");
+
+                    b.Navigation("UserSetting");
                 });
 
             modelBuilder.Entity("Interview.Entities.Contest", b =>
@@ -545,7 +607,7 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.Equity", b =>
                 {
-                    b.Navigation("UserSettings");
+                    b.Navigation("EmailTemplateEquities");
                 });
 
             modelBuilder.Entity("Interview.Entities.Group", b =>
@@ -571,6 +633,11 @@ namespace Interview.UI.Migrations
             modelBuilder.Entity("Interview.Entities.UserLanguage", b =>
                 {
                     b.Navigation("UserSettings");
+                });
+
+            modelBuilder.Entity("Interview.Entities.UserSetting", b =>
+                {
+                    b.Navigation("EmailTemplateEquities");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,6 +12,7 @@ namespace Interview.Entities
 
         public UserSetting()
         {
+            EmailTemplateEquities = new List<UserSettingEquity>();
             Equities = new List<Equity>();
         }
 
@@ -26,6 +27,10 @@ namespace Interview.Entities
 
         public UserLanguage? UserLanguage { get; set;  }
         public Role? Role { get; set;  }
+
+        // Many to Many
+        // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
+        public List<UserSettingEquity> EmailTemplateEquities { get; set; }
         public List<Equity> Equities { get; set; }
 
     }

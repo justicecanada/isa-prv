@@ -22,6 +22,21 @@ namespace Interview.UI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EquityUserSetting", b =>
+                {
+                    b.Property<Guid>("EquitiesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserSettingsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EquitiesId", "UserSettingsId");
+
+                    b.HasIndex("UserSettingsId");
+
+                    b.ToTable("EquityUserSetting");
+                });
+
             modelBuilder.Entity("Interview.Entities.Contest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -162,9 +177,6 @@ namespace Interview.UI.Migrations
                     b.Property<string>("NameFR")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserSettingsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ViewEN")
                         .HasColumnType("nvarchar(max)");
 
@@ -172,8 +184,6 @@ namespace Interview.UI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserSettingsId");
 
                     b.ToTable("Equities");
                 });
@@ -432,6 +442,42 @@ namespace Interview.UI.Migrations
                     b.ToTable("UserSettings");
                 });
 
+            modelBuilder.Entity("Interview.Entities.UserSettingEquity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserSettingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquityId");
+
+                    b.HasIndex("UserSettingId");
+
+                    b.ToTable("UserSettingEquity");
+                });
+
+            modelBuilder.Entity("EquityUserSetting", b =>
+                {
+                    b.HasOne("Interview.Entities.Equity", null)
+                        .WithMany()
+                        .HasForeignKey("EquitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Interview.Entities.UserSetting", null)
+                        .WithMany()
+                        .HasForeignKey("UserSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Interview.Entities.EmailTemplate", b =>
                 {
                     b.HasOne("Interview.Entities.Contest", null)
@@ -445,17 +491,6 @@ namespace Interview.UI.Migrations
                         .HasForeignKey("EmailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Interview.Entities.Equity", b =>
-                {
-                    b.HasOne("Interview.Entities.UserSetting", "UserSettings")
-                        .WithMany("Equities")
-                        .HasForeignKey("UserSettingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserSettings");
                 });
 
             modelBuilder.Entity("Interview.Entities.Group", b =>
@@ -530,6 +565,25 @@ namespace Interview.UI.Migrations
                     b.Navigation("UserLanguage");
                 });
 
+            modelBuilder.Entity("Interview.Entities.UserSettingEquity", b =>
+                {
+                    b.HasOne("Interview.Entities.Equity", "Equity")
+                        .WithMany("EmailTemplateEquities")
+                        .HasForeignKey("EquityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Interview.Entities.UserSetting", "UserSetting")
+                        .WithMany("EmailTemplateEquities")
+                        .HasForeignKey("UserSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equity");
+
+                    b.Navigation("UserSetting");
+                });
+
             modelBuilder.Entity("Interview.Entities.Contest", b =>
                 {
                     b.Navigation("EmailTemplates");
@@ -546,6 +600,11 @@ namespace Interview.UI.Migrations
             modelBuilder.Entity("Interview.Entities.EmailType", b =>
                 {
                     b.Navigation("EmailTemplates");
+                });
+
+            modelBuilder.Entity("Interview.Entities.Equity", b =>
+                {
+                    b.Navigation("EmailTemplateEquities");
                 });
 
             modelBuilder.Entity("Interview.Entities.Group", b =>
@@ -575,7 +634,7 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.UserSetting", b =>
                 {
-                    b.Navigation("Equities");
+                    b.Navigation("EmailTemplateEquities");
                 });
 #pragma warning restore 612, 618
         }
