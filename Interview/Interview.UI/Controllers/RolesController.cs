@@ -28,22 +28,18 @@ namespace Interview.UI.Controllers
         private readonly IStringLocalizer<RolesController> _localizer;
         private readonly IOptions<JusticeOptions> _justiceOptions;
 
-        private readonly MockIdentityContext _mockIdentityContext;
-
         #endregion
 
         #region Constructors
 
-        public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, MockIdentityContext mockIdentityContext,
-            IStringLocalizer<RolesController> localizer, IOptions<JusticeOptions> justiceOptions) : base(modelAccessor)
+        public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
+            IOptions<JusticeOptions> justiceOptions) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
             _state = state;
             _localizer = localizer;
             _justiceOptions = justiceOptions;
-
-            _mockIdentityContext = mockIdentityContext;
         }
 
         #endregion
@@ -130,8 +126,7 @@ namespace Interview.UI.Controllers
             List<MockUser> result = null;
 
             if (!string.IsNullOrEmpty(query))
-                result = await _mockIdentityContext.MockUsers.Where(x => ((x.FirstName.ToLower().StartsWith(query.ToLower()) || x.LastName.ToLower().StartsWith(query.ToLower()))
-                    && x.UserType == UserTypes.Internal)).ToListAsync();
+                result = await _dal.LookupInteralMockUser(query);
 
             return new JsonResult(new { result = true, results = result })
             {
@@ -167,7 +162,7 @@ namespace Interview.UI.Controllers
             ViewBag.ShowEquities = _justiceOptions.Value.ShowEquitiesOnRoles;
 
             // MockUsers
-            var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
+            var mockExistingExternalUsers = await _dal.GetListExistingExternalMockUser();
             ViewBag.MockExistingExternalUsers = mockExistingExternalUsers;
 
         }
@@ -182,8 +177,7 @@ namespace Interview.UI.Controllers
 
                 case UserTypes.Internal:
 
-                    result = await _mockIdentityContext.MockUsers.Where(x => (x.Id == vmIndex.InternalId && 
-                        x.UserType == UserTypes.Internal)).FirstOrDefaultAsync();
+                    result = await _dal.GetMockUserByIdAndType((Guid)vmIndex.InternalId, UserTypes.Internal);
                     if (result == null)
                         ModelState.AddModelError("InternalName", _localizer["InternalUserDoesNotExist"]);
 
@@ -191,8 +185,7 @@ namespace Interview.UI.Controllers
 
                 case UserTypes.ExistingExternal:
 
-                    result = await _mockIdentityContext.MockUsers.Where(x => (x.Id == vmIndex.ExistingExternalId &&
-                        x.UserType == UserTypes.ExistingExternal)).FirstOrDefaultAsync();
+                    result = await _dal.GetMockUserByIdAndType((Guid)vmIndex.ExistingExternalId, UserTypes.ExistingExternal);
 
                     break;
 
@@ -207,8 +200,7 @@ namespace Interview.UI.Controllers
                         UserType = UserTypes.NewExternal
                     };
 
-                    _mockIdentityContext.Entry(result).State = EntityState.Added;
-                    await _mockIdentityContext.SaveChangesAsync();
+                    await _dal.AddMockUser(result);
 
                     break;
 

@@ -1,8 +1,9 @@
 ﻿using Interview.Entities;
+using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI.Services.DAL
 {
-    
+
     public interface IDal
     {
 
@@ -29,6 +30,18 @@ namespace Interview.UI.Services.DAL
         Task<List<Equity>> GetAllEquities();
 
         Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId);
+
+        #endregion
+
+        #region Mock Identity Methods
+
+        Task<List<MockUser>> LookupInteralMockUser(string query);
+
+        Task<List<MockUser>> GetListExistingExternalMockUser();
+
+        Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType);
+
+        Task<Guid> AddMockUser(MockUser mockUser);
 
         #endregion
 

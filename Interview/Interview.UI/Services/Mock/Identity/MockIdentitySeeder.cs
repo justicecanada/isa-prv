@@ -10,13 +10,13 @@ namespace Interview.UI.Services.Mock.Identity
 
         #region Declarations
 
-        private readonly MockIdentityContext _context;
+        private readonly SqlContext _context;
 
         #endregion
 
         #region Constructors
 
-        public MockIdentitySeeder(MockIdentityContext context)
+        public MockIdentitySeeder(SqlContext context)
         {
             _context = context;
         }
