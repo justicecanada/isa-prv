@@ -10,6 +10,7 @@ namespace Interview.Entities
     public class Equity : EntityBase
     {
 
+        public string Name { get; set; }
         public Guid UserSettingsId { get; set; }
         public string? NameFR { get; set; }
         public string? NameEN { get; set; }

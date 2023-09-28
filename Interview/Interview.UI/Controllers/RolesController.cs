@@ -123,6 +123,8 @@ namespace Interview.UI.Controllers
             var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
             var userSettings = await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
             var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
+            var equities = await _dal.GetAllEquities();
+            var vmEquities = _mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
             var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
 
             if (_state.ContestId == null)
@@ -137,6 +139,7 @@ namespace Interview.UI.Controllers
             ViewBag.VmRoles = vmRoles;
             ViewBag.VmUserLanguages = vmUserLanguages;
             ViewBag.VmUserSettings = vmUserSettings;
+            ViewBag.VmEquities = vmEquities;
             ViewBag.MockExistingExternalUsers = mockExistingExternalUsers;
 
         }

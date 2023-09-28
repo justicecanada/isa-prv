@@ -301,6 +301,15 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Equity>> GetAllEquities()
+        {
+
+            var result = await _context.Equities.ToListAsync();
+
+            return result;
+
+        }
+
         public async Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId)
         {
 

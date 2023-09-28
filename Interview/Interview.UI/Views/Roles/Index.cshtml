@@ -54,6 +54,8 @@
         });
     }
 
+    List<VmEquity> vmEquities = ViewBag.VmEquities;
+
 }
 
 @{
@@ -125,7 +127,26 @@
 
             <div class="col-md-4">
 
-
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <label>@localizer["Equities"]</label>
+                    </div>
+                    <div class="col-md-12">
+                        @Html.CheckBoxFor(x => x.EquityWoman, new { @class = "form-check-input" }) @Html.LabelFor(x => x.EquityWoman, new { @class = "form-check-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.CheckBoxFor(x => x.EquityIndigenous, new { @class = "form-check-input" }) @Html.LabelFor(x => x.EquityIndigenous, new { @class = "form-check-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.CheckBoxFor(x => x.EquityDisability, new { @class = "form-check-input" }) @Html.LabelFor(x => x.EquityDisability, new { @class = "form-check-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.CheckBoxFor(x => x.EquityRacialized, new { @class = "form-check-input" }) @Html.LabelFor(x => x.EquityRacialized, new { @class = "form-check-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.CheckBoxFor(x => x.EquitySOGIE, new { @class = "form-check-input" }) @Html.LabelFor(x => x.EquitySOGIE, new { @class = "form-check-label" })
+                    </div>
+                </div>
 
             </div>
 
