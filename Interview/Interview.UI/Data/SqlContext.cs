@@ -46,6 +46,7 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.ScheduleType> ScheduleTypes { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserLanguage> UserLanguages { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserSetting> UserSettings { get; set; }
+        public DbSet<Interview.Entities.UserSettingEquity> UserSettingEquities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

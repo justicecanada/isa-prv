@@ -71,6 +71,8 @@ namespace Interview.UI.Controllers
             if (ModelState.IsValid)
             {
 
+                // Handle UserSetting
+                Guid userSettingId;
                 UserSetting userSetting = new UserSetting()
                 {
                     ContestId = (Guid)_state.ContestId,
@@ -82,8 +84,18 @@ namespace Interview.UI.Controllers
                     IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
                     DateInserted = DateTime.Now
                 };
+                userSettingId = await _dal.AddEntity(userSetting);
 
-                await _dal.AddEntity(userSetting);
+                // Handle equities
+                foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
+                {
+                    var userSettingEquity = new UserSettingEquity()
+                    {
+                        UserSettingId = userSettingId,
+                        EquityId = (Guid)equity.Id
+                    };
+                    await _dal.AddEntity(userSettingEquity);
+                }
 
                 return RedirectToAction("Index");
 
@@ -137,11 +149,6 @@ namespace Interview.UI.Controllers
             var userLanguages = await _dal.GetAllUserLanguages();
             var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
             ViewBag.VmUserLanguages = vmUserLanguages;
-
-            //// Equities
-            //var equities = await _dal.GetAllEquities();
-            //var vmEquities = _mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
-            //ViewBag.VmEquities = vmEquities;
 
             // MockUsers
             var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
