@@ -2,6 +2,7 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Roles;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Interview.UI.Controllers
@@ -24,6 +26,7 @@ namespace Interview.UI.Controllers
         private readonly IMapper _mapper;
         private readonly IState _state;
         private readonly IStringLocalizer<RolesController> _localizer;
+        private readonly IOptions<JusticeOptions> _justiceOptions;
 
         private readonly MockIdentityContext _mockIdentityContext;
 
@@ -32,12 +35,13 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, MockIdentityContext mockIdentityContext,
-            IStringLocalizer<RolesController> localizer) : base(modelAccessor)
+            IStringLocalizer<RolesController> localizer, IOptions<JusticeOptions> justiceOptions) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
             _state = state;
             _localizer = localizer;
+            _justiceOptions = justiceOptions;
 
             _mockIdentityContext = mockIdentityContext;
         }
@@ -51,9 +55,14 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
-            var equities = await _dal.GetAllEquities();
-            List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
-            result.Equities = vmEquities;
+
+            // // Handle equities (this will be handled by the role the logged in user is in)
+            if (_justiceOptions.Value.ShowEquitiesOnRoles)
+            {
+                var equities = await _dal.GetAllEquities();
+                List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
+                result.Equities = vmEquities;
+            }
 
             await SetIndexViewBag();
             
@@ -86,15 +95,18 @@ namespace Interview.UI.Controllers
                 };
                 userSettingId = await _dal.AddEntity(userSetting);
 
-                // Handle equities
-                foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
-                {
-                    var userSettingEquity = new UserSettingEquity()
+                // Handle equities (this will be handled by the role the logged in user is in)
+                if (_justiceOptions.Value.ShowEquitiesOnRoles)
+                {                   
+                    foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {
-                        UserSettingId = userSettingId,
-                        EquityId = (Guid)equity.Id
-                    };
-                    await _dal.AddEntity(userSettingEquity);
+                        var userSettingEquity = new UserSettingEquity()
+                        {
+                            UserSettingId = userSettingId,
+                            EquityId = (Guid)equity.Id
+                        };
+                        await _dal.AddEntity(userSettingEquity);
+                    }
                 }
 
                 return RedirectToAction("Index");
@@ -149,6 +161,9 @@ namespace Interview.UI.Controllers
             var userLanguages = await _dal.GetAllUserLanguages();
             var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
             ViewBag.VmUserLanguages = vmUserLanguages;
+
+            // Show Equities
+            ViewBag.ShowEquities = _justiceOptions.Value.ShowEquitiesOnRoles;
 
             // MockUsers
             var mockExistingExternalUsers = await _mockIdentityContext.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();

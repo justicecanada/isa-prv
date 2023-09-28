@@ -54,7 +54,7 @@
         });
     }
 
-    //List<VmEquity> vmEquities = ViewBag.VmEquities;
+    bool showEquities = ViewBag.ShowEquities;
 
 }
 
@@ -127,20 +127,24 @@
 
             <div class="col-md-4">
 
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <label>@localizer["Equities"]</label>
-                    </div>              
-                    @{
-                        for (int i = 0; i < Model.Equities.Count; i++)
-                        {
-                            ViewData.TemplateInfo.HtmlFieldPrefix = $"Equities[{i.ToString()}]";
-                            VmEquity vmEquity = Model.Equities[i];
-                            await Html.RenderPartialAsync("EquityCheckbox", vmEquity);
+                @if (showEquities)
+                {
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label>@localizer["Equities"]</label>
+                        </div>              
+                        @{
+                            for (int i = 0; i < Model.Equities.Count; i++)
+                            {
+                                ViewData.TemplateInfo.HtmlFieldPrefix = $"Equities[{i.ToString()}]";
+                                VmEquity vmEquity = Model.Equities[i];
+                                await Html.RenderPartialAsync("EquityCheckbox", vmEquity);
+                            }
+                            ViewData.TemplateInfo.HtmlFieldPrefix = "";
                         }
-                        ViewData.TemplateInfo.HtmlFieldPrefix = "";
-                    }
-                </div>
+                    </div>
+                }
 
             </div>
 

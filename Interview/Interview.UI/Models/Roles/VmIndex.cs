@@ -46,7 +46,7 @@ namespace Interview.UI.Models.Roles
         [Display(Name = "UserLanguageId")]
         public Guid? UserLanguageId { get; set; }
 
-        public List<VmEquity> Equities { get; set; }
+        public List<VmEquity>? Equities { get; set; }
 
     }
 
