@@ -65,8 +65,8 @@ namespace Interview.UI
 
             // Mocked Services
             services.AddTransient<MockSeeder>();
-            services.AddDbContext<MockIdentityContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
+            //services.AddDbContext<MockIdentityContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
             services.AddTransient<MockIdentitySeeder>();
 
             // WET
