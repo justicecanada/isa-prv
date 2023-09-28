@@ -1,0 +1,53 @@
+﻿@using System.Text
+
+@{
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    VmUserSetting vmUserSetting = ViewBag.VmUserSetting;
+
+    string userName = $"{vmUserSetting.UserLastname}, {vmUserSetting.UserFirstname}";
+    string roleName = cultureName == Constants.EnglishCulture ? vmUserSetting.Role.RoleNameEN : vmUserSetting.Role.RoleNameFR;
+    string language = null;
+    if (vmUserSetting.UserLanguage != null)
+        language = cultureName == Constants.EnglishCulture ? vmUserSetting.UserLanguage.NameEN : vmUserSetting.UserLanguage.NameFR;
+    bool showEquities = ViewBag.ShowEquities;
+    string equities = "";
+
+    if (showEquities)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        foreach (var userSettingEquity in vmUserSetting.UserSettingEquities)
+        {
+            sb.Append(cultureName == Constants.EnglishCulture ? userSettingEquity.Equity.NameEN : userSettingEquity.Equity.NameFR);
+            if (userSettingEquity != vmUserSetting.UserSettingEquities.Last())
+                sb.Append(", ");
+        }
+
+        equities = sb.ToString();
+    }
+
+}
+
+<tr>
+    <td>
+        <a href="#">@userName</a>
+    </td>
+    <td>@roleName</td>
+    <td>@language</td>
+    @if (showEquities)
+    {
+        <td>@equities</td>
+    }
+    <td>
+        <a href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = vmUserSetting.Id } )">
+            <span class="glyphicon glyphicon-edit text-info"></span>
+        </a>
+        <a href="@Url.Action("DeleteUserSetting", "Roles", new { userSettingsId = vmUserSetting.Id } )">
+            <span class="glyphicon glyphicon-trash text-danger"></span>
+        </a>
+
+        @*<span class="glyphicon glyphicon-send text-success"></span>*@
+
+    </td>
+</tr>

@@ -283,6 +283,47 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Role>> GetAllRoles()
+        {
+
+            var result = await _context.Roles.ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<UserLanguage>> GetAllUserLanguages()
+        {
+
+            var result = await _context.UserLanguages.ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Equity>> GetAllEquities()
+        {
+
+            var result = await _context.Equities.ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId)
+        {
+
+            var result = await _context.UserSettings.Where(x => x.ContestId == contestId)
+                .Include(x => x.Role)
+                .Include(x => x.UserLanguage)
+                .Include(x => x.UserSettingEquities)
+                .ThenInclude(x => x.Equity)
+                .ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
     }
