@@ -93,6 +93,7 @@
                 </div>
                 <div id="internalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.Internal ? "" : "none")">
                     @Html.EditorFor(x => x.InternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.InternalName, new { @class = "form-control" }) })
+                    @Html.HiddenFor(x => x.InternalId)
                 </div>
 
                 <div class="row">

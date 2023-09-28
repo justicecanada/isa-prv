@@ -151,7 +151,7 @@ namespace Interview.UI.Controllers
 
                 case UserTypes.Internal:
 
-                    result = await _mockIdentityContext.MockUsers.Where(x => (x.UserName == vmIndex.InternalName && 
+                    result = await _mockIdentityContext.MockUsers.Where(x => (x.Id == vmIndex.InternalId && 
                         x.UserType == UserTypes.Internal)).FirstOrDefaultAsync();
                     if (result == null)
                         ModelState.AddModelError("InternalName", _localizer["InternalUserDoesNotExist"]);

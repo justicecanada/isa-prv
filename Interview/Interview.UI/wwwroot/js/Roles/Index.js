@@ -35,10 +35,10 @@ var searchInternalUser = {
 
     Uri: "/Roles/LookupInteralUser",
     InputSelector: "#InternalName",
+    Hidden: $("#InternalId")[0],
 
     Init: function () {
 
-        //$(this.InputSelector).off("autocomplete");
         $(this.InputSelector).autocomplete({
             minLength: 3,
             source: function (request, response) {
@@ -54,9 +54,6 @@ var searchInternalUser = {
                             object.ID = item.id;
                             object.label = item.lastName + ", " + item.firstName;
                             object.value = item.name;
-                            
-                            //object.email = item.email;
-                            //object.website = item.website;
                             return object
                         }));
 
@@ -65,12 +62,9 @@ var searchInternalUser = {
 
             },
             select: function (event, ui) {
-                //debugger;
+                $(searchInternalUser.Hidden).val(ui.item.ID);
             },
         });
-        //    .autocomplete("instance")._renderItem = function (ul, item) {
-        //    debugger;
-        //};
 
     }
 

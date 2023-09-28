@@ -18,6 +18,8 @@ namespace Interview.UI.Models.Roles
         [RequiredIf("UserType", "UserType", UserTypes.Internal, ErrorMessage = "RequiredError")]      
         public string? InternalName { get; set;  }
 
+        public Guid? InternalId { get; set;  }
+
         [Display(Name = "ExistingExternalName")]
         [RequiredIf("UserType", "UserType", UserTypes.ExistingExternal, ErrorMessage = "RequiredError")]        
         public Guid? ExistingExternalId { get; set; }
