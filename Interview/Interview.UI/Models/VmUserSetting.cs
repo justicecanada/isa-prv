@@ -6,6 +6,11 @@ namespace Interview.UI.Models
     public class VmUserSetting : VmBase
     {
 
+        public VmUserSetting()
+        {
+            Equities = new List<VmEquity>();
+        }
+
         public Guid ContestId { get; set; }
         public Guid? UserLanguageId { get; set; }
         public Guid? EquityId { get; set; }
@@ -18,6 +23,7 @@ namespace Interview.UI.Models
 
         public VmUserLanguage? UserLanguage { get; set; }
         public VmRole? Role { get; set; }
+        public List<VmEquity> Equities { get; set; }
 
     }
 

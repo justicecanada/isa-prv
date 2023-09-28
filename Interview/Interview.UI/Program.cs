@@ -40,7 +40,7 @@ namespace Interview.UI
                 var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.MockSeeder>();
                 await seeder.EnsureRoles();
                 await seeder.EnsureUserLanguages();
-                await seeder.EnsureEquities();
+                //await seeder.EnsureEquities();
             }
 
         }

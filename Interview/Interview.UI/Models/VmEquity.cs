@@ -13,7 +13,7 @@ namespace Interview.UI.Models
         public string? ViewFR { get; set; }
         public string? ViewEN { get; set; }
 
-        public List<VmUserSetting> UserSettings { get; set; }
+        public VmUserSetting UserSettings { get; set; }
 
     }
 

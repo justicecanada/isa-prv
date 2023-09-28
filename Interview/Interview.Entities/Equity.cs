@@ -17,7 +17,7 @@ namespace Interview.Entities
         public string? ViewFR { get; set; }
         public string? ViewEN { get; set; }
 
-        public List<UserSetting> UserSettings { get; set; }
+        public UserSetting UserSettings { get; set; }
 
     }
 
