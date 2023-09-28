@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Text
+
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
@@ -9,6 +10,22 @@
     string language = null;
     if (vmUserSetting.UserLanguage != null)
         language = cultureName == Constants.EnglishCulture ? vmUserSetting.UserLanguage.NameEN : vmUserSetting.UserLanguage.NameFR;
+    bool showEquities = ViewBag.ShowEquities;
+    string equities = "";
+
+    if (showEquities)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        foreach (var userSettingEquity in vmUserSetting.UserSettingEquities)
+        {
+            sb.Append(cultureName == Constants.EnglishCulture ? userSettingEquity.Equity.NameEN : userSettingEquity.Equity.NameFR);
+            if (userSettingEquity != vmUserSetting.UserSettingEquities.Last())
+                sb.Append(", ");
+        }
+
+        equities = sb.ToString();
+    }
 
 }
 
@@ -18,6 +35,10 @@
     </td>
     <td>@roleName</td>
     <td>@language</td>
+    @if (showEquities)
+    {
+        <td>@equities</td>
+    }
     <td>
         <a href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = vmUserSetting.Id } )">
             <span class="glyphicon glyphicon-edit text-info"></span>

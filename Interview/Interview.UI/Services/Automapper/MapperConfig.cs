@@ -38,6 +38,9 @@ namespace Interview.UI.Services.Automapper
             CreateMap<Equity, VmEquity>();
             CreateMap<VmEquity, Equity>();
 
+            CreateMap<UserSettingEquity, VmUserSettingEquity>();
+            CreateMap<VmUserSettingEquity, UserSettingEquity>();
+
         }
 
     }

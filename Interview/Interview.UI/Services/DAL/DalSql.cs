@@ -316,6 +316,8 @@ namespace Interview.UI.Services.DAL
             var result = await _context.UserSettings.Where(x => x.ContestId == contestId)
                 .Include(x => x.Role)
                 .Include(x => x.UserLanguage)
+                .Include(x => x.UserSettingEquities)
+                .ThenInclude(x => x.Equity)
                 .ToListAsync();
 
             return result;

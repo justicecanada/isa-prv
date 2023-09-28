@@ -149,6 +149,7 @@ namespace Interview.UI.Controllers
             ViewBag.VmContest = vmContest;
 
             // UserSettings
+            // TODO: Get UserSettings and include Equities
             var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
             var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
             ViewBag.VmUserSettings = vmUserSettings;

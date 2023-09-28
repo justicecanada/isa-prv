@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Equities" xml:space="preserve">
-    <value>Equities (fr)</value>
+    <value>Membre dʼun groupe dʼéquité en matière dʼemploi (AE)</value>
   </data>
   <data name="ExistingExternal" xml:space="preserve">
     <value>Usager externe déjà existant</value>

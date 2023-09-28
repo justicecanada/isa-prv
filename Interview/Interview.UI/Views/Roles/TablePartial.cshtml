@@ -7,6 +7,7 @@
     List<VmUserSetting> vmUserSettings = ViewBag.VmUserSettings;
 
     Guid? userSettingIdToUpdate = (Guid?)TempData["UserSettingIdToUpdate"];
+    bool showEquities = ViewBag.ShowEquities;
 
 }
 
@@ -23,6 +24,10 @@ else
                     <th>@localizer["UserName"]</th>
                     <th>@localizer["Role"]</th>
                     <th>@localizer["Language"]</th>
+                    @if (showEquities)
+                    {
+                        <th>@localizer["Equities"]</th>
+                    }
                     <th>@localizer["Action"]</th>
                 </tr>
             </thead>

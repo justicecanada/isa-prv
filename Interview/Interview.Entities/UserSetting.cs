@@ -12,13 +12,13 @@ namespace Interview.Entities
 
         public UserSetting()
         {
-            EmailTemplateEquities = new List<UserSettingEquity>();
+            UserSettingEquities = new List<UserSettingEquity>();
             Equities = new List<Equity>();
         }
 
         public Guid ContestId { get; set; }
         public Guid? UserLanguageId { get; set;  }
-        public Guid RoleId { get; set;  }
+        public Guid? RoleId { get; set;  }
         public Guid UserId { get; set; }
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
@@ -30,7 +30,7 @@ namespace Interview.Entities
 
         // Many to Many
         // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
-        public List<UserSettingEquity> EmailTemplateEquities { get; set; }
+        public List<UserSettingEquity> UserSettingEquities { get; set; }
         public List<Equity> Equities { get; set; }
 
     }

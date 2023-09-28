@@ -120,6 +120,9 @@
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
+  <data name="Equities" xml:space="preserve">
+    <value>Member of an Employment Equity</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
