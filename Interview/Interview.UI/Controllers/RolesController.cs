@@ -179,13 +179,13 @@ namespace Interview.UI.Controllers
 
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-datatables/datatables.min.css'>");
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-DataTables/datatables.min.css'>");
 
             // js
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/roles/index.js?v={AssemblyVersion}'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-datatables/datatables.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/roles/tablepartial.js?v={AssemblyVersion}'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/Index.js?v={BuildId}'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/TablePartial.js?v={BuildId}'></script>");
 
         }
 

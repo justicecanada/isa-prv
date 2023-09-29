@@ -13,6 +13,7 @@ namespace Interview.UI.Controllers
         #region Declarations
 
         private string _assemblyVersion;
+        private string _buildId;
 
         #endregion
 
@@ -24,12 +25,12 @@ namespace Interview.UI.Controllers
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
 
             // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={AssemblyVersion}\" />");
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={BuildId}\" />");
             //WebTemplateModel.HTMLHeaderElements.Add("<link href=\"/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css\" rel=\"stylesheet\" />");
             WebTemplateModel.HTMLHeaderElements.Add("<script src=\"/lib/jquery/dist/jquery.min.js\"></script>");
 
             // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/site.js?v={AssemblyVersion} defer \"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/site.js?v={BuildId} defer \"></script>");
             //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js\"></script>");
 
             // Identifier
@@ -50,6 +51,19 @@ namespace Interview.UI.Controllers
                     _assemblyVersion = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
                 return _assemblyVersion;
+
+            }
+        }
+
+        protected string BuildId
+        {
+            get
+            {
+
+                if (string.IsNullOrEmpty(_buildId))
+                    _buildId = Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString();
+
+                return _buildId;
 
             }
         }
