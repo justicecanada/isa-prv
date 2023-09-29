@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <Content Remove="Views\Shared\Error.cshtml" />
+    <Content Remove="wwwroot\js\Dashboard.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\Dashboard.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\Dashboard.js" />
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap.js" />
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap.min.js" />
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap4.js" />

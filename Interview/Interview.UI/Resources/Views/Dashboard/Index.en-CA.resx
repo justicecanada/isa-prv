@@ -117,6 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btn_apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="btn_clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="dashboardFilters" xml:space="preserve">
+    <value>Dashboard Filters</value>
+  </data>
+  <data name="lbl_endDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="lbl_periodOfTime" xml:space="preserve">
+    <value>Period of Time</value>
+  </data>
+  <data name="lbl_process" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="lbl_startDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="selectOpt_AllProcesses" xml:space="preserve">
+    <value>All Processes</value>
+  </data>
+  <data name="selectOpt_DailyView" xml:space="preserve">
+    <value>Daily View</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Dashboard</value>
   </data>
