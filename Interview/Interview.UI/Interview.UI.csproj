@@ -56,10 +56,14 @@
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\jquery.dataTables.js" />
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\jquery.dataTables.min.js" />
     <None Include="wwwroot\lib\jquery-DataTables\datatables.js" />
-    <None Include="wwwroot\lib\jquery-DataTables\datatables.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\datatables.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.js" />
-    <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -79,6 +83,57 @@
     <Reference Include="GoC.WebTemplate.CoreMVC.Views">
       <HintPath>bin\Debug\net7.0\GoC.WebTemplate.CoreMVC.Views.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\Default\CalendarPartial.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Default\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Resources.en.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Resources.fr.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Roles\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Roles\TablePartial.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\fullcalendar.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\fullcalendar.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\fullcalendar.print.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\jquery.qtip.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\jquery.qtip.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\locale-all.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\moment.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-DataTables\datatables.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
