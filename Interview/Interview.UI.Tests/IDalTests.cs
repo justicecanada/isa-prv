@@ -178,6 +178,47 @@ namespace Interview.UI.Tests
 
         #endregion
 
+        #region Public Many To Many Test Methods
+
+        [TestMethod]
+        public async Task AddManyToMany()
+        {
+
+            Contest contest = (Contest)GetEntity<Contest>();
+            contest.Id = await _dal.AddEntity(contest);
+
+            UserSetting userSetting1 = (UserSetting)GetEntity<UserSetting>();
+            userSetting1.ContestId = contest.Id;
+            userSetting1.Id = await _dal.AddEntity(userSetting1);
+            UserSetting userSetting2 = (UserSetting)GetEntity<UserSetting>();
+            userSetting2.ContestId = contest.Id;
+            userSetting2.Id = await _dal.AddEntity(userSetting2);
+
+            Equity equity1 = (Equity)GetEntity<Equity>();
+            equity1.Id = await _dal.AddEntity(equity1);
+            Equity equity2 = (Equity)GetEntity<Equity>();
+            equity2.Id = await _dal.AddEntity(equity2);
+
+            UserSettingEquity userSettingEquity1 = new UserSettingEquity() { UserSettingId = userSetting1.Id, EquityId = equity1.Id };
+            await _dal.AddEntity(userSettingEquity1);
+            UserSettingEquity userSettingEquity2 = new UserSettingEquity() { UserSettingId = userSetting1.Id, EquityId = equity2.Id };
+            await _dal.AddEntity(userSettingEquity2);
+            UserSettingEquity userSettingEquity3 = new UserSettingEquity() { UserSettingId = userSetting2.Id, EquityId = equity1.Id };
+            await _dal.AddEntity(userSettingEquity3);
+            UserSettingEquity userSettingEquity4 = new UserSettingEquity() { UserSettingId = userSetting2.Id, EquityId = equity2.Id };
+            await _dal.AddEntity(userSettingEquity4);
+
+            List<UserSetting> getUserSetting = await _dal.GetUserSettingsByContestId(contest.Id);
+            foreach (var userSetting in getUserSetting)
+                Assert.IsTrue(userSetting.UserSettingEquities.Count == 2);
+
+            await _dal.DeleteEntity(equity1);
+            await _dal.DeleteEntity(equity2);
+
+        }
+
+        #endregion
+
         #region Private Methods
 
 

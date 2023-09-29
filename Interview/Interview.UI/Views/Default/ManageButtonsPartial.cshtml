@@ -1,0 +1,31 @@
+﻿@inject IViewLocalizer localizer
+
+<div class="row mrgn-bttm-md">
+
+    <div class="col-md-4">
+        <section class="alert alert-danger">
+            <p>@localizer["ManageProcess"]</p>
+            <div>
+                @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-danger" })
+                @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-default" })
+            </div>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section class="alert alert-warning">
+            <p>@localizer["RolesForProcess"]</p>
+            <div>
+                @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-warning" })
+            </div>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section class="alert alert-info">
+            <p>@localizer["StatsForInterviews"]</p>
+            <div>
+                @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })
+            </div>
+        </section>
+    </div>
+
+</div>

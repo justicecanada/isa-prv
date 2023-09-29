@@ -5,6 +5,7 @@
 @inject IViewLocalizer localizer
 
 @{
+    
     ViewBag.Title = localizer["Title"].Value;
 
     ViewBag.FieldOrder = new List<string>(new string[]
@@ -13,7 +14,6 @@
         "ContactNumber", "InterviewDuration", "MembersIntroEN", "MembersIntroFR", "CandidatesIntroEN", "CandidatesIntroFR"
     }).Select(x => x.ToLower()).ToList();
 
-    string contestId = ViewData["contestId"].ToString();
     string h3 = Model.Id == null ? localizer["AddProcess"].Value : localizer["EditProcess"].Value;
 
     List<VmSchedule> schedules = ViewBag.Schedules;
@@ -22,7 +22,7 @@
 }
 
 @{
-    await Html.RenderPartialAsync("TopMenu");
+    await Html.RenderPartialAsync("TopMenuPartial");
 }
 
 <h3>
@@ -178,7 +178,7 @@
             <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ContestSave", "Contests")
                formmethod="post" />
         }
-        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", new { contestId = contestId }, new { @class = "btn btn-default" })
+        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", null, new { @class = "btn btn-default" })
 
     </div>
 

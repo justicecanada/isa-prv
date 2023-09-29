@@ -6,6 +6,7 @@ using Interview.UI.Services.Automapper;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 using GoC.WebTemplate.Components.Core.Services;
+using Interview.UI.Services.State;
 
 namespace Interview.UI.Controllers
 {
@@ -16,15 +17,17 @@ namespace Interview.UI.Controllers
 
         private readonly DalSql _dal;
         private readonly IMapper _mapper;
+        private readonly IState _state;
 
         #endregion
 
         #region Constructors
 
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
+        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state) : base(modelAccessor)
         {
             _dal = dal;
             _mapper = mapper;
+            _state = state;
         }
 
         #endregion
@@ -49,6 +52,8 @@ namespace Interview.UI.Controllers
         {
 
             await _dal.DeleteEntity<Contest>(contestId);
+
+            _state.ContestId = null;
 
             return RedirectToAction("Index");
 

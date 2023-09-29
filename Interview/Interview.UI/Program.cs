@@ -1,21 +1,24 @@
-using Microsoft.AspNetCore.Hosting;
-
 namespace Interview.UI
 {
 
     public class Program
     {
-        public static int Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             try
             {
-                CreateHostBuilder(args).Build().Run();
-                return 0;
+
+                IHost host = CreateHostBuilder(args).Build();
+
+                await SeedMockedData(host);
+                await SeedMockUsers(host);
+                host.Run();
+
             }
             catch (Exception ex)
             {
-                return 1;
+                throw ex;
             }
 
         }
@@ -26,6 +29,34 @@ namespace Interview.UI
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static async Task SeedMockedData(IHost host)
+        {
+
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.MockSeeder>();
+                await seeder.EnsureRoles();
+                await seeder.EnsureUserLanguages();
+                await seeder.EnsureEquities();
+            }
+
+        }
+
+        private static async Task SeedMockUsers(IHost host)
+        {
+
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.Identity.MockIdentitySeeder>();
+                await seeder.EnsureUsers();
+            }
+
+        }
 
     }
 

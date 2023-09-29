@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Interview.Entities.Contest" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAANAAEAAAgQAAAAAgAAAoAGAAAIAAAlAIAUAABEA=</HashCode>
+      <FileName>Contest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EmailTemplates" />
+      <Property Name="Interviews" />
+      <Property Name="UserSettings" />
+      <Property Name="Schedules" />
+      <Property Name="Groups" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Interview.Entities.EmailTemplate" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAEAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAgAA=</HashCode>
+      <FileName>EmailTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.EmailType" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAABAAAAACAAAAAAAAAAAAAAABAAAAAAAAE=</HashCode>
+      <FileName>EmailType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EmailTemplates" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Interview.Entities.Interview" Collapsed="true">
+    <Position X="2.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAABAEAAACAAAAABIgAAAAAAAAAAAAEAAAAEAAAAA=</HashCode>
+      <FileName>Interview.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="InterviewUsers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Interview.Entities.InterviewUser" Collapsed="true">
+    <Position X="2.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>InterviewUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.UserSetting" Collapsed="true">
+    <Position X="5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAQAAAAAEIAAAAgIAAAgAAAQEAAAAAIAAAA=</HashCode>
+      <FileName>UserSetting.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UserLanguage" />
+      <Property Name="Role" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Equities" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Interview.Entities.Role" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAQAAAAAAGQAAAAAAQAAAAA=</HashCode>
+      <FileName>Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.UserLanguage" Collapsed="true">
+    <Position X="5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAACAAAAQAAAAAACAAAAAAAAAAAAE=</HashCode>
+      <FileName>UserLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.Equity" Collapsed="true">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAACAAAAQAAAAAACIAAAAAAAAEAAE=</HashCode>
+      <FileName>Equity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.Schedule" Collapsed="true">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAIAAAAAEAAAAQAAAAA=</HashCode>
+      <FileName>Schedule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.Group" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAQAAEAE=</HashCode>
+      <FileName>Group.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="GroupOwners" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Interview.Entities.GroupOwner" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GroupOwner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

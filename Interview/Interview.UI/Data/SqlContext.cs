@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Interview.UI.Services.Mock.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Interview.UI.Data
 {
@@ -20,7 +21,9 @@ namespace Interview.UI.Data
 
             _connectionString = config.GetConnectionString("SQLConnectionString");
 
-            Database.Migrate();
+            //Database.EnsureDeletedAsync().Wait();
+            //Database.EnsureCreatedAsync().Wait();
+            //Database.Migrate();
 
         }
 
@@ -44,6 +47,10 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.ScheduleType> ScheduleTypes { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserLanguage> UserLanguages { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserSetting> UserSettings { get; set; }
+        public DbSet<Interview.Entities.UserSettingEquity> UserSettingEquities { get; set; }
+
+        // Mocked up data
+        public DbSet<Interview.UI.Services.Mock.Identity.MockUser> MockUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

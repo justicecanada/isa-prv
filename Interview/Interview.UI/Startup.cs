@@ -15,6 +15,11 @@ using Newtonsoft.Json;
 using System.Data.SqlTypes;
 using System.Globalization;
 using GoC.WebTemplate.Components.Core.Services;
+using Interview.UI.Services.State;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Interview.UI.Services.Mock;
+using Interview.UI.Services.Mock.Identity;
+using Interview.UI.Models.AppSettings;
 
 namespace Interview.UI
 {
@@ -41,12 +46,28 @@ namespace Interview.UI
 
             services.AddAutoMapper(typeof(MapperConfig));
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
-                options.Filters.Add(typeof(ContestIdFilter));
             })
                 .AddRazorRuntimeCompilation();
+
+            services.AddScoped<IState, SessionState>();
+            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
+
+            // Mocked Services
+            services.AddTransient<MockSeeder>();
+            //services.AddDbContext<MockIdentityContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
+            services.AddTransient<MockIdentitySeeder>();
 
             // WET
             services.AddModelAccessor();
@@ -94,6 +115,7 @@ namespace Interview.UI
 
             app.UseRouting();
             //app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

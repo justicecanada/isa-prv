@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <UserSecretsId>7934bdbe-ecf1-43e8-befa-97e7b8e58718</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
@@ -38,13 +38,38 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\lib\Calendar\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\js\Dashboard.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap4.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap5.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap5.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bulma.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bulma.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.dataTables.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.dataTables.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.foundation.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.foundation.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.jqueryui.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.jqueryui.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.semanticui.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.semanticui.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\jquery.dataTables.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\datatables.js" />
+    <None Include="wwwroot\lib\jquery-DataTables\datatables.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.js" />
-    <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +89,57 @@
     <Reference Include="GoC.WebTemplate.CoreMVC.Views">
       <HintPath>bin\Debug\net7.0\GoC.WebTemplate.CoreMVC.Views.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\Default\CalendarPartial.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Default\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Resources.en.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Resources.fr.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Roles\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\Roles\TablePartial.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\fullcalendar.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\fullcalendar.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\fullcalendar.print.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\jquery.qtip.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\jquery.qtip.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\locale-all.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\Calendar\moment.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-DataTables\datatables.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

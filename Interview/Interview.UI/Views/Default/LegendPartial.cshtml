@@ -1,0 +1,67 @@
+﻿@inject IViewLocalizer localizer
+
+
+<section class="alert alert-default">
+
+    <div class="row">
+        <div class="col-md-4">
+            <h4>
+                @localizer["LegendAvailabilities"]
+            </h4>
+        </div>
+        <div class="col-md-8">
+            <h4>@localizer["Diversity"]</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="box-available"></span>
+            <span class="text-available">@localizer["AvailableForCandidate"]</span>
+        </div>
+        <div class="col-md-4">
+            <span class="small mrgn-rght-sm">
+                <kbd><abbr><span>@localizer["WomanAbbr"]</span></abbr></kbd>
+            </span><span>
+                @localizer["Woman"]
+            </span>
+        </div>
+        <div class="col-md-4">
+            <span class="small mrgn-rght-sm">
+                <kbd><abbr><span>@localizer["DiabilityAbbr"]</span></abbr></kbd>
+            </span><span>
+                @localizer["Disability"]
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="box-waiting"></span>
+            <span class="text-waiting">Pending for a committee member</span>
+        </div>
+        <div class="col-md-4">
+            <span class="small mrgn-rght-sm">
+                <kbd><abbr><span>@localizer["IndigenousAbbr"]</span></abbr></kbd>
+            </span><span>
+                @localizer["IndigenousPerson"]
+            </span>
+        </div>
+        <div class="col-md-4">
+            <span class="small mrgn-rght-sm"><kbd><abbr><span>@localizer["RacializedGroupAbbr"]</span></abbr></kbd></span><span>
+                @localizer["RacializedGroup"]
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="box-booked"></span>
+            <span class="text-booked">@localizer["BookedForInterview"]</span>
+        </div>
+        <div class="col-md-8">
+            <span class="small mrgn-rght-sm"><kbd><abbr><span>@localizer["SogieAbbr"]</span></abbr></kbd></span>
+            <span>
+                @localizer["Sogie"]
+            </span>
+        </div>
+    </div>
+
+</section>

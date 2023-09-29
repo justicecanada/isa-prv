@@ -1,14 +1,175 @@
-﻿
+﻿@model VmIndex
 @using Interview.UI.Models
+@using Interview.UI.Models.Roles;
+@using Interview.UI.Helpers
+@using Interview.Entities
+@using Interview.UI.Services.Mock.Identity
 @inject IViewLocalizer localizer
 
 @{
+
     ViewBag.Title = localizer["Title"].Value;
+
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "UserType", "InternalName", "ExistingExternalName", "NewExternalFirstName", "NewExternalLastName", "NewExternalEmail", "RoleId", "UserLanguageId"
+    }).Select(x => x.ToLower()).ToList();
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    VmContest vmContest = ViewBag.VmContest;
+
+    List<MockUser> mockExistingExternalUsers = ViewBag.MockExistingExternalUsers;
+    List<SelectListItem> mockExistingExternalUsersItems = new List<SelectListItem>();
+    mockExistingExternalUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var mockExistingUser in mockExistingExternalUsers)
+    {
+        mockExistingExternalUsersItems.Add(new SelectListItem()
+        {         
+            Value = mockExistingUser.Id.ToString(),
+            Text = $"{mockExistingUser.LastName}, {mockExistingUser.FirstName}"
+        });
+    }
+
+    List<VmRole> vmRoles =  ViewBag.VmRoles;
+    List<SelectListItem> rolesItems = new List<SelectListItem>();
+    rolesItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var vmRole in vmRoles)
+    {
+        rolesItems.Add(new SelectListItem()
+        {         
+            Value = vmRole.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? vmRole.RoleNameEN : vmRole.RoleNameFR
+        });
+    }
+
+    List<VmUserLanguage> vmUserLanguages = ViewBag.VmUserLanguages;
+    List<SelectListItem> userLanguageItems = new List<SelectListItem>();
+    userLanguageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var vmUserLanguage in vmUserLanguages)
+    {
+        userLanguageItems.Add(new SelectListItem()
+        {         
+            Value = vmUserLanguage.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? vmUserLanguage.NameEN : vmUserLanguage.NameFR
+        });
+    }
+
+    bool showEquities = ViewBag.ShowEquities;
 
 }
 
 @{
-    await Html.RenderPartialAsync("TopMenu");
+    await Html.RenderPartialAsync("TopMenuPartial");
 }
 
-<h1>@localizer["Title"]</h1>
+<h2>@vmContest.NoProcessus</h2>
+
+@{
+    await Html.RenderPartialAsync("ValidationSummary");
+}
+
+<form>
+
+    @Html.AntiForgeryToken()
+
+    <section class="panel panel-default">
+
+        <header class="panel-heading">
+            <h5 class="pandel-title">@localizer["UserPanelHeading"]</h5>
+        </header>
+
+        <div class="panel-body">
+
+            <div class="col-md-4 brdr-rght">
+
+                <div class="row">
+                    @Html.LabelFor(x => x.UserType, new { @class = "required" })
+                </div>
+                <div class="row">
+                    @Html.ValidationMessageFor(x => x.UserType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    @Html.RadioButtonFor(x => x.UserType, (int)UserTypes.Internal, new { @id = "Internal", @class = "form-check-input" })
+                    <label for="Internal" class="form-check-label">@localizer["Internal"]</label>
+                </div>
+                <div id="internalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.Internal ? "" : "none")">
+                    @Html.EditorFor(x => x.InternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.InternalName, new { @class = "form-control" }) })
+                    @Html.HiddenFor(x => x.InternalId)
+                </div>
+
+                <div class="row">
+                    @Html.RadioButtonFor(x => x.UserType, (int)UserTypes.ExistingExternal, new { @id = "ExistingExternal", @class = "form-check-input" })
+                    <label for="ExistingExternal" class="form-check-label">@localizer["ExistingExternal"]</label>
+                </div>
+                <div id="existingExternalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.ExistingExternal ? "" : "none" )">
+                    @Html.EditorFor(x => x.ExistingExternalId, "Question", new { inputControl = @Html.DropDownList("ExistingExternalId", mockExistingExternalUsersItems, new { @class = "form-control" }) })
+                </div>
+
+                <div class="row">
+                    @Html.RadioButtonFor(x => x.UserType, (int)UserTypes.NewExternal, new { @id = "NewExternal", @class = "form-check-input" })
+                    <label for="NewExternal" class="form-check-label">@localizer["NewExternal"]</label>
+                </div>
+                <div id="newExternalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.NewExternal ? "" : "none" )">
+                    @Html.EditorFor(x => x.NewExternalFirstName, "Question", new { inputControl = Html.TextBoxFor(x => x.NewExternalFirstName, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.NewExternalLastName, "Question", new { inputControl = Html.TextBoxFor(x => x.NewExternalLastName, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.NewExternalEmail, "Question", new { inputControl = Html.TextBoxFor(x => x.NewExternalEmail, new { @class = "form-control" }) })
+                </div>
+
+            </div>
+
+            <div class="col-md-4 brdr-rght">
+
+                @Html.EditorFor(x => x.RoleId, "Question", new { inputControl = @Html.DropDownList("RoleId", rolesItems, new { @class = "form-control" }) })
+                @Html.EditorFor(x => x.UserLanguageId, "Question", new { inputControl = @Html.DropDownList("UserLanguageId", userLanguageItems, new { @class = "form-control" }) })
+
+            </div>
+
+            <div class="col-md-4">
+
+                @if (showEquities)
+                {
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label>@localizer["Equities"]</label>
+                        </div>              
+                        @{
+                            for (int i = 0; i < Model.Equities.Count; i++)
+                            {
+                                ViewData.TemplateInfo.HtmlFieldPrefix = $"Equities[{i.ToString()}]";
+                                VmEquity vmEquity = Model.Equities[i];
+                                await Html.RenderPartialAsync("EquityCheckbox", vmEquity);
+                            }
+                            ViewData.TemplateInfo.HtmlFieldPrefix = "";
+                        }
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="panel-footer">
+
+            <div>
+                <input type="submit" value="@localizer["Reset"]" id="btnReset" class="btn btn-default mr-2" formaction=@Url.Action("Index", "Roles")
+                        formmethod="get" />
+                <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("Index", "Roles")
+                        formmethod="post" />
+            </div>
+
+            </div>
+
+    </section>
+
+</form>
+
+@{
+    await Html.RenderPartialAsync("LegendPartial");
+    await Html.RenderPartialAsync("TablePartial");
+}
+
+<link href="~/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js"></script>
+<script src="~/js/roles/index.js" asp-append-version="true"></script>

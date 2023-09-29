@@ -14,4 +14,11 @@ namespace Interview.Entities
         Marking = 3
     }
 
+    public enum UserTypes
+    {
+        Internal = 0,
+        ExistingExternal = 1,
+        NewExternal = 2
+    }
+
 }
