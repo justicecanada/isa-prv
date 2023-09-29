@@ -51,16 +51,13 @@
   <Class Name="Interview.Entities.UserSetting" Collapsed="true">
     <Position X="5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAQAAAAAEIAAAAgIAAAgAAAQEAAAAAIAAAA=</HashCode>
+      <HashCode>AQAAAAIAAAQAAAAAEIAAAAgAAAAgAAAQEAAAAAIAAAA=</HashCode>
       <FileName>UserSetting.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="UserLanguage" />
       <Property Name="Role" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="Equities" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.Role" Collapsed="true">
     <Position X="5" Y="3.5" Width="1.5" />
@@ -79,19 +76,19 @@
   <Class Name="Interview.Entities.Equity" Collapsed="true">
     <Position X="5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAAAAAACAAAAQAAAAAACIAAAAAAAAEAAE=</HashCode>
+      <HashCode>QAAAAAAAAEAAAAAAACAAAAQAAAAAAAIAAAAAAAAEAAE=</HashCode>
       <FileName>Equity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Schedule" Collapsed="true">
-    <Position X="9.5" Y="1.5" Width="1.5" />
+    <Position X="12" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAIAAAAAEAAAAQAAAAA=</HashCode>
       <FileName>Schedule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Group" Collapsed="true">
-    <Position X="7.5" Y="1.5" Width="1.5" />
+    <Position X="10" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAQAAEAE=</HashCode>
       <FileName>Group.cs</FileName>
@@ -101,11 +98,22 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.GroupOwner" Collapsed="true">
-    <Position X="7.5" Y="2.5" Width="1.5" />
+    <Position X="10" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GroupOwner.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Interview.Entities.UserSettingEquity" Collapsed="true">
+    <Position X="7" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>UserSettingEquity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UserSetting" />
+      <Property Name="Equity" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
