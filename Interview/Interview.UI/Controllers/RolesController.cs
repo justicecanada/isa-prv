@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GoC.WebTemplate.Components.Core.Services;
+using GoC.WebTemplate.Components.Entities;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
@@ -35,11 +36,15 @@ namespace Interview.UI.Controllers
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
             IOptions<JusticeOptions> justiceOptions) : base(modelAccessor)
         {
+            
             _dal = dal;
             _mapper = mapper;
             _state = state;
             _localizer = localizer;
             _justiceOptions = justiceOptions;
+
+            //IndexRegisterClientResources();
+
         }
 
         #endregion
@@ -60,8 +65,9 @@ namespace Interview.UI.Controllers
                 result.Equities = vmEquities;
             }
 
-            await SetIndexViewBag();
-            
+            await IndexSetViewBag();
+            IndexRegisterClientResources();
+
             return View(result);
 
         }
@@ -111,7 +117,8 @@ namespace Interview.UI.Controllers
             else
             {
 
-                await SetIndexViewBag();
+                await IndexSetViewBag();
+                IndexRegisterClientResources();
 
                 return View(vmIndex);
 
@@ -135,7 +142,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexViewBag()
+        private async Task IndexSetViewBag()
         {
 
             // Contest
@@ -164,6 +171,21 @@ namespace Interview.UI.Controllers
             // MockUsers
             var mockExistingExternalUsers = await _dal.GetListExistingExternalMockUser();
             ViewBag.MockExistingExternalUsers = mockExistingExternalUsers;
+
+        }
+
+        private void IndexRegisterClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-DataTables/datatables.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/Index.js?v={BuildId}'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/TablePartial.js?v={BuildId}'></script>");
 
         }
 

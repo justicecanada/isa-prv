@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).on("wb-ready.wb", function (event) {
     table.Init();
 });
 
