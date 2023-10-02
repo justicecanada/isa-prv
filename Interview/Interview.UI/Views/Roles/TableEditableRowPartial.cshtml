@@ -9,25 +9,25 @@
     UserSetting userSetting = ViewBag.UserSetting;
     string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
 
-    List<VmRole> vmRoles =  ViewBag.VmRoles;
+    List<Role> roles =  ViewBag.Roles;
     List<SelectListItem> rolesItems = new List<SelectListItem>();
-    foreach (var vmRole in vmRoles)
+    foreach (var role in roles)
     {
         rolesItems.Add(new SelectListItem()
         {         
-            Value = vmRole.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? vmRole.RoleNameEN : vmRole.RoleNameFR
+            Value = role.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? role.RoleNameEN : role.RoleNameFR
         });
     }
 
-    List<VmUserLanguage> vmUserLanguages = ViewBag.VmUserLanguages;
+    List<UserLanguage> userLanguages = ViewBag.UserLanguages;
     List<SelectListItem> userLanguageItems = new List<SelectListItem>();
-    foreach (var vmUserLanguage in vmUserLanguages)
+    foreach (var userLanguage in userLanguages)
     {
         userLanguageItems.Add(new SelectListItem()
         {         
-            Value = vmUserLanguage.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? vmUserLanguage.NameEN : vmUserLanguage.NameFR
+            Value = userLanguage.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? userLanguage.NameEN : userLanguage.NameFR
         });
     }
 

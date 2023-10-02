@@ -156,18 +156,16 @@ namespace Interview.UI.Controllers
             ViewBag.Contest = contest;
 
             // UserSettings
-            // TODO: Get UserSettings and include Equities
             var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
             ViewBag.UserSettings = userSettings;
 
+            // Roles
             var roles = await _dal.GetAllRoles();
-            var vmRoles = _mapper.Map(roles, typeof(List<Role>), typeof(List<VmRole>));
-            ViewBag.VmRoles = vmRoles;
+            ViewBag.Roles = roles;
 
             // UserLanguages
             var userLanguages = await _dal.GetAllUserLanguages();
-            var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
-            ViewBag.VmUserLanguages = vmUserLanguages;
+            ViewBag.UserLanguages = userLanguages;
 
             // Show Equities
             ViewBag.ShowEquities = _justiceOptions.Value.ShowEquitiesOnRoles;
