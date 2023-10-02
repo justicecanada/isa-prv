@@ -269,7 +269,7 @@ namespace Interview.UI.Controllers
 
                 // Delete Equities
                 foreach (UserSettingEquity dbUserSettingEquity in dbUserSettingEquities)
-                    if (!postedEquities.Any(x => x.Id == dbUserSettingEquity.Id))
+                    if (!postedEquities.Any(x => x.Id == dbUserSettingEquity.EquityId))
                         await _dal.DeleteEntity<UserSettingEquity>(dbUserSettingEquity.Id);
 
                 // Add Equities
