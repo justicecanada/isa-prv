@@ -36,7 +36,6 @@
 
 <tr>
     <form id="editForm" action="/Roles/UpdateUserSettings" method="post">
-        @*@Html.HiddenFor(x => x.UserSettingToEdit.Id, new { @id = "Id", @name = "Id" })*@
         <input type="hidden" value="@Model.UserSettingToEdit.Id" id="Id" name="Id" />
         @Html.AntiForgeryToken()
         <td>@userName</td>
@@ -51,7 +50,8 @@
                         ViewData.TemplateInfo.HtmlFieldPrefix = $"Equities[{i.ToString()}]";
                         VmEquity vmEquity = Model.Equities[i];
                         vmEquity.IsSelected = Model.UserSettingToEdit.UserSettingEquities.Any(x => x.EquityId == vmEquity.Id);
-                        await Html.RenderPartialAsync("EquityCheckbox", vmEquity);
+                        ViewBag.EquityIndex = i;
+                        await Html.RenderPartialAsync("EquityEditCheckbox", vmEquity);
                     }
                     ViewData.TemplateInfo.HtmlFieldPrefix = "";
                 }

@@ -31,6 +31,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId);
 
+        Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId);
+
         #endregion
 
         #region Mock Identity Methods

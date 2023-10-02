@@ -1,0 +1,19 @@
+﻿@model VmEquity
+@using Interview.UI.Models
+
+@{
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    string label = cultureName == Constants.EnglishCulture ? Model.NameEN : Model.NameEN;
+    int equityIndex = ViewBag.EquityIndex;
+    string chkId = $"chkEquityId_{equityIndex}";
+
+}
+
+<div class="col-md-12">
+    @Html.CheckBoxFor(x => x.IsSelected, new { @id = chkId })
+    @Html.LabelFor(x => x.IsSelected, label, new { @for = chkId })
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.NameEN)
+    @Html.HiddenFor(x => x.NameFR)
+</div>

@@ -256,9 +256,37 @@ namespace Interview.UI.Controllers
 
             var dbUserSetting = await _dal.GetEntity<UserSetting>((Guid)vmUserSetting.Id) as UserSetting;
 
+            // Handle UserSetting
             dbUserSetting.RoleId = vmUserSetting.RoleId;
             dbUserSetting.UserLanguageId = vmUserSetting.UserLanguageId;
             await _dal.UpdateEntity(dbUserSetting);
+
+            // Handle Equities
+            if (_justiceOptions.Value.ShowEquitiesOnRoles)
+            {
+                var dbUserSettingEquities = await _dal.GetUserSettingEquitiesByUserSettingId((Guid)vmUserSetting.Id);
+                var postedEquities = vmUserSetting.Equities.Where(x => x.IsSelected).ToList();
+
+                // Delete Equities
+                foreach (UserSettingEquity dbUserSettingEquity in dbUserSettingEquities)
+                    if (!postedEquities.Any(x => x.Id == dbUserSettingEquity.Id))
+                        await _dal.DeleteEntity<UserSettingEquity>(dbUserSettingEquity.Id);
+
+                // Add Equities
+                foreach (VmEquity vmEquity in postedEquities)
+                {
+                    if (!dbUserSettingEquities.Any(x => x.EquityId == vmEquity.Id))
+                    {
+                        UserSettingEquity userSettingEquity = new UserSettingEquity()
+                        {
+                            EquityId = (Guid)vmEquity.Id,
+                            UserSettingId = (Guid)vmUserSetting.Id
+                        };
+                        await _dal.AddEntity(userSettingEquity);
+                    }             
+                }
+
+            }
 
             return RedirectToAction("Index");
 
