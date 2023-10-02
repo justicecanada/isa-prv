@@ -150,8 +150,7 @@ namespace Interview.UI.Controllers
 
             // Contest
             var contest = _state.ContestId == null ? new Contest() : await _dal.GetEntity<Contest>((Guid)_state.ContestId, true);
-            var vmContest = _mapper.Map<VmContest>(contest);
-            ViewBag.VmContest = vmContest;
+            ViewBag.Contest = contest;
 
             // UserSettings
             // TODO: Get UserSettings and include Equities
