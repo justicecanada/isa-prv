@@ -68,6 +68,9 @@ namespace Interview.UI.Controllers
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
+            if (TempData["UserSettingIdToUpdate"] != null)
+                result.UserSettingToEdit = ((List<VmUserSetting>)ViewBag.VmUserSettings).Where(x => x.Id == (Guid)TempData["UserSettingIdToUpdate"]).First();
+
             return View(result);
 
         }

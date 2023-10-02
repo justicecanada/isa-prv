@@ -34,13 +34,13 @@ else
             <tbody>
                 @foreach (VmUserSetting vmUserSetting in vmUserSettings)
                 {
+                    ViewBag.VmUserSetting = vmUserSetting;
                     if (vmUserSetting.Id == userSettingIdToUpdate)
                     {
-                        await Html.RenderPartialAsync("TableEditableRowPartial", vmUserSetting);
+                        await Html.RenderPartialAsync("TableEditableRowPartial");
                     }
                     else
-                    {
-                        ViewBag.VmUserSetting = vmUserSetting;
+                    {                   
                         await Html.RenderPartialAsync("TableReadonlyRowPartial");
                     }
                 }

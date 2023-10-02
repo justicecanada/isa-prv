@@ -1,11 +1,12 @@
-﻿@model VmUserSetting
-@using Interview.UI.Models
+﻿@model VmIndex
+@using Interview.UI.Models.Roles
 @inject IViewLocalizer localizer
 
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    string userName = $"{Model.UserLastname}, {Model.UserFirstname}";
+    VmUserSetting vmUserSetting = ViewBag.VmUserSetting;
+    string userName = $"{vmUserSetting.UserLastname}, {vmUserSetting.UserFirstname}";
 
     List<VmRole> vmRoles =  ViewBag.VmRoles;
     List<SelectListItem> rolesItems = new List<SelectListItem>();
@@ -35,20 +36,32 @@
 
 <tr>
     <form id="editForm" action="/Roles/UpdateUserSettings" method="post">
-        @Html.HiddenFor(x => x.Id)
+        @*@Html.HiddenFor(x => x.UserSettingToEdit.Id, new { @id = "Id", @name = "Id" })*@
+        <input type="hidden" value="@Model.UserSettingToEdit.Id" id="Id" name="Id" />
         @Html.AntiForgeryToken()
         <td>@userName</td>
         <td>@Html.DropDownList("RoleId", rolesItems, new { @class = "form-control" })</td>
         <td>@Html.DropDownList("UserLanguageId", userLanguageItems, new { @class = "form-control" })</td>
         @if (showEquities)
         {
-            <td></td>
+            <td>
+                @{
+                    for (int i = 0; i < Model.Equities.Count; i++)
+                    {
+                        ViewData.TemplateInfo.HtmlFieldPrefix = $"Equities[{i.ToString()}]";
+                        VmEquity vmEquity = Model.Equities[i];
+                        vmEquity.IsSelected = Model.UserSettingToEdit.UserSettingEquities.Any(x => x.EquityId == vmEquity.Id);
+                        await Html.RenderPartialAsync("EquityCheckbox", vmEquity);
+                    }
+                    ViewData.TemplateInfo.HtmlFieldPrefix = "";
+                }
+            </td>
         }
         <td>
             <a href="@Url.Action("Index", "Roles")">
                 <span class="glyphicon glyphicon-remove text-danger"></span>
             </a>
-            <a id="aSubmit" href="@Url.Action("DeleteUserSetting", "Roles", new { userSettingsId = Model.Id } )">
+            <a id="aSubmit" href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = Model.UserSettingToEdit.Id } )">
                 <span class="glyphicon glyphicon-ok text-success"></span>
             </a>
         </td>   
