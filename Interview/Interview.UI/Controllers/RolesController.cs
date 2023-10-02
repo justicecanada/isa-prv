@@ -69,7 +69,10 @@ namespace Interview.UI.Controllers
             IndexRegisterClientResources();
 
             if (TempData["UserSettingIdToUpdate"] != null)
-                result.UserSettingToEdit = ((List<VmUserSetting>)ViewBag.VmUserSettings).Where(x => x.Id == (Guid)TempData["UserSettingIdToUpdate"]).First();
+            {
+                UserSetting userSettingToEdit = ((List<UserSetting>)ViewBag.UserSettings).Where(x => x.Id == (Guid)TempData["UserSettingIdToUpdate"]).First();
+                result.UserSettingToEdit = (VmUserSetting)_mapper.Map(userSettingToEdit, typeof(UserSetting), typeof(VmUserSetting));
+            }
 
             return View(result);
 
@@ -155,8 +158,7 @@ namespace Interview.UI.Controllers
             // UserSettings
             // TODO: Get UserSettings and include Equities
             var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
-            var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
-            ViewBag.VmUserSettings = vmUserSettings;
+            ViewBag.UserSettings = userSettings;
 
             var roles = await _dal.GetAllRoles();
             var vmRoles = _mapper.Map(roles, typeof(List<Role>), typeof(List<VmRole>));

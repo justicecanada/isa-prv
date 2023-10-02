@@ -1,12 +1,13 @@
 ﻿@model VmIndex
 @using Interview.UI.Models.Roles
+@using Interview.Entities
 @inject IViewLocalizer localizer
 
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    VmUserSetting vmUserSetting = ViewBag.VmUserSetting;
-    string userName = $"{vmUserSetting.UserLastname}, {vmUserSetting.UserFirstname}";
+    UserSetting userSetting = ViewBag.UserSetting;
+    string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
 
     List<VmRole> vmRoles =  ViewBag.VmRoles;
     List<SelectListItem> rolesItems = new List<SelectListItem>();
