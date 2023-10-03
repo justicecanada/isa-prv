@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Interview.UI.Services.Mock.Departments;
+using Interview.UI.Models.AppSettings;
+using Microsoft.Extensions.Options;
 
 namespace Interview.UI.Controllers
 {
@@ -16,7 +18,6 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-        private readonly DalSql _dal;
         private readonly IMapper _mapper;
         private readonly IState _state;
 
@@ -24,9 +25,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state) : base(modelAccessor)
+        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
+            : base(modelAccessor, justiceOptions, dal)
         {
-            _dal = dal;
             _mapper = mapper;
             _state = state;
         }

@@ -18,21 +18,18 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-        private readonly DalSql _dal;
         private readonly IMapper _mapper;
         private readonly IState _state;
-        private readonly IOptions<JusticeOptions> _justiceOptions;
 
         #endregion
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) : base(modelAccessor)
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
+            : base(modelAccessor, justiceOptions, dal)
         {
-            _dal = dal;
             _mapper = mapper;
             _state = state;
-            _justiceOptions = justiceOptions;
         }
 
         #endregion
@@ -78,14 +75,13 @@ namespace Interview.UI.Controllers
         private async Task SetCalendarViewBag(Contest contest)
         {
 
-            MockUser loggedInMockUser = await _dal.GetMockUserByName(_justiceOptions.Value.MockLoggedInUserName);
-            UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)loggedInMockUser.Id);
-            MockLoggedInUserRoles mockLoggedInUserRole = _justiceOptions.Value.MockLoggedInUserRole;
+            //MockUser loggedInMockUser = await _dal.GetMockUserByName(_justiceOptions.Value.MockLoggedInUserName);
+            UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
 
-            if (mockLoggedInUserRole == MockLoggedInUserRoles.Admin || mockLoggedInUserRole == MockLoggedInUserRoles.Owner || mockLoggedInUserRole == MockLoggedInUserRoles.System)
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
             {
                 bool hasAccess = true;
-                if (mockLoggedInUserRole == MockLoggedInUserRoles.Admin)
+                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
                 {
 
                 }

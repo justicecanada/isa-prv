@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using GoC.WebTemplate.Components.Core.Services;
+using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Interview.UI.Controllers
 {
@@ -12,16 +14,15 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-        private readonly DalSql _dal;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
 
-        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
+        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions) 
+            : base(modelAccessor, justiceOptions, dal)
         {
-            _dal = dal;
             _mapper = mapper;
         }
 

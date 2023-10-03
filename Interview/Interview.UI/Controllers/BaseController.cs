@@ -1,6 +1,10 @@
 ﻿using GoC.WebTemplate.Components.Core.Services;
 using GoC.WebTemplate.CoreMVC.Controllers;
+using Interview.UI.Models.AppSettings;
+using Interview.UI.Services.DAL;
+using Interview.UI.Services.Mock.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Interview.UI.Controllers
@@ -14,14 +18,20 @@ namespace Interview.UI.Controllers
 
         private string _assemblyVersion;
         private string _buildId;
+        private readonly IOptions<JusticeOptions> _justiceOptions;
+        protected readonly DalSql _dal;
+        private MockUser _loggedInMockUser;
 
         #endregion
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, DalSql dal) : base(modelAccessor)
         {
 
+            _justiceOptions = justiceOptions;
+            _dal = dal;
+            
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
 
             // css
@@ -66,6 +76,26 @@ namespace Interview.UI.Controllers
                 return _buildId;
 
             }
+        }
+
+        #endregion
+
+        #region Protected MockUser Properties and Methods
+
+        protected MockUser LoggedInMockUser
+        {
+            get
+            {
+                if (_loggedInMockUser == null)
+                    _loggedInMockUser = _dal.GetMockUserByName(_justiceOptions.Value.MockLoggedInUserName).GetAwaiter().GetResult();
+
+                return _loggedInMockUser;
+            }
+        }
+
+        protected bool IsLoggedInMockUserInRole(MockLoggedInUserRoles roleType)
+        {
+            return _justiceOptions.Value.MockLoggedInUserRole == roleType;
         }
 
         #endregion
