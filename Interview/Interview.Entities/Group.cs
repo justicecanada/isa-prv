@@ -12,6 +12,8 @@ namespace Interview.Entities
 
         public Group()
         {
+            ContestGroups = new List<ContestGroup>();
+            Contests = new List<Contest>();
             GroupOwners = new List<GroupOwner>();
         }
 
@@ -19,7 +21,9 @@ namespace Interview.Entities
         public string? NameFr { get; set; }
         public string? NameEn { get; set; }
         public bool? IsDeleted { get; set; }
-
+ 
+        public List<ContestGroup> ContestGroups { get; set; }
+        public List<Contest> Contests { get; set; }
         public List<GroupOwner> GroupOwners { get; set; }   
 
     }
