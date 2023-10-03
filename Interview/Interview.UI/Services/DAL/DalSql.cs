@@ -356,6 +356,19 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<Guid> AddGroupWithChildren(Group group)
+        {
+
+            Guid result;
+
+            _context.Groups.Add(group);
+            await _context.SaveChangesAsync();
+            result = (Guid)group.Id;
+
+            return result;
+
+        }
+
         #endregion
 
         #region Mock Identity Methods

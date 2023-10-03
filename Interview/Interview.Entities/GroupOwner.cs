@@ -14,6 +14,8 @@ namespace Interview.Entities
         public Guid UserId { get; set; }
         public bool? HasAccessEE { get; set; }
 
+        public Group Group { get; set;  }
+
     }
 
 }
