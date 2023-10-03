@@ -99,7 +99,7 @@ namespace Interview.UI.Controllers
                 var contest = _mapper.Map<Contest>(vmContest);
 
                 if (vmContest.Id == null)
-                    await _dal.AddEntity(contest);
+                    await _dal.AddEntity<Contest>(contest);
                 else
                     await _dal.UpdateEntity(contest);
 
@@ -126,7 +126,7 @@ namespace Interview.UI.Controllers
                 var contest = _mapper.Map<Contest>(vmContest);
 
                 if (vmContest.Id == null)
-                    await _dal.AddEntity(contest);
+                    await _dal.AddEntity<Contest>(contest);
                 else
                     await _dal.UpdateEntity(contest);
 

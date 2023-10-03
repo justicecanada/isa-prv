@@ -10,7 +10,7 @@ namespace Interview.UI.Services.DAL
 
         #region Generic CRUD Methods
 
-        Task<Guid> AddEntity(EntityBase entity);
+        Task<Guid> AddEntity<t>(EntityBase entity);
         Task UpdateEntity(EntityBase entity);
         Task<EntityBase> GetEntity<t>(Guid id, bool getChildObjects = false);
         Task DeleteEntity<t>(Guid id);

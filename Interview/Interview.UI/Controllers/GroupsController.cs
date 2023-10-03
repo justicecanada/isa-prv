@@ -78,7 +78,7 @@ namespace Interview.UI.Controllers
                 {
                     UserId = (Guid)LoggedInMockUser.Id
                 });
-                groupId = await _dal.AddGroupWithChildren(group);
+                groupId = await _dal.AddEntity<Group>(group);
 
                 AddRole(MockLoggedInUserRoles.Owner, (Guid)LoggedInMockUser.Id);
 

@@ -97,7 +97,7 @@ namespace Interview.UI.Controllers
                     IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
                     DateInserted = DateTime.Now
                 };
-                userSettingId = await _dal.AddEntity(userSetting);
+                userSettingId = await _dal.AddEntity<UserSetting>(userSetting);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
                 if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
@@ -109,7 +109,7 @@ namespace Interview.UI.Controllers
                             UserSettingId = userSettingId,
                             EquityId = (Guid)equity.Id
                         };
-                        await _dal.AddEntity(userSettingEquity);
+                        await _dal.AddEntity<UserSettingEquity>(userSettingEquity);
                     }
                 }
 
@@ -277,7 +277,7 @@ namespace Interview.UI.Controllers
                             EquityId = (Guid)vmEquity.Id,
                             UserSettingId = (Guid)vmUserSetting.Id
                         };
-                        await _dal.AddEntity(userSettingEquity);
+                        await _dal.AddEntity<UserSettingEquity>(userSettingEquity);
                     }             
                 }
 

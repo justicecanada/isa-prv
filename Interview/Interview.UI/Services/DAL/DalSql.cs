@@ -28,12 +28,72 @@ namespace Interview.UI.Services.DAL
 
         #region Public Interface Generic CRUD Methods
 
-        public async Task<Guid> AddEntity(EntityBase entity)
+        public async Task<Guid> AddEntity<t>(EntityBase entity)
         {
 
             Guid result;
 
-            _context.Entry(entity).State = EntityState.Added;
+
+            switch (typeof(t).Name)
+            {
+                case nameof(EmailTemplate):
+                    _context.EmailTemplates.Add((EmailTemplate)entity);
+                    break;
+
+                case nameof(EmailType):
+                    _context.EmailTypes.Add((EmailType)entity);
+                    break;
+
+                case nameof(Equity):
+                    _context.Equities.Add((Equity)entity);
+                    break;
+
+                case nameof(Group):
+                    _context.Groups.Add((Group)entity);
+                    break;
+
+                case nameof(GroupOwner):
+                    _context.GroupsOwners.Add((GroupOwner)entity);
+                    break;
+
+                case nameof(Interview.Entities.Interview):
+                    _context.Interviews.Add((Interview.Entities.Interview)entity); ;
+                    break;
+
+                case nameof(InterviewUser):
+                    _context.InterviewUsers.Add((InterviewUser)entity);
+                    break;
+
+                case nameof(Contest):
+                    _context.Contests.Add((Contest)entity);
+                    break;
+
+                case nameof(Role):
+                    _context.Roles.Add((Role)entity);
+                    break;
+
+                case nameof(Schedule):
+                    _context.Schedules.Add((Schedule)entity);
+                    break;
+
+                case nameof(ScheduleType):
+                    _context.ScheduleTypes.Add((ScheduleType)entity);
+                    break;
+
+                case nameof(UserLanguage):
+                    _context.UserLanguages.Add((UserLanguage)entity);
+                    break;
+
+                case nameof(UserSetting):
+                    _context.UserSettings.Add((UserSetting)entity);
+                    break;
+
+                case nameof(UserSettingEquity):
+                    _context.UserSettingEquities.Add((UserSettingEquity)entity);
+                    break;
+
+            }
+
             await _context.SaveChangesAsync();
             result = (Guid)entity.Id;
 
@@ -351,19 +411,6 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.UserSettingEquities.Where(x => x.UserSettingId == userSettingId).ToListAsync();
-
-            return result;
-
-        }
-
-        public async Task<Guid> AddGroupWithChildren(Group group)
-        {
-
-            Guid result;
-
-            _context.Groups.Add(group);
-            await _context.SaveChangesAsync();
-            result = (Guid)group.Id;
 
             return result;
 
