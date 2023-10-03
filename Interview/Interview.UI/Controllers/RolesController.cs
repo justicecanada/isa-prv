@@ -68,6 +68,12 @@ namespace Interview.UI.Controllers
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
+            if (TempData["UserSettingIdToUpdate"] != null)
+            {
+                UserSetting userSettingToEdit = ((List<UserSetting>)ViewBag.UserSettings).Where(x => x.Id == (Guid)TempData["UserSettingIdToUpdate"]).First();
+                result.UserSettingToEdit = (VmUserSetting)_mapper.Map(userSettingToEdit, typeof(UserSetting), typeof(VmUserSetting));
+            }
+
             return View(result);
 
         }
@@ -147,23 +153,19 @@ namespace Interview.UI.Controllers
 
             // Contest
             var contest = _state.ContestId == null ? new Contest() : await _dal.GetEntity<Contest>((Guid)_state.ContestId, true);
-            var vmContest = _mapper.Map<VmContest>(contest);
-            ViewBag.VmContest = vmContest;
+            ViewBag.Contest = contest;
 
             // UserSettings
-            // TODO: Get UserSettings and include Equities
             var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
-            var vmUserSettings = _mapper.Map(userSettings, typeof(List<UserSetting>), typeof(List<VmUserSetting>));
-            ViewBag.VmUserSettings = vmUserSettings;
+            ViewBag.UserSettings = userSettings;
 
+            // Roles
             var roles = await _dal.GetAllRoles();
-            var vmRoles = _mapper.Map(roles, typeof(List<Role>), typeof(List<VmRole>));
-            ViewBag.VmRoles = vmRoles;
+            ViewBag.Roles = roles;
 
             // UserLanguages
             var userLanguages = await _dal.GetAllUserLanguages();
-            var vmUserLanguages = _mapper.Map(userLanguages, typeof(List<UserLanguage>), typeof(List<VmUserLanguage>));
-            ViewBag.VmUserLanguages = vmUserLanguages;
+            ViewBag.UserLanguages = userLanguages;
 
             // Show Equities
             ViewBag.ShowEquities = _justiceOptions.Value.ShowEquitiesOnRoles;
@@ -253,9 +255,37 @@ namespace Interview.UI.Controllers
 
             var dbUserSetting = await _dal.GetEntity<UserSetting>((Guid)vmUserSetting.Id) as UserSetting;
 
+            // Handle UserSetting
             dbUserSetting.RoleId = vmUserSetting.RoleId;
             dbUserSetting.UserLanguageId = vmUserSetting.UserLanguageId;
             await _dal.UpdateEntity(dbUserSetting);
+
+            // Handle Equities
+            if (_justiceOptions.Value.ShowEquitiesOnRoles)
+            {
+                var dbUserSettingEquities = await _dal.GetUserSettingEquitiesByUserSettingId((Guid)vmUserSetting.Id);
+                var postedEquities = vmUserSetting.Equities.Where(x => x.IsSelected).ToList();
+
+                // Delete Equities
+                foreach (UserSettingEquity dbUserSettingEquity in dbUserSettingEquities)
+                    if (!postedEquities.Any(x => x.Id == dbUserSettingEquity.EquityId))
+                        await _dal.DeleteEntity<UserSettingEquity>(dbUserSettingEquity.Id);
+
+                // Add Equities
+                foreach (VmEquity vmEquity in postedEquities)
+                {
+                    if (!dbUserSettingEquities.Any(x => x.EquityId == vmEquity.Id))
+                    {
+                        UserSettingEquity userSettingEquity = new UserSettingEquity()
+                        {
+                            EquityId = (Guid)vmEquity.Id,
+                            UserSettingId = (Guid)vmUserSetting.Id
+                        };
+                        await _dal.AddEntity(userSettingEquity);
+                    }             
+                }
+
+            }
 
             return RedirectToAction("Index");
 

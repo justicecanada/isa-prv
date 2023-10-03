@@ -246,6 +246,12 @@ namespace Interview.UI.Services.DAL
                     UserSetting? userSettings = await _context.UserSettings.FindAsync(id);
                     _context.UserSettings.Remove(userSettings);
                     break;
+
+                case nameof(UserSettingEquity):
+                    UserSettingEquity? userSettingEquity = await _context.UserSettingEquities.FindAsync(id);
+                    _context.UserSettingEquities.Remove(userSettingEquity);
+                    break;
+
             }
 
             await _context.SaveChangesAsync();
@@ -321,6 +327,15 @@ namespace Interview.UI.Services.DAL
                 .Include(x => x.UserSettingEquities)
                 .ThenInclude(x => x.Equity)
                 .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId)
+        {
+
+            var result = await _context.UserSettingEquities.Where(x => x.UserSettingId == userSettingId).ToListAsync();
 
             return result;
 

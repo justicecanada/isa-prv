@@ -1,17 +1,17 @@
 ﻿
-@using Interview.UI
+@using Interview.Entities
 @inject IViewLocalizer localizer
 
 @{
 
-    List<VmUserSetting> vmUserSettings = ViewBag.VmUserSettings;
+    List<UserSetting> userSettings = ViewBag.UserSettings;
 
     Guid? userSettingIdToUpdate = (Guid?)TempData["UserSettingIdToUpdate"];
     bool showEquities = ViewBag.ShowEquities;
 
 }
 
-@if (vmUserSettings.Count == 0)
+@if (userSettings.Count == 0)
 {
     <p>@localizer["NoRoles"]</p>
 }
@@ -32,15 +32,15 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (VmUserSetting vmUserSetting in vmUserSettings)
+                @foreach (UserSetting userSetting in userSettings)
                 {
-                    if (vmUserSetting.Id == userSettingIdToUpdate)
+                    ViewBag.UserSetting = userSetting;
+                    if (userSetting.Id == userSettingIdToUpdate)
                     {
-                        await Html.RenderPartialAsync("TableEditableRowPartial", vmUserSetting);
+                        await Html.RenderPartialAsync("TableEditableRowPartial");
                     }
                     else
-                    {
-                        ViewBag.VmUserSetting = vmUserSetting;
+                    {                   
                         await Html.RenderPartialAsync("TableReadonlyRowPartial");
                     }
                 }

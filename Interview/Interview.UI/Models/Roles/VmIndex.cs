@@ -48,6 +48,8 @@ namespace Interview.UI.Models.Roles
 
         public List<VmEquity>? Equities { get; set; }
 
+        public VmUserSetting? UserSettingToEdit { get; set;  }
+
     }
 
 }

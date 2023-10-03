@@ -16,7 +16,7 @@
     }).Select(x => x.ToLower()).ToList();
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    VmContest vmContest = ViewBag.VmContest;
+    Contest contest = ViewBag.Contest;
 
     List<MockUser> mockExistingExternalUsers = ViewBag.MockExistingExternalUsers;
     List<SelectListItem> mockExistingExternalUsersItems = new List<SelectListItem>();
@@ -30,27 +30,27 @@
         });
     }
 
-    List<VmRole> vmRoles =  ViewBag.VmRoles;
+    List<Role> roles =  ViewBag.Roles;
     List<SelectListItem> rolesItems = new List<SelectListItem>();
     rolesItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var vmRole in vmRoles)
+    foreach (var role in roles)
     {
         rolesItems.Add(new SelectListItem()
         {         
-            Value = vmRole.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? vmRole.RoleNameEN : vmRole.RoleNameFR
+            Value = role.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? role.RoleNameEN : role.RoleNameFR
         });
     }
 
-    List<VmUserLanguage> vmUserLanguages = ViewBag.VmUserLanguages;
+    List<UserLanguage> userLanguages = ViewBag.UserLanguages;
     List<SelectListItem> userLanguageItems = new List<SelectListItem>();
     userLanguageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var vmUserLanguage in vmUserLanguages)
+    foreach (var userLanguage in userLanguages)
     {
         userLanguageItems.Add(new SelectListItem()
         {         
-            Value = vmUserLanguage.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? vmUserLanguage.NameEN : vmUserLanguage.NameFR
+            Value = userLanguage.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? userLanguage.NameEN : userLanguage.NameFR
         });
     }
 
@@ -62,7 +62,7 @@
     await Html.RenderPartialAsync("TopMenuPartial");
 }
 
-<h2>@vmContest.NoProcessus</h2>
+<h2>@contest.NoProcessus</h2>
 
 @{
     await Html.RenderPartialAsync("ValidationSummary");

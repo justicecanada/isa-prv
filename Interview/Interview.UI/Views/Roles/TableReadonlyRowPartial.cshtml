@@ -1,15 +1,16 @@
 ﻿@using System.Text
+@using Interview.Entities
 
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    VmUserSetting vmUserSetting = ViewBag.VmUserSetting;
+    UserSetting userSetting = ViewBag.UserSetting;
 
-    string userName = $"{vmUserSetting.UserLastname}, {vmUserSetting.UserFirstname}";
-    string roleName = cultureName == Constants.EnglishCulture ? vmUserSetting.Role.RoleNameEN : vmUserSetting.Role.RoleNameFR;
+    string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
+    string roleName = cultureName == Constants.EnglishCulture ? userSetting.Role.RoleNameEN : userSetting.Role.RoleNameFR;
     string language = null;
-    if (vmUserSetting.UserLanguage != null)
-        language = cultureName == Constants.EnglishCulture ? vmUserSetting.UserLanguage.NameEN : vmUserSetting.UserLanguage.NameFR;
+    if (userSetting.UserLanguage != null)
+        language = cultureName == Constants.EnglishCulture ? userSetting.UserLanguage.NameEN : userSetting.UserLanguage.NameFR;
     bool showEquities = ViewBag.ShowEquities;
     string equities = "";
 
@@ -17,10 +18,10 @@
     {
         StringBuilder sb = new StringBuilder();
 
-        foreach (var userSettingEquity in vmUserSetting.UserSettingEquities)
+        foreach (var userSettingEquity in userSetting.UserSettingEquities)
         {
             sb.Append(cultureName == Constants.EnglishCulture ? userSettingEquity.Equity.NameEN : userSettingEquity.Equity.NameFR);
-            if (userSettingEquity != vmUserSetting.UserSettingEquities.Last())
+            if (userSettingEquity != userSetting.UserSettingEquities.Last())
                 sb.Append(", ");
         }
 
@@ -40,10 +41,10 @@
         <td>@equities</td>
     }
     <td>
-        <a href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = vmUserSetting.Id } )">
+        <a href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = userSetting.Id } )">
             <span class="glyphicon glyphicon-edit text-info"></span>
         </a>
-        <a href="@Url.Action("DeleteUserSetting", "Roles", new { userSettingsId = vmUserSetting.Id } )">
+        <a href="@Url.Action("DeleteUserSetting", "Roles", new { userSettingsId = userSetting.Id } )">
             <span class="glyphicon glyphicon-trash text-danger"></span>
         </a>
 
