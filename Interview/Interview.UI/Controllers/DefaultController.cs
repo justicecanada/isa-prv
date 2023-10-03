@@ -39,20 +39,19 @@ namespace Interview.UI.Controllers
         {
 
             List<Contest> contests = await _dal.GetAllContestsWithUserSettingsAndRoles();
-            List<VmContest> vmContests = (List<VmContest>)(contests == null ? new List<VmContest>() : _mapper.Map(contests, typeof(List<Contest>), typeof(List<VmContest>)));
             Guid? contestId = null;
 
             // Look to Session for ContestId
             if (_state.ContestId != null)
                 contestId = _state.ContestId;
             // Look to first item in list if _state.ContestId isn't set by user
-            else if (vmContests.Any())
+            else if (contests.Any())
             {
-                contestId = vmContests.First().Id;
+                contestId = contests.First().Id;
                 _state.ContestId = contestId;
             }
 
-            ViewBag.VmContests = vmContests;
+            ViewBag.Contests = contests;
             ViewBag.ContestId = contestId;
 
             return View();
