@@ -51,7 +51,7 @@
   <Class Name="Interview.Entities.UserSetting" Collapsed="true">
     <Position X="5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAIAAAQAAAAAEIAAAAgAAAAgAAAQEAAAAAIAAAA=</HashCode>
+      <HashCode>AQAAAAIAAAQAAAAAEIAAAAgIAAAgAAAQEAAAAAIAAAA=</HashCode>
       <FileName>UserSetting.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -81,14 +81,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Schedule" Collapsed="true">
-    <Position X="12" Y="1.5" Width="1.5" />
+    <Position X="11" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAIAAAAAEAAAAQAAAAA=</HashCode>
       <FileName>Schedule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Group" Collapsed="true">
-    <Position X="10" Y="1.5" Width="1.5" />
+    <Position X="9" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAQAAEAE=</HashCode>
       <FileName>Group.cs</FileName>
@@ -98,7 +98,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.GroupOwner" Collapsed="true">
-    <Position X="10" Y="2.5" Width="1.5" />
+    <Position X="9" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GroupOwner.cs</FileName>
