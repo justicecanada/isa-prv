@@ -20,7 +20,7 @@ namespace Interview.Entities
         public Guid ContestId { get; set; }
         public string? NameFr { get; set; }
         public string? NameEn { get; set; }
-        public bool? IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
  
         public List<ContestGroup> ContestGroups { get; set; }
         public List<Contest> Contests { get; set; }

@@ -36,9 +36,17 @@ namespace Interview.UI.Controllers
         #region Public Index Methods
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            
+
+            List<Group> groups = null;
+
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+                groups = await _dal.GetGroups(null);
+            else
+                groups = await _dal.GetGroups(LoggedInMockUser.Id);
+            ViewBag.Groups = groups;
+
             return View();
 
         }
@@ -79,6 +87,13 @@ namespace Interview.UI.Controllers
                     UserId = (Guid)LoggedInMockUser.Id
                 });
                 groupId = await _dal.AddEntity<Group>(group);
+
+                ContestGroup contestGroup = new ContestGroup()
+                {
+                    ContestId = (Guid)_state.ContestId,
+                    GroupId = groupId,
+                };
+                await _dal.AddEntity<ContestGroup>(contestGroup);
 
                 AddRole(MockLoggedInUserRoles.Owner, (Guid)LoggedInMockUser.Id);
 

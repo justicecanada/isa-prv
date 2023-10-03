@@ -68,6 +68,10 @@ namespace Interview.UI.Services.DAL
                     _context.Contests.Add((Contest)entity);
                     break;
 
+                case nameof(ContestGroup):
+                    _context.ContestGroups.Add((ContestGroup)entity);
+                    break;
+
                 case nameof(Role):
                     _context.Roles.Add((Role)entity);
                     break;
@@ -126,7 +130,8 @@ namespace Interview.UI.Services.DAL
                             .ThenInclude(x => x.InterviewUsers)
                             .Include(x => x.UserSettings)
                             .Include(x => x.Schedules)
-                            .Include(x => x.Groups)
+                            .Include(x => x.ContestGroups)
+                            .ThenInclude(x => x.Group)
                             .ThenInclude(x => x.GroupOwners)
                             .FirstOrDefaultAsync();
                     else
@@ -347,6 +352,32 @@ namespace Interview.UI.Services.DAL
                 .Include(x => x.UserSettings)
                 //.ThenInclude(x => x.Role)
                 .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Group>> GetGroups(Guid? userId = null)
+        {
+
+            List<Group> result = null;
+
+            if (userId == null)
+            { 
+                result = await _context.Groups
+                    .Include(x => x.ContestGroups)
+                    .ThenInclude(x => x.Contest).Where(x => !(bool)x.IsDeleted)
+                    .Include(x => x.GroupOwners)
+                    .ToListAsync();
+            }
+            else
+            {
+                result = await _context.Groups
+                    .Include(x => x.ContestGroups)
+                    .ThenInclude(x => x.Contest).Where(x => !(bool)x.IsDeleted && x.GroupOwners.Any(y => y.UserId == userId))
+                    .Include(x => x.GroupOwners)
+                    .ToListAsync();
+            }
 
             return result;
 

@@ -24,6 +24,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
 
+        Task<List<Group>> GetGroups(Guid? userId = null);
+
         Task<List<Role>> GetAllRoles();
 
         Task<List<UserLanguage>> GetAllUserLanguages();

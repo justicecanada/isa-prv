@@ -19,29 +19,29 @@ namespace Interview.UI.Migrations
                 name: "IX_Groups_ContestId",
                 table: "Groups");
 
-            migrationBuilder.CreateTable(
-                name: "ContestGroup",
-                columns: table => new
-                {
-                    ContestsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GroupsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContestGroup", x => new { x.ContestsId, x.GroupsId });
-                    table.ForeignKey(
-                        name: "FK_ContestGroup_Contests_ContestsId",
-                        column: x => x.ContestsId,
-                        principalTable: "Contests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ContestGroup_Groups_GroupsId",
-                        column: x => x.GroupsId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            //migrationBuilder.CreateTable(
+            //    name: "ContestGroup",
+            //    columns: table => new
+            //    {
+            //        ContestsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //        GroupsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+            //    },
+            //    constraints: table =>
+            //    {
+            //        table.PrimaryKey("PK_ContestGroup", x => new { x.ContestsId, x.GroupsId });
+            //        table.ForeignKey(
+            //            name: "FK_ContestGroup_Contests_ContestsId",
+            //            column: x => x.ContestsId,
+            //            principalTable: "Contests",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //        table.ForeignKey(
+            //            name: "FK_ContestGroup_Groups_GroupsId",
+            //            column: x => x.GroupsId,
+            //            principalTable: "Groups",
+            //            principalColumn: "Id",
+            //            onDelete: ReferentialAction.Cascade);
+            //    });
 
             migrationBuilder.CreateTable(
                 name: "ContestGroups",
@@ -68,10 +68,10 @@ namespace Interview.UI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ContestGroup_GroupsId",
-                table: "ContestGroup",
-                column: "GroupsId");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_ContestGroup_GroupsId",
+            //    table: "ContestGroup",
+            //    column: "GroupsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContestGroups_ContestId",
@@ -87,8 +87,8 @@ namespace Interview.UI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ContestGroup");
+            //migrationBuilder.DropTable(
+            //    name: "ContestGroup");
 
             migrationBuilder.DropTable(
                 name: "ContestGroups");
