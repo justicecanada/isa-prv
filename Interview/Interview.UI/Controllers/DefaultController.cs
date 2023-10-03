@@ -4,6 +4,7 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -57,6 +58,8 @@ namespace Interview.UI.Controllers
 
             ViewBag.Contests = contests;
             ViewBag.ContestId = contestId;
+            if (contestId != null)
+                await SetCalendarViewBag(contests.Where(x => x.Id == contestId).First());
 
             return View();
 
@@ -69,6 +72,25 @@ namespace Interview.UI.Controllers
             _state.ContestId = contestId;
 
             return RedirectToAction("Index");
+
+        }
+
+        private async Task SetCalendarViewBag(Contest contest)
+        {
+
+            MockUser loggedInMockUser = await _dal.GetMockUserByName(_justiceOptions.Value.MockLoggedInUserName);
+            UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)loggedInMockUser.Id);
+            MockLoggedInUserRoles mockLoggedInUserRole = _justiceOptions.Value.MockLoggedInUserRole;
+
+            if (mockLoggedInUserRole == MockLoggedInUserRoles.Admin || mockLoggedInUserRole == MockLoggedInUserRoles.Owner || mockLoggedInUserRole == MockLoggedInUserRoles.System)
+            {
+                bool hasAccess = true;
+                if (mockLoggedInUserRole == MockLoggedInUserRoles.Admin)
+                {
+
+                }
+            }
+
 
         }
 

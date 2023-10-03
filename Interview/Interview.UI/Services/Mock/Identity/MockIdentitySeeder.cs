@@ -1,6 +1,8 @@
 ﻿using Interview.Entities;
 using Interview.UI.Data;
+using Interview.UI.Models.AppSettings;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Interview.UI.Services.Mock.Identity
 {
@@ -11,14 +13,16 @@ namespace Interview.UI.Services.Mock.Identity
         #region Declarations
 
         private readonly SqlContext _context;
+        private readonly IOptions<JusticeOptions> _justiceOptions;
 
         #endregion
 
         #region Constructors
 
-        public MockIdentitySeeder(SqlContext context)
+        public MockIdentitySeeder(SqlContext context, IOptions<JusticeOptions> justiceOptions)
         {
             _context = context;
+            _justiceOptions = justiceOptions;
         }
 
         #endregion
@@ -47,6 +51,10 @@ namespace Interview.UI.Services.Mock.Identity
         {
 
             List<MockUser> result = new List<MockUser>();
+            string loggedInUserName = _justiceOptions.Value.MockLoggedInUserName;
+
+            // Mock Logged In User
+            result.Add(GetMockUser(loggedInUserName, loggedInUserName, loggedInUserName, loggedInUserName, UserTypes.Internal));
 
             for (int i = 0; i < 100; i++)
             {
