@@ -7,6 +7,7 @@ using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
+using Interview.UI.Services.Mock.Departments;
 
 namespace Interview.UI.Controllers
 {
@@ -39,9 +40,10 @@ namespace Interview.UI.Controllers
         {
 
             var contests = await _dal.GetAllContests();
-            var vmContests = _mapper.Map(contests, typeof(List<Contest>), typeof(List<VmContest>));
+            List<MockDepartment> mockDepartments = await _dal.GetAllMockDepatments();
 
-            ViewBag.VmContests = vmContests;
+            ViewBag.Contests = contests;
+            ViewBag.MockDepartments = mockDepartments;
 
             return View();
 
@@ -79,7 +81,7 @@ namespace Interview.UI.Controllers
                 vmContest = _mapper.Map<VmContest>(contest);
             }
 
-            ViewBag.Schedules = GetSchedules();
+            await ContestsSetViewBag();
 
             return View(vmContest);
 
@@ -105,7 +107,7 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                ViewBag.Schedules = GetSchedules();
+                await ContestsSetViewBag();
 
                 return View("Contest", vmContest);
             }
@@ -132,23 +134,26 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                ViewBag.Schedules = GetSchedules();
+                await ContestsSetViewBag();
 
                 return View("Contest", vmContest);
             }
 
         }
 
-        private List<VmSchedule> GetSchedules()
+        private async Task ContestsSetViewBag()
         {
 
-            var result = new List<VmSchedule>();
+            // Schedules
+            var result = new List<Schedule>();
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = 0 });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Members, StartValue = 45 });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Marking, StartValue = 90 });
+            ViewBag.Schedules = result;
 
-            result.Add(new VmSchedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = 0 });
-            result.Add(new VmSchedule() { ScheduleType = ScheduleTypes.Members, StartValue = 45 });
-            result.Add(new VmSchedule() { ScheduleType = ScheduleTypes.Marking, StartValue = 90 });
-
-            return result;
+            // Departments
+            var mockDepartments = await _dal.GetAllMockDepatments();
+            ViewBag.MockDepartments = mockDepartments;
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using Interview.Entities;
+using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI.Services.DAL
@@ -44,6 +45,12 @@ namespace Interview.UI.Services.DAL
         Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType);
 
         Task<Guid> AddMockUser(MockUser mockUser);
+
+        #endregion
+
+        #region Mock Departments Methods
+
+        Task<List<MockDepartment>> GetAllMockDepatments();
 
         #endregion
 

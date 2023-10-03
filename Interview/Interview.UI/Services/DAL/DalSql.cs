@@ -1,6 +1,7 @@
 ﻿using Interview.Entities;
 using Interview.UI.Data;
 using Interview.UI.Models.Roles;
+using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -382,6 +383,19 @@ namespace Interview.UI.Services.DAL
             _context.MockUsers.Add(mockUser).State = EntityState.Added;
             await _context.SaveChangesAsync();
             result = (Guid)mockUser.Id;
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region Mock Departments Methods
+
+        public async Task<List<MockDepartment>> GetAllMockDepatments()
+        {
+
+            List<MockDepartment> result = await _context.MockDepartments.ToListAsync();
 
             return result;
 

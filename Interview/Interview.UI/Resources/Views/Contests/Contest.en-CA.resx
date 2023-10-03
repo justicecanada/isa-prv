@@ -144,6 +144,9 @@
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>== Please Select ==</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>

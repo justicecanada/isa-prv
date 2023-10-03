@@ -1,11 +1,13 @@
 ﻿@model VmContest
+@using Interview.Entities
 @using Interview.UI.Models
 @using Interview.UI.Helpers
+@using Interview.UI.Services.Mock.Departments
 @using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
 @{
-    
+
     ViewBag.Title = localizer["Title"].Value;
 
     ViewBag.FieldOrder = new List<string>(new string[]
@@ -14,10 +16,23 @@
         "ContactNumber", "InterviewDuration", "MembersIntroEN", "MembersIntroFR", "CandidatesIntroEN", "CandidatesIntroFR"
     }).Select(x => x.ToLower()).ToList();
 
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     string h3 = Model.Id == null ? localizer["AddProcess"].Value : localizer["EditProcess"].Value;
 
-    List<VmSchedule> schedules = ViewBag.Schedules;
+    List<Schedule> schedules = ViewBag.Schedules;
     string schedulesJson = JsonConvert.SerializeObject(schedules);
+
+    List<MockDepartment> mockDepartments = ViewBag.MockDepartments;
+    List<SelectListItem> mockDepartmentItems = new List<SelectListItem>();
+    mockDepartmentItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var mockDepartment in mockDepartments)
+    {
+        mockDepartmentItems.Add(new SelectListItem()
+        {         
+            Value = mockDepartment.Id.ToString(),
+            Text = cultureName == Constants.EnglishCulture ? mockDepartment.NameEN : mockDepartment.NameFR
+        });
+    }
 
 }
 
@@ -56,7 +71,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="text-info">Placeholder for ddlDepartment...</div>
+                    @Html.EditorFor(x => x.DepartmentId, "Question", new { inputControl = @Html.DropDownList("DepartmentId", mockDepartmentItems, new { @class = "form-control" }) })
                 </div>
             </div>
 
