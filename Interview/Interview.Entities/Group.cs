@@ -10,6 +10,11 @@ namespace Interview.Entities
     public class Group : EntityBase
     {
 
+        public Group()
+        {
+            GroupOwners = new List<GroupOwner>();
+        }
+
         public Guid ContestId { get; set; }
         public string? NameFr { get; set; }
         public string? NameEn { get; set; }
