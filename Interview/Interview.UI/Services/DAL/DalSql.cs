@@ -333,6 +333,20 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<UserSetting?> GetUserSettingByContestIdAndUserId(Guid contestId, Guid userId)
+        {
+
+            var result = await _context.UserSettings.Where(x => (x.ContestId == contestId && x.UserId == userId))
+                .Include(x => x.Role)
+                .Include(x => x.UserLanguage)
+                .Include(x => x.UserSettingEquities)
+                .ThenInclude(x => x.Equity)
+                .FirstOrDefaultAsync();
+
+            return result;
+
+        }
+
         public async Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId)
         {
 
@@ -370,6 +384,15 @@ namespace Interview.UI.Services.DAL
 
             MockUser? result = await _context.MockUsers.Where(x => (x.Id == id &&
                         x.UserType == userType)).FirstOrDefaultAsync();
+
+            return result;
+
+        }
+
+        public async Task<MockUser> GetMockUserByName(string name)
+        {
+            
+            MockUser result = await _context.MockUsers.Where(x => x.UserName == name).FirstAsync();
 
             return result;
 

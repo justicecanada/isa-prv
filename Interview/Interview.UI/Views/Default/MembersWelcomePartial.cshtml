@@ -1,14 +1,15 @@
-﻿@using Interview.UI.Models
+﻿@using Interview.Entities
+@using Interview.UI.Models
 @inject IViewLocalizer localizer
 
 @{
 
-    VmContest vmContest = ViewBag.vmContest;
+    Contest contest = ViewBag.Contest;
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
 
-    bool showWelcome = vmContest != null
-        && ((cultureName == Constants.EnglishCulture && !string.IsNullOrEmpty(vmContest.MembersIntroEN)
-        || (cultureName == Constants.FrenchCulture && !string.IsNullOrEmpty(vmContest.MembersIntroEN))));
+    bool showWelcome = contest != null
+        && ((cultureName == Constants.EnglishCulture && !string.IsNullOrEmpty(contest.MembersIntroEN)
+        || (cultureName == Constants.FrenchCulture && !string.IsNullOrEmpty(contest.MembersIntroEN))));
 
 }
 
@@ -19,11 +20,11 @@
         <div>
             @if (cultureName == Constants.EnglishCulture)
             {
-                <p>@vmContest.MembersIntroEN</p>
+                <p>@contest.MembersIntroEN</p>
             }
             else if (cultureName == Constants.FrenchCulture)
             {
-                <p>@vmContest.MembersIntroFR</p>
+                <p>@contest.MembersIntroFR</p>
             }
         </div>
     </section>

@@ -32,6 +32,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId);
 
+        Task<UserSetting> GetUserSettingByContestIdAndUserId(Guid contestId, Guid userId);
+
         Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId);
 
         #endregion
@@ -43,6 +45,8 @@ namespace Interview.UI.Services.DAL
         Task<List<MockUser>> GetListExistingExternalMockUser();
 
         Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType);
+
+        Task<MockUser?> GetMockUserByName(string name);
 
         Task<Guid> AddMockUser(MockUser mockUser);
 
