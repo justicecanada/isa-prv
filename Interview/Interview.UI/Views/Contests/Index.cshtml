@@ -1,9 +1,10 @@
-﻿@inject IViewLocalizer localizer
+﻿@using Interview.Entities
+@inject IViewLocalizer localizer
 
 @{
     ViewBag.Title = localizer["Title"].Value;
 
-    List<VmContest> vmContests = ViewBag.VmContests;
+    List<Contest> contests = ViewBag.Contests;
 
 }
 
@@ -18,9 +19,9 @@
 </div>
 
 <div class="row">
-    @foreach (VmContest vmContest in vmContests)
+    @foreach (Contest contest in contests)
     {
-        ViewBag.vmContest = vmContest;
+        ViewBag.Contest = contest;
         await Html.RenderPartialAsync("SummaryTile");
     }
 </div>

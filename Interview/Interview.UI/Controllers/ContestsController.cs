@@ -7,6 +7,7 @@ using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
+using Interview.UI.Services.Mock.Departments;
 
 namespace Interview.UI.Controllers
 {
@@ -39,9 +40,10 @@ namespace Interview.UI.Controllers
         {
 
             var contests = await _dal.GetAllContests();
-            var vmContests = _mapper.Map(contests, typeof(List<Contest>), typeof(List<VmContest>));
+            List<MockDepartment> mockDepartments = await _dal.GetAllMockDepatments();
 
-            ViewBag.VmContests = vmContests;
+            ViewBag.Contests = contests;
+            ViewBag.MockDepartments = mockDepartments;
 
             return View();
 

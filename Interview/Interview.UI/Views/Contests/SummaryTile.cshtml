@@ -1,9 +1,20 @@
-﻿@using Interview.UI.Models
+﻿@using Interview.Entities
+@using Interview.UI.Services.Mock.Departments
 @inject IViewLocalizer localizer
 
 @{
 
-    VmContest vmContest = ViewBag.vmContest;
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    Contest contest = ViewBag.Contest;
+    List<MockDepartment> mockDepartments = ViewBag.MockDepartments;
+
+    string departmentName = "";
+    if (contest.DepartmentId != null)
+    {
+        var mockDepartment = mockDepartments.Where(x => x.Id == contest.DepartmentId).FirstOrDefault();
+        if (mockDepartment != null)
+            departmentName = cultureName == Constants.EnglishCulture ? mockDepartment.NameEN : mockDepartment.NameFR;
+    }
 
 }
 
@@ -12,28 +23,28 @@
 
         <div class="panel-heading">
             <h3 class="panel-title">
-                @vmContest.GroupNiv
+                @contest.GroupNiv
             </h3>
         </div>
 
         <div class="panel-body">
 
             <div>
-                @localizer["DepartmentId"]: <span class="h5">@vmContest.DepartmentId</span>
+                @localizer["DepartmentId"]: <span class="h5">@departmentName</span>
             </div>
             <div>
-                @localizer["GroupNiv"]: <span class="h5">@vmContest.GroupNiv</span>
+                @localizer["GroupNiv"]: <span class="h5">@contest.GroupNiv</span>
             </div>
             <div>
-                @localizer["StartDate"]: <span class="h5">@vmContest.StartDate.Value.ToString(Constants.DateFormat)</span>
+                @localizer["StartDate"]: <span class="h5">@contest.StartDate.Value.ToString(Constants.DateFormat)</span>
             </div>
             <div>
-                @localizer["EndDate"]: <span class="h5">@vmContest.EndDate.Value.ToString(Constants.DateFormat)</span>
+                @localizer["EndDate"]: <span class="h5">@contest.EndDate.Value.ToString(Constants.DateFormat)</span>
             </div>
 
             <div class="mrgn-tp-md">
-                @Html.ActionLink(localizer["ProcessManagement"].Value, "Contest", "Contests", new { contestId = vmContest.Id }, new { @class = "btn btn-default" })
-                @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { contestId = vmContest.Id }, new { @class = "btn btn-danger" })
+                @Html.ActionLink(localizer["ProcessManagement"].Value, "Contest", "Contests", new { contestId = contest.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { contestId = contest.Id }, new { @class = "btn btn-danger" })
             </div>
 
         </div>
