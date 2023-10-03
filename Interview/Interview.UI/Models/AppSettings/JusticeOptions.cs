@@ -1,9 +1,11 @@
-﻿namespace Interview.UI.Models.AppSettings
+﻿using Interview.UI.Services.Mock.Identity;
+
+namespace Interview.UI.Models.AppSettings
 {
     public class JusticeOptions
     {
 
-        public bool ShowEquitiesOnRoles { get; set;  }
+        public MockLoggedInUserRoles MockLoggedInUserRole { get; set;  }
 
     }
 }

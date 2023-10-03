@@ -58,7 +58,7 @@ namespace Interview.UI.Controllers
             VmIndex result = new VmIndex();
 
             // // Handle equities (this will be handled by the role the logged in user is in)
-            if (_justiceOptions.Value.ShowEquitiesOnRoles)
+            if (_justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin)
             {
                 var equities = await _dal.GetAllEquities();
                 List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
@@ -104,7 +104,7 @@ namespace Interview.UI.Controllers
                 userSettingId = await _dal.AddEntity(userSetting);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
-                if (_justiceOptions.Value.ShowEquitiesOnRoles)
+                if (_justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin)
                 {                   
                     foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {
@@ -168,7 +168,7 @@ namespace Interview.UI.Controllers
             ViewBag.UserLanguages = userLanguages;
 
             // Show Equities
-            ViewBag.ShowEquities = _justiceOptions.Value.ShowEquitiesOnRoles;
+            ViewBag.ShowEquities = _justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin;
 
             // MockUsers
             var mockExistingExternalUsers = await _dal.GetListExistingExternalMockUser();
@@ -261,7 +261,7 @@ namespace Interview.UI.Controllers
             await _dal.UpdateEntity(dbUserSetting);
 
             // Handle Equities
-            if (_justiceOptions.Value.ShowEquitiesOnRoles)
+            if (_justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin)
             {
                 var dbUserSettingEquities = await _dal.GetUserSettingEquitiesByUserSettingId((Guid)vmUserSetting.Id);
                 var postedEquities = vmUserSetting.Equities.Where(x => x.IsSelected).ToList();
