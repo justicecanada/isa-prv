@@ -31,8 +31,12 @@
                 @Html.HiddenFor(x => x.InternalId)
 
                 <div class="col-md-12">
-                    @Html.CheckBoxFor(x => x.HasAccessEE)
-                    @Html.LabelFor(x => x.HasAccessEE)
+                    <div class="form-group">
+						<div class="checkbox">
+                            @Html.CheckBoxFor(x => x.HasAccessEE)
+                            @Html.LabelFor(x => x.HasAccessEE)
+                        </div>
+                    </div>
                 </div>
 
                 <input type="submit" value="@localizer["AddEmployee"]" class="btn btn-primary" />
@@ -45,12 +49,17 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(x => x.Id)
 
-                <div class="row form-group">
+                <div class="form-group">
                     <div class="col-md-12">
                         @Html.LabelFor(x => x.ContestIdToAdd)
                     </div>
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(x => x.ContestIdToAdd, contestItems, new { @class = "form-control" })
+                    <div class="row">
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.ContestIdToAdd, contestItems, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" value="@localizer["AddContest"]" class="btn btn-primary" />
+                        </div>
                     </div>
                 </div>
 
