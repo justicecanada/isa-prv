@@ -45,9 +45,31 @@ namespace Interview.UI.Controllers
                 groups = await _dal.GetGroups(null);
             else
                 groups = await _dal.GetGroups(LoggedInMockUser.Id);
-            ViewBag.Groups = groups;
+            List<VmGroup> vmGroups = _mapper.Map<List<VmGroup>>(groups);
+            await PopulateGroupOwnersWithMockUser(vmGroups);                    // Ugly
 
-            return View();
+            List<Contest> contests = await _dal.GetAllContests();
+            ViewBag.Contests = contests;
+
+            return View(vmGroups);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEmployee(VmGroup vmGroup)
+        {
+
+            return RedirectToAction("Index");
+
+        }
+
+        private async Task PopulateGroupOwnersWithMockUser(List<VmGroup> vmGroups)
+        {
+
+            foreach (VmGroup vmGroup in vmGroups)
+                foreach (VmGroupOwner vmGroupOwner in vmGroup.GroupOwners)
+                    vmGroupOwner.MockUser = await _dal.GetMockUserByIdAndType(vmGroupOwner.UserId, UserTypes.Internal);
 
         }
 

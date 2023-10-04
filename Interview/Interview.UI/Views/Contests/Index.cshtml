@@ -22,6 +22,6 @@
     @foreach (Contest contest in contests)
     {
         ViewBag.Contest = contest;
-        await Html.RenderPartialAsync("SummaryTile");
+        await Html.RenderPartialAsync("SummaryTilePartial");
     }
 </div>

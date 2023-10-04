@@ -1,5 +1,6 @@
-﻿@using Interview.Entities
-@using Interview.UI.Models
+﻿@model List<VmGroup>
+@using Interview.Entities
+@using Interview.UI.Models.Groups
 @inject IViewLocalizer localizer
 
 @{
@@ -11,8 +12,21 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
-    List<Group> groups = ViewBag.Groups;
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     bool showAddGroupPartial = ViewBag.ShowAddGroupPartial == null ? false : ViewBag.ShowAddGroupPartial;
+
+    List<Contest> contests = ViewBag.Contests;
+    List<SelectListItem> contestItems = new List<SelectListItem>();
+    contestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var contest in contests)
+    {
+        contestItems.Add(new SelectListItem()
+        {
+            Value = contest.Id.ToString(),
+            Text = contest.GroupNiv
+        });
+    }
+    ViewBag.ContestItems = contestItems;
 
 }
 
@@ -29,3 +43,10 @@
 {
     await Html.RenderPartialAsync("AddGroupPartial");
 }
+
+<div class="row">
+    @foreach (VmGroup group in Model)
+    {
+        await Html.RenderPartialAsync("GroupTilePartial", group);
+    }
+</div>
