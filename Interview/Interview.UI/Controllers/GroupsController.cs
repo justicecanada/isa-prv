@@ -20,6 +20,8 @@ namespace Interview.UI.Controllers
         private readonly IMapper _mapper;
         private readonly IState _state;
 
+        private const string _showAddGroupPartial = "SHOW_ADD_GROUP_PARTIAL";
+
         #endregion
 
         #region Constructors
@@ -139,6 +141,9 @@ namespace Interview.UI.Controllers
             List<Contest> contests = await _dal.GetAllContests();
             ViewBag.Contests = contests;
 
+            if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
+                ViewBag.VmAddGroup = new VmAddGroup();
+
         }
 
         private void IndexRegisterClientResources()
@@ -161,11 +166,9 @@ namespace Interview.UI.Controllers
         public IActionResult AddGroup()
         {
 
-            VmAddGroup result = new VmAddGroup();
+            TempData[_showAddGroupPartial] = true;
 
-            ViewBag.ShowAddGroupPartial = true;
-
-            return View("Index", result);
+            return RedirectToAction("Index");
 
         }
 
