@@ -95,16 +95,13 @@ namespace Interview.UI.Controllers
             
             if (ModelState.IsValid)
             {
-
                 var contest = _mapper.Map<Contest>(vmContest);
 
-                if (vmContest.Id == null)
-                    await _dal.AddEntity<Contest>(contest);
-                else
-                    await _dal.UpdateEntity(contest);
+                contest.CreatedDate = DateTime.Now;
+                contest.InitUserId = LoggedInMockUser.Id;
+                await _dal.AddEntity<Contest>(contest);
 
                 return RedirectToAction("Index", "Emails", new { id = vmContest.Id });
-
             }
             else
             {
@@ -122,13 +119,12 @@ namespace Interview.UI.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var contest = _mapper.Map<Contest>(vmContest);
+                Contest dbContest = await _dal.GetEntity<Contest>((Guid)vmContest.Id) as Contest;
 
-                if (vmContest.Id == null)
-                    await _dal.AddEntity<Contest>(contest);
-                else
-                    await _dal.UpdateEntity(contest);
+                contest.CreatedDate = dbContest.CreatedDate;
+                contest.InitUserId = dbContest.InitUserId;
+                await _dal.UpdateEntity(contest);
 
                 return RedirectToAction("Index", "Default");
 
