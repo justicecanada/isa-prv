@@ -344,7 +344,33 @@ namespace Interview.UI.Services.DAL
         public async Task<List<Contest>> GetAllContests()
         {
 
-            var result = await _context.Contests.Where(x => !x.IsDeleted).ToListAsync();
+            var result = await _context.Contests.Where(x => !x.IsDeleted)
+                .Include(x => x.UserSettings)
+                .ThenInclude(x => x.Role)
+                .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Contest>> GetContestsForGroupOwner(Guid userId)
+        {
+
+            var result = await _context.Contests.Where(x => !x.IsDeleted &&
+                (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
+                || x.UserSettings.Any(y => y.UserId.Equals(userId))))
+                .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId)
+        {
+
+            var result = await _context.Contests.Where(x => !x.IsDeleted &&
+                x.UserSettings.Any(y => y.UserId.Equals(userId)))
+                .ToListAsync();
 
             return result;
 

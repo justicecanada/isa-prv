@@ -22,6 +22,10 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetAllContests();
 
+        Task<List<Contest>> GetContestsForGroupOwner(Guid userId);
+
+        Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId);
+
         Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
 
         Task<List<Group>> GetGroups(Guid? userId = null);

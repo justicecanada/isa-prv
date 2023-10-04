@@ -40,8 +40,19 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Contest> contests = await _dal.GetAllContestsWithUserSettingsAndRoles();
+            List<Contest> contests = null;
             Guid? contestId = null;
+
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+                contests = await _dal.GetAllContests();
+            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                contests = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
+            else
+                contests = await _dal.GetContestsForUserSettingsUser((Guid)LoggedInMockUser.Id);
+            contests.OrderByDescending(x => x.CreatedDate);
+
+            if (contests.Any())
+                _state.ContestId = contests.First().Id;
 
             // Look to Session for ContestId
             if (_state.ContestId != null)
