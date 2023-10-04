@@ -15,16 +15,19 @@
 
         <div class="panel-heading">
             <div class="row">
-            <div class="col-md-9">
-                <h3 class="panel-title">
-                    @(cultureName == Constants.EnglishCulture ? Model.NameEn : Model.NameFr)
-                </h3>
-            </div>
-            <div class="col-md-3">
-                <a href="@Url.Action("DeleteGroup", "Groups", new { id = Model.Id } )">
-                    <span class="glyphicon glyphicon-trash text-danger"></span>
-                </a>
-            </div>
+                <div class="col-md-9">
+                    <h3 class="panel-title">
+                        @(cultureName == Constants.EnglishCulture ? Model.NameEn : Model.NameFr)
+                    </h3>
+                </div>
+                <div class="col-md-3">
+                    <a href="@Url.Action("EditGroup", "Groups", new { id = Model.Id } )">
+                        <span class="glyphicon glyphicon-edit text-info"></span>
+                    </a>
+                    <a href="@Url.Action("DeleteGroup", "Groups", new { id = Model.Id } )">
+                        <span class="glyphicon glyphicon-trash text-danger"></span>
+                    </a>
+                </div>
             </div>
         </div>
 

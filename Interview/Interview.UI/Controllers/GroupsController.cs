@@ -70,6 +70,14 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditGroup(Guid id)
+        {
+
+            return null;
+
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmployee(VmGroup vmGroup)
