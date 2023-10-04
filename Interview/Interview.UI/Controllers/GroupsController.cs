@@ -21,6 +21,7 @@ namespace Interview.UI.Controllers
         private readonly IState _state;
 
         private const string _showAddGroupPartial = "SHOW_ADD_GROUP_PARTIAL";
+        private const string _groupIdToEdit = "GROUP_ID_TO_EDIT";
 
         #endregion
 
@@ -41,19 +42,31 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
+            VmIndex vmIndex = new VmIndex();
             List<Group> groups = null;
 
+            // Hanld groups
             if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
                 groups = await _dal.GetGroups(null);
             else
                 groups = await _dal.GetGroups(LoggedInMockUser.Id);
-            List<VmGroup> vmGroups = _mapper.Map<List<VmGroup>>(groups);
+            vmIndex.Groups = _mapper.Map<List<VmGroup>>(groups);
+            await PopulateGroupOwnersWithMockUser(vmIndex.Groups);                    // Ugly
 
-            await PopulateGroupOwnersWithMockUser(vmGroups);                    // Ugly
+            // Handle Add group
+            if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
+            {
+                vmIndex.AddGroup = true;
+                vmIndex.VmAddGroup = new VmAddGroup();
+            }
+            // Handle Edit group
+            if (TempData[_groupIdToEdit] != null)
+                vmIndex.Groups.Where(x => x.Id == (Guid)TempData[_groupIdToEdit]).First().EditThisGroup = true;
+            
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
-            return View(vmGroups);
+            return View(vmIndex);
 
         }
 
@@ -74,7 +87,24 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EditGroup(Guid id)
         {
 
-            return null;
+            TempData[_groupIdToEdit] = id;
+
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGroup(VmGroup vmGroup)
+        {
+
+            Group group = await _dal.GetEntity<Group>((Guid)vmGroup.Id) as Group;
+
+            group.NameEn = vmGroup.NameEn;
+            group.NameFr = vmGroup.NameFr;
+            await _dal.UpdateEntity(group);
+
+            return RedirectToAction("Index");
 
         }
 

@@ -1,4 +1,4 @@
-﻿@model List<VmGroup>
+﻿@model VmIndex
 @using Interview.Entities
 @using Interview.UI.Models.Groups
 @inject IViewLocalizer localizer
@@ -13,7 +13,6 @@
     ViewBag.Title = localizer["Title"].Value;
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    VmAddGroup? groupToAdd = ViewBag.VmAddGroup;
 
     List<Contest> contests = ViewBag.Contests;
     List<SelectListItem> contestItems = new List<SelectListItem>();
@@ -39,14 +38,17 @@
     @Html.ActionLink(localizer["AddGroup"].Value, "AddGroup", "Groups", null, new { @class = "btn btn-primary" })
 </div>
 
-@if (groupToAdd != null)
+@if (Model.AddGroup)
 {
-    await Html.RenderPartialAsync("AddGroupPartial", groupToAdd);
+    await Html.RenderPartialAsync("AddGroupPartial", Model.VmAddGroup);
 }
 
 <div class="row">
-    @foreach (VmGroup group in Model)
+    @foreach (VmGroup group in Model.Groups)
     {
-        await Html.RenderPartialAsync("GroupTilePartial", group);
+        if (group.EditThisGroup)
+            await Html.RenderPartialAsync("EditGroupPartial", group);
+        else
+            await Html.RenderPartialAsync("GroupTilePartial", group);
     }
 </div>

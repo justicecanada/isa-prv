@@ -29,6 +29,8 @@ namespace Interview.UI.Models.Groups
         [Display(Name = "ContestIdToAdd")]
         public Guid? ContestIdToAdd { get; set; }
 
+        public bool EditThisGroup { get; set; }
+
         public List<VmContestGroup> ContestGroups { get; set; }
         public List<VmContest> Contests { get; set; }
         public List<VmGroupOwner> GroupOwners { get; set; }
