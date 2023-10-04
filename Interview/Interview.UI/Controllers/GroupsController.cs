@@ -48,12 +48,25 @@ namespace Interview.UI.Controllers
             else
                 groups = await _dal.GetGroups(LoggedInMockUser.Id);
             List<VmGroup> vmGroups = _mapper.Map<List<VmGroup>>(groups);
-            await PopulateGroupOwnersWithMockUser(vmGroups);                    // Ugly
 
+            await PopulateGroupOwnersWithMockUser(vmGroups);                    // Ugly
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
             return View(vmGroups);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteGroup(Guid id)
+        {
+
+            Group group = await _dal.GetEntity<Group>(id) as Group;
+
+            group.IsDeleted = true;
+            await _dal.UpdateEntity(group);
+
+            return RedirectToAction("Index");
 
         }
 
