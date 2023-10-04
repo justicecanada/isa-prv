@@ -71,7 +71,12 @@
             <ul>
                 @foreach (var groupOwner in Model.GroupOwners)
                 {
-                    <li>@groupOwner.MockUser.LastName, @groupOwner.MockUser.FirstName</li>
+                    <li>
+                        @groupOwner.MockUser.LastName, @groupOwner.MockUser.FirstName
+                        <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
+                            <span class="glyphicon glyphicon-trash text-danger"></span>
+                        </a>
+                    </li>
                 }
             </ul>
                                                                                                                                              
@@ -81,7 +86,12 @@
             <ul>
                 @foreach (var contestGroup in Model.ContestGroups)
                 {
-                    <li>@contestGroup.Contest.GroupNiv</li>
+                    <li>
+                        @contestGroup.Contest.GroupNiv
+                        <a href="@Url.Action("RemoveContest", "Groups", new { contestGroupId = contestGroup.Id } )">
+                            <span class="glyphicon glyphicon-trash text-danger"></span>
+                            </a>
+                    </li>
                 }
             </ul>
 

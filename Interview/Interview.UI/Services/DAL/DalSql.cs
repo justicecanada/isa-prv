@@ -288,6 +288,11 @@ namespace Interview.UI.Services.DAL
                     _context.Contests.Remove(contest);
                     break;
 
+                case nameof(ContestGroup):
+                    ContestGroup? contestGroup = await _context.ContestGroups.FindAsync(id);
+                    _context.ContestGroups.Remove(contestGroup);
+                    break;
+
                 case nameof(Role):
                     Role? role = await _context.Roles.FindAsync(id);
                     _context.Roles.Remove(role);

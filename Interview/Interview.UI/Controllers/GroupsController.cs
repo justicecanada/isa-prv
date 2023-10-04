@@ -80,6 +80,16 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> RemoveEmployee(Guid groupOwnerId)
+        {
+
+            await _dal.DeleteEntity<GroupOwner>(groupOwnerId);
+
+            return RedirectToAction("Index");
+
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddContest(VmGroup vmGroup)
@@ -99,6 +109,16 @@ namespace Interview.UI.Controllers
                     await _dal.AddEntity<ContestGroup>(contestGroup);
                 }
             }
+
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveContest(Guid contestGroupId)
+        {
+
+            await _dal.DeleteEntity<ContestGroup>(contestGroupId);
 
             return RedirectToAction("Index");
 
