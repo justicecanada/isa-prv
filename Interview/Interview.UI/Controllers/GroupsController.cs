@@ -234,7 +234,6 @@ namespace Interview.UI.Controllers
                 Guid groupId;
                 Group group = new Group()
                 {
-                    ContestId = (Guid)_state.ContestId,
                     NameEn = vmAddGroup.NameEn,
                     NameFr = vmAddGroup.NameFr,
                 };
@@ -243,13 +242,6 @@ namespace Interview.UI.Controllers
                     UserId = (Guid)LoggedInMockUser.Id
                 });
                 groupId = await _dal.AddEntity<Group>(group);
-
-                ContestGroup contestGroup = new ContestGroup()
-                {
-                    ContestId = (Guid)_state.ContestId,
-                    GroupId = groupId,
-                };
-                await _dal.AddEntity<ContestGroup>(contestGroup);
 
                 AddRole(MockLoggedInUserRoles.Owner, (Guid)LoggedInMockUser.Id);
 
