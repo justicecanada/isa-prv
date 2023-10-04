@@ -383,6 +383,24 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId)
+        {
+
+            List<GroupOwner> result = await _context.GroupsOwners.Where(x => (x.GroupId == groupId && x.UserId == userId)).ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId)
+        {
+
+            List<ContestGroup> result = await _context.ContestGroups.Where(x => (x.GroupId == groupId && x.ContestId == contestId)).ToListAsync();
+
+            return result;
+
+        }
+
         public async Task<List<Role>> GetAllRoles()
         {
 

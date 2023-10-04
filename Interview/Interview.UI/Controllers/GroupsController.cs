@@ -60,14 +60,45 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> AddEmployee(VmGroup vmGroup)
         {
 
-            GroupOwner groupOwner = new GroupOwner()
+            if (vmGroup.InternalId != null)
             {
-                GroupId = (Guid)vmGroup.Id,
-                UserId = (Guid)vmGroup.InternalId,
-                HasAccessEE = vmGroup.HasAccessEE
-            };
+                // Check to see if User has been added to the group
+                List<GroupOwner> groupOwners = await _dal.GetGroupOwnersByGroupIdAndUserId((Guid)vmGroup.Id, (Guid)vmGroup.InternalId);
+                if (!groupOwners.Any())
+                {
+                    GroupOwner groupOwner = new GroupOwner()
+                    {
+                        GroupId = (Guid)vmGroup.Id,
+                        UserId = (Guid)vmGroup.InternalId,
+                        HasAccessEE = vmGroup.HasAccessEE
+                    };
+                    await _dal.AddEntity<GroupOwner>(groupOwner);
+                }
+            }
 
-            await _dal.AddEntity<GroupOwner>(groupOwner);
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddContest(VmGroup vmGroup)
+        {
+
+            if (vmGroup.ContestIdToAdd != null)
+            {
+                // Check to see if Contest has been added to the group
+                List<ContestGroup> contestGroups = await _dal.GetContestGroupByGroupIdAndContestId((Guid)vmGroup.Id, (Guid)vmGroup.ContestIdToAdd);
+                if (!contestGroups.Any())
+                {
+                    ContestGroup contestGroup = new ContestGroup()
+                    {
+                        ContestId = (Guid)vmGroup.ContestIdToAdd,
+                        GroupId = (Guid)vmGroup.Id
+                    };
+                    await _dal.AddEntity<ContestGroup>(contestGroup);
+                }
+            }
 
             return RedirectToAction("Index");
 

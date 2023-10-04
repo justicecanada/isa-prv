@@ -26,6 +26,10 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Group>> GetGroups(Guid? userId = null);
 
+        Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId);
+
+        Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId);
+
         Task<List<Role>> GetAllRoles();
 
         Task<List<UserLanguage>> GetAllUserLanguages();
