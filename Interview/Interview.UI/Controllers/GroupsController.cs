@@ -48,8 +48,8 @@ namespace Interview.UI.Controllers
             List<VmGroup> vmGroups = _mapper.Map<List<VmGroup>>(groups);
             await PopulateGroupOwnersWithMockUser(vmGroups);                    // Ugly
 
-            List<Contest> contests = await _dal.GetAllContests();
-            ViewBag.Contests = contests;
+            await IndexSetViewBag();
+            IndexRegisterClientResources();
 
             return View(vmGroups);
 
@@ -59,6 +59,15 @@ namespace Interview.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmployee(VmGroup vmGroup)
         {
+
+            GroupOwner groupOwner = new GroupOwner()
+            {
+                GroupId = (Guid)vmGroup.Id,
+                UserId = (Guid)vmGroup.InternalId,
+                HasAccessEE = vmGroup.HasAccessEE
+            };
+
+            await _dal.AddEntity<GroupOwner>(groupOwner);
 
             return RedirectToAction("Index");
 
@@ -70,6 +79,26 @@ namespace Interview.UI.Controllers
             foreach (VmGroup vmGroup in vmGroups)
                 foreach (VmGroupOwner vmGroupOwner in vmGroup.GroupOwners)
                     vmGroupOwner.MockUser = await _dal.GetMockUserByIdAndType(vmGroupOwner.UserId, UserTypes.Internal);
+
+        }
+
+        private async Task IndexSetViewBag()
+        {
+
+            List<Contest> contests = await _dal.GetAllContests();
+            ViewBag.Contests = contests;
+
+        }
+
+        private void IndexRegisterClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Groups/Index.js?v={BuildId}'></script>");
 
         }
 

@@ -100,6 +100,26 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region Public Action Methods
+
+        [HttpGet]
+        public async Task<JsonResult> LookupInteralUser(string query)
+        {
+
+            List<MockUser> result = null;
+
+            if (!string.IsNullOrEmpty(query))
+                result = await _dal.LookupInteralMockUser(query);
+
+            return new JsonResult(new { result = true, results = result })
+            {
+                StatusCode = 200
+            };
+
+        }
+
+        #endregion
+
     }
 
 }

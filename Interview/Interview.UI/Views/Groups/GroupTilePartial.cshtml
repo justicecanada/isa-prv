@@ -27,7 +27,7 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(x => x.Id)
 
-                @Html.EditorFor(x => x.InternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.InternalName, new { @class = "form-control" }) })
+                @Html.EditorFor(x => x.InternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.InternalName, new { @class = "form-control internalName" }) })
                 @Html.HiddenFor(x => x.InternalId)
 
                 <div class="col-md-12">
@@ -71,10 +71,10 @@
             <ul>
                 @foreach (var groupOwner in Model.GroupOwners)
                 {
-                    <li>@groupOwner.MockUser.LastName @groupOwner.MockUser.FirstName</li>
+                    <li>@groupOwner.MockUser.LastName, @groupOwner.MockUser.FirstName</li>
                 }
             </ul>
-
+                                                                                                                                             
             <div class="row col-md-12">
                 <h4 class="brdr-bttm">@localizer["ProcessList"]</h4>
             </div>

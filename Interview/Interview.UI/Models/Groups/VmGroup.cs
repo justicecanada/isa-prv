@@ -26,6 +26,7 @@ namespace Interview.UI.Models.Groups
         [Display(Name = "HasAccessEE")]
         public bool HasAccessEE { get; set; }
 
+        [Display(Name = "ContestIdToAdd")]
         public Guid? ContestIdToAdd { get; set; }
 
         public List<VmContestGroup> ContestGroups { get; set; }
