@@ -82,18 +82,6 @@ namespace Interview.UI.Helpers
 
         }
 
-        //public static string GetEnumDescription(this Enum enumValue)
-        //{
-
-        //    var field = enumValue.GetType().GetField(enumValue.ToString());
-        //    if (Attribute.GetCustomAttribute(field, typeof(DisplayAttribute)) is DisplayAttribute attribute)
-        //    {
-        //        return attribute.GetDescription();
-        //    }
-        //    throw new ArgumentException("Item not found.", nameof(enumValue));
-
-        //}
-
     }
 
 }

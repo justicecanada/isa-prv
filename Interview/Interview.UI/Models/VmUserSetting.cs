@@ -1,9 +1,8 @@
 ﻿using Interview.Entities;
-using Interview.UI.Models.Enums;
 
 namespace Interview.UI.Models
 {
-    
+
     public class VmUserSetting : VmBase
     {
 
