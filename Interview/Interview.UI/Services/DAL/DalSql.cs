@@ -72,10 +72,6 @@ namespace Interview.UI.Services.DAL
                     _context.ContestGroups.Add((ContestGroup)entity);
                     break;
 
-                case nameof(Role):
-                    _context.Roles.Add((Role)entity);
-                    break;
-
                 case nameof(Schedule):
                     _context.Schedules.Add((Schedule)entity);
                     break;
@@ -195,16 +191,6 @@ namespace Interview.UI.Services.DAL
                     result = await _context.InterviewUsers.FindAsync(id);
                     break;
 
-                case nameof(Role):
-
-                    if (getChildObjects)
-                        result = await _context.Roles.Where(x => x.Id == id)
-                            .Include(x => x.UserSettings)
-                            .FirstOrDefaultAsync();
-                    else
-                        result = await _context.Roles.FindAsync(id);
-                    break;
-
                 case nameof(Schedule):
 
                     // No child objects
@@ -293,11 +279,6 @@ namespace Interview.UI.Services.DAL
                     _context.ContestGroups.Remove(contestGroup);
                     break;
 
-                case nameof(Role):
-                    Role? role = await _context.Roles.FindAsync(id);
-                    _context.Roles.Remove(role);
-                    break;
-
                 case nameof(Schedule):
                     Schedule? schedule = await _context.Schedules.FindAsync(id);
                     _context.Schedules.Remove(schedule);
@@ -346,7 +327,6 @@ namespace Interview.UI.Services.DAL
 
             var result = await _context.Contests.Where(x => !x.IsDeleted)
                 .Include(x => x.UserSettings)
-                .ThenInclude(x => x.Role)
                 .ToListAsync();
 
             return result;
@@ -432,15 +412,6 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Role>> GetAllRoles()
-        {
-
-            var result = await _context.Roles.ToListAsync();
-
-            return result;
-
-        }
-
         public async Task<List<UserLanguage>> GetAllUserLanguages()
         {
 
@@ -463,7 +434,6 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.UserSettings.Where(x => x.ContestId == contestId)
-                .Include(x => x.Role)
                 .Include(x => x.UserLanguage)
                 .Include(x => x.UserSettingEquities)
                 .ThenInclude(x => x.Equity)
@@ -477,7 +447,6 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.UserSettings.Where(x => (x.ContestId == contestId && x.UserId == userId))
-                .Include(x => x.Role)
                 .Include(x => x.UserLanguage)
                 .Include(x => x.UserSettingEquities)
                 .ThenInclude(x => x.Equity)

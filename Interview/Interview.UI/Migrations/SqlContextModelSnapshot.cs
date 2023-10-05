@@ -328,33 +328,6 @@ namespace Interview.UI.Migrations
                     b.ToTable("InterviewUsers");
                 });
 
-            modelBuilder.Entity("Interview.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleNameEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleNameFR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserSettingsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("Interview.Entities.Schedule", b =>
                 {
                     b.Property<Guid>("Id")
@@ -453,6 +426,9 @@ namespace Interview.UI.Migrations
                     b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("RoleType")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserFirstname")
                         .HasColumnType("nvarchar(max)");
 
@@ -468,8 +444,6 @@ namespace Interview.UI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContestId");
-
-                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserLanguageId");
 
@@ -662,15 +636,9 @@ namespace Interview.UI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Interview.Entities.Role", "Role")
-                        .WithMany("UserSettings")
-                        .HasForeignKey("RoleId");
-
                     b.HasOne("Interview.Entities.UserLanguage", "UserLanguage")
                         .WithMany("UserSettings")
                         .HasForeignKey("UserLanguageId");
-
-                    b.Navigation("Role");
 
                     b.Navigation("UserLanguage");
                 });
@@ -727,11 +695,6 @@ namespace Interview.UI.Migrations
             modelBuilder.Entity("Interview.Entities.Interview", b =>
                 {
                     b.Navigation("InterviewUsers");
-                });
-
-            modelBuilder.Entity("Interview.Entities.Role", b =>
-                {
-                    b.Navigation("UserSettings");
                 });
 
             modelBuilder.Entity("Interview.Entities.ScheduleType", b =>

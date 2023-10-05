@@ -21,4 +21,14 @@ namespace Interview.Entities
         NewExternal = 2
     }
 
+    public enum RoleTypes
+    {
+        HR = 1,
+        INTERVIEWER = 2,
+        LEAD = 3,
+        ASSISTANT = 4,
+        CANDIDATE = 5,
+        ADMIN = 6
+    }
+
 }

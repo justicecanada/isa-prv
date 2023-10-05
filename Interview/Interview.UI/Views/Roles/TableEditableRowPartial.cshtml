@@ -9,16 +9,16 @@
     UserSetting userSetting = ViewBag.UserSetting;
     string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
 
-    List<Role> roles =  ViewBag.Roles;
+    //List<Role> roles =  ViewBag.Roles;
     List<SelectListItem> rolesItems = new List<SelectListItem>();
-    foreach (var role in roles)
-    {
-        rolesItems.Add(new SelectListItem()
-        {         
-            Value = role.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? role.RoleNameEN : role.RoleNameFR
-        });
-    }
+    //foreach (var role in roles)
+    //{
+    //    rolesItems.Add(new SelectListItem()
+    //    {         
+    //        Value = role.Id.ToString(),
+    //        Text = cultureName == Constants.EnglishCulture ? role.RoleNameEN : role.RoleNameFR
+    //    });
+    //}
 
     List<UserLanguage> userLanguages = ViewBag.UserLanguages;
     List<SelectListItem> userLanguageItems = new List<SelectListItem>();

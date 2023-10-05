@@ -23,7 +23,7 @@ namespace Interview.UI.Data
 
             //Database.EnsureDeletedAsync().Wait();
             //Database.EnsureCreatedAsync().Wait();
-            Database.MigrateAsync().Wait();
+            //Database.MigrateAsync().Wait();
 
         }
 
@@ -43,7 +43,6 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.GroupOwner> GroupsOwners { get; set; }
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }
         public DbSet<Interview.Entities.InterviewUser> InterviewUsers { get; set; }     
-        public DbSet<Interview.Entities.Role> Roles { get; set; }                               // Shared system table
         public DbSet<Interview.Entities.Schedule> Schedules { get; set; }
         public DbSet<Interview.Entities.ScheduleType> ScheduleTypes { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserLanguage> UserLanguages { get; set; }               // Shared system table

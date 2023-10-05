@@ -140,8 +140,8 @@ namespace Interview.UI.Controllers
             ViewBag.UserSettings = userSettings;
 
             // Roles
-            var roles = await _dal.GetAllRoles();
-            ViewBag.Roles = roles;
+            //var roles = await _dal.GetAllRoles();
+            //ViewBag.Roles = roles;
 
             // UserLanguages
             var userLanguages = await _dal.GetAllUserLanguages();

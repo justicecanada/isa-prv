@@ -19,10 +19,10 @@ namespace Interview.UI.Models
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
         public bool? IsExternal { get; set; }
+        public RoleTypes RoleType { get; set; }
         public DateTime DateInserted { get; set; }
 
         public VmUserLanguage? UserLanguage { get; set; }
-        public VmRole? Role { get; set; }
 
         // Many to Many
         // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many

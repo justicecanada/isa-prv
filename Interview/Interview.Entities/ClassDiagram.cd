@@ -55,18 +55,10 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="UserLanguage" />
-      <Property Name="Role" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Interview.Entities.Role" Collapsed="true">
-    <Position X="5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAAAAAAAAAAAQAAAAAAGQAAAAAAQAAAAA=</HashCode>
-      <FileName>Role.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Interview.Entities.UserLanguage" Collapsed="true">
-    <Position X="5" Y="4.5" Width="1.5" />
+    <Position X="5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAACAAAAQAAAAAACAAAAAAAAAAAAE=</HashCode>
       <FileName>UserLanguage.cs</FileName>
