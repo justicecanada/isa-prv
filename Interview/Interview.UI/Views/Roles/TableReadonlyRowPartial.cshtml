@@ -1,5 +1,6 @@
 ﻿@using System.Text
 @using Interview.Entities
+@inject IViewLocalizer localizer
 
 @{
 
@@ -7,7 +8,7 @@
     UserSetting userSetting = ViewBag.UserSetting;
 
     string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
-    string roleName = userSetting.RoleType.ToString();
+    string roleName = localizer[userSetting.RoleType.ToString()].Value;
     string language = null;
     if (userSetting.UserLanguage != null)
         language = cultureName == Constants.EnglishCulture ? userSetting.UserLanguage.NameEN : userSetting.UserLanguage.NameFR;
