@@ -10,6 +10,8 @@
             Interviews = new List<Interview>();
             UserSettings = new List<UserSetting>();
             Schedules = new List<Schedule>();
+            ContestGroups = new List<ContestGroup>();
+            Groups = new List<Group>();
         }
 
         public string? NoProcessus { get; set; }
@@ -37,6 +39,7 @@
         public List<Interview> Interviews { get; set; }
         public List<UserSetting> UserSettings { get; set; }
         public List<Schedule> Schedules { get; set; }
+        public List<ContestGroup> ContestGroups { get; set;  }
         public List<Group> Groups { get; set; }
 
     }

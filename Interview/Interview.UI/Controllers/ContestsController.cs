@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Interview.UI.Services.Mock.Departments;
+using Interview.UI.Models.AppSettings;
+using Microsoft.Extensions.Options;
+using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI.Controllers
 {
@@ -16,7 +19,6 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-        private readonly DalSql _dal;
         private readonly IMapper _mapper;
         private readonly IState _state;
 
@@ -24,9 +26,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state) : base(modelAccessor)
+        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
+            : base(modelAccessor, justiceOptions, dal)
         {
-            _dal = dal;
             _mapper = mapper;
             _state = state;
         }
@@ -39,7 +41,16 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var contests = await _dal.GetAllContests();
+            List<Contest> contests = null;
+            Guid? contestId = null;
+
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
+                contests = await _dal.GetAllContests();
+            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+                throw new NotImplementedException();                            // Will need to create appsetting for MockUser.Department Name (like MockLoggedInUserName)
+            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                contests = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
+            contests.OrderByDescending(x => x.CreatedDate);
             List<MockDepartment> mockDepartments = await _dal.GetAllMockDepatments();
 
             ViewBag.Contests = contests;
@@ -94,16 +105,13 @@ namespace Interview.UI.Controllers
             
             if (ModelState.IsValid)
             {
-
                 var contest = _mapper.Map<Contest>(vmContest);
 
-                if (vmContest.Id == null)
-                    await _dal.AddEntity(contest);
-                else
-                    await _dal.UpdateEntity(contest);
+                contest.CreatedDate = DateTime.Now;
+                contest.InitUserId = LoggedInMockUser.Id;
+                await _dal.AddEntity<Contest>(contest);
 
                 return RedirectToAction("Index", "Emails", new { id = vmContest.Id });
-
             }
             else
             {
@@ -121,13 +129,12 @@ namespace Interview.UI.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var contest = _mapper.Map<Contest>(vmContest);
+                Contest dbContest = await _dal.GetEntity<Contest>((Guid)vmContest.Id) as Contest;
 
-                if (vmContest.Id == null)
-                    await _dal.AddEntity(contest);
-                else
-                    await _dal.UpdateEntity(contest);
+                contest.CreatedDate = dbContest.CreatedDate;
+                contest.InitUserId = dbContest.InitUserId;
+                await _dal.UpdateEntity(contest);
 
                 return RedirectToAction("Index", "Default");
 

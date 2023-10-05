@@ -10,7 +10,7 @@ namespace Interview.UI.Services.DAL
 
         #region Generic CRUD Methods
 
-        Task<Guid> AddEntity(EntityBase entity);
+        Task<Guid> AddEntity<t>(EntityBase entity);
         Task UpdateEntity(EntityBase entity);
         Task<EntityBase> GetEntity<t>(Guid id, bool getChildObjects = false);
         Task DeleteEntity<t>(Guid id);
@@ -22,7 +22,17 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetAllContests();
 
+        Task<List<Contest>> GetContestsForGroupOwner(Guid userId);
+
+        Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId);
+
         Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
+
+        Task<List<Group>> GetGroups(Guid? userId = null);
+
+        Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId);
+
+        Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId);
 
         Task<List<Role>> GetAllRoles();
 

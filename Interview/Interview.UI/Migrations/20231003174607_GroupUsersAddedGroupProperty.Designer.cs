@@ -4,6 +4,7 @@ using Interview.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20231003174607_GroupUsersAddedGroupProperty")]
+    partial class GroupUsersAddedGroupProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Interview.UI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ContestGroup", b =>
-                {
-                    b.Property<Guid>("ContestsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GroupsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ContestsId", "GroupsId");
-
-                    b.HasIndex("GroupsId");
-
-                    b.ToTable("ContestGroup");
-                });
 
             modelBuilder.Entity("EquityUserSetting", b =>
                 {
@@ -121,27 +109,6 @@ namespace Interview.UI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Contests");
-                });
-
-            modelBuilder.Entity("Interview.Entities.ContestGroup", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContestId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("ContestGroups");
                 });
 
             modelBuilder.Entity("Interview.Entities.EmailTemplate", b =>
@@ -233,7 +200,7 @@ namespace Interview.UI.Migrations
                     b.Property<Guid>("ContestId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameEn")
@@ -243,6 +210,8 @@ namespace Interview.UI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContestId");
 
                     b.ToTable("Groups");
                 });
@@ -548,21 +517,6 @@ namespace Interview.UI.Migrations
                     b.ToTable("MockUsers");
                 });
 
-            modelBuilder.Entity("ContestGroup", b =>
-                {
-                    b.HasOne("Interview.Entities.Contest", null)
-                        .WithMany()
-                        .HasForeignKey("ContestsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Interview.Entities.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EquityUserSetting", b =>
                 {
                     b.HasOne("Interview.Entities.Equity", null)
@@ -578,25 +532,6 @@ namespace Interview.UI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Interview.Entities.ContestGroup", b =>
-                {
-                    b.HasOne("Interview.Entities.Contest", "Contest")
-                        .WithMany("ContestGroups")
-                        .HasForeignKey("ContestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Interview.Entities.Group", "Group")
-                        .WithMany("ContestGroups")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contest");
-
-                    b.Navigation("Group");
-                });
-
             modelBuilder.Entity("Interview.Entities.EmailTemplate", b =>
                 {
                     b.HasOne("Interview.Entities.Contest", null)
@@ -608,6 +543,15 @@ namespace Interview.UI.Migrations
                     b.HasOne("Interview.Entities.EmailType", null)
                         .WithMany("EmailTemplates")
                         .HasForeignKey("EmailTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Interview.Entities.Group", b =>
+                {
+                    b.HasOne("Interview.Entities.Contest", null)
+                        .WithMany("Groups")
+                        .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -696,9 +640,9 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.Contest", b =>
                 {
-                    b.Navigation("ContestGroups");
-
                     b.Navigation("EmailTemplates");
+
+                    b.Navigation("Groups");
 
                     b.Navigation("Interviews");
 
@@ -719,8 +663,6 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.Group", b =>
                 {
-                    b.Navigation("ContestGroups");
-
                     b.Navigation("GroupOwners");
                 });
 

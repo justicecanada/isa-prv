@@ -1,0 +1,113 @@
+﻿@model VmGroup
+@using Interview.UI.Models.Groups
+@inject IViewLocalizer localizer
+
+@{
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+    List<SelectListItem> contestItems = ViewBag.ContestItems;
+
+}
+
+<div class="col-md-4">
+    <section class="panel panel-default mt-3">
+
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="panel-title">
+                        @(cultureName == Constants.EnglishCulture ? Model.NameEn : Model.NameFr)
+                    </h3>
+                </div>
+                <div class="col-md-3">
+                    <a href="@Url.Action("EditGroup", "Groups", new { id = Model.Id } )">
+                        <span class="glyphicon glyphicon-edit text-info"></span>
+                    </a>
+                    <a href="@Url.Action("DeleteGroup", "Groups", new { id = Model.Id } )">
+                        <span class="glyphicon glyphicon-trash text-danger"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+
+            @using (Html.BeginForm("AddEmployee", "Groups", FormMethod.Post))
+            {
+
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+
+                @Html.EditorFor(x => x.InternalName, "Question", new { inputControl = Html.TextBoxFor(x => x.InternalName, new { @class = "form-control internalName" }) })
+                @Html.HiddenFor(x => x.InternalId)
+
+                <div class="col-md-12">
+                    <div class="form-group">
+						<div class="checkbox">
+                            @Html.CheckBoxFor(x => x.HasAccessEE)
+                            @Html.LabelFor(x => x.HasAccessEE)
+                        </div>
+                    </div>
+                </div>
+
+                <input type="submit" value="@localizer["AddEmployee"]" class="btn btn-primary" />
+
+            }
+
+            @using (Html.BeginForm("AddContest", "Groups", FormMethod.Post, new { @class = "mrgn-tp-md brdr-tp" }))
+            {
+
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(x => x.ContestIdToAdd)
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.ContestIdToAdd, contestItems, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" value="@localizer["AddContest"]" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            <div class="row col-md-12">
+                <h4 class="brdr-bttm">@localizer["GroupList"]</h4>
+            </div>
+            <ul>
+                @foreach (var groupOwner in Model.GroupOwners)
+                {
+                    <li>
+                        @groupOwner.MockUser.LastName, @groupOwner.MockUser.FirstName
+                        <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
+                            <span class="glyphicon glyphicon-trash text-danger"></span>
+                        </a>
+                    </li>
+                }
+            </ul>
+                                                                                                                                             
+            <div class="row col-md-12">
+                <h4 class="brdr-bttm">@localizer["ProcessList"]</h4>
+            </div>
+            <ul>
+                @foreach (var contestGroup in Model.ContestGroups)
+                {
+                    <li>
+                        @contestGroup.Contest.GroupNiv
+                        <a href="@Url.Action("RemoveContest", "Groups", new { contestGroupId = contestGroup.Id } )">
+                            <span class="glyphicon glyphicon-trash text-danger"></span>
+                            </a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+
+    </section>
+</div>

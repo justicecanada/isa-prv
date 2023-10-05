@@ -23,25 +23,21 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-        private readonly DalSql _dal;
         private readonly IMapper _mapper;
         private readonly IState _state;
         private readonly IStringLocalizer<RolesController> _localizer;
-        private readonly IOptions<JusticeOptions> _justiceOptions;
 
         #endregion
 
         #region Constructors
 
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
-            IOptions<JusticeOptions> justiceOptions) : base(modelAccessor)
+            IOptions<JusticeOptions> justiceOptions) : base(modelAccessor, justiceOptions, dal)
         {
             
-            _dal = dal;
             _mapper = mapper;
             _state = state;
             _localizer = localizer;
-            _justiceOptions = justiceOptions;
 
             //IndexRegisterClientResources();
 
@@ -58,7 +54,7 @@ namespace Interview.UI.Controllers
             VmIndex result = new VmIndex();
 
             // // Handle equities (this will be handled by the role the logged in user is in)
-            if (_justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin)
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
             {
                 var equities = await _dal.GetAllEquities();
                 List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
@@ -101,10 +97,10 @@ namespace Interview.UI.Controllers
                     IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
                     DateInserted = DateTime.Now
                 };
-                userSettingId = await _dal.AddEntity(userSetting);
+                userSettingId = await _dal.AddEntity<UserSetting>(userSetting);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
-                if (_justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin)
+                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
                 {                   
                     foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {
@@ -113,7 +109,7 @@ namespace Interview.UI.Controllers
                             UserSettingId = userSettingId,
                             EquityId = (Guid)equity.Id
                         };
-                        await _dal.AddEntity(userSettingEquity);
+                        await _dal.AddEntity<UserSettingEquity>(userSettingEquity);
                     }
                 }
 
@@ -129,22 +125,6 @@ namespace Interview.UI.Controllers
                 return View(vmIndex);
 
             }
-
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> LookupInteralUser(string query)
-        {
-
-            List<MockUser> result = null;
-
-            if (!string.IsNullOrEmpty(query))
-                result = await _dal.LookupInteralMockUser(query);
-
-            return new JsonResult(new { result = true, results = result })
-            {
-                StatusCode = 200
-            };
 
         }
 
@@ -168,7 +148,7 @@ namespace Interview.UI.Controllers
             ViewBag.UserLanguages = userLanguages;
 
             // Show Equities
-            ViewBag.ShowEquities = _justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin;
+            ViewBag.ShowEquities = IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin);
 
             // MockUsers
             var mockExistingExternalUsers = await _dal.GetListExistingExternalMockUser();
@@ -261,7 +241,7 @@ namespace Interview.UI.Controllers
             await _dal.UpdateEntity(dbUserSetting);
 
             // Handle Equities
-            if (_justiceOptions.Value.MockLoggedInUserRole == MockLoggedInUserRoles.Admin)
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
             {
                 var dbUserSettingEquities = await _dal.GetUserSettingEquitiesByUserSettingId((Guid)vmUserSetting.Id);
                 var postedEquities = vmUserSetting.Equities.Where(x => x.IsSelected).ToList();
@@ -281,7 +261,7 @@ namespace Interview.UI.Controllers
                             EquityId = (Guid)vmEquity.Id,
                             UserSettingId = (Guid)vmUserSetting.Id
                         };
-                        await _dal.AddEntity(userSettingEquity);
+                        await _dal.AddEntity<UserSettingEquity>(userSettingEquity);
                     }             
                 }
 

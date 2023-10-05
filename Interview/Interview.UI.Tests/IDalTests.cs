@@ -58,7 +58,7 @@ namespace Interview.UI.Tests
             Guid result;
             Contest contest = (Contest)GetEntity<Contest>();
 
-            result = await _dal.AddEntity(contest);
+            result = await _dal.AddEntity<Contest>(contest);
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result != Guid.Empty);
@@ -74,7 +74,7 @@ namespace Interview.UI.Tests
             Contest contest = (Contest)GetEntity<Contest>();
 
             // Add
-            id = await _dal.AddEntity(contest);
+            id = await _dal.AddEntity<Contest>(contest);
 
             // Get
             result = await _dal.GetEntity<Contest>(id);
@@ -104,7 +104,7 @@ namespace Interview.UI.Tests
             Guid id;
 
             // Add
-            id = await _dal.AddEntity(contest);
+            id = await _dal.AddEntity<Contest>(contest);
 
             // Get
             result = await _dal.GetEntity<Contest>(id, true) as Contest;
@@ -124,7 +124,7 @@ namespace Interview.UI.Tests
             string newValue = "New value";
 
             // Add
-            id = await _dal.AddEntity(contest);
+            id = await _dal.AddEntity<Contest>(contest);
 
             // Update
             contest.ContactName = newValue;
@@ -145,7 +145,7 @@ namespace Interview.UI.Tests
             Guid id;
 
             // Add
-            id = await _dal.AddEntity(contest);
+            id = await _dal.AddEntity<Contest>(contest);
 
             // Delete
             await _dal.DeleteEntity<Contest>(id);
@@ -164,7 +164,7 @@ namespace Interview.UI.Tests
             Guid id;
 
             // Add
-            id = await _dal.AddEntity(contest);
+            id = await _dal.AddEntity<Contest>(contest);
 
             // Delete
             contest.Id = id;
@@ -185,28 +185,28 @@ namespace Interview.UI.Tests
         {
 
             Contest contest = (Contest)GetEntity<Contest>();
-            contest.Id = await _dal.AddEntity(contest);
+            contest.Id = await _dal.AddEntity<Contest>(contest);
 
             UserSetting userSetting1 = (UserSetting)GetEntity<UserSetting>();
             userSetting1.ContestId = contest.Id;
-            userSetting1.Id = await _dal.AddEntity(userSetting1);
+            userSetting1.Id = await _dal.AddEntity<UserSetting>(userSetting1);
             UserSetting userSetting2 = (UserSetting)GetEntity<UserSetting>();
             userSetting2.ContestId = contest.Id;
-            userSetting2.Id = await _dal.AddEntity(userSetting2);
+            userSetting2.Id = await _dal.AddEntity<UserSetting>(userSetting2);
 
             Equity equity1 = (Equity)GetEntity<Equity>();
-            equity1.Id = await _dal.AddEntity(equity1);
+            equity1.Id = await _dal.AddEntity<Equity>(equity1);
             Equity equity2 = (Equity)GetEntity<Equity>();
-            equity2.Id = await _dal.AddEntity(equity2);
+            equity2.Id = await _dal.AddEntity<Equity>(equity2);
 
             UserSettingEquity userSettingEquity1 = new UserSettingEquity() { UserSettingId = userSetting1.Id, EquityId = equity1.Id };
-            await _dal.AddEntity(userSettingEquity1);
+            await _dal.AddEntity<UserSettingEquity>(userSettingEquity1);
             UserSettingEquity userSettingEquity2 = new UserSettingEquity() { UserSettingId = userSetting1.Id, EquityId = equity2.Id };
-            await _dal.AddEntity(userSettingEquity2);
+            await _dal.AddEntity<UserSettingEquity>(userSettingEquity2);
             UserSettingEquity userSettingEquity3 = new UserSettingEquity() { UserSettingId = userSetting2.Id, EquityId = equity1.Id };
-            await _dal.AddEntity(userSettingEquity3);
+            await _dal.AddEntity<UserSettingEquity>(userSettingEquity3);
             UserSettingEquity userSettingEquity4 = new UserSettingEquity() { UserSettingId = userSetting2.Id, EquityId = equity2.Id };
-            await _dal.AddEntity(userSettingEquity4);
+            await _dal.AddEntity<UserSettingEquity>(userSettingEquity4);
 
             List<UserSetting> getUserSetting = await _dal.GetUserSettingsByContestId(contest.Id);
             foreach (var userSetting in getUserSetting)

@@ -1,0 +1,56 @@
+﻿@model VmGroup
+@using Interview.UI.Models.Groups
+@inject IViewLocalizer localizer
+
+@{
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+}
+
+<div class="col-md-4">
+    <section class="panel panel-default mt-3">
+
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="panel-title">
+                        @(cultureName == Constants.EnglishCulture ? Model.NameEn : Model.NameFr)
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <form>
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.Id)
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.EditorFor(x => x.NameEn, "Question", new { inputControl = Html.TextBoxFor(x => x.NameEn, new { @class = "form-control" }) })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.EditorFor(x => x.NameFr, "Question", new { inputControl = Html.TextBoxFor(x => x.NameFr, new { @class = "form-control" }) })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-footer">
+
+                <div>
+                    <input type="submit" value="@localizer["Cancel"]" id="btnReset" class="btn btn-default mr-2" formaction=@Url.Action("Index", "Groups")
+                            formmethod="get" />
+                    <input type="submit" value="@localizer["Edit"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("EditGroup", "Groups")
+                            formmethod="post" />
+                </div>
+
+            </div>
+
+        </form>
+
+    </section>
+</div>

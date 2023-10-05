@@ -28,12 +28,76 @@ namespace Interview.UI.Services.DAL
 
         #region Public Interface Generic CRUD Methods
 
-        public async Task<Guid> AddEntity(EntityBase entity)
+        public async Task<Guid> AddEntity<t>(EntityBase entity)
         {
 
             Guid result;
 
-            _context.Entry(entity).State = EntityState.Added;
+
+            switch (typeof(t).Name)
+            {
+                case nameof(EmailTemplate):
+                    _context.EmailTemplates.Add((EmailTemplate)entity);
+                    break;
+
+                case nameof(EmailType):
+                    _context.EmailTypes.Add((EmailType)entity);
+                    break;
+
+                case nameof(Equity):
+                    _context.Equities.Add((Equity)entity);
+                    break;
+
+                case nameof(Group):
+                    _context.Groups.Add((Group)entity);
+                    break;
+
+                case nameof(GroupOwner):
+                    _context.GroupsOwners.Add((GroupOwner)entity);
+                    break;
+
+                case nameof(Interview.Entities.Interview):
+                    _context.Interviews.Add((Interview.Entities.Interview)entity); ;
+                    break;
+
+                case nameof(InterviewUser):
+                    _context.InterviewUsers.Add((InterviewUser)entity);
+                    break;
+
+                case nameof(Contest):
+                    _context.Contests.Add((Contest)entity);
+                    break;
+
+                case nameof(ContestGroup):
+                    _context.ContestGroups.Add((ContestGroup)entity);
+                    break;
+
+                case nameof(Role):
+                    _context.Roles.Add((Role)entity);
+                    break;
+
+                case nameof(Schedule):
+                    _context.Schedules.Add((Schedule)entity);
+                    break;
+
+                case nameof(ScheduleType):
+                    _context.ScheduleTypes.Add((ScheduleType)entity);
+                    break;
+
+                case nameof(UserLanguage):
+                    _context.UserLanguages.Add((UserLanguage)entity);
+                    break;
+
+                case nameof(UserSetting):
+                    _context.UserSettings.Add((UserSetting)entity);
+                    break;
+
+                case nameof(UserSettingEquity):
+                    _context.UserSettingEquities.Add((UserSettingEquity)entity);
+                    break;
+
+            }
+
             await _context.SaveChangesAsync();
             result = (Guid)entity.Id;
 
@@ -66,7 +130,8 @@ namespace Interview.UI.Services.DAL
                             .ThenInclude(x => x.InterviewUsers)
                             .Include(x => x.UserSettings)
                             .Include(x => x.Schedules)
-                            .Include(x => x.Groups)
+                            .Include(x => x.ContestGroups)
+                            .ThenInclude(x => x.Group)
                             .ThenInclude(x => x.GroupOwners)
                             .FirstOrDefaultAsync();
                     else
@@ -223,6 +288,11 @@ namespace Interview.UI.Services.DAL
                     _context.Contests.Remove(contest);
                     break;
 
+                case nameof(ContestGroup):
+                    ContestGroup? contestGroup = await _context.ContestGroups.FindAsync(id);
+                    _context.ContestGroups.Remove(contestGroup);
+                    break;
+
                 case nameof(Role):
                     Role? role = await _context.Roles.FindAsync(id);
                     _context.Roles.Remove(role);
@@ -274,7 +344,33 @@ namespace Interview.UI.Services.DAL
         public async Task<List<Contest>> GetAllContests()
         {
 
-            var result = await _context.Contests.Where(x => !x.IsDeleted).ToListAsync();
+            var result = await _context.Contests.Where(x => !x.IsDeleted)
+                .Include(x => x.UserSettings)
+                .ThenInclude(x => x.Role)
+                .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Contest>> GetContestsForGroupOwner(Guid userId)
+        {
+
+            var result = await _context.Contests.Where(x => !x.IsDeleted &&
+                (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
+                || x.UserSettings.Any(y => y.UserId.Equals(userId))))
+                .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId)
+        {
+
+            var result = await _context.Contests.Where(x => !x.IsDeleted &&
+                x.UserSettings.Any(y => y.UserId.Equals(userId)))
+                .ToListAsync();
 
             return result;
 
@@ -287,6 +383,50 @@ namespace Interview.UI.Services.DAL
                 .Include(x => x.UserSettings)
                 //.ThenInclude(x => x.Role)
                 .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Group>> GetGroups(Guid? userId = null)
+        {
+
+            List<Group> result = null;
+
+            if (userId == null)
+            { 
+                result = await _context.Groups
+                    .Include(x => x.ContestGroups)
+                    .ThenInclude(x => x.Contest).Where(x => !(bool)x.IsDeleted)
+                    .Include(x => x.GroupOwners)
+                    .ToListAsync();
+            }
+            else
+            {
+                result = await _context.Groups
+                    .Include(x => x.ContestGroups)
+                    .ThenInclude(x => x.Contest).Where(x => !(bool)x.IsDeleted && x.GroupOwners.Any(y => y.UserId == userId))
+                    .Include(x => x.GroupOwners)
+                    .ToListAsync();
+            }
+
+            return result;
+
+        }
+
+        public async Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId)
+        {
+
+            List<GroupOwner> result = await _context.GroupsOwners.Where(x => (x.GroupId == groupId && x.UserId == userId)).ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId)
+        {
+
+            List<ContestGroup> result = await _context.ContestGroups.Where(x => (x.GroupId == groupId && x.ContestId == contestId)).ToListAsync();
 
             return result;
 

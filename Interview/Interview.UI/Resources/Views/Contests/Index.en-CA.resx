@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddContest" xml:space="preserve">
-    <value>Add Contest</value>
+    <value>Add a New Process</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>

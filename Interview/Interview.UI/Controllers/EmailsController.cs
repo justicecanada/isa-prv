@@ -2,8 +2,10 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Interview.UI.Controllers
 {
@@ -12,16 +14,15 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-        private readonly DalSql _dal;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper) : base(modelAccessor)
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions) 
+            : base(modelAccessor, justiceOptions, dal)
         {
-            _dal = dal;
             _mapper = mapper;
         }
 

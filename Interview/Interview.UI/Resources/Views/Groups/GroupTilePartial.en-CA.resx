@@ -118,24 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddContest" xml:space="preserve">
-    <value>Ajouter un nouveau processus</value>
+    <value>Add</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="AddEmployee" xml:space="preserve">
+    <value>Add this member</value>
   </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Date de fin</value>
+  <data name="GroupList" xml:space="preserve">
+    <value>Group Member List</value>
   </data>
-  <data name="GroupNiv" xml:space="preserve">
-    <value>Groupe et niveau</value>
-  </data>
-  <data name="Manage" xml:space="preserve">
-    <value>Gestion du processus</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Contests (fr)</value>
+  <data name="ProcessList" xml:space="preserve">
+    <value>Group Process List</value>
   </data>
 </root>

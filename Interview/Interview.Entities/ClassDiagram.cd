@@ -3,7 +3,7 @@
   <Class Name="Interview.Entities.Contest" Collapsed="true">
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QBAAANAAEAAAgQAAAAAgAAAoAGAAAIAAAlAIAUAABEA=</HashCode>
+      <HashCode>QBAAANAAEAAAgQAAAAggAAAoAGAAAIAAAlAIAUAABEA=</HashCode>
       <FileName>Contest.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -11,7 +11,6 @@
       <Property Name="Interviews" />
       <Property Name="UserSettings" />
       <Property Name="Schedules" />
-      <Property Name="Groups" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.EmailTemplate" Collapsed="true">
@@ -51,7 +50,7 @@
   <Class Name="Interview.Entities.UserSetting" Collapsed="true">
     <Position X="5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAIAAAQAAAAAEIAAAAgAAAAgAAAQEAAAAAIAAAA=</HashCode>
+      <HashCode>AQAAAAIAAAQAAAAAEIAAAAgIAAAgAAAQEAAAAAIAAAA=</HashCode>
       <FileName>UserSetting.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -81,16 +80,16 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Schedule" Collapsed="true">
-    <Position X="12" Y="1.5" Width="1.5" />
+    <Position X="11" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAIAAAAAEAAAAQAAAAA=</HashCode>
       <FileName>Schedule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Group" Collapsed="true">
-    <Position X="10" Y="1.5" Width="1.5" />
+    <Position X="9" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAQAAEAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAEAAAAQBAEAE=</HashCode>
       <FileName>Group.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -98,9 +97,9 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.GroupOwner" Collapsed="true">
-    <Position X="10" Y="2.5" Width="1.5" />
+    <Position X="9" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgEAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GroupOwner.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -113,6 +112,17 @@
     <ShowAsAssociation>
       <Property Name="UserSetting" />
       <Property Name="Equity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Interview.Entities.ContestGroup" Collapsed="true">
+    <Position X="9" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAEAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>ContestGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Contest" />
+      <Property Name="Group" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />

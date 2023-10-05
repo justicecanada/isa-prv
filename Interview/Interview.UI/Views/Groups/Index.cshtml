@@ -1,14 +1,54 @@
-﻿@using Interview.UI.Models
+﻿@model VmIndex
+@using Interview.Entities
+@using Interview.UI.Models.Groups
 @inject IViewLocalizer localizer
 
 @{
 
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "NameEn", "NameFr"
+    }).Select(x => x.ToLower()).ToList();
+
     ViewBag.Title = localizer["Title"].Value;
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+    List<Contest> contests = ViewBag.Contests;
+    List<SelectListItem> contestItems = new List<SelectListItem>();
+    contestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var contest in contests)
+    {
+        contestItems.Add(new SelectListItem()
+        {
+            Value = contest.Id.ToString(),
+            Text = contest.GroupNiv
+        });
+    }
+    ViewBag.ContestItems = contestItems;
 
 }
 
 @{
     await Html.RenderPartialAsync("TopMenuPartial");
+    await Html.RenderPartialAsync("ValidationSummary");
 }
 
-<h1>@localizer["Title"]</h1>
+<div class="row col-md-12 mrgn-bttm-md">
+    @Html.ActionLink(localizer["AddGroup"].Value, "AddGroup", "Groups", null, new { @class = "btn btn-primary" })
+</div>
+
+@if (Model.AddGroup)
+{
+    await Html.RenderPartialAsync("AddGroupPartial", Model.VmAddGroup);
+}
+
+<div class="row">
+    @foreach (VmGroup group in Model.Groups)
+    {
+        if (group.EditThisGroup)
+            await Html.RenderPartialAsync("EditGroupPartial", group);
+        else
+            await Html.RenderPartialAsync("GroupTilePartial", group);
+    }
+</div>

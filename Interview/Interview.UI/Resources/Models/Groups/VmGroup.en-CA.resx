@@ -117,25 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddContest" xml:space="preserve">
-    <value>Ajouter un nouveau processus</value>
+  <data name="ContestIdToAdd" xml:space="preserve">
+    <value>Select a process</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="HasAccessEE" xml:space="preserve">
+    <value>has access to diversity and employment equity members</value>
   </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Date de fin</value>
-  </data>
-  <data name="GroupNiv" xml:space="preserve">
-    <value>Groupe et niveau</value>
-  </data>
-  <data name="Manage" xml:space="preserve">
-    <value>Gestion du processus</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Contests (fr)</value>
+  <data name="InternalName" xml:space="preserve">
+    <value>Select an employee</value>
   </data>
 </root>
