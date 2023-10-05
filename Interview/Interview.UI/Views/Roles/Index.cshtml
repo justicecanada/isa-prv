@@ -33,18 +33,9 @@
     var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
     rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
 
-    List<UserLanguage> userLanguages = ViewBag.UserLanguages;
-    List<SelectListItem> userLanguageItems = new List<SelectListItem>();
-    userLanguageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var userLanguage in userLanguages)
-    {
-        userLanguageItems.Add(new SelectListItem()
-        {         
-            Value = userLanguage.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? userLanguage.NameEN : userLanguage.NameFR
-        });
-    }
-
+    var userLanguageItems = Html.GetEnumSelectList<VmLanguageTypes>().ToList();
+    userLanguageItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    
     bool showEquities = ViewBag.ShowEquities;
 
 }
@@ -112,7 +103,7 @@
             <div class="col-md-4 brdr-rght">
 
                 @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
-                @Html.EditorFor(x => x.UserLanguageId, "Question", new { inputControl = @Html.DropDownList("UserLanguageId", userLanguageItems, new { @class = "form-control" }) })
+                @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownList("LanguageType", userLanguageItems, new { @class = "form-control" }) })
 
             </div>
 

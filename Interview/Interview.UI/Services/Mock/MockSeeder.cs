@@ -25,20 +25,6 @@ namespace Interview.UI.Services.Mock
 
         #region Public Methods
 
-        public async Task EnsureUserLanguages()
-        {
-
-            var dbLanguages = await _context.UserLanguages.ToListAsync();
-            var expectedLanguages = GetExpectedLanguages();
-
-            foreach (var expectedLanguage in expectedLanguages)
-                if (!dbLanguages.Any(x => x.Name == expectedLanguage.Name))
-                    _context.UserLanguages.Add(expectedLanguage);
-
-            _context.SaveChanges();
-
-        }
-
         public async Task EnsureEquities()
         {
 
@@ -56,31 +42,6 @@ namespace Interview.UI.Services.Mock
         #endregion
 
         #region Private Methods
-
-        private List<UserLanguage> GetExpectedLanguages()
-        {
-
-            List<UserLanguage> result = new List<UserLanguage>();
-
-            result.Add(GetLanguage("Fr", "français", "french"));
-            result.Add(GetLanguage("En", "anglais", "english"));
-            result.Add(GetLanguage("En", "bilingue", "bilingual"));
-
-            return result;
-
-        }
-
-        private UserLanguage GetLanguage(string name, string nameFr, string nameEn)
-        {
-
-            return new UserLanguage()
-            {
-                Name = name,
-                NameFR = nameFr,
-                NameEN = nameEn
-            };
-
-        }
 
         private List<Equity> GetExpectedEquities()
         { 

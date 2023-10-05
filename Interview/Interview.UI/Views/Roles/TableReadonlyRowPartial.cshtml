@@ -9,9 +9,7 @@
 
     string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
     string roleName = localizer[userSetting.RoleType.ToString()].Value;
-    string language = null;
-    if (userSetting.UserLanguage != null)
-        language = cultureName == Constants.EnglishCulture ? userSetting.UserLanguage.NameEN : userSetting.UserLanguage.NameFR;
+    string language = userSetting.LanguageType == null ? null : localizer[userSetting.LanguageType.ToString()].Value;
     bool showEquities = ViewBag.ShowEquities;
     string equities = "";
 

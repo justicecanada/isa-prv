@@ -117,31 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin" xml:space="preserve">
-    <value>Admin</value>
-  </data>
-  <data name="Assistant" xml:space="preserve">
-    <value>Adjoint(e)</value>
-  </data>
   <data name="Bilingual" xml:space="preserve">
     <value>Bilingue</value>
-  </data>
-  <data name="Candidate" xml:space="preserve">
-    <value>Candidat(e)</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>Anglais</value>
   </data>
   <data name="French" xml:space="preserve">
     <value>Français</value>
-  </data>
-  <data name="HR" xml:space="preserve">
-    <value>RH</value>
-  </data>
-  <data name="Interviewer" xml:space="preserve">
-    <value>Intervieweur</value>
-  </data>
-  <data name="Lead" xml:space="preserve">
-    <value>Intervieweur principal</value>
   </data>
 </root>

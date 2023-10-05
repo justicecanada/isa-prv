@@ -80,10 +80,6 @@ namespace Interview.UI.Services.DAL
                     _context.ScheduleTypes.Add((ScheduleType)entity);
                     break;
 
-                case nameof(UserLanguage):
-                    _context.UserLanguages.Add((UserLanguage)entity);
-                    break;
-
                 case nameof(UserSetting):
                     _context.UserSettings.Add((UserSetting)entity);
                     break;
@@ -207,16 +203,6 @@ namespace Interview.UI.Services.DAL
                         result = await _context.ScheduleTypes.FindAsync(id);
                     break;
 
-                case nameof(UserLanguage):
-
-                    if (getChildObjects)
-                        result = await _context.UserLanguages.Where(x => x.Id == id)
-                            .Include(x => x.UserSettings)
-                            .FirstOrDefaultAsync();
-                    else
-                        result = await _context.UserLanguages.FindAsync(id);
-                    break;
-
                 case nameof(UserSetting):
 
                     // No child objects
@@ -287,11 +273,6 @@ namespace Interview.UI.Services.DAL
                 case nameof(ScheduleType):
                     ScheduleType? scheduleType = await _context.ScheduleTypes.FindAsync(id);
                     _context.ScheduleTypes.Remove(scheduleType);
-                    break;
-
-                case nameof(UserLanguage):
-                    UserLanguage? userLanguage = await _context.UserLanguages.FindAsync(id);
-                    _context.UserLanguages.Remove(userLanguage);
                     break;
 
                 case nameof(UserSetting):
@@ -412,15 +393,6 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<UserLanguage>> GetAllUserLanguages()
-        {
-
-            var result = await _context.UserLanguages.ToListAsync();
-
-            return result;
-
-        }
-
         public async Task<List<Equity>> GetAllEquities()
         {
 
@@ -434,7 +406,6 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.UserSettings.Where(x => x.ContestId == contestId)
-                .Include(x => x.UserLanguage)
                 .Include(x => x.UserSettingEquities)
                 .ThenInclude(x => x.Equity)
                 .ToListAsync();
@@ -447,7 +418,6 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.UserSettings.Where(x => (x.ContestId == contestId && x.UserId == userId))
-                .Include(x => x.UserLanguage)
                 .Include(x => x.UserSettingEquities)
                 .ThenInclude(x => x.Equity)
                 .FirstOrDefaultAsync();

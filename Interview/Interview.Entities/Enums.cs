@@ -24,11 +24,18 @@ namespace Interview.Entities
     public enum RoleTypes
     {
         HR = 1,
-        INTERVIEWER = 2,
-        LEAD = 3,
-        ASSISTANT = 4,
-        CANDIDATE = 5,
-        ADMIN = 6
+        Interviewer = 2,
+        Lead = 3,
+        Assistant = 4,
+        Candidate = 5,
+        Admin = 6
+    }
+
+    public enum LanguageTypes
+    {
+        English = 1,
+        French = 2,
+        Bilingual = 3
     }
 
 }

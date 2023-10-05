@@ -8,16 +8,26 @@ namespace Interview.UI.Models
     {
         [Display(Name = "HR")]
         HR = 1,
-        [Display(Name = "INTERVIEWER")]
-        INTERVIEWER = 2,
-        [Display(Name = "LEAD")]
-        LEAD = 3,
-        [Display(Name = "ASSISTANT")]
-        ASSISTANT = 4,
-        [Display(Name = "CANDIDATE")]
-        CANDIDATE = 5,
-        [Display(Name = "ADMIN")]
-        ADMIN = 6
+        [Display(Name = "Interviewer")]
+        Interviewer = 2,
+        [Display(Name = "Lead")]
+        Lead = 3,
+        [Display(Name = "Assistant")]
+        Assistant = 4,
+        [Display(Name = "Candidate")]
+        Candidate = 5,
+        [Display(Name = "Admin")]
+        Admin = 6
+    }
+
+    public enum VmLanguageTypes
+    {
+        [Display(Name = "English")]
+        English = 1,
+        [Display(Name = "French")]
+        French = 2,
+        [Display(Name = "Bilingual")]
+        Bilingual = 3
     }
 
 }

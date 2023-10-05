@@ -13,16 +13,10 @@
     rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
     rolesItems.Where(x => x.Value == ((int)userSetting.RoleType).ToString()).First().Selected = true;
 
-    List<UserLanguage> userLanguages = ViewBag.UserLanguages;
-    List<SelectListItem> userLanguageItems = new List<SelectListItem>();
-    foreach (var userLanguage in userLanguages)
-    {
-        userLanguageItems.Add(new SelectListItem()
-        {         
-            Value = userLanguage.Id.ToString(),
-            Text = cultureName == Constants.EnglishCulture ? userLanguage.NameEN : userLanguage.NameFR
-        });
-    }
+    var userLanguageItems = Html.GetEnumSelectList<VmLanguageTypes>().ToList();
+    userLanguageItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    if (userSetting.LanguageType != null)
+        userLanguageItems.Where(x => x.Value == ((int)userSetting.LanguageType).ToString()).First().Selected = true;
 
     bool showEquities = ViewBag.ShowEquities;
 
@@ -34,7 +28,7 @@
         @Html.AntiForgeryToken()
         <td>@userName</td>
         <td>@Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" })</td>
-        <td>@Html.DropDownList("UserLanguageId", userLanguageItems, new { @class = "form-control" })</td>
+        <td>@Html.DropDownList("LanguageType", userLanguageItems, new { @class = "form-control" })</td>
         @if (showEquities)
         {
             <td>

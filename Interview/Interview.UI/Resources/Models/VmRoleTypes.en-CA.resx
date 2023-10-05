@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ADMIN" xml:space="preserve">
+  <data name="Admin" xml:space="preserve">
     <value>Admin</value>
   </data>
-  <data name="ASSISTANT" xml:space="preserve">
+  <data name="Assistant" xml:space="preserve">
     <value>Board Member Assistant</value>
   </data>
-  <data name="CANDIDATE" xml:space="preserve">
+  <data name="Candidate" xml:space="preserve">
     <value>Candidate</value>
   </data>
   <data name="HR" xml:space="preserve">
     <value>HR</value>
   </data>
-  <data name="INTERVIEWER" xml:space="preserve">
+  <data name="Interviewer" xml:space="preserve">
     <value>Board Member</value>
   </data>
-  <data name="LEAD" xml:space="preserve">
+  <data name="Lead" xml:space="preserve">
     <value>Lead Board Member</value>
   </data>
 </root>
