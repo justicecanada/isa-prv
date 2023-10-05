@@ -1,6 +1,7 @@
 ﻿@model VmIndex
 @using Interview.UI.Models
 @using Interview.UI.Models.Roles;
+@using Interview.UI.Models.Enums;
 @using Interview.UI.Helpers
 @using Interview.Entities
 @using Interview.UI.Services.Mock.Identity
@@ -30,17 +31,16 @@
         });
     }
 
-    //List<Role> roles =  ViewBag.Roles;
     List<SelectListItem> rolesItems = new List<SelectListItem>();
-    //rolesItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    //foreach (var role in roles)
-    //{
-    //    rolesItems.Add(new SelectListItem()
-    //    {         
-    //        Value = role.Id.ToString(),
-    //        Text = cultureName == Constants.EnglishCulture ? role.RoleNameEN : role.RoleNameFR
-    //    });
-    //}
+    rolesItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (int i in Enum.GetValues(typeof(VmRoleTypes)))
+    {
+        rolesItems.Add(new SelectListItem()
+        {
+            Value = i.ToString(),
+            Text = i.ToString()
+        });
+    }
 
     List<UserLanguage> userLanguages = ViewBag.UserLanguages;
     List<SelectListItem> userLanguageItems = new List<SelectListItem>();

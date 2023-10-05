@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -80,6 +81,18 @@ namespace Interview.UI.Helpers
             return result;
 
         }
+
+        //public static string GetEnumDescription(this Enum enumValue)
+        //{
+
+        //    var field = enumValue.GetType().GetField(enumValue.ToString());
+        //    if (Attribute.GetCustomAttribute(field, typeof(DisplayAttribute)) is DisplayAttribute attribute)
+        //    {
+        //        return attribute.GetDescription();
+        //    }
+        //    throw new ArgumentException("Item not found.", nameof(enumValue));
+
+        //}
 
     }
 

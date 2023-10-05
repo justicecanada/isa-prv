@@ -1,4 +1,5 @@
 ﻿using Interview.Entities;
+using Interview.UI.Models.Enums;
 
 namespace Interview.UI.Models
 {
@@ -19,7 +20,7 @@ namespace Interview.UI.Models
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
         public bool? IsExternal { get; set; }
-        public RoleTypes RoleType { get; set; }
+        public VmRoleTypes RoleType { get; set; }
         public DateTime DateInserted { get; set; }
 
         public VmUserLanguage? UserLanguage { get; set; }
