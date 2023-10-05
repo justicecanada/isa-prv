@@ -7,8 +7,7 @@
     UserSetting userSetting = ViewBag.UserSetting;
 
     string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
-    //string roleName = cultureName == Constants.EnglishCulture ? userSetting.Role.RoleNameEN : userSetting.Role.RoleNameFR;
-    string roleName = "Fix this";
+    string roleName = userSetting.RoleType.ToString();
     string language = null;
     if (userSetting.UserLanguage != null)
         language = cultureName == Constants.EnglishCulture ? userSetting.UserLanguage.NameEN : userSetting.UserLanguage.NameFR;
