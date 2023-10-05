@@ -306,7 +306,6 @@ namespace Interview.UI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserLanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserFirstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserLastname = table.Column<string>(type: "nvarchar(max)", nullable: true),

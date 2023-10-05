@@ -90,7 +90,7 @@ namespace Interview.UI.Controllers
                 {
                     ContestId = (Guid)_state.ContestId,
                     UserLanguageId = vmIndex.UserLanguageId,
-                    RoleId = (Guid)vmIndex.RoleId,
+                    RoleType = (RoleTypes)vmIndex.RoleType,
                     UserId = (Guid)mockUser.Id,
                     UserFirstname = mockUser.FirstName,
                     UserLastname = mockUser.LastName,
@@ -236,7 +236,7 @@ namespace Interview.UI.Controllers
             var dbUserSetting = await _dal.GetEntity<UserSetting>((Guid)vmUserSetting.Id) as UserSetting;
 
             // Handle UserSetting
-            dbUserSetting.RoleId = vmUserSetting.RoleId;
+            dbUserSetting.RoleType = (RoleTypes)vmUserSetting.RoleType;
             dbUserSetting.UserLanguageId = vmUserSetting.UserLanguageId;
             await _dal.UpdateEntity(dbUserSetting);
 

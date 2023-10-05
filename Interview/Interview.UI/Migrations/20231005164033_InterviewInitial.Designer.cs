@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20231005140956_InterviewInitial")]
+    [Migration("20231005164033_InterviewInitial")]
     partial class InterviewInitial
     {
         /// <inheritdoc />
@@ -425,9 +425,6 @@ namespace Interview.UI.Migrations
 
                     b.Property<bool?>("IsExternal")
                         .HasColumnType("bit");
-
-                    b.Property<Guid?>("RoleId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RoleType")
                         .HasColumnType("int");

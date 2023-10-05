@@ -14,7 +14,6 @@ namespace Interview.UI.Models
 
         public Guid ContestId { get; set; }
         public Guid? UserLanguageId { get; set; }
-        public Guid? RoleId { get; set; }
         public Guid UserId { get; set; }
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }

@@ -423,9 +423,6 @@ namespace Interview.UI.Migrations
                     b.Property<bool?>("IsExternal")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("RoleType")
                         .HasColumnType("int");
 
