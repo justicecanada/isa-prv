@@ -44,7 +44,6 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }
         public DbSet<Interview.Entities.InterviewUser> InterviewUsers { get; set; }     
         public DbSet<Interview.Entities.Schedule> Schedules { get; set; }
-        public DbSet<Interview.Entities.ScheduleType> ScheduleTypes { get; set; }               // Shared system table
         public DbSet<Interview.Entities.UserSetting> UserSettings { get; set; }
         public DbSet<Interview.Entities.UserSettingEquity> UserSettingEquities { get; set; }
 

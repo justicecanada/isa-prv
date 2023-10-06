@@ -76,10 +76,6 @@ namespace Interview.UI.Services.DAL
                     _context.Schedules.Add((Schedule)entity);
                     break;
 
-                case nameof(ScheduleType):
-                    _context.ScheduleTypes.Add((ScheduleType)entity);
-                    break;
-
                 case nameof(UserSetting):
                     _context.UserSettings.Add((UserSetting)entity);
                     break;
@@ -193,16 +189,6 @@ namespace Interview.UI.Services.DAL
                     result = await _context.Schedules.FindAsync(id);
                     break;
 
-                case nameof(ScheduleType):
-
-                    if (getChildObjects)
-                        result = await _context.ScheduleTypes.Where(x => x.Id == id)
-                            .Include(x => x.Schedules)
-                            .FirstOrDefaultAsync();
-                    else
-                        result = await _context.ScheduleTypes.FindAsync(id);
-                    break;
-
                 case nameof(UserSetting):
 
                     // No child objects
@@ -268,11 +254,6 @@ namespace Interview.UI.Services.DAL
                 case nameof(Schedule):
                     Schedule? schedule = await _context.Schedules.FindAsync(id);
                     _context.Schedules.Remove(schedule);
-                    break;
-
-                case nameof(ScheduleType):
-                    ScheduleType? scheduleType = await _context.ScheduleTypes.FindAsync(id);
-                    _context.ScheduleTypes.Remove(scheduleType);
                     break;
 
                 case nameof(UserSetting):

@@ -23,9 +23,6 @@ namespace Interview.UI.Services.Automapper
             CreateMap<Schedule, VmSchedule>();
             CreateMap<VmSchedule, Schedule>();
 
-            CreateMap<ScheduleType, VmScheduleType>();
-            CreateMap<VmScheduleType, ScheduleType>();
-
             CreateMap<UserSetting, VmUserSetting>();
             CreateMap<VmUserSetting, UserSetting>();
 
