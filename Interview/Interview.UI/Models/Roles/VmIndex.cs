@@ -41,10 +41,10 @@ namespace Interview.UI.Models.Roles
 
         [Display(Name = "RoleId")]
         [Required(ErrorMessage = "RequiredError")]
-        public Guid? RoleId { get; set;  }
+        public VmRoleTypes? RoleType { get; set;  }
 
         [Display(Name = "UserLanguageId")]
-        public Guid? UserLanguageId { get; set; }
+        public VmLanguageTypes? LanguageType { get; set; }
 
         public List<VmEquity>? Equities { get; set; }
 

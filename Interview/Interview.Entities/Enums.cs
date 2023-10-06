@@ -21,4 +21,29 @@ namespace Interview.Entities
         NewExternal = 2
     }
 
+    public enum RoleTypes
+    {
+        HR = 1,
+        Interviewer = 2,
+        Lead = 3,
+        Assistant = 4,
+        Candidate = 5,
+        Admin = 6
+    }
+
+    public enum LanguageTypes
+    {
+        English = 1,
+        French = 2,
+        Bilingual = 3
+    }
+
+    public enum EmailTypes
+    {
+        CandidateRegisteredTimeSlot = 1,
+        CandidateAddedByHR = 2,
+        CandidateInterviewReminder = 3,
+        CandidateExternal = 4
+    }
+
 }
