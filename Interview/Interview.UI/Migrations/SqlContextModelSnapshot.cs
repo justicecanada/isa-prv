@@ -162,39 +162,14 @@ namespace Interview.UI.Migrations
                     b.Property<string>("EmailSubject")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EmailTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("EmailType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ContestId");
 
-                    b.HasIndex("EmailTypeId");
-
                     b.ToTable("EmailTemplates");
-                });
-
-            modelBuilder.Entity("Interview.Entities.EmailType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DescEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DescFR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameFR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmailTypes");
                 });
 
             modelBuilder.Entity("Interview.Entities.Equity", b =>
@@ -343,9 +318,6 @@ namespace Interview.UI.Migrations
                     b.Property<int>("ScheduleType")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ScheduleTypeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int?>("StartValue")
                         .HasColumnType("int");
 
@@ -353,35 +325,7 @@ namespace Interview.UI.Migrations
 
                     b.HasIndex("ContestId");
 
-                    b.HasIndex("ScheduleTypeId");
-
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("Interview.Entities.ScheduleType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameFR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ScheduleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ScheduleTypes");
                 });
 
             modelBuilder.Entity("Interview.Entities.UserSetting", b =>
@@ -549,12 +493,6 @@ namespace Interview.UI.Migrations
                         .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Interview.Entities.EmailType", null)
-                        .WithMany("EmailTemplates")
-                        .HasForeignKey("EmailTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Interview.Entities.GroupOwner", b =>
@@ -593,10 +531,6 @@ namespace Interview.UI.Migrations
                         .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Interview.Entities.ScheduleType", null)
-                        .WithMany("Schedules")
-                        .HasForeignKey("ScheduleTypeId");
                 });
 
             modelBuilder.Entity("Interview.Entities.UserSetting", b =>
@@ -640,11 +574,6 @@ namespace Interview.UI.Migrations
                     b.Navigation("UserSettings");
                 });
 
-            modelBuilder.Entity("Interview.Entities.EmailType", b =>
-                {
-                    b.Navigation("EmailTemplates");
-                });
-
             modelBuilder.Entity("Interview.Entities.Equity", b =>
                 {
                     b.Navigation("EmailTemplateEquities");
@@ -660,11 +589,6 @@ namespace Interview.UI.Migrations
             modelBuilder.Entity("Interview.Entities.Interview", b =>
                 {
                     b.Navigation("InterviewUsers");
-                });
-
-            modelBuilder.Entity("Interview.Entities.ScheduleType", b =>
-                {
-                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("Interview.Entities.UserSetting", b =>

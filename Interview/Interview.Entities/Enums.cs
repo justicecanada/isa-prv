@@ -38,4 +38,12 @@ namespace Interview.Entities
         Bilingual = 3
     }
 
+    public enum EmailTypes
+    {
+        CandidateRegisteredTimeSlot = 1,
+        CandidateAddedByHR = 2,
+        CandidateInterviewReminder = 3,
+        CandidateExternal = 4
+    }
+
 }

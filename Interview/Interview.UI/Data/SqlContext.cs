@@ -37,8 +37,7 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.Contest> Contests { get; set; }
         public DbSet<Interview.Entities.ContestGroup> ContestGroups { get; set; }
         public DbSet<Interview.Entities.EmailTemplate> EmailTemplates { get; set; }
-        public DbSet<Interview.Entities.EmailType> EmailTypes { get; set; }                     // Shared system table
-        public DbSet<Interview.Entities.Equity> Equities { get; set; }                          // Shared system table
+        public DbSet<Interview.Entities.Equity> Equities { get; set; } 
         public DbSet<Interview.Entities.Group> Groups { get; set; }
         public DbSet<Interview.Entities.GroupOwner> GroupsOwners { get; set; }
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }

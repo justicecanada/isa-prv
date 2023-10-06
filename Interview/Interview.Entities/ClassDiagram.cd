@@ -16,19 +16,9 @@
   <Class Name="Interview.Entities.EmailTemplate" Collapsed="true">
     <Position X="0.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAEAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAgAA=</HashCode>
+      <HashCode>QBAEAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>EmailTemplate.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Interview.Entities.EmailType" Collapsed="true">
-    <Position X="0.5" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAACAAAAABAAAAACAAAAAAAAAAAAAAABAAAAAAAAE=</HashCode>
-      <FileName>EmailType.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="EmailTemplates" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.Interview" Collapsed="true">
     <Position X="2.75" Y="1.5" Width="1.5" />
