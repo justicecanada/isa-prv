@@ -151,13 +151,6 @@ namespace Interview.UI.Controllers
         private async Task ContestsSetViewBag()
         {
 
-            // Schedules
-            var result = new List<Schedule>();
-            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = 0 });
-            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Members, StartValue = 45 });
-            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Marking, StartValue = 90 });
-            ViewBag.Schedules = result;
-
             // Departments
             var mockDepartments = await _dal.GetAllMockDepatments();
             ViewBag.MockDepartments = mockDepartments;

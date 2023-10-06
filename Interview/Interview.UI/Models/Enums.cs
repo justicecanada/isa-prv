@@ -4,6 +4,19 @@ using System.ComponentModel.DataAnnotations;
 namespace Interview.UI.Models
 {
 
+    // UserTypes
+    // Email Types
+
+    public enum VmScheduleTypes
+    {
+        [Display(Name = "Candidate")]
+        Candidate = 1,
+        [Display(Name = "Members")]
+        Members = 2,
+        [Display(Name = "Display")]
+        Marking = 3
+    }
+
     public enum VmRoleTypes
     {
         [Display(Name = "HR")]
