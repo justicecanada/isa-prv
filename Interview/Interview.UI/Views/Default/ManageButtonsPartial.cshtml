@@ -3,7 +3,7 @@
 <div class="row mrgn-bttm-md">
 
     <div class="col-md-4">
-        <section class="alert alert-danger">
+        <section class="bs-callout bs-callout-danger">
             <p>@localizer["ManageProcess"]</p>
             <div>
                 @Html.ActionLink(localizer["ManageContest"].Value, "Index", "Contests", null, new { @class = "btn btn-danger" })
@@ -12,7 +12,7 @@
         </section>
     </div>
     <div class="col-md-4">
-        <section class="alert alert-warning">
+        <section class="bs-callout bs-callout-warning">
             <p>@localizer["RolesForProcess"]</p>
             <div>
                 @Html.ActionLink(localizer["ManageRoles"].Value, "Index", "Roles", null, new { @class = "btn btn-warning" })
@@ -20,7 +20,7 @@
         </section>
     </div>
     <div class="col-md-4">
-        <section class="alert alert-info">
+        <section class="bs-callout bs-callout-primary">
             <p>@localizer["StatsForInterviews"]</p>
             <div>
                 @Html.ActionLink(localizer["Stats"].Value, "Index", "Stats", null, new { @class = "btn btn-primary" })

@@ -7,7 +7,6 @@ namespace Interview.UI.Models
     {
 
         public Guid ContestId { get; set; }
-        //public Guid ScheduleTypeId { get; set; }            // From existing interview app
         public ScheduleTypes ScheduleType { get; set; }
         public int? StartValue { get; set; }
         public bool? IsDeleted { get; set; }

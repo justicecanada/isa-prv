@@ -4,6 +4,7 @@ using GoC.WebTemplate.Components.Entities;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
+//using Interview.UI.Models.Groups;
 using Interview.UI.Models.Roles;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
@@ -89,8 +90,8 @@ namespace Interview.UI.Controllers
                 UserSetting userSetting = new UserSetting()
                 {
                     ContestId = (Guid)_state.ContestId,
-                    UserLanguageId = vmIndex.UserLanguageId,
-                    RoleId = (Guid)vmIndex.RoleId,
+                    LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
+                    RoleType = (RoleTypes)vmIndex.RoleType,
                     UserId = (Guid)mockUser.Id,
                     UserFirstname = mockUser.FirstName,
                     UserLastname = mockUser.LastName,
@@ -138,14 +139,6 @@ namespace Interview.UI.Controllers
             // UserSettings
             var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
             ViewBag.UserSettings = userSettings;
-
-            // Roles
-            var roles = await _dal.GetAllRoles();
-            ViewBag.Roles = roles;
-
-            // UserLanguages
-            var userLanguages = await _dal.GetAllUserLanguages();
-            ViewBag.UserLanguages = userLanguages;
 
             // Show Equities
             ViewBag.ShowEquities = IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin);
@@ -236,8 +229,8 @@ namespace Interview.UI.Controllers
             var dbUserSetting = await _dal.GetEntity<UserSetting>((Guid)vmUserSetting.Id) as UserSetting;
 
             // Handle UserSetting
-            dbUserSetting.RoleId = vmUserSetting.RoleId;
-            dbUserSetting.UserLanguageId = vmUserSetting.UserLanguageId;
+            dbUserSetting.RoleType = (RoleTypes)vmUserSetting.RoleType;
+            dbUserSetting.LanguageType = vmUserSetting.LanguageType == null ? null : (LanguageTypes)vmUserSetting.LanguageType;
             await _dal.UpdateEntity(dbUserSetting);
 
             // Handle Equities

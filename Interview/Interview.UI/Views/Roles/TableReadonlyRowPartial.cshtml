@@ -1,5 +1,6 @@
 ﻿@using System.Text
 @using Interview.Entities
+@inject IViewLocalizer localizer
 
 @{
 
@@ -7,10 +8,8 @@
     UserSetting userSetting = ViewBag.UserSetting;
 
     string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
-    string roleName = cultureName == Constants.EnglishCulture ? userSetting.Role.RoleNameEN : userSetting.Role.RoleNameFR;
-    string language = null;
-    if (userSetting.UserLanguage != null)
-        language = cultureName == Constants.EnglishCulture ? userSetting.UserLanguage.NameEN : userSetting.UserLanguage.NameFR;
+    string roleName = localizer[userSetting.RoleType.ToString()].Value;
+    string language = userSetting.LanguageType == null ? null : localizer[userSetting.LanguageType.ToString()].Value;
     bool showEquities = ViewBag.ShowEquities;
     string equities = "";
 
