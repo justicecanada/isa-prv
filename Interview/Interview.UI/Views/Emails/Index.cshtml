@@ -11,16 +11,43 @@
 
 <h1>@localizer["Title"]</h1>
 
+<h3><span id="ctl00_cphMainContent_lblEmailsTitle" class="text-primary">Management of emails sent to candidates</span></h3>
+
+<div role="alert" id="ctl00_cphMainContent_wetInfoVar" class="alert-info alert">
+    <strong>Important instructions to follow</strong>
+        <p>In order to insert the information in your email, you must insert tags in the content of your messages.
+            <ul>
+                <li><b>{0}</b>: Selection process</li>
+                <li><b>{1}</b>: Group and level </li>
+                <li><b>{2}</b>: Date of interview </li>
+                <li><b>{3}</b>: Time to prepare interview questions </li>
+                <li><b>{4}</b>: Time for oral interview </li>
+                <li><b>{5}</b>: Location of interview </li>
+                <li><b>{6}</b>: Contact name </li>
+                <li><b>{7}</b>: Contact telephone number</li>
+                <li><b>{8}</b>: Activation Code <b>(external candidate only)</b></li>
+                <li><b>{9}</b>: Link to external application <b>(external candidate only)</b><br /><br /></li>
+            </ul>
+            <i><b>Example of use:</b> The date of the interview is <b>{2}</b></i>.
+        </p>
+</div>
+
+@{
+    await Html.RenderPartialAsync("RulesAndConditions");
+}
+
 <form>
 
     @*@Html.HiddenFor(x => x.Id)*@
 
     <div>
  
+        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
         <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
                formmethod="post" />
-        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
+
 
     </div>
 
 </form>
+

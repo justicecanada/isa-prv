@@ -1,0 +1,89 @@
+﻿@inject IViewLocalizer localizer
+
+<ul class="list-unstyled">
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailCandidate2daysBeforeInterview"]</span>
+            </summary>
+    
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectFollowUpEmail"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectFollowUpEmail" type="text" value="Selection Process / Processus de sélection 2022-TEST" id="ctl00_cphMainContent_txtSubjectFollowUpEmail" class="form-control valid" aria-invalid="false">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCFollowUpEmail"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCFollowUpEmail" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCFollowUpEmail" class="form-control valid" aria-invalid="false">
+                    </div>
+                </div>
+            </div>
+
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailCandidateAddedAdminHR"]</span>
+            </summary>
+
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectInterviewInvitation"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectInterviewInvitation" type="text" value="Interview Invitation / Invitation à une entrevue" id="ctl00_cphMainContent_txtSubjectInterviewInvitation" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCInterviewInvitation"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCInterviewInvitation" type="text" id="ctl00_cphMainContent_txtCCInterviewInvitation" class="form-control">
+                    </div>
+                </div>
+            </div>
+          
+
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailCandidateRegTimeslot"]</span>
+            </summary>
+  
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectEmailReminder"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectEmailReminder" type="text" value="Interview Reminder / Rappel d'entrevue" id="ctl00_cphMainContent_txtSubjectEmailReminder" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCEmailReminder"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCEmailReminder" type="text" id="ctl00_cphMainContent_txtCCEmailReminder" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailExternalCandidate"]</span>
+            </summary>
+     
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectExternalCandidate"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectExternalCandidate" type="text" value="Appointment Scheduling: Activation Code / Prise de Rendez-vous: code d'activation" id="ctl00_cphMainContent_txtSubjectExternalCandidate" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCExternalCandidate"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCExternalCandidate" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCExternalCandidate" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </details>
+    </li>
+
+</ul>

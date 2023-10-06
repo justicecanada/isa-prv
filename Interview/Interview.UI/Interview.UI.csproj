@@ -20,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\Views\Emails\Index - Copy.en-CA.resx" />
+    <EmbeddedResource Remove="Resources\Views\Emails\Instructions.en-CA.resx" />
+    <EmbeddedResource Remove="Resources\Views\Emails\Resource.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\Dashboard.js" />
   </ItemGroup>
 
