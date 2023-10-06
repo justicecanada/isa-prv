@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations;
 namespace Interview.UI.Models
 {
 
-    // UserTypes
-    // Email Types
+    // The only reason for these Enums to be turned into view models is for localization.
+    // The following Enums are not exposed by the UI so no need to localize.
+        // UserTypes        // Currently only used by MockUser, this may go away
+        // ScheduleTypes
+    // EmailTypes
 
-    public enum VmScheduleTypes
-    {
-        [Display(Name = "Candidate")]
-        Candidate = 1,
-        [Display(Name = "Members")]
-        Members = 2,
-        [Display(Name = "Display")]
-        Marking = 3
-    }
+    //public enum VmScheduleTypes
+    //{
+    //    Candidate = 1,
+    //    Members = 2,
+    //    Marking = 3
+    //}
 
     public enum VmRoleTypes
     {
