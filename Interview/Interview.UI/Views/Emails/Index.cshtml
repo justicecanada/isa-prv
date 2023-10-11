@@ -11,6 +11,7 @@
 
 <h1>@localizer["Title"]</h1>
 
+@*Need to reference flag to determine if FR / English and should not be stored in this location*@
 <h3><span id="ctl00_cphMainContent_lblEmailsTitle" class="text-primary">Management of emails sent to candidates</span></h3>
 
 <div role="alert" id="ctl00_cphMainContent_wetInfoVar" class="alert-info alert">
@@ -32,8 +33,10 @@
         </p>
 </div>
 
+
+@*Need to reference flag to determine if FR / English and should not be stored in this location*@
 @{
-    await Html.RenderPartialAsync("RulesAndConditions");
+    await Html.RenderPartialAsync("Emails");
 }
 
 <form>

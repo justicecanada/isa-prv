@@ -6,33 +6,142 @@
 @using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
-@{
-    ViewBag.Title = localizer["Title"].Value;
-}
+<ul class="list-unstyled">
 
-@{
-    await Html.RenderPartialAsync("TopMenuPartial");
-}
+    @*Email sent to a candidate who registers at a time slot*@
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailCandidateRegTimeslot"]</span>
+            </summary>
 
-<h1>@localizer["Title"]</h1>
-<h3><span id="ctl00_cphMainContent_lblEmailsTitle" class="text-primary">Management of emails sent to candidates</span></h3>
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectEmailReminder"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectEmailReminder" type="text" value="Interview Reminder / Rappel d'entrevue" id="ctl00_cphMainContent_txtSubjectEmailReminder" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCEmailReminder"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCEmailReminder" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCEmailReminder" class="form-control">
+                    </div>
+                </div>
+            </div>
 
-<div role="alert" id="ctl00_cphMainContent_wetInfoVar" class="alert-info alert">
-    <strong>Important instructions to follow</strong>
-    <p>
-        In order to insert the information in your email, you must insert tags in the content of your messages.
-        <ul>
-            <li><b>{0}</b>: Selection process</li>
-            <li><b>{1}</b>: Group and level </li>
-            <li><b>{2}</b>: Date of interview </li>
-            <li><b>{3}</b>: Time to prepare interview questions </li>
-            <li><b>{4}</b>: Time for oral interview </li>
-            <li><b>{5}</b>: Location of interview </li>
-            <li><b>{6}</b>: Contact name </li>
-            <li><b>{7}</b>: Contact telephone number</li>
-            <li><b>{8}</b>: Activation Code <b>(external candidate only)</b></li>
-            <li><b>{9}</b>: Link to external application <b>(external candidate only)</b><br /><br /></li>
-        </ul>
-        <i><b>Example of use:</b> The date of the interview is <b>{2}</b></i>.
-    </p>
-</div>
+            @*Add Iframe here (ckeditor)*@
+
+
+			<script type="text/javascript">
+				//<![CDATA[
+				$(function () {
+					var txtReq = $('#ctl00_cphMainContent_txtInterviewInvitation_txtReq').css('visibility', 'hidden');
+
+					if (txtReq.length > 0) {
+						CKEDITOR.on('instanceReady', function (evt) {
+							evt.editor.on('change', function () {
+								var text = this.getData();
+								// enlever les tags HTML
+								txtReq.val($(text).text());
+								// validation du control
+								txtReq.valid();
+							});
+						});
+					}
+
+				});
+				//]]>
+			</script>
+
+			<div class="form-group">
+				<label for="ctl00_cphMainContent_txtInterviewInvitation_txtReq"><span class="field-name"></span></label><input name="ctl00$cphMainContent$txtInterviewInvitation$txtReq" type="text" id="ctl00_cphMainContent_txtInterviewInvitation_txtReq" class="form-control" style="margin-bottom:-51px" />
+			</div>
+			<div class="mrgn-bttm-md">
+				<textarea name="ctl00$cphMainContent$txtInterviewInvitation$ckEditor" rows="2" cols="20" id="ctl00_cphMainContent_txtInterviewInvitation_ckEditor"></textarea>
+			</div>
+
+            @*Correct CKEditor*@
+
+		</details>
+    </li>
+
+    @*Email sent when a candidate is added by admin or HR section*@
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailCandidateAddedAdminHR"]</span>
+            </summary>
+
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectInterviewInvitation"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectInterviewInvitation" type="text" value="Interview Invitation / Invitation à une entrevue" id="ctl00_cphMainContent_txtSubjectInterviewInvitation" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCInterviewInvitation"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCInterviewInvitation" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCInterviewInvitation" class="form-control">
+                    </div>
+                </div>
+            </div>
+          
+            @*Add Iframe here*@
+            <p>iframe placeholder</p>
+
+        </details>
+    </li>
+
+
+    @*Email sent to a candidate 2 days before interview section*@
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailCandidate2daysBeforeInterview"]</span>
+            </summary>
+
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectFollowUpEmail"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectFollowUpEmail" type="text" value="Selection Process / Processus de sélection 2022-TEST" id="ctl00_cphMainContent_txtSubjectFollowUpEmail" class="form-control valid" aria-invalid="false">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCFollowUpEmail"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCFollowUpEmail" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCFollowUpEmail" class="form-control valid" aria-invalid="false">
+                    </div>
+                </div>
+            </div>
+
+            @*Add Iframe here*@
+            <p>iframe placeholder</p>
+
+        </details>
+    </li>
+
+    @*Email sent to an external candidate*@
+    <li>
+        <details>
+            <summary class="text-primary">
+                <span style="font-weight:bold;">@localizer["EmailExternalCandidate"]</span>
+            </summary>
+     
+            <div class="row mrgn-tp-md">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtSubjectExternalCandidate"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectExternalCandidate" type="text" value="Appointment Scheduling: Activation Code / Prise de Rendez-vous: code d'activation" id="ctl00_cphMainContent_txtSubjectExternalCandidate" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ctl00_cphMainContent_txtCCExternalCandidate"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCExternalCandidate" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCExternalCandidate" class="form-control">
+                    </div>
+                </div>
+            </div>
+        
+            @*Add Iframe here*@
+            <p>iframe placeholder</p>
+
+        </details>
+
+    </li>
+
+</ul>
