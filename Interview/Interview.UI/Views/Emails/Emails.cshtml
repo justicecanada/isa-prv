@@ -4,7 +4,12 @@
 @using Interview.UI.Helpers
 @using Interview.UI.Services.Mock.Departments
 @using Newtonsoft.Json
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IViewLocalizer localizer
+
+@{
+    ViewData["Title"] = "Emails";
+}
 
 <ul class="list-unstyled">
 
@@ -30,39 +35,26 @@
 
             @*Add Iframe here (ckeditor)*@
 
+            <div class="text-left">
+                <div id="editor"></div>
 
-			<script type="text/javascript">
-				//<![CDATA[
-				$(function () {
-					var txtReq = $('#ctl00_cphMainContent_txtInterviewInvitation_txtReq').css('visibility', 'hidden');
+                @*<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>*@
 
-					if (txtReq.length > 0) {
-						CKEDITOR.on('instanceReady', function (evt) {
-							evt.editor.on('change', function () {
-								var text = this.getData();
-								// enlever les tags HTML
-								txtReq.val($(text).text());
-								// validation du control
-								txtReq.valid();
-							});
-						});
-					}
-
-				});
-				//]]>
-			</script>
-
-			<div class="form-group">
-				<label for="ctl00_cphMainContent_txtInterviewInvitation_txtReq"><span class="field-name"></span></label><input name="ctl00$cphMainContent$txtInterviewInvitation$txtReq" type="text" id="ctl00_cphMainContent_txtInterviewInvitation_txtReq" class="form-control" style="margin-bottom:-51px" />
-			</div>
-			<div class="mrgn-bttm-md">
-				<textarea name="ctl00$cphMainContent$txtInterviewInvitation$ckEditor" rows="2" cols="20" id="ctl00_cphMainContent_txtInterviewInvitation_ckEditor"></textarea>
-			</div>
-
-            @*Correct CKEditor*@
-
+                
+                <script src="ckeditor5/build/ckeditor.js"></script>
+       
+                <script>
+                    ClassicEditor
+                        .create(document.querySelector('#editor'))
+                        .catch(error => {
+                            console.error(error);
+                        });
+                </script>
+            </div>
 		</details>
     </li>
+
+    @*https://www.youtube.com/watch?v=1F9nz9jlsRI*@
 
     @*Email sent when a candidate is added by admin or HR section*@
     <li>

@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\assets\vendor\ckeditor5-40.0.0-6hshyuc7hyqx\**" />
+    <Content Remove="wwwroot\assets\vendor\ckeditor5-40.0.0-6hshyuc7hyqx\**" />
+    <EmbeddedResource Remove="wwwroot\assets\vendor\ckeditor5-40.0.0-6hshyuc7hyqx\**" />
+    <None Remove="wwwroot\assets\vendor\ckeditor5-40.0.0-6hshyuc7hyqx\**" />
+    <TypeScriptCompile Remove="wwwroot\assets\vendor\ckeditor5-40.0.0-6hshyuc7hyqx\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\HomeController.cs" />
   </ItemGroup>
 
@@ -35,6 +43,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.2.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
