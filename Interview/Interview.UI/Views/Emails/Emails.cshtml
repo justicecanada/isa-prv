@@ -13,7 +13,8 @@
 
 <ul class="list-unstyled">
 
-    @*Email sent to a candidate who registers at a time slot*@
+	@*Add Language check when toggled (French Instructions / French resources)*@
+    @*ENGLISH - Email sent to a candidate who registers at a time slot*@
     <li>
         <details>
             <summary class="text-primary">
@@ -33,17 +34,279 @@
                 </div>
             </div>
 
-            @*Ckeditor Iframe*@
-            @*Assuming this data will be stored (ContestID)? Requires validation as well*@
-            @*Add Language change*@
+            @*Ckeditor Iframe instructions*@
+            @*Assuming all this data is stored in db (ContestID)?*@
+			@*Add Validation*@
+         
             <div class="text-left">
-                <div id="editor"></div>
+                <div id="editor">
+					<p>&nbsp;</p>
 
+					<table style="border-image:none; border:#000000">
+						<tbody>
+							<tr>
+								<td style="border-color:#000000">
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">*La version fran&ccedil;aise suit*</span></span></span></strong></p>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-color:#000000">
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">PERSONAL AND PROTECTED</span></span></span></strong></p>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-color:#000000">
+									<table style="border-image:none; border:#000000">
+										<tbody>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">SUBJECT:</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{0}</span></span></span></strong></p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-color:#000000">
+									<p>&nbsp;</p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Dear Candidate,</span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">This email is an invite for an interview for the following date and time for the above-noted position.</span></span></span></p>
+
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Here are the details:</span></span></span></strong></p>
+
+									<table style="border-image:none; border:#000000">
+										<tbody>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Date:</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{2}</span></span></span></strong></p>
+												</td>
+
+											</tr>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Time</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{3} Eastern (Preparation&nbsp; time)</span></span></span></strong></p>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-color:#000000">&nbsp;</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{4} Eastern (Oral Interview &ndash; 45&nbsp;minutes)</span></span></span></strong></p>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Location:</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Microsoft Teams</span></span></span></strong></p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">The interview questions will be sent to you by email 45 minutes&nbsp;prior to your interview. Please advise if you would like the questions sent to a different email address. </span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">This interview will be conducted using Microsoft Teams. About 5 minutes prior to your interview, click the MS Teams link provided below. If you experience technical difficulties when accessing the MS Teams link at your scheduled time, please contact HR&nbsp;at 613-555-5555 immediately. </span></span></span></p>
+
+									<p><span style="color:#252424"><span style="font-family:Segoe UI,sans-serif"><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy%40thread.v2/0?context=%7b%22Tid%22%3a%2244c0b27b-bb8b-4284-829c-8ad96d3b40e5%22%2c%22Oid%22%3a%229b1994e6-3bf1-45f7-af0e-efa22f59670f%22%7d" target="_blank"><span style="font-size:13.5pt"><span style="color:#6264a7"><span style="font-family:Segoe UI Semibold,sans-serif">Join Microsoft Teams Meeting</span></span></span></a> </span></span></p>
+
+									<p><span style="color:#252424"><span style="font-family:Segoe UI,sans-serif"><a href="https://aka.ms/JoinTeamsMeeting" target="_blank"><span style="font-size:9pt"><span style="color:#6264a7">Learn more about Teams</span></span></a><span style="font-size:medium"> | </span><a href="https://teams.microsoft.com/meetingOptions/?organizerId=9b1994e6-3bf1-45f7-af0e-efa22f59670f&amp;tenantId=44c0b27b-bb8b-4284-829c-8ad96d3b40e5&amp;threadId=19_meeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy@thread.v2&amp;messageId=0&amp;language=en-US" target="_blank"><span style="font-size:9pt"><span style="color:#6264a7">Meeting options</span></span></a> </span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Note that the interview is to assess the following:</span></span></span></p>
+
+									<ul>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Create a Vision and Strategy</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Mobilize People</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Uphold Integrity and Respect</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Collaborate with Partners and Stakeholders</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Promote Innovation and Guide Change</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Achieve Results</span></span></li>
+									</ul>
+
+									<p><u><span style="font-size:9pt"><span style="font-family:Arial,sans-serif"><span style="color:#000000">Please note that no reference material will be permitted at any time during the interview, with the exception of the interview questions and your notes from the preparation period.</span></span></span></u></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">The oral interview questions are to be treated by you as confidential. They are intended for your use within this staffing process only and we trust that you will not share them with others. Your responses will form part of your application for this staffing process and will be treated confidentially by the Department of Justice.</span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Failure to participate in the oral interview without good reason will be construed as a withdrawal from the process resulting in a forfeiture of your right to make a complaint to the Public Service Labour Relations and Employment Board.</span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">If you have any health or physical limitations the assessment board should be made aware of that may require some kind of accommodations, please contact ex.collectivestaffing-dotationcollective.ex@justice.gc.ca.</span></span></span></p>
+
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Candidates are advised that their interview will only be rescheduled under these exceptional circumstances: </span></span></span></strong></p>
+
+									<ul>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Medical reason with certificate</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Pre-arranged travel with proof</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Pre-scheduled training with proof</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Pre-arranged exam/interview for another Government of Canada staffing process with proof</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Death in the family</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Other exceptional reason acceptable to the selection committee</span></span></strong></li>
+									</ul>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">We ask that you provide the names of 3 references, 1 being a current manager for at least 6 months, to </span></span></span><span style="font-size:9pt"><span style="color:black"><span style="font-family:Arial,sans-serif"><span style="color:#000000">ex.collectivestaffing-dotationcollective.ex@justice.gc.ca</span> </span></span></span><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">prior to your interview.</span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Thank you</span></span></span></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<p>&nbsp;</p>
+
+					<table style="border-image:none; border:#000000">
+						<tbody>
+							<tr>
+								<td style="border-color:#000000">
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">PERSONNEL ET PROT&Eacute;G&Eacute;</span></span></span></strong></p>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-color:#000000">
+									<table style="border-image:none; border:#000000">
+										<tbody>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">OBJET:</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{0}</span></span></span></strong></p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-color:#000000">
+									<p>&nbsp;</p>
+
+									<p>
+										<span style="font-size:9pt">
+											<span style="color:#333333">
+												<span style="font-family:Arial,sans-serif">
+													Ch&egrave;re candidate,<br />
+													Cher candidat,
+												</span>
+											</span>
+										</span>
+									</p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Ce courriel a pour but de vous inviter &agrave; une entrevue &agrave; la date et l&rsquo;heure suivante pour le poste susmentionn&eacute;.</span></span></span></p>
+
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Voici les d&eacute;tails :</span></span></span></strong></p>
+
+									<table style="border-image:none; border:#000000">
+										<tbody>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Date:</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{2}</span></span></span></strong></p>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Heure</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{3} heure de l&#39;Est&nbsp;(temps de pr&eacute;paration)</span></span></span></strong></p>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-color:#000000">&nbsp;</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{4} heure de l&#39;Est (entrevue orale &ndash; 45&nbsp;minutes)</span></span></span></strong></p>
+												</td>
+											</tr>
+											<tr>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Lieu:</span></span></span></strong></p>
+												</td>
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">MS Teams</span></span></span></strong></p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Les questions d&#39;entrevue vous seront envoy&eacute;es par courriel 45 minutes avant votre entrevue. Veuillez indiquer si vous souhaitez que les questions soient envoy&eacute;es &agrave; une autre adresse &eacute;lectronique. </span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">L&#39;entrevue sera men&eacute;e via Microsoft Teams. Environ 5 minutes avant votre entrevue, veuillez cliquer sur le lien ci-dessous. Si vous rencontrez des difficult&eacute;s techniques pour acc&eacute;der au lien MS Teams &agrave; l&#39;heure pr&eacute;vue, veuillez communiquer avec RH au 613-555-5555 imm&eacute;diatement.</span></span></span></p>
+
+									<p><span style="color:#252424"><span style="font-family:Segoe UI,sans-serif"><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy%40thread.v2/0?context=%7b%22Tid%22%3a%2244c0b27b-bb8b-4284-829c-8ad96d3b40e5%22%2c%22Oid%22%3a%229b1994e6-3bf1-45f7-af0e-efa22f59670f%22%7d" target="_blank"><span style="font-size:13.5pt"><span style="color:#6264a7"><span style="font-family:Segoe UI Semibold,sans-serif">Join Microsoft Teams Meeting</span></span></span></a> </span></span></p>
+
+									<p><span style="color:#252424"><span style="font-family:Segoe UIsans-serif"><a href="https://aka.ms/JoinTeamsMeeting" target="_blank"><span style="font-size:9pt"><span style="color:#6264a7">Learn more about Teams</span></span></a><span style="font-size:medium"> | </span><a href="https://teams.microsoft.com/meetingOptions/?organizerId=9b1994e6-3bf1-45f7-af0e-efa22f59670f&amp;tenantId=44c0b27b-bb8b-4284-829c-8ad96d3b40e5&amp;threadId=19_meeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy@thread.v2&amp;messageId=0&amp;language=en-US" target="_blank"><span style="font-size:9pt"><span style="color:#6264a7">Meeting options</span></span></a> </span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Veuillez noter que l&rsquo;entrevue servira &agrave; &eacute;valuer&nbsp;les &eacute;l&eacute;ments suivants:</span></span></span></p>
+
+									<ul>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Cr&eacute;er une vision et une strat&eacute;gie</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Mobiliser les personnes</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Pr&eacute;server l&rsquo;int&eacute;grit&eacute; et le respect</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Collaborer avec les partenaires et les intervenants</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Promouvoir l&rsquo;innovation et orienter le changement</span></span></li>
+										<li><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Obtenir des r&eacute;sultats</span></span></li>
+									</ul>
+
+									<p><u><span style="font-size:9pt"><span style="font-family:Arial,sans-serif"><span style="color:#000000">Veuillez noter qu&rsquo;aucun mat&eacute;riel de r&eacute;f&eacute;rence ne sera permis lors de l&rsquo;entrevue, &agrave; l&#39;exception des questions d&#39;entretien et de vos notes de la p&eacute;riode de pr&eacute;paration.</span></span></span></u></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Nous vous demandons de consid&eacute;rer les questions de l&rsquo;entrevue comme &eacute;tant confidentielles. Elles ont &eacute;t&eacute; &eacute;labor&eacute;es &agrave; votre intention uniquement pour le pr&eacute;sent processus de dotation, et nous sommes convaincus que vous ne les communiquerez pas &agrave; d&rsquo;autres personnes. Vos r&eacute;ponses feront partie de votre demande dans le cadre du pr&eacute;sent processus et seront trait&eacute;es de fa&ccedil;on confidentielle par le minist&egrave;re de la Justice.</span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Si vous ne pouvez pas participer &agrave; l&rsquo;entrevue et que vous n&rsquo;avez aucun motif valable pour justifier votre absence, nous consid&eacute;rerons que vous vous retirez du processus. Vous perdrez ainsi votre droit de d&eacute;poser une plainte &agrave; la Commission des relations de travail et de l&rsquo;emploi dans la fonction publique.</span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Si vous avez des troubles de sant&eacute; ou des contraintes physiques dont le comit&eacute; d&rsquo;&eacute;valuation devrait &ecirc;tre au courant et qui pourraient n&eacute;cessiter des accommodements, n&rsquo;h&eacute;sitez pas &agrave; communiquer avec ex.collectivestaffing-dotationcollective.ex@justice.gc.ca.</span></span></span></p>
+
+									<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Veuillez noter que la date de votre entrevue ne sera report&eacute;e que dans les circonstances exceptionnelles suivantes&nbsp;: </span></span></span></strong></p>
+
+									<ul>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Raison m&eacute;dicale avec certificat</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Voyage pr&eacute;vu avec preuve &agrave; l&#39;appui</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Formation pr&eacute;vue avec preuve &agrave; l&#39;appui</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Participation pr&eacute;vue &agrave; un examen ou une entrevue dans le cadre d&#39;un autre processus de dotation du gouvernement du Canada avec preuve &agrave; l&#39;appui</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">D&eacute;c&egrave;s dans la famille</span></span></strong></li>
+										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Autre raison exceptionnelle jug&eacute;e acceptable par le comit&eacute; de s&eacute;lection</span></span></strong></li>
+									</ul>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Nous vous demandons de fournir les noms de 3 r&eacute;f&eacute;rences, y compris votre gestionnaire actuel depuis au moins 6 mois. Avant votre entrevue, veuillez envoyer ces r&eacute;f&eacute;rences &agrave;&nbsp;: </span></span></span><span style="font-size:9pt"><span style="color:black"><span style="font-family:Arial,sans-serif"><span style="color:#000000">ex.collectivestaffing-dotationcollective.ex@justice.gc.ca</span>. </span></span></span></p>
+
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Merci</span></span></span></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+
+                </div>
+
+				@*Ckeditor Iframe*@
                 <script src="ckeditor5/build/ckeditor.js"></script>
+
+
+				@*French Translation*@
+				@*<script src="ckeditor5/build/translations/fr.js"></script>*@
        
                 <script>
                     ClassicEditor
-                        .create(document.querySelector('#editor'))
+						.create(document.querySelector('#editor'), {
+
+
+							@*Change CKEditor Language in French*@
+							@*language: 'fr'*@
+
+
+						})
                         .catch(error => {
                             console.error(error);
                         });
@@ -52,7 +315,9 @@
 		</details>
     </li>
 
-    @*Email sent when a candidate is added by admin or HR section*@
+
+
+    @*ENGLISH - Email sent when a candidate is added by admin or HR section*@
     <li>
         <details>
             <summary class="text-primary">
@@ -79,7 +344,7 @@
     </li>
 
 
-    @*Email sent to a candidate 2 days before interview section*@
+    @*ENGLISH - Email sent to a candidate 2 days before interview section*@
     <li>
         <details>
             <summary class="text-primary">
@@ -105,7 +370,7 @@
         </details>
     </li>
 
-    @*Email sent to an external candidate*@
+    @*ENGLISH - Email sent to an external candidate*@
     <li>
         <details>
             <summary class="text-primary">
