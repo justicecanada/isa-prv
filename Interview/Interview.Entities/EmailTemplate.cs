@@ -6,30 +6,16 @@ using System.Threading.Tasks;
 
 namespace Interview.Entities
 {
-    
-    public class EmailTemplate : EntityBase
-    {
-<<<<<<< HEAD
-         
-        
-        public EmailTemplate()
-        {
-			EmailTemplates = new List<EmailTemplate>();
-        }
 
+	public class EmailTemplate : EntityBase
+	{
 
 		public Guid ContestId { get; set; }
-        public EmailTypes EmailType { get; set; }
-        public List<EmailTemplate> EmailTemplates { get; set; }
+		public EmailTypes EmailType { get; set; }
+		public string? EmailSubject { get; set; }
+		public string? EmailBody { get; set; }
+		public string? EmailCC { get; set; }
 
-=======
-
-        public Guid ContestId { get; set; }
-        public EmailTypes EmailType { get; set; }
->>>>>>> parent of ccdc6e7 (Latest Emails update)
-        public string? EmailSubject { get; set; }
-        public string? EmailBody { get; set; }
-        public string? EmailCC { get; set; }
 	}
 
 }

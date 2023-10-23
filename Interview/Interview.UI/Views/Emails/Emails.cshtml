@@ -8,7 +8,6 @@
 @inject IViewLocalizer localizer
 
 @{
-<<<<<<< HEAD
 	ViewBag.Title = localizer["Title"].Value;
 
 	ViewBag.FieldOrder = new List<string>(new string[]
@@ -17,9 +16,8 @@
 	}).Select(x => x.ToLower()).ToList();
 
 	string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-=======
     ViewData["Title"] = "Emails";
->>>>>>> parent of ccdc6e7 (Latest Emails update)
+
 }
 
 <ul class="list-unstyled">
@@ -35,8 +33,6 @@
             <div class="row mrgn-tp-md">
                 <div class="col-md-6">
                     <div class="form-group">
-<<<<<<< HEAD
-
 							@*Before redirecting to your page, you must set the session key GoC.Template.Culture to the new language. This is the key that the Web Template relies on to render the page in the proper language.*@
 							@*Below statement does not work until the GoC.Template.Culture is properly setup*@
 							@if (cultureName == Constants.EnglishCulture)
