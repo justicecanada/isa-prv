@@ -12,7 +12,7 @@
 
 	ViewBag.FieldOrder = new List<string>(new string[]
 	{
-		"EmailSubject-EN", "CC-EN", "Description-EN"
+		"EmailSubject", "EmailCC", "EmailBody"
 	}).Select(x => x.ToLower()).ToList();
 
 	string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
@@ -49,8 +49,8 @@
 							@if (cultureName == Constants.EnglishCulture)
 							{
 								@Html.Label("Subject of the email (bilingual)")
-								@Html.TextBoxFor(x => x.EmailSubjectEN, "EmailSubjectEN", new { @class = "form-control", style="width:450px;", placeholder = "Interview Reminder / Rappel d'entrevue"})
-								@Html.ValidationMessageFor(x => x.EmailSubjectEN)
+								@Html.TextBoxFor(x => x.EmailSubject, "EmailSubject", new { @class = "form-control", style="width:450px;", placeholder = "Interview Reminder / Rappel d'entrevue"})
+								@Html.ValidationMessageFor(x => x.EmailSubject)
 							}
 							else
 							@*Add French Part...*@
@@ -64,7 +64,7 @@
                     <div class="form-group">
 							@*English*@
 							@Html.Label("CC email address (separated by ; for multiple addresses)")
-							@Html.TextBoxFor(x => x.CCEN, "CCEN", new { @class = "form-control", style="width:450px;", placeholder = "ex.collectivestaffing-dotationcollective.ex@justice.gc.ca"})
+							@Html.TextBoxFor(x => x.EmailCC, "EmailCC", new { @class = "form-control", style="width:450px;", placeholder = "ex.collectivestaffing-dotationcollective.ex@justice.gc.ca"})
 							@*Add French part*@
 					</div>
                 </div>
@@ -75,6 +75,9 @@
 			@*Add Validation*@
          
             <div class="text-left">
+
+				@*Creates CkEditor*@
+
                 <div id="editor">
 					<p>&nbsp;</p>
 

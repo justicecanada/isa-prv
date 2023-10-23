@@ -1,7 +1,9 @@
-﻿@using Interview.UI.Models
+﻿@using Interview.Entities;
+@using Interview.UI.Models
 @inject IViewLocalizer localizer
 
 @{
+    EmailTemplate emails = ViewBag.EmailTemplate;
     ViewBag.Title = localizer["Title"].Value;
 }
 
@@ -45,9 +47,12 @@
     <div>
  
         @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
+
+        @*FIX Invalid Reference*@
+        @*@Html.ActionLink(localizer["Save"].Value, "Save", "Emails", null, new { @class = "btn btn-default" })*@
+
         <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
                formmethod="post" />
-
 
     </div>
 
