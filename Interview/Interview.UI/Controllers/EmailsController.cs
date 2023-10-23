@@ -3,7 +3,6 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
-using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,7 +20,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions) 
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions)
             : base(modelAccessor, justiceOptions, dal)
         {
             _mapper = mapper;
@@ -31,69 +30,26 @@ namespace Interview.UI.Controllers
 
         #region Public Index Methods
 
-        //Question about Language Option**
-        //Question about Validation**
-
-		
-
         [HttpGet]
         public async Task<IActionResult> Index(Guid id)
         {
 
-            var emails = await _dal.GetEntity<EmailTemplate>(id, true) as EmailTemplate;
-            var vmEmails = _mapper.Map<VmEmails>(emails);
+            var contest = await _dal.GetEntity<Contest>(id, true) as Contest;
+            var vmContest = _mapper.Map<VmContest>(contest);
 
-            return View(vmEmails);
+            return View(vmContest);
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Save()
+        {
 
+            return View("Index");
 
-		/* Need more research for this part */
+        }
 
-		public async Task<IActionResult> Emails(Guid? emailsId)
-		{
+        #endregion
 
-			VmEmails vmEmails = null;
-
-			if (emailsId == null)
-			{
-				vmEmails = new VmEmails();
-			}
-			else
-			{
-				var emails = await _dal.GetEntity<EmailTemplate>((Guid)emailsId, true) as EmailTemplate;
-				vmEmails = _mapper.Map<VmEmails>(emails);
-			}
-
-			return View(vmEmails);
-
-		}
-
-		/* Need more research for this part */
-
-		public async Task<IActionResult> EmailsSave(VmEmails vmEmails)
-		{
-
-			if (ModelState.IsValid)
-			{
-				var emails = _mapper.Map<EmailTemplate>(vmEmails);
-				EmailTemplate dbEmailTemplates = await _dal.GetEntity<EmailTemplate>((Guid)vmEmails.Id) as EmailTemplate;
-
-				await _dal.UpdateEntity(emails);
-
-				return RedirectToAction("Index", "Default");
-
-			}
-			else
-			{
-
-				return View("Emails", vmEmails);
-			}
-
-		}
-
-		#endregion
-
-	}
+    }
 }
