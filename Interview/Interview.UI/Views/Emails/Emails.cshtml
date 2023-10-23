@@ -8,6 +8,7 @@
 @inject IViewLocalizer localizer
 
 @{
+<<<<<<< HEAD
 	ViewBag.Title = localizer["Title"].Value;
 
 	ViewBag.FieldOrder = new List<string>(new string[]
@@ -16,23 +17,14 @@
 	}).Select(x => x.ToLower()).ToList();
 
 	string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+=======
+    ViewData["Title"] = "Emails";
+>>>>>>> parent of ccdc6e7 (Latest Emails update)
 }
 
-@{
-	await Html.RenderPartialAsync("ValidationSummary");
-}
-
-<form>
-
-	@Html.AntiForgeryToken()
-
-    @Html.HiddenFor(x => x.Id)
-
-	<ul class="list-unstyled">
+<ul class="list-unstyled">
 
 	@*Add Language check when toggled (French Instructions / French resources)*@
-
-
     @*ENGLISH - Email sent to a candidate who registers at a time slot*@
     <li>
         <details>
@@ -43,6 +35,7 @@
             <div class="row mrgn-tp-md">
                 <div class="col-md-6">
                     <div class="form-group">
+<<<<<<< HEAD
 
 							@*Before redirecting to your page, you must set the session key GoC.Template.Culture to the new language. This is the key that the Web Template relies on to render the page in the proper language.*@
 							@*Below statement does not work until the GoC.Template.Culture is properly setup*@
@@ -58,15 +51,23 @@
 								<p>"Test"</p>
 							}
 
+=======
+                        <label for="ctl00_cphMainContent_txtSubjectEmailReminder"><span class="field-name">Subject of the email (bilingual)</span> </label><input name="ctl00$cphMainContent$txtSubjectEmailReminder" type="text" value="Interview Reminder / Rappel d'entrevue" id="ctl00_cphMainContent_txtSubjectEmailReminder" class="form-control">
+>>>>>>> parent of ccdc6e7 (Latest Emails update)
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+<<<<<<< HEAD
 							@*English*@
 							@Html.Label("CC email address (separated by ; for multiple addresses)")
 							@Html.TextBoxFor(x => x.EmailCC, "EmailCC", new { @class = "form-control", style="width:450px;", placeholder = "ex.collectivestaffing-dotationcollective.ex@justice.gc.ca"})
 							@*Add French part*@
 					</div>
+=======
+                        <label for="ctl00_cphMainContent_txtCCEmailReminder"><span class="field-name">CC email address (separated by ";" for multiple addresses)</span> </label><input name="ctl00$cphMainContent$txtCCEmailReminder" type="text" value="ex.collectivestaffing-dotationcollective.ex@justice.gc.ca" id="ctl00_cphMainContent_txtCCEmailReminder" class="form-control">
+                    </div>
+>>>>>>> parent of ccdc6e7 (Latest Emails update)
                 </div>
             </div>
 
@@ -98,16 +99,12 @@
 									<table style="border-image:none; border:#000000">
 										<tbody>
 											<tr>
-												<td style="border-color:#000000; border-style:dotted">
-														<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">SUBJECT:</span></span></span></strong></p>
-												</td>
-
-													@*FIX UI if needed (&nbsp for whitespaces)*@
-
 												<td style="border-color:#000000">
-														<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{0}</span></span></span></strong></p>
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">SUBJECT:</span></span></span></strong></p>
 												</td>
-
+												<td style="border-color:#000000">
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{0}</span></span></span></strong></p>
+												</td>
 											</tr>
 										</tbody>
 									</table>
@@ -139,7 +136,7 @@
 													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Time</span></span></span></strong></p>
 												</td>
 												<td style="border-color:#000000">
-													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{3} Eastern (Preparation&nbsp;time)</span></span></span></strong></p>
+													<p><strong><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">{3} Eastern (Preparation&nbsp; time)</span></span></span></strong></p>
 												</td>
 											</tr>
 											<tr>
@@ -163,7 +160,7 @@
 
 									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">This interview will be conducted using Microsoft Teams. About 5 minutes prior to your interview, click the MS Teams link provided below. If you experience technical difficulties when accessing the MS Teams link at your scheduled time, please contact HR&nbsp;at 613-555-5555 immediately. </span></span></span></p>
 
-									<p><strong><span style="color:#252424"><span style="font-family:Segoe UI,sans-serif"><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy%40thread.v2/0?context=%7b%22Tid%22%3a%2244c0b27b-bb8b-4284-829c-8ad96d3b40e5%22%2c%22Oid%22%3a%229b1994e6-3bf1-45f7-af0e-efa22f59670f%22%7d" target="_blank"><span style="font-size:13.5pt"><span style="color:#6264a7"><span style="font-family:Segoe UI Semibold,sans-serif">Join Microsoft Teams Meeting</span></span></span></a></span></span></strong></p>
+									<p><span style="color:#252424"><span style="font-family:Segoe UI,sans-serif"><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy%40thread.v2/0?context=%7b%22Tid%22%3a%2244c0b27b-bb8b-4284-829c-8ad96d3b40e5%22%2c%22Oid%22%3a%229b1994e6-3bf1-45f7-af0e-efa22f59670f%22%7d" target="_blank"><span style="font-size:13.5pt"><span style="color:#6264a7"><span style="font-family:Segoe UI Semibold,sans-serif">Join Microsoft Teams Meeting</span></span></span></a> </span></span></p>
 
 									<p><span style="color:#252424"><span style="font-family:Segoe UI,sans-serif"><a href="https://aka.ms/JoinTeamsMeeting" target="_blank"><span style="font-size:9pt"><span style="color:#6264a7">Learn more about Teams</span></span></a><span style="font-size:medium"> | </span><a href="https://teams.microsoft.com/meetingOptions/?organizerId=9b1994e6-3bf1-45f7-af0e-efa22f59670f&amp;tenantId=44c0b27b-bb8b-4284-829c-8ad96d3b40e5&amp;threadId=19_meeting_MDRmMjBhZTItNTg1Ni00N2U5LTljMDAtZDBmNDdjYzU4NzEy@thread.v2&amp;messageId=0&amp;language=en-US" target="_blank"><span style="font-size:9pt"><span style="color:#6264a7">Meeting options</span></span></a> </span></span></p>
 
@@ -322,7 +319,7 @@
 										<li><strong><span style="font-size:9pt"><span style="font-family:Arial,sans-serif">Autre raison exceptionnelle jug&eacute;e acceptable par le comit&eacute; de s&eacute;lection</span></span></strong></li>
 									</ul>
 
-									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Nous vous demandons de fournir les noms de 3 r&eacute;f&eacute;rences, y compris votre gestionnaire actuel depuis au moins 6 mois. Avant votre entrevue, veuillez envoyer ces r&eacute;f&eacute;rences &agrave;: </span></span></span><span style="font-size:9pt"><span style="color:black"><span style="font-family:Arial,sans-serif"><span style="color:#000000">ex.collectivestaffing-dotationcollective.ex@justice.gc.ca</span>. </span></span></span></p>
+									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Nous vous demandons de fournir les noms de 3 r&eacute;f&eacute;rences, y compris votre gestionnaire actuel depuis au moins 6 mois. Avant votre entrevue, veuillez envoyer ces r&eacute;f&eacute;rences &agrave;&nbsp;: </span></span></span><span style="font-size:9pt"><span style="color:black"><span style="font-family:Arial,sans-serif"><span style="color:#000000">ex.collectivestaffing-dotationcollective.ex@justice.gc.ca</span>. </span></span></span></p>
 
 									<p><span style="font-size:9pt"><span style="color:#333333"><span style="font-family:Arial,sans-serif">Merci</span></span></span></p>
 								</td>
@@ -337,26 +334,23 @@
                 <script src="ckeditor5/build/ckeditor.js"></script>
 
 
-				@****French Translation**** (uncomment below line)@
+				@*French Translation*@
 				@*<script src="ckeditor5/build/translations/fr.js"></script>*@
        
                 <script>
                     ClassicEditor
 						.create(document.querySelector('#editor'), {
 
-							@****Change CKEditor Language in French (uncomment below line)****@
+
+							@*Change CKEditor Language in French*@
 							@*language: 'fr'*@
 
-						})
 
+						})
                         .catch(error => {
                             console.error(error);
-
-
                         });
-
                 </script>
-
             </div>
 		</details>
     </li>
@@ -444,5 +438,3 @@
     </li>
 
 </ul>
-
-</form>
