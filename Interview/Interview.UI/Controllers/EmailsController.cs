@@ -42,14 +42,54 @@ namespace Interview.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save()
+        public async Task<IActionResult> EmailSave (VmEmails vmEmails)
         {
+			if (ModelState.IsValid)
+			{
+				var emails = _mapper.Map<EmailTemplate>(vmEmails);
+				EmailTemplate? dbEmails = await _dal.GetEntity<EmailTemplate>((Guid)vmEmails.Id) as EmailTemplate;
 
-            return View("Index");
+				await _dal.UpdateEntity(emails);
+
+				return RedirectToAction("Index", "Default");
+
+			}
+			else
+			{
+
+				return View("Emails", vmEmails);
+			}
+
+
+			//return View("Index");
 
         }
 
-        #endregion
+        /* TO FIX
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> EmailSave(VmEmails vmEmails)
+		{
 
-    }
+			if (ModelState.IsValid)
+			{
+				var emails = _mapper.Map<EmailTemplate>(vmEmails);
+				EmailTemplate? dbEmails = await _dal.GetEntity<EmailTemplate>((Guid)vmEmails.Id) as EmailTemplate;
+
+				await _dal.UpdateEntity(emails);
+
+				return RedirectToAction("Index", "Default");
+
+			}
+			else
+			{
+
+				return View("Emails", vmEmails);
+			}
+
+		}
+        */
+		#endregion
+
+	}
 }
