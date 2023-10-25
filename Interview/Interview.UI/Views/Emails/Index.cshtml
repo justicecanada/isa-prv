@@ -3,8 +3,8 @@
 @inject IViewLocalizer localizer
 
 @{
-    EmailTemplate emails = ViewBag.EmailTemplate;
     ViewBag.Title = localizer["Title"].Value;
+    //List<EmailTemplate> emails = ViewBag.EmailTemplate;
 }
 
 @{
@@ -35,7 +35,6 @@
         </p>
 </div>
 
-@*Need to reference flag to determine if FR / English and should not be stored in this location*@
 @{
     await Html.RenderPartialAsync("Emails");
 }
@@ -48,12 +47,24 @@
  
         @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
 
-        @*FIX Invalid Reference*@
-        @*@Html.ActionLink(localizer["Save"].Value, "Save", "Emails", null, new { @class = "btn btn-default" })*@
 
-        <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
-               formmethod="post" />
+            @using(Html.BeginForm())
+            {
+            <input type="submit" formmethod="post" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction="@Url.Action("Save", "Emails")">
+            }
+      
+            @*@Html.ActionLink(localizer["Save"].Value, "Index", "Emails", null, new { @class = "btn btn-default", @name = "EmailSave" })*@
 
+
+
+        @*Add Logic when saved (ex: 5-10 second popup with Save changes successfully! )...*@
+
+
+
+
+        @*<input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
+               formmethod="post" />*@
+         
     </div>
 
 </form>

@@ -102,7 +102,6 @@ namespace Interview.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ContestNext(VmContest vmContest)
         {
-            
             if (ModelState.IsValid)
             {
                 var contest = _mapper.Map<Contest>(vmContest);

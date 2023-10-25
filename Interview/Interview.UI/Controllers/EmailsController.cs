@@ -3,9 +3,13 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.SqlServer.Server;
+using System.Diagnostics;
 
 namespace Interview.UI.Controllers
 {
@@ -30,66 +34,73 @@ namespace Interview.UI.Controllers
 
         #region Public Index Methods
 
+        //id is incorrect...
+
         [HttpGet]
-        public async Task<IActionResult> Index(Guid id)
+        public async Task<IActionResult> Index(Guid? contestId)
         {
+            Models.VmContest vmContest = null;
+            if (contestId == null)
+            {
+                vmContest = new Models.VmContest();
+            }
+            else
+            {
+                var contest = await _dal.GetEntity<Contest>((Guid)contestId, true) as Contest;
+                vmContest = _mapper.Map<Models.VmContest>(contest);
+                EmailTemplate? dbEmails = await _dal.GetEntity<EmailTemplate>((Guid)contestId) as EmailTemplate;
+                Debug.WriteLine(dbEmails.Id);
+            }
 
-            var contest = await _dal.GetEntity<Contest>(id, true) as Contest;
-            var vmContest = _mapper.Map<VmContest>(contest);
-
-            return View(vmContest);
-
+            return View();
         }
 
+        /*
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EmailSave (VmEmails vmEmails)
         {
-			if (ModelState.IsValid)
+            Debug.WriteLine("Debug Isafasfasfg ");
+           
+            //Debug.WriteLine(dbEmails.Id);
+            if (ModelState.IsValid)
 			{
 				var emails = _mapper.Map<EmailTemplate>(vmEmails);
 				EmailTemplate? dbEmails = await _dal.GetEntity<EmailTemplate>((Guid)vmEmails.Id) as EmailTemplate;
 
-				await _dal.UpdateEntity(emails);
+				//emails.Id = dbEmails.Id;
+                Debug.WriteLine(emails.Id);
+				//emails.EmailType = dbEmails.EmailType;
+                Debug.WriteLine(emails.EmailType);
+                //emails.EmailSubject = dbEmails.EmailSubject;
+                Debug.WriteLine(emails.EmailSubject);
+                //emails.EmailCC = dbEmails.EmailCC;
+                Debug.WriteLine(emails.EmailCC);
+                await _dal.AddEntity<EmailTemplate>(emails);
 
-				return RedirectToAction("Index", "Default");
+                return RedirectToAction("Index", "Default");
 
 			}
 			else
 			{
-
-				return View("Emails", vmEmails);
+                Debug.WriteLine("Debug Isafasfasfg ");
+                return View("Emails", vmEmails);
 			}
+        }
+        */
 
 
-			//return View("Index");
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Emails(VmEmails vmEmails)
+        {
+            //var name = vmEmails.Name;
+            Debug.Write("TESTESTTEST");
+
+            return View();
+
 
         }
-
-        /* TO FIX
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> EmailSave(VmEmails vmEmails)
-		{
-
-			if (ModelState.IsValid)
-			{
-				var emails = _mapper.Map<EmailTemplate>(vmEmails);
-				EmailTemplate? dbEmails = await _dal.GetEntity<EmailTemplate>((Guid)vmEmails.Id) as EmailTemplate;
-
-				await _dal.UpdateEntity(emails);
-
-				return RedirectToAction("Index", "Default");
-
-			}
-			else
-			{
-
-				return View("Emails", vmEmails);
-			}
-
-		}
-        */
-		#endregion
-
-	}
+        #endregion
+    }
 }
