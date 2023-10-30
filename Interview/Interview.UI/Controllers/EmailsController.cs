@@ -48,10 +48,11 @@ namespace Interview.UI.Controllers
             {
                 var contest = await _dal.GetEntity<Contest>((Guid)contestId, true) as Contest;
                 vmContest = _mapper.Map<Models.VmContest>(contest);
-           
+                Debug.WriteLine(vmContest.Id);
+                //Requires additional changes here.
                 //EmailTemplate? dbEmails = await _dal.GetEntity<EmailTemplate>((Guid)contestId) as EmailTemplate;
-          
-                
+
+
 
 
             }
@@ -66,6 +67,7 @@ namespace Interview.UI.Controllers
             Add EmailSubject / EmailCC / EmailBody / EmailType (to be configured) when saved
             Configure Language options
             */
+            return View("Index");
         }
 
         #endregion
