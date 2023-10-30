@@ -14,7 +14,6 @@ namespace Interview.UI.Models
         [Display(Name = "EmailCC")]
         public string? EmailCC { get; set; }
 
-        [Required]
         [Display(Name = "EmailBody")]
         public string? EmailBody { get; set; }
 
