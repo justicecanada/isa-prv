@@ -32,6 +32,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId);
 
+        Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid contestId, Guid userId);
+
         Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId);
 
         Task<List<Equity>> GetAllEquities();
@@ -51,6 +53,8 @@ namespace Interview.UI.Services.DAL
         Task<List<MockUser>> GetListExistingExternalMockUser();
 
         Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType);
+
+        Task<MockUser?> GetMockUserById(Guid id);
 
         Task<MockUser?> GetMockUserByName(string name);
 

@@ -4,6 +4,8 @@ using Interview.UI.Models.Roles;
 using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using Group = Interview.Entities.Group;
 
 namespace Interview.UI.Services.DAL
 {
@@ -346,6 +348,16 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid contestId, Guid userId)
+        {
+
+            List<GroupOwner> result = await _context.GroupsOwners.Where(x => (x.UserId == userId &&
+                x.Group.Contests.Any(x => x.Id == contestId))).ToListAsync();
+
+            return result;
+
+        }
+
         public async Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId)
         {
 
@@ -425,6 +437,15 @@ namespace Interview.UI.Services.DAL
 
             MockUser? result = await _context.MockUsers.Where(x => (x.Id == id &&
                         x.UserType == userType)).FirstOrDefaultAsync();
+
+            return result;
+
+        }
+
+        public async Task<MockUser?> GetMockUserById(Guid id)
+        {
+
+            MockUser? result = await _context.MockUsers.Where(x => (x.Id == id)).FirstOrDefaultAsync();
 
             return result;
 
