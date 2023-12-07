@@ -86,7 +86,15 @@ namespace Interview.UI.Controllers
         private async Task SetIndexViewBag(Contest contest)
         {
 
+            // This method mimics the Entrevue.Default.SetCalendar() method. That method has a few concerns:
+            // 1. Populating dropdowns
+            // 2. Setting the visibility of various form elements
+            // 3. Setting the wording of various form elements
+            // Within an MVC framework, these concerns are handled at the View layer (not the Controller layer).
+            // However, the Controller here will set the items for dropdowns in viewbag.
+
             UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
+            List<MockUser> mockUsers = new List<MockUser>();
 
             if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
             {
@@ -114,50 +122,70 @@ namespace Interview.UI.Controllers
                 }
             }
 
-            SetShowSectionViewbag(userSetting);
-            await SetDropDownItemsViewBag(contest);
-
-        }
-
-        private void SetShowSectionViewbag(UserSetting userSetting)
-        {
-
-            bool showAccessDenied = false;
-            bool showCalendar = false;
-            bool showLegend = false;
-            bool showRules = false;
-            bool showManageContest = false;
-
-            if (userSetting == null)
-            {
-                showAccessDenied = true;
-            }
-            else
-            {
-                showAccessDenied = false;
-                showManageContest = userSetting.RoleType == RoleTypes.Admin || userSetting.RoleType == RoleTypes.HR;
-            }
-
-            ViewBag.UserSetting = userSetting;
-            ViewBag.ShowAccessDenied = showAccessDenied;
-            ViewBag.ShowCalendar = showCalendar;
-            ViewBag.ShowLegend = showLegend;
-            ViewBag.ShowRules = showRules;
-            ViewBag.ShowManageContest = showManageContest;
-
-        }
-
-        private async Task SetDropDownItemsViewBag(Contest contest)
-        {
-
-            List<MockUser> mockUsers = new List<MockUser>();
-
-            foreach (UserSetting userSetting in contest.UserSettings)
-                mockUsers.Add(await _dal.GetMockUserById(userSetting.UserId));
+            // Handle Users by RoleType
+            foreach (UserSetting contestUserSetting in contest.UserSettings)
+                mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
 
             ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
             ViewBag.InterviewerUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
             ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
+
+            // Handle Users as Members?
+            if (userSetting.RoleType == RoleTypes.Assistant)
+            {
+                mockUsers.Clear();
+
+                // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
+
+            }
+
+        }
+
+        #endregion
+
+        #region Add User Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> AddUserModal()
+        {
+
+            return null;
+
+        }
+
+        #endregion
+
+        #region User Language Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> UserLanguageModal()
+        {
+
+            return null;
+
+        }
+
+        #endregion
+
+        #region Interview Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> InterviewModal()
+        {
+
+            return null;
+
+        }
+
+        #endregion
+
+        #region Privacy Statement Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> PrivacyStatementModal()
+        {
+
+            return null;
 
         }
 
