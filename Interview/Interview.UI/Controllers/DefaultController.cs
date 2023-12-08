@@ -143,6 +143,41 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region Interview Modal
+
+        [HttpGet]
+        public PartialViewResult InterviewModal()
+        {
+
+            VmInterview result = new VmInterview();
+
+            return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> InterviewModal(VmInterview vmInterview)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                return new JsonResult(new { result = true, item = vmInterview })
+                {
+                    StatusCode = 200
+                };
+
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        #endregion
+
         #region Add User Modal
 
         [HttpGet]
@@ -159,18 +194,6 @@ namespace Interview.UI.Controllers
 
         [HttpGet]
         public async Task<PartialViewResult> UserLanguageModal()
-        {
-
-            return null;
-
-        }
-
-        #endregion
-
-        #region Interview Modal
-
-        [HttpGet]
-        public async Task<PartialViewResult> InterviewModal()
         {
 
             return null;
