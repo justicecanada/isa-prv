@@ -1,8 +1,4 @@
-﻿$(document).ready(function () {
-    interview.Init();
-});
-
-var interview = {
+﻿var interview = {
 
     OpenLink: $("#interviewModal")[0],
     ModalSelector: "#modalContainer",
@@ -88,9 +84,6 @@ var interview = {
     PostSuccess: function (data) {
 
         if (data.result) {
-            //$("#affiliateName").text(data.item.Name);
-            //$("#affiliateDescription").text(data.item.Description);
-            //$("#affiliateTimeZone").text(data.item.TimeZone);
             $.magnificPopup.close();
         }
         else {
@@ -105,3 +98,5 @@ var interview = {
     },
 
 }
+
+interview.Init();

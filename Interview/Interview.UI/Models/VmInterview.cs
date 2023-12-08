@@ -25,9 +25,12 @@ namespace Interview.UI.Models
         //[MaxLength(128, ErrorMessage = "MaxLength")]
         public DateTime? VmStartDate { get; set; }
 
+        [Display(Name = "StartTime")]
+        public TimeSpan? VmStartTime { get; set;  }
+
         [Display(Name = "Duration")]
         //[RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
-        public TimeSpan? VmDuration { get; set; }
+        public int? Duration { get; set; }
 
         public int? Status { get; set; }
 

@@ -8,6 +8,7 @@ using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -68,7 +69,8 @@ namespace Interview.UI.Controllers
             ViewBag.ContestId = contestId;
             if (contestId != null)
                 await SetIndexViewBag(contests.Where(x => x.Id == contestId).First());
-
+            RegisterIndexClientResources();
+            
             return View();
 
         }
@@ -141,6 +143,16 @@ namespace Interview.UI.Controllers
 
         }
 
+        private void RegisterIndexClientResources()
+        {
+
+            WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
+
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewmodal.js?v={BuildId}\"></script>");
+
+        }
+
         #endregion
 
         #region Interview Modal
@@ -157,13 +169,16 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> InterviewModal(VmInterview vmInterview)
+        public async Task<ActionResult> InterviewModal(VmInterview vmInterview)
         {
 
             if (ModelState.IsValid)
             {
 
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
+
+                interview.ContestId = (Guid)_state.ContestId;
+                await _dal.AddEntity<Interview.Entities.Interview>(interview);
 
                 return new JsonResult(new { result = true, item = vmInterview })
                 {
@@ -173,7 +188,7 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                return null;
+                return PartialView(vmInterview);
             }
 
         }

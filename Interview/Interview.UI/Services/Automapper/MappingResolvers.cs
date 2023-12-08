@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
+using Interview.UI.Models;
+using Interview.Entities;
 
 namespace Interview.UI.Services.Automapper
 {
@@ -35,6 +38,27 @@ namespace Interview.UI.Services.Automapper
 
         }
 
+    }
+
+    public class DateTimeTimeSpanTimeZoneToDateTimeOffset : IValueResolver<VmInterview, Interview.Entities.Interview, DateTimeOffset?>
+    {
+        DateTimeOffset? IValueResolver<VmInterview, Entities.Interview, DateTimeOffset?>.Resolve(VmInterview source, Entities.Interview destination, DateTimeOffset? destMember, ResolutionContext context)
+        {
+
+            DateTimeOffset? result = null;
+
+            if (source.VmStartDate != null)
+            {
+                TimeSpan startTime = source.VmStartTime == null ? TimeSpan.Parse("00:00:00") : (TimeSpan)source.VmStartTime;
+                string input = $"{((DateTime)source.VmStartDate).ToString("dd/MM/yyyy")} {startTime.ToString()}";
+
+                result = DateTimeOffset.Parse(input);
+            }
+
+            return result;
+
+
+        }
     }
 
 }

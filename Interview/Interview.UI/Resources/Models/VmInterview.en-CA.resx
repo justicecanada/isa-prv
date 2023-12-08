@@ -141,4 +141,7 @@
   <data name="StartDate" xml:space="preserve">
     <value>Scheduled Date (DD/MM/YYYY)</value>
   </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Scheduled Time (HH:MM:SS)</value>
+  </data>
 </root>

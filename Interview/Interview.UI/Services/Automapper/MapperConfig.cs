@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Interview.Entities;
 using Interview.UI.Models;
+using System.Globalization;
+using System;
 using System.Xml;
 
 namespace Interview.UI.Services.Automapper
@@ -33,8 +35,8 @@ namespace Interview.UI.Services.Automapper
             CreateMap<VmUserSettingEquity, UserSettingEquity>();
 
             CreateMap<Interview.Entities.Interview, VmInterview>();
-            CreateMap<VmInterview, Interview.Entities.Interview>();
-
+            CreateMap<VmInterview, Interview.Entities.Interview>()
+                .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffset>());
 
             #region ~/Groups
 
