@@ -32,6 +32,10 @@ namespace Interview.UI.Services.Automapper
             CreateMap<UserSettingEquity, VmUserSettingEquity>();
             CreateMap<VmUserSettingEquity, UserSettingEquity>();
 
+            CreateMap<Interview.Entities.Interview, VmInterview>();
+            CreateMap<VmInterview, Interview.Entities.Interview>();
+
+
             #region ~/Groups
 
             CreateMap<Contest, Interview.UI.Models.Groups.VmContest>();

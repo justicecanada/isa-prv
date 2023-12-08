@@ -163,6 +163,8 @@ namespace Interview.UI.Controllers
             if (ModelState.IsValid)
             {
 
+                Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
+
                 return new JsonResult(new { result = true, item = vmInterview })
                 {
                     StatusCode = 200

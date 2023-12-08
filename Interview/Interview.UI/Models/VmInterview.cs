@@ -22,12 +22,12 @@ namespace Interview.UI.Models
         public string? Location { get; set; }
 
         [Display(Name = "StartDate")]
-        [MaxLength(128, ErrorMessage = "MaxLength")]
-        public DateTimeOffset? StartDate { get; set; }
+        //[MaxLength(128, ErrorMessage = "MaxLength")]
+        public DateTime? VmStartDate { get; set; }
 
         [Display(Name = "Duration")]
-        [RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
-        public int? Duration { get; set; }
+        //[RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
+        public TimeSpan? VmDuration { get; set; }
 
         public int? Status { get; set; }
 
