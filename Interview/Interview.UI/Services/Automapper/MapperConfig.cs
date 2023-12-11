@@ -38,6 +38,9 @@ namespace Interview.UI.Services.Automapper
             CreateMap<VmInterview, Interview.Entities.Interview>()
                 .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffset>());
 
+            CreateMap<InterviewUser, VmInterview>();
+            CreateMap<VmInterview, VmInterviewUser>();
+
             #region ~/Groups
 
             CreateMap<Contest, Interview.UI.Models.Groups.VmContest>();

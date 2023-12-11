@@ -50,8 +50,8 @@
                 
                 @if (Model.Id != null)
                 {
-                    
-                    <h2>Editing</h2>
+
+                    await Html.RenderPartialAsync("InterviewUserPartial", Model);
 
                 }
 

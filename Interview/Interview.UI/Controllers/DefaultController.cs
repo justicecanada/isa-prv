@@ -3,6 +3,7 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
@@ -104,53 +105,9 @@ namespace Interview.UI.Controllers
 
                 ViewBag.Interviews = vmInterviews;
 
-                UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-                List<MockUser> mockUsers = new List<MockUser>();
-
-                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
-                {
-                    bool hasAccess = true;
-                    if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                    {
-                        //hasAccess = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id).Any();
-                        // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
-                        // get the list as a variable first. Moving on...
-                        var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-                        hasAccess = groupOwners.Any();
-                    }
-
-                    if (hasAccess)
-                    {
-                        userSetting = new UserSetting()
-                        {
-                            ContestId = contest.Id,
-                            RoleType = RoleTypes.Admin,
-                            UserId = (Guid)LoggedInMockUser.Id,
-                            LanguageType = LanguageTypes.Bilingual,
-                            HasAcceptedPrivacyStatement = true
-                        };
-                        await _dal.AddEntity<UserSetting>(userSetting);
-                    }
-                }
+                
 
             }
-
-            //// Handle Users by RoleType
-            //foreach (UserSetting contestUserSetting in contest.UserSettings)
-            //    mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
-
-            //ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
-            //ViewBag.InterviewerUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
-            //ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
-
-            //// Handle Users as Members?
-            //if (userSetting.RoleType == RoleTypes.Assistant)
-            //{
-            //    mockUsers.Clear();
-
-            //    // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
-
-            //}
 
         }
 
@@ -184,6 +141,7 @@ namespace Interview.UI.Controllers
             {
                 Interview.Entities.Interview interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id) as Interview.Entities.Interview;
                 result = _mapper.Map<VmInterview>(interview);
+                await SetInterviewUserViewBag();
             }
 
             return PartialView(result);
@@ -230,6 +188,58 @@ namespace Interview.UI.Controllers
             await _dal.DeleteEntity<Interview.Entities.Interview>(id);
 
             return RedirectToAction("Index");
+
+        }
+
+        private async Task SetInterviewUserViewBag()
+        {
+
+            Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
+            UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
+            List<MockUser> mockUsers = new List<MockUser>();
+
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+            {
+                bool hasAccess = true;
+                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                {
+                    //hasAccess = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id).Any();
+                    // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
+                    // get the list as a variable first. Moving on...
+                    var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
+                    hasAccess = groupOwners.Any();
+                }
+
+                if (hasAccess)
+                {
+                    userSetting = new UserSetting()
+                    {
+                        ContestId = contest.Id,
+                        RoleType = RoleTypes.Admin,
+                        UserId = (Guid)LoggedInMockUser.Id,
+                        LanguageType = LanguageTypes.Bilingual,
+                        HasAcceptedPrivacyStatement = true
+                    };
+                    await _dal.AddEntity<UserSetting>(userSetting);
+                }
+            }
+
+            // Handle Users by RoleType
+            foreach (UserSetting contestUserSetting in contest.UserSettings)
+                mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
+
+            ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
+            ViewBag.InterviewerUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
+            ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
+
+            // Handle Users as Members?
+            if (userSetting.RoleType == RoleTypes.Assistant)
+            {
+                mockUsers.Clear();
+
+                // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
+
+            }
 
         }
 

@@ -1,0 +1,74 @@
+﻿@model VmInterview
+@using Interview.Entities
+@using Interview.UI.Models
+@using Interview.UI.Services.Mock.Identity
+@inject IViewLocalizer localizer
+
+@{
+
+    List<MockUser> candidateUsers = ViewBag.CandidateUsers;
+    List<SelectListItem> candidateUsersItems = new List<SelectListItem>();
+    candidateUsersItems.Add(new SelectListItem(localizer["candidateUsers"].Value, ""));
+    foreach (var candidateUser in candidateUsers)
+    {
+        candidateUsersItems.Add(new SelectListItem()
+                {
+                    Value = candidateUser.Id.ToString(),
+                    Text = $"{candidateUser.FirstName} {candidateUser.LastName}"
+                });
+    }
+
+    List<MockUser> interviewerUsers = ViewBag.InterviewerUsers;
+    List<SelectListItem> interviewerUsersItems = new List<SelectListItem>();
+    interviewerUsersItems.Add(new SelectListItem(localizer["interviewerUsers"].Value, ""));
+    foreach (var interviewerUser in interviewerUsers)
+    {
+        interviewerUsersItems.Add(new SelectListItem()
+                {
+                    Value = interviewerUser.Id.ToString(),
+                    Text = $"{interviewerUser.FirstName} {interviewerUser.LastName}"
+                });
+    }
+
+    List<MockUser> leadUsers = ViewBag.LeadUsers;
+    List<SelectListItem> leadItems = new List<SelectListItem>();
+    leadItems.Add(new SelectListItem(localizer["leadUsers"].Value, ""));
+    foreach (var leadUser in leadUsers)
+    {
+        leadItems.Add(new SelectListItem()
+                {
+                    Value = leadUser.Id.ToString(),
+                    Text = $"{leadUser.FirstName} {leadUser.LastName}"
+                });
+    }
+
+}
+
+<label>@localizer["AddMemberToTimeSlot"]</label>
+
+<div class="row">
+    @Html.RadioButtonFor(x => x.VmRoleType, (int)RoleTypes.Candidate, new { @id = "Candidate", @class = "form-check-input" })
+    <label for="Candidate" class="form-check-label">@localizer["Candidate"]</label>
+</div>
+
+<div class="row">
+    @Html.RadioButtonFor(x => x.VmRoleType, (int)RoleTypes.Interviewer, new { @id = "Interviewer", @class = "form-check-input" })
+    <label for="Interviewer" class="form-check-label">@localizer["Interviewer"]</label>
+</div>
+
+<div class="row">
+    @Html.RadioButtonFor(x => x.VmRoleType, (int)RoleTypes.Lead, new { @id = "Lead", @class = "form-check-input" })
+    <label for="Lead" class="form-check-label">@localizer["Lead"]</label>
+</div>
+
+<div id="candidateUsers" class="interviewerRole" style="display: none">
+    @Html.EditorFor(x => x.VmUserId, "Question", new { inputControl = @Html.DropDownList("DepartmentId", candidateUsersItems, new { @class = "form-control" }) })
+</div>
+
+<div id="interviewerUsers" class="interviewerRole" style="display: none">
+    @Html.EditorFor(x => x.VmUserId, "Question", new { inputControl = @Html.DropDownList("DepartmentId", interviewerUsersItems, new { @class = "form-control" }) })
+</div>
+
+<div id="leadUsers" class="interviewerRole" style="display: none">
+    @Html.EditorFor(x => x.VmUserId, "Question", new { inputControl = @Html.DropDownList("DepartmentId", leadItems, new { @class = "form-control" }) })
+</div>

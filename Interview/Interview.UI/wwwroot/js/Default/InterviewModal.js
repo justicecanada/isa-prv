@@ -6,6 +6,7 @@
     Form: null,
     SubmitButtonSelector: "#btnInterviewSave",
     CancelButtonSelector: "#btnInterviewClose",
+    RblRolesSelector: "[name='VmRoleType']",
 
     Init: function () {
 
@@ -22,6 +23,22 @@
         $(this.CancelButtonSelector).on("click", function (e) {
             e.preventDefault();
             $.magnificPopup.instance.close();
+        });
+
+        // Members
+        $(this.RblRolesSelector).change(function () {
+
+            var val = $(this).val();
+
+            $(".interviewerRole").hide();
+
+            if (val === '5')
+                $("#candidateUsers").show();
+            else if (val === '2')
+                $("#interviewerUsers").show();
+            else if (val === '3')
+                $("#leadUsers").show();
+
         });
 
     },
