@@ -223,6 +223,16 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<ActionResult> InterviewDelete(Guid id)
+        {
+
+            await _dal.DeleteEntity<Interview.Entities.Interview>(id);
+
+            return RedirectToAction("Index");
+
+        }
+
         #endregion
 
         #region Add User Modal
