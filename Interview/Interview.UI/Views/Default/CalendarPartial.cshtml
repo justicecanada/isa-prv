@@ -1,10 +1,14 @@
 ﻿@using Interview.Entities
 @using Interview.UI.Models
+@using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
 @{
 
     Contest contest = ViewBag.Contest;
+    List<Contest> contests = ViewBag.Contests;
+
+    string tableData = JsonConvert.SerializeObject(contests);
 
 }
 
@@ -21,6 +25,22 @@
             <a id="userLanguageModal" href="#modalContainer">User Language Modal</a>
             <a id="privacyStatementModal" href="#modalContainer">Privacy Statement Modal</a>
         </div>
+
+        <div class="table-responsive">
+            <table id="tblItems" class="table table-striped" data-tabledata="@tableData">
+                <thead>
+                    <tr>
+                        <th class="tableActionColumn">&nbsp;</th>
+                        <th>NoProcessus</th>
+                        <th>GroupNiv</th>
+                        <th>ContactName</th>
+                        <th>ContactNumber</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+
     </div>   
 </div>
 

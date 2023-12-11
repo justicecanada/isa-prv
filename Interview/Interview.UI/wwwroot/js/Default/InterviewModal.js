@@ -1,6 +1,6 @@
 ﻿var interview = {
 
-    OpenLink: $("#interviewModal")[0],
+    OpenLink: "#interviewModal",
     ModalSelector: "#modalContainer",
     Uri: "/Default/InterviewModal",
     Form: null,
@@ -28,7 +28,7 @@
 
     HookupMagnificPopup: function () {
 
-        $(this.OpenLink).magnificPopup({
+        $(this.OpenLink + ", ." + calendar.EditClass).magnificPopup({
             type: 'inline',
             modal: true,
             callbacks: {
@@ -43,14 +43,32 @@
 
     ElementParse: function (item) {
 
-        $.get(interview.Uri)
-            .done(function (data, textStatus, jqXHR) {
-                $(interview.ModalSelector).html($(data));
-                interview.HookupModalHandlers();
-            })
-            .fail(function (data, textStatus, jqXHR) {
-                $.magnificPopup.close();
-            });
+        if ($(item.el[0]).hasClass(calendar.EditClass)) {
+
+            var id = $(item.el[0]).data().id;
+
+            $.get(interview.Uri + "?id=" + id)
+                .done(function (data, textStatus, jqXHR) {
+                    $("#modalContainer").html($(data));
+                    interview.HookupModalHandlers();
+                })
+                .fail(function (data, textStatus, jqXHR) {
+                    $.magnificPopup.close();
+                });
+
+        }
+        else {
+
+            $.get(interview.Uri)
+                .done(function (data, textStatus, jqXHR) {
+                    $(interview.ModalSelector).html($(data));
+                    interview.HookupModalHandlers();
+                })
+                .fail(function (data, textStatus, jqXHR) {
+                    $.magnificPopup.close();
+                });
+
+        }
 
     },
 

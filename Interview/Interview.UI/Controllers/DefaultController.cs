@@ -149,6 +149,10 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
 
+            WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/jquery-DataTables/datatables.min.css\" />");
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/jquery-DataTables/datatables.min.js\"></script>");
+
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewcalendar.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewmodal.js?v={BuildId}\"></script>");
 
         }
@@ -158,10 +162,18 @@ namespace Interview.UI.Controllers
         #region Interview Modal
 
         [HttpGet]
-        public PartialViewResult InterviewModal()
+        public async Task<PartialViewResult> InterViewModal(Guid? id)
         {
 
-            VmInterview result = new VmInterview();
+            VmInterview result = null;
+
+            if (id == null)
+                result = new VmInterview();
+            else
+            {
+                Interview.Entities.Interview interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id) as Interview.Entities.Interview;
+                result = _mapper.Map<VmInterview>(interview);
+            }
 
             return PartialView(result);
 
