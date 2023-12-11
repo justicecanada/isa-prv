@@ -65,10 +65,7 @@ namespace Interview.UI.Controllers
                 _state.ContestId = contestId;
             }
 
-            ViewBag.Contests = contests;
-            ViewBag.ContestId = contestId;
-            if (contestId != null)
-                await SetIndexViewBag(contests.Where(x => x.Id == contestId).First());
+            await SetIndexViewBag(contests, contestId);
             RegisterIndexClientResources();
             
             return View();
@@ -85,61 +82,75 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexViewBag(Contest contest)
+        private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
         {
 
-            // This method mimics the Entrevue.Default.SetCalendar() method. That method has a few concerns:
-            // 1. Populating dropdowns
-            // 2. Setting the visibility of various form elements
-            // 3. Setting the wording of various form elements
-            // Within an MVC framework, these concerns are handled at the View layer (not the Controller layer).
-            // However, the Controller here will set the items for dropdowns in viewbag.
+            ViewBag.Contests = contests;
+            ViewBag.ContestId = contestId;
 
-            UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-            List<MockUser> mockUsers = new List<MockUser>();
-
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+            if (contestId != null)
             {
-                bool hasAccess = true;
-                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                {
-                    //hasAccess = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id).Any();
-                    // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
-                    // get the list as a variable first. Moving on...
-                    var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-                    hasAccess = groupOwners.Any();
-                }
 
-                if (hasAccess)
+                // This method mimics the Entrevue.Default.SetCalendar() method. That method has a few concerns:
+                // 1. Populating dropdowns
+                // 2. Setting the visibility of various form elements
+                // 3. Setting the wording of various form elements
+                // Within an MVC framework, these concerns are handled at the View layer (not the Controller layer).
+                // However, the Controller here will set the items for dropdowns in viewbag.
+
+                Contest contest = contests.Where(x => x.Id == contestId).First();
+                List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
+                List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+
+                ViewBag.Interviews = vmInterviews;
+
+                UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
+                List<MockUser> mockUsers = new List<MockUser>();
+
+                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
                 {
-                    userSetting = new UserSetting()
+                    bool hasAccess = true;
+                    if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
                     {
-                        ContestId = contest.Id,
-                        RoleType = RoleTypes.Admin,
-                        UserId = (Guid)LoggedInMockUser.Id,
-                        LanguageType = LanguageTypes.Bilingual,
-                        HasAcceptedPrivacyStatement = true
-                    };
-                    await _dal.AddEntity<UserSetting>(userSetting);
+                        //hasAccess = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id).Any();
+                        // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
+                        // get the list as a variable first. Moving on...
+                        var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
+                        hasAccess = groupOwners.Any();
+                    }
+
+                    if (hasAccess)
+                    {
+                        userSetting = new UserSetting()
+                        {
+                            ContestId = contest.Id,
+                            RoleType = RoleTypes.Admin,
+                            UserId = (Guid)LoggedInMockUser.Id,
+                            LanguageType = LanguageTypes.Bilingual,
+                            HasAcceptedPrivacyStatement = true
+                        };
+                        await _dal.AddEntity<UserSetting>(userSetting);
+                    }
                 }
-            }
-
-            // Handle Users by RoleType
-            foreach (UserSetting contestUserSetting in contest.UserSettings)
-                mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
-
-            ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
-            ViewBag.InterviewerUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
-            ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
-
-            // Handle Users as Members?
-            if (userSetting.RoleType == RoleTypes.Assistant)
-            {
-                mockUsers.Clear();
-
-                // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
 
             }
+
+            //// Handle Users by RoleType
+            //foreach (UserSetting contestUserSetting in contest.UserSettings)
+            //    mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
+
+            //ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
+            //ViewBag.InterviewerUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
+            //ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
+
+            //// Handle Users as Members?
+            //if (userSetting.RoleType == RoleTypes.Assistant)
+            //{
+            //    mockUsers.Clear();
+
+            //    // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
+
+            //}
 
         }
 
@@ -190,7 +201,14 @@ namespace Interview.UI.Controllers
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
 
                 interview.ContestId = (Guid)_state.ContestId;
-                await _dal.AddEntity<Interview.Entities.Interview>(interview);
+                if (vmInterview.Id == null)
+                {
+                    vmInterview.Id = await _dal.AddEntity<Interview.Entities.Interview>(interview);
+                }
+                else
+                {
+                    await _dal.UpdateEntity(interview);
+                }
 
                 return new JsonResult(new { result = true, item = vmInterview })
                 {

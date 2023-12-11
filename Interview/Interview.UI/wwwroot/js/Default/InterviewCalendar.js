@@ -42,7 +42,7 @@ var calendar = {
                 },
                 {
                     render: function (data, type, full, meta) {
-                        return data.NoProcessus;
+                        return data.Room;
                     },
                     data: function (row, type, val, meta) {
                         return row;
@@ -50,7 +50,7 @@ var calendar = {
                 },
                 {
                     render: function (data, type, full, meta) {
-                        return data.GroupNiv;
+                        return data.Location;
                     },
                     data: function (row, type, val, meta) {
                         return row;
@@ -76,6 +76,24 @@ var calendar = {
             data: calendar.Data,
             //language: Resources.DataTablesLanguage,
         });
+
+    },
+
+    UpdateTable: function (row) {
+
+        var index = -1;
+
+        $(this.Data).each(function (i) {
+            if (this.Id == row.Id)
+                index = i;
+        });
+
+        if (index === -1)
+            this.Data.push(row);
+        else
+            this.Data[index] = row;
+
+        this.InitTable();
 
     },
 

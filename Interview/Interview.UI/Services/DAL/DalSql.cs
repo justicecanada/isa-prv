@@ -409,6 +409,15 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId)
+        {
+
+            var result = await _context.Interviews.Where(x => x.ContestId == contestId).ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
         #region Mock Identity Methods

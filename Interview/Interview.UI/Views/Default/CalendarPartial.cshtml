@@ -6,9 +6,9 @@
 @{
 
     Contest contest = ViewBag.Contest;
-    List<Contest> contests = ViewBag.Contests;
+    List<VmInterview> interviews = ViewBag.Interviews;
 
-    string tableData = JsonConvert.SerializeObject(contests);
+    string tableData = JsonConvert.SerializeObject(interviews);
 
 }
 
@@ -31,8 +31,8 @@
                 <thead>
                     <tr>
                         <th class="tableActionColumn">&nbsp;</th>
-                        <th>NoProcessus</th>
-                        <th>GroupNiv</th>
+                        <th>Room</th>
+                        <th>Location</th>
                         <th>ContactName</th>
                         <th>ContactNumber</th>
                     </tr>

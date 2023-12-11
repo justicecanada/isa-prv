@@ -44,6 +44,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId);
 
+        Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
+
         #endregion
 
         #region Mock Identity Methods

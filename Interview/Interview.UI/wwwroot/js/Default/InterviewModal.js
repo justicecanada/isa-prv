@@ -103,6 +103,8 @@
 
         if (data.result) {
             $.magnificPopup.close();
+            calendar.UpdateTable(data.item);
+            interview.HookupMagnificPopup();
         }
         else {
             $(interview.ModalSelector).html($(data));
