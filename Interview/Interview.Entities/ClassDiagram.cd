@@ -3,14 +3,14 @@
   <Class Name="Interview.Entities.Contest" Collapsed="true">
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QBAAANAAEAAAgQAAAAggAAAoAGAAAIAAAlAIAUAABEA=</HashCode>
+      <HashCode>ABAAANAAEAAAgQAAAAggAAAoAGAAAIAAAlAIAUAABEE=</HashCode>
       <FileName>Contest.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="EmailTemplates" />
       <Property Name="Interviews" />
-      <Property Name="UserSettings" />
       <Property Name="Schedules" />
+      <Property Name="RoleUsers" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.EmailTemplate" Collapsed="true">
@@ -37,17 +37,17 @@
       <FileName>InterviewUser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Interview.Entities.UserSetting" Collapsed="true">
+  <Class Name="Interview.Entities.RoleUser" Collapsed="true">
     <Position X="5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQIAAAAAAAQAAAAAAAAAAAgIABAgAAAQEAAAAAIAAAA=</HashCode>
-      <FileName>UserSetting.cs</FileName>
+      <HashCode>AAIAAAAAAAQAAAAAAAAAAAgIABggAAAQEAAAAAIAAAA=</HashCode>
+      <FileName>RoleUser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Equity" Collapsed="true">
     <Position X="5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAEAAAAAAACAAAAQAAAAAAAIAAAAAAAAEAAE=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAAACAAAAQAAAAAAAIAAAAAAAAEAAE=</HashCode>
       <FileName>Equity.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -75,17 +75,6 @@
       <FileName>GroupOwner.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Interview.Entities.UserSettingEquity" Collapsed="true">
-    <Position X="5" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAACAAAAAAAA=</HashCode>
-      <FileName>UserSettingEquity.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="UserSetting" />
-      <Property Name="Equity" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Interview.Entities.ContestGroup" Collapsed="true">
     <Position X="7" Y="1.5" Width="1.5" />
     <TypeIdentifier>
@@ -95,6 +84,17 @@
     <ShowAsAssociation>
       <Property Name="Contest" />
       <Property Name="Group" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Interview.Entities.RoleUserEquity" Collapsed="true">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAAACAAAAAAAE=</HashCode>
+      <FileName>RoleUserEquity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RoleUser" />
+      <Property Name="Equity" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
