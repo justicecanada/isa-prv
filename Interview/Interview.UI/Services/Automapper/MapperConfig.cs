@@ -19,20 +19,20 @@ namespace Interview.UI.Services.Automapper
             CreateMap<VmContest, Contest>()
                 .ForMember(d => d.InterviewDuration, opt => opt.ConvertUsing(new IntToTimeSpanConverter()));
 
-            CreateMap<UserSetting, VmUserSetting>();
-            CreateMap<VmUserSetting, UserSetting>();
+            CreateMap<RoleUser, VmRoleUser>();
+            CreateMap<VmRoleUser, RoleUser>();
 
             CreateMap<Schedule, VmSchedule>();
             CreateMap<VmSchedule, Schedule>();
 
-            CreateMap<UserSetting, VmUserSetting>();
-            CreateMap<VmUserSetting, UserSetting>();
+            CreateMap<RoleUser, VmRoleUser>();
+            CreateMap<VmRoleUser, RoleUser>();
 
             CreateMap<Equity, VmEquity>();
             CreateMap<VmEquity, Equity>();
 
-            CreateMap<UserSettingEquity, VmUserSettingEquity>();
-            CreateMap<VmUserSettingEquity, UserSettingEquity>();
+            CreateMap<RoleUserEquity, VmRoleUserEquity>();
+            CreateMap<VmRoleUserEquity, RoleUserEquity>();
 
             CreateMap<Interview.Entities.Interview, VmInterview>();
             CreateMap<VmInterview, Interview.Entities.Interview>()

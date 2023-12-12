@@ -89,12 +89,11 @@ namespace Interview.UI.Models
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview> Interviews { get; set; }
-        //public List<VmUserSetting>? UserSettings { get; set; }
         //public List<Schedule> Schedules { get; set; }
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview.Entities.Interview> Interviews { get; set; }
-        public List<VmUserSetting>? UserSettings { get; set; }
+        public List<VmRoleUser>? RoleUsers { get; set; }
         //public List<Schedule> Schedules { get; set; }
         //public List<Group> Groups { get; set; }
 

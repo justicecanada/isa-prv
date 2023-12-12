@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Interview.Entities
 {
 
-    public class UserSetting : EntityBase
+    public class RoleUser : EntityBase
     {
 
-        public UserSetting()
+        public RoleUser()
         {
-            UserSettingEquities = new List<UserSettingEquity>();
+            RoleUserEquities = new List<RoleUserEquity>();
             Equities = new List<Equity>();
         }
 
@@ -28,7 +28,7 @@ namespace Interview.Entities
 
         // Many to Many
         // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
-        public List<UserSettingEquity> UserSettingEquities { get; set; }
+        public List<RoleUserEquity> RoleUserEquities { get; set; }
         public List<Equity> Equities { get; set; }
 
     }

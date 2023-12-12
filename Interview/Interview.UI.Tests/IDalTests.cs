@@ -187,30 +187,30 @@ namespace Interview.UI.Tests
             Contest contest = (Contest)GetEntity<Contest>();
             contest.Id = await _dal.AddEntity<Contest>(contest);
 
-            UserSetting userSetting1 = (UserSetting)GetEntity<UserSetting>();
-            userSetting1.ContestId = contest.Id;
-            userSetting1.Id = await _dal.AddEntity<UserSetting>(userSetting1);
-            UserSetting userSetting2 = (UserSetting)GetEntity<UserSetting>();
-            userSetting2.ContestId = contest.Id;
-            userSetting2.Id = await _dal.AddEntity<UserSetting>(userSetting2);
+            RoleUser roleUser = (RoleUser)GetEntity<RoleUser>();
+            roleUser.ContestId = contest.Id;
+            roleUser.Id = await _dal.AddEntity<RoleUser>(roleUser);
+            RoleUser roleUser2 = (RoleUser)GetEntity<RoleUser>();
+            roleUser2.ContestId = contest.Id;
+            roleUser2.Id = await _dal.AddEntity<RoleUser>(roleUser2);
 
             Equity equity1 = (Equity)GetEntity<Equity>();
             equity1.Id = await _dal.AddEntity<Equity>(equity1);
             Equity equity2 = (Equity)GetEntity<Equity>();
             equity2.Id = await _dal.AddEntity<Equity>(equity2);
 
-            UserSettingEquity userSettingEquity1 = new UserSettingEquity() { UserSettingId = userSetting1.Id, EquityId = equity1.Id };
-            await _dal.AddEntity<UserSettingEquity>(userSettingEquity1);
-            UserSettingEquity userSettingEquity2 = new UserSettingEquity() { UserSettingId = userSetting1.Id, EquityId = equity2.Id };
-            await _dal.AddEntity<UserSettingEquity>(userSettingEquity2);
-            UserSettingEquity userSettingEquity3 = new UserSettingEquity() { UserSettingId = userSetting2.Id, EquityId = equity1.Id };
-            await _dal.AddEntity<UserSettingEquity>(userSettingEquity3);
-            UserSettingEquity userSettingEquity4 = new UserSettingEquity() { UserSettingId = userSetting2.Id, EquityId = equity2.Id };
-            await _dal.AddEntity<UserSettingEquity>(userSettingEquity4);
+            RoleUserEquity roleUserEquity1 = new RoleUserEquity() { RoleUserId = roleUser.Id, EquityId = equity1.Id };
+            await _dal.AddEntity<RoleUserEquity>(roleUserEquity1);
+            RoleUserEquity roleUserEquity2 = new RoleUserEquity() { RoleUserId = roleUser.Id, EquityId = equity2.Id };
+            await _dal.AddEntity<RoleUserEquity>(roleUserEquity2);
+            RoleUserEquity roleUserEquity3 = new RoleUserEquity() { RoleUserId = roleUser2.Id, EquityId = equity1.Id };
+            await _dal.AddEntity<RoleUserEquity>(roleUserEquity3);
+            RoleUserEquity roleUserEquity4 = new RoleUserEquity() { RoleUserId = roleUser2.Id, EquityId = equity2.Id };
+            await _dal.AddEntity<RoleUserEquity>(roleUserEquity4);
 
-            List<UserSetting> getUserSetting = await _dal.GetUserSettingsByContestId(contest.Id);
-            foreach (var userSetting in getUserSetting)
-                Assert.IsTrue(userSetting.UserSettingEquities.Count == 2);
+            List<RoleUser> getRoleUsers = await _dal.GetRoleUsersByContestId(contest.Id);
+            foreach (var getRoleUser in getRoleUsers)
+                Assert.IsTrue(getRoleUser.RoleUserEquities.Count == 2);
 
             await _dal.DeleteEntity(equity1);
             await _dal.DeleteEntity(equity2);

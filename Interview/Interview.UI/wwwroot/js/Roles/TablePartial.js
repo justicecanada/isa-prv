@@ -4,7 +4,7 @@
 
 var table = {
 
-    Table: $("#userSettings")[0],
+    Table: $("#roleUsers")[0],
     EditForm: $("#editForm")[0],
     ASubmit: $("#aSubmit")[0],
 

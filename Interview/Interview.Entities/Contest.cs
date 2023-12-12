@@ -8,7 +8,7 @@
         {
             EmailTemplates = new List<EmailTemplate>();
             Interviews = new List<Interview>();
-            UserSettings = new List<UserSetting>();
+            RoleUsers = new List<RoleUser>();
             Schedules = new List<Schedule>();
             ContestGroups = new List<ContestGroup>();
             Groups = new List<Group>();
@@ -37,7 +37,7 @@
 
         public List<EmailTemplate> EmailTemplates { get; set; }
         public List<Interview> Interviews { get; set; }
-        public List<UserSetting> UserSettings { get; set; }
+        public List<RoleUser> RoleUsers { get; set; }
         public List<Schedule> Schedules { get; set; }
         public List<ContestGroup> ContestGroups { get; set;  }
         public List<Group> Groups { get; set; }

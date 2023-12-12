@@ -5,11 +5,11 @@
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    UserSetting userSetting = ViewBag.UserSetting;
+    RoleUser roleUser = ViewBag.RoleUser;
 
-    string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
-    string roleName = localizer[userSetting.RoleType.ToString()].Value;
-    string language = userSetting.LanguageType == null ? null : localizer[userSetting.LanguageType.ToString()].Value;
+    string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
+    string roleName = localizer[roleUser.RoleType.ToString()].Value;
+    string language = roleUser.LanguageType == null ? null : localizer[roleUser.LanguageType.ToString()].Value;
     bool showEquities = ViewBag.ShowEquities;
     string equities = "";
 
@@ -17,10 +17,10 @@
     {
         StringBuilder sb = new StringBuilder();
 
-        foreach (var userSettingEquity in userSetting.UserSettingEquities)
+        foreach (var roleUserEquity in roleUser.RoleUserEquities)
         {
-            sb.Append(cultureName == Constants.EnglishCulture ? userSettingEquity.Equity.NameEN : userSettingEquity.Equity.NameFR);
-            if (userSettingEquity != userSetting.UserSettingEquities.Last())
+            sb.Append(cultureName == Constants.EnglishCulture ? roleUserEquity.Equity.NameEN : roleUserEquity.Equity.NameFR);
+            if (roleUserEquity != roleUser.RoleUserEquities.Last())
                 sb.Append(", ");
         }
 
@@ -40,10 +40,10 @@
         <td>@equities</td>
     }
     <td>
-        <a href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = userSetting.Id } )">
+        <a href="@Url.Action("UpdateRoleUser", "Roles", new { roleUserId = roleUser.Id } )">
             <span class="glyphicon glyphicon-edit text-info"></span>
         </a>
-        <a href="@Url.Action("DeleteUserSetting", "Roles", new { userSettingsId = userSetting.Id } )">
+        <a href="@Url.Action("DeleteRoleUser", "Roles", new { roleUserId = roleUser.Id } )">
             <span class="glyphicon glyphicon-trash text-danger"></span>
         </a>
 

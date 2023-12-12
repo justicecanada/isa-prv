@@ -8,8 +8,8 @@ namespace Interview.UI.Models
 
         public VmEquity()
         {
-            EmailTemplateEquities = new List<VmUserSettingEquity>();
-            UserSettings = new List<VmUserSetting>();
+            EmailTemplateEquities = new List<VmRoleUserEquity>();
+            RoleUsers = new List<VmRoleUser>();
         }
 
         public string? Name { get; set; }
@@ -20,8 +20,8 @@ namespace Interview.UI.Models
 
         // Many to Many
         // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
-        public List<VmUserSettingEquity> EmailTemplateEquities { get; set; }
-        public List<VmUserSetting> UserSettings { get; set; }
+        public List<VmRoleUserEquity> EmailTemplateEquities { get; set; }
+        public List<VmRoleUser> RoleUsers { get; set; }
 
         public bool IsSelected { get; set;  }
 

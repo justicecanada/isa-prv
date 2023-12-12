@@ -50,8 +50,8 @@ function loadCalendar() {
             url: 'FullCalender.asmx/GetCalendarEvents',
             data: {
                 concoursId: '<%=Contest.concoursId%>',
-                userId: '<%=(UserSetting.roleId == (int)Entrevue.Models.RoleEnum.ASSISTANT && usager.AdjointeDe.Count > 0) ? usager.AdjointeDe.Keys.ToListeSepareeParDelimiteur(x => x.ToString(), ";").TrimStart('; '): usager.usagerGUID.ToString() %>',
-                roleId: '<%=UserSetting.roleId%>'
+                userId: '<%=(RoleUser.roleId == (int)Entrevue.Models.RoleEnum.ASSISTANT && usager.AdjointeDe.Count > 0) ? usager.AdjointeDe.Keys.ToListeSepareeParDelimiteur(x => x.ToString(), ";").TrimStart('; '): usager.usagerGUID.ToString() %>',
+                roleId: '<%=RoleUser.roleId%>'
             }
         },
         loading: function (isLoading, view) {
@@ -505,7 +505,7 @@ function loadCalendar() {
 //$('#btnAddUserLanguage').click(function (e) {
 
 //    var dataRow = {
-//        'UserSettingId': '<%=UserSetting.userSettingId.ToString()%>',
+//        'RoleUserId': '<%=RoleUser.userSettingId.ToString()%>',
 //        'UserLanguageId': $('#ddlUserLanguage').val()
 //    }
 
@@ -591,7 +591,7 @@ function loadCalendar() {
 //$('#btnAcceptPrivacyStatement').click(function (e) {
 
 //    var dataRow = {
-//        'UserSettingId': '<%=UserSetting.userSettingId.ToString()%>',
+//        'RoleUserId': '<%=RoleUser.userSettingId.ToString()%>',
 //    }
 
 //    $.ajax({

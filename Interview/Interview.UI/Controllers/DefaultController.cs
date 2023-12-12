@@ -50,7 +50,7 @@ namespace Interview.UI.Controllers
             else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
                 contests = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
             else
-                contests = await _dal.GetContestsForUserSettingsUser((Guid)LoggedInMockUser.Id);
+                contests = await _dal.GetContestsForRoleUser((Guid)LoggedInMockUser.Id);
             contests.OrderByDescending(x => x.CreatedDate);
 
             if (contests.Any())
@@ -195,7 +195,7 @@ namespace Interview.UI.Controllers
         {
 
             Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
-            UserSetting userSetting = await _dal.GetUserSettingByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
+            RoleUser roleUser = await _dal.GetRoleUsersByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
             List<MockUser> mockUsers = new List<MockUser>();
 
             if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
@@ -212,7 +212,7 @@ namespace Interview.UI.Controllers
 
                 if (hasAccess)
                 {
-                    userSetting = new UserSetting()
+                    roleUser = new RoleUser()
                     {
                         ContestId = contest.Id,
                         RoleType = RoleTypes.Admin,
@@ -220,12 +220,12 @@ namespace Interview.UI.Controllers
                         LanguageType = LanguageTypes.Bilingual,
                         HasAcceptedPrivacyStatement = true
                     };
-                    await _dal.AddEntity<UserSetting>(userSetting);
+                    await _dal.AddEntity<RoleUser>(roleUser);
                 }
             }
 
             // Handle Users by RoleType
-            foreach (UserSetting contestUserSetting in contest.UserSettings)
+            foreach (RoleUser contestUserSetting in contest.RoleUsers)
                 mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
 
             ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
@@ -233,7 +233,7 @@ namespace Interview.UI.Controllers
             ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
 
             // Handle Users as Members?
-            if (userSetting.RoleType == RoleTypes.Assistant)
+            if (roleUser.RoleType == RoleTypes.Assistant)
             {
                 mockUsers.Clear();
 

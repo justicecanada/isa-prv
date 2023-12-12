@@ -24,9 +24,9 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetContestsForGroupOwner(Guid userId);
 
-        Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId);
+        Task<List<Contest>> GetContestsForRoleUser(Guid userId);
 
-        Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
+        Task<List<Contest>> GetAllContestsWithUserRoles();
 
         Task<List<Group>> GetGroups(Guid? userId = null);
 
@@ -38,11 +38,11 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Equity>> GetAllEquities();
 
-        Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId);
+        Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId);
 
-        Task<UserSetting> GetUserSettingByContestIdAndUserId(Guid contestId, Guid userId);
+        Task<RoleUser> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId);
 
-        Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId);
+        Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
         Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
 
