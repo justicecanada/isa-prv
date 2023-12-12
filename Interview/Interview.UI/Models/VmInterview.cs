@@ -43,11 +43,11 @@ namespace Interview.UI.Models
         [MaxLength(128, ErrorMessage = "MaxLength")]
         public string? ContactNumber { get; set; }
 
-        public RoleTypes VmRoleType { get; set; }
+        public RoleTypes? VmRoleType { get; set; }
 
         public Guid? VmUserId { get; set;  }
 
-        public List<VmInterviewUser> InterviewUsers { get; set; }
+        public List<VmInterviewUser>? InterviewUsers { get; set; }
 
     }
     
