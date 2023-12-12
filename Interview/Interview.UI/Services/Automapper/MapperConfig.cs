@@ -34,7 +34,9 @@ namespace Interview.UI.Services.Automapper
             CreateMap<RoleUserEquity, VmRoleUserEquity>();
             CreateMap<VmRoleUserEquity, RoleUserEquity>();
 
-            CreateMap<Interview.Entities.Interview, VmInterview>();
+            CreateMap<Interview.Entities.Interview, VmInterview>()
+                .ForMember(x => x.VmStartDate, opt => opt.MapFrom<DateTimeOffsetToDateTime>())
+                .ForMember(x => x.VmStartTime, opt => opt.MapFrom<DateTimeOffSetToTimeSpan>());
             CreateMap<VmInterview, Interview.Entities.Interview>()
                 .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffset>());
 

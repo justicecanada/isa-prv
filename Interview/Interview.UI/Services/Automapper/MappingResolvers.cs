@@ -50,7 +50,7 @@ namespace Interview.UI.Services.Automapper
             if (source.VmStartDate != null)
             {
                 TimeSpan startTime = source.VmStartTime == null ? TimeSpan.Parse("00:00:00") : (TimeSpan)source.VmStartTime;
-                string input = $"{((DateTime)source.VmStartDate).ToString("dd/MM/yyyy")} {startTime.ToString()}";
+                string input = $"{((DateTime)source.VmStartDate.Value.Date).ToString("MM/dd/yyyy")} {startTime.ToString()}";
 
                 result = DateTimeOffset.Parse(input);
             }
@@ -61,4 +61,37 @@ namespace Interview.UI.Services.Automapper
         }
     }
 
+    public class DateTimeOffsetToDateTime : IValueResolver<Interview.Entities.Interview, VmInterview, DateTime?>
+    {
+        
+        public DateTime? Resolve(Entities.Interview source, VmInterview destination, DateTime? destMember, ResolutionContext context)
+        {
+
+            DateTime? result = null;
+
+            if (source.StartDate != null)
+                result = source.StartDate.Value.Date;
+
+            return result;
+
+        }
+
+    }
+
+    public class DateTimeOffSetToTimeSpan : IValueResolver<Interview.Entities.Interview, VmInterview, TimeSpan?>
+    {
+        
+        public TimeSpan? Resolve(Entities.Interview source, VmInterview destination, TimeSpan? destMember, ResolutionContext context)
+        {
+
+            TimeSpan? result = null;
+
+            if (source.StartDate != null)
+                result = source.StartDate.Value.TimeOfDay;
+
+            return result;
+
+        }
+
+    }
 }
