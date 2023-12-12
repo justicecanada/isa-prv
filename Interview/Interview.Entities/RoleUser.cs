@@ -25,6 +25,10 @@ namespace Interview.Entities
         public LanguageTypes? LanguageType { get; set; }
         public DateTime DateInserted { get; set; }
         public bool HasAcceptedPrivacyStatement { get; set; }
+
+        // Many to Many
+        // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
+        public List<RoleUserEquity> RoleUserEquities { get; set; }
         public List<Equity> Equities { get; set; }
 
     }
