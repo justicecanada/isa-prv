@@ -320,29 +320,5 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region User Language Modal
-
-        [HttpGet]
-        public async Task<PartialViewResult> UserLanguageModal()
-        {
-
-            return null;
-
-        }
-
-        #endregion
-
-        #region Privacy Statement Modal
-
-        [HttpGet]
-        public async Task<PartialViewResult> PrivacyStatementModal()
-        {
-
-            return null;
-
-        }
-
-        #endregion
-
     }
 }

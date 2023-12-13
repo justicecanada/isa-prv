@@ -20,10 +20,7 @@
             <div class="text-info">Placeholder for Calendar - has a dependency on Roles</div>
         </div>
         <div class="row">
-            <a id="interviewModal" href="#modalContainer">Interview Modal</a>
-            <a id="addUserModal" href="#modalContainer">Add User Modal</a>
-            <a id="userLanguageModal" href="#modalContainer">User Language Modal</a>
-            <a id="privacyStatementModal" href="#modalContainer">Privacy Statement Modal</a>
+            <a id="interviewModal" href="#modalContainer">Add Interview</a>
         </div>
 
         <div class="table-responsive">
@@ -47,23 +44,3 @@
 @{
     await Html.RenderPartialAsync("ModalContainer");
 }
-
-@*<link rel="stylesheet" href="~/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css" />
-<script src="~/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>*@
-
-@*<script src="~/js/default/interviewmodal.js" asp-append-version="true"></script>*@
-<script src="~/js/default/addusermodal.js" asp-append-version="true"></script>
-<script src="~/js/default/userlanguagemodal.js" asp-append-version="true"></script>
-<script src="~/js/default/privacystatementmodal.js" asp-append-version="true"></script>
-
-@* Calendar itself
-<link href="~/lib/calendar/fullcalendar.min.css" rel="stylesheet" />
-<link href="~/lib/calendar/fullcalendar.print.min.css" rel="stylesheet" />
-<script src="~/lib/calendar/jquery.qtip.min.js"></script>
-
-<script src="~/lib/calendar/moment.min.js"></script>
-<script src="~/lib/calendar/fullcalendar.min.js"></script>
-<script src="~/lib/calendar/locale-all.js"></script>
-<script src="~/lib/calendar/jquery.qtip.min.js"></script>
-
-<script src="~/js/default/calendarpartial.js" asp-append-version="true"></script>*@
