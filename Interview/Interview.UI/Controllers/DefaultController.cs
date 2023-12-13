@@ -123,6 +123,7 @@ namespace Interview.UI.Controllers
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewcalendar.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewmodal.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewusersmodal.js?v={BuildId}\"></script>");
 
         }
 
@@ -188,33 +189,6 @@ namespace Interview.UI.Controllers
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddInterviewMember(VmInterviewerUserIds vmInterviewUserIds)
-        {
-
-            if (vmInterviewUserIds.RoleType != null)
-            {
-
-                List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(vmInterviewUserIds.InterviewId);
-                InterviewUser? dbInterviewUser = dbInterviewUsers.Where(x => x.RoleType == vmInterviewUserIds.RoleType).FirstOrDefault();
-
-                if (vmInterviewUserIds.RoleType == RoleTypes.Candidate)
-                    await ResolveInterviewUser(dbInterviewUser, vmInterviewUserIds.CandidateUserId, (RoleTypes)vmInterviewUserIds.RoleType, vmInterviewUserIds.InterviewId);
-                else if (vmInterviewUserIds.RoleType == RoleTypes.Interviewer)
-                    await ResolveInterviewUser(dbInterviewUser, vmInterviewUserIds.InterviewerUserId, (RoleTypes)vmInterviewUserIds.RoleType, vmInterviewUserIds.InterviewId);
-                else if (vmInterviewUserIds.RoleType == RoleTypes.Lead)
-                    await ResolveInterviewUser(dbInterviewUser, vmInterviewUserIds.InterviewerLeadUserId, (RoleTypes)vmInterviewUserIds.RoleType, vmInterviewUserIds.InterviewId);
-
-            }
-
-            return new JsonResult(new { result = true})
-            {
-                StatusCode = 200
-            };
-
-        }
-
         [HttpGet]
         public async Task<ActionResult> InterviewDelete(Guid id)
         {
@@ -222,6 +196,46 @@ namespace Interview.UI.Controllers
             await _dal.DeleteEntity<Interview.Entities.Interview>(id);
 
             return RedirectToAction("Index");
+
+        }
+
+        #endregion
+
+        #region Interview Users Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> InterviewUsersModal(Guid interviewId)
+        {
+
+            VmInterviewerUserIds result = new VmInterviewerUserIds();
+            List<InterviewUser> interviewUsers = await _dal.GetInterviewUsersByInterviewId(interviewId);
+
+            result.InterviewerUserId = interviewId;
+            result.CandidateUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
+            result.InterviewerUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
+            result.InterviewerLeadUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
+
+            await SetInterviewUserViewBag();
+
+            return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> InterviewUsersModal(VmInterviewerUserIds vmInterviewUserIds)
+        {
+
+            List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(vmInterviewUserIds.InterviewId);
+
+            await ResolveInterviewUser(vmInterviewUserIds.CandidateUserId, dbInterviewUsers, RoleTypes.Candidate, vmInterviewUserIds.InterviewId);
+            await ResolveInterviewUser(vmInterviewUserIds.InterviewerUserId, dbInterviewUsers, RoleTypes.Interviewer, vmInterviewUserIds.InterviewId);
+            await ResolveInterviewUser(vmInterviewUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleTypes.Lead, vmInterviewUserIds.InterviewId);
+
+            return new JsonResult(new { result = true })
+            {
+                StatusCode = 200
+            };
 
         }
 
@@ -277,44 +291,39 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task ResolveInterviewUser(InterviewUser? dbInterviewUser, Guid? userId, RoleTypes roleType, Guid interviewId)
+        private async Task ResolveInterviewUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleTypes roleType, Guid interviewId)
         {
 
-            if (userId != null)
-            {
+            InterviewUser dbInterviewUser = dbInterviewUsers.Where(x => x.RoleType == roleType).FirstOrDefault();
 
+            if (dbInterviewUser == null && postedUserId != null)
+            {
+                // Add
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
-                    UserId = (Guid)userId,
+                    UserId = (Guid)postedUserId,
                     RoleType = roleType,
                     InterviewId = interviewId
                 };
-
-                if (dbInterviewUser == null)
-                {
-                    // Add                    
-                    await _dal.AddEntity<InterviewUser>(newInterviewUser);
-                }
-                else if (dbInterviewUser.Id != userId)
-                {
-                    // Update
-                    await _dal.DeleteEntity(dbInterviewUser);
-                    await _dal.AddEntity<InterviewUser>(newInterviewUser);
-                }
-
+                await _dal.AddEntity<InterviewUser>(newInterviewUser);
             }
-
-        }
-
-        #endregion
-
-        #region Interview Users Modal
-
-        [HttpGet]
-        public async Task<PartialViewResult> InterviewUsersModal(Guid interviewId)
-        {
-
-            return null;
+            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.Id != postedUserId))
+            {
+                // Update
+                InterviewUser newInterviewUser = new InterviewUser()
+                {
+                    UserId = (Guid)postedUserId,
+                    RoleType = roleType,
+                    InterviewId = interviewId
+                };
+                await _dal.DeleteEntity(dbInterviewUser);
+                await _dal.AddEntity<InterviewUser>(newInterviewUser);
+            }
+            else if (dbInterviewUser != null && postedUserId == null)
+            {
+                // Delete
+                await _dal.DeleteEntity(dbInterviewUser);
+            }
 
         }
 

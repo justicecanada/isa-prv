@@ -10,7 +10,6 @@
     Init: function () {
 
         this.HookupMagnificPopup();
-        this.Users.Init();
 
     },
 
@@ -24,8 +23,6 @@
             e.preventDefault();
             $.magnificPopup.instance.close();
         });
-
-        this.Users.HookupModalHandlers();
 
     },
 
@@ -119,66 +116,6 @@
     PostFail: function (e) {
         $.magnificPopup.close();
     },
-
-    Users: {
-
-        RblRolesSelector: "[name='RoleType']",
-        BtnAddUserButoonSelector: "#btnAddMember",
-        Form: null,
-        Uri: "/Default/AddInterviewMember",
-
-        Init: function () {
-    
-
-        },
-
-        HookupModalHandlers: function () {
-
-            this.Form = $("#userForm")[0];
-
-            $(this.RblRolesSelector).change(function () {
-
-                var val = $(this).val();
-
-                $(".interviewerRole").hide();
-
-                if (val === '5')
-                    $("#candidateUsers").show();
-                else if (val === '2')
-                    $("#interviewerUsers").show();
-                else if (val === '3')
-                    $("#leadUsers").show();
-
-            });
-
-            $(this.BtnAddUserButoonSelector).on("click", interview.Users.Post);
-
-        },
-
-        Post: function (e) {
-
-            e.preventDefault();
-            var formData = $(interview.Users.Form).serialize();
-
-            $.ajax({
-                type: "POST",
-                url: interview.Users.Uri,
-                data: formData,
-                success: interview.Users.PostSuccess,
-                fail: interview.Users.PostFail
-            });
-
-        },
-
-        PostSuccess: function (data) {
-            $.magnificPopup.close();
-        },
-
-        PostFail: function (e) {
-            $.magnificPopup.close();
-        },
-
-    }
 
 }
 

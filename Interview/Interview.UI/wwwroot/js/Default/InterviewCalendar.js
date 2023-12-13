@@ -32,7 +32,7 @@ var calendar = {
                         var result;
 
                         result = "<span class='mrgn-rght-sm'><a data-id=" + data.Id + " href='#modalContainer' class='" + calendar.EditClass + "'>Edit</a></span>";
-                        result = result + "<span><a data-id=" + data.id + " href='#modalContainer' class='" + calendar.UsersClass + "'>Users</a></span>";
+                        result = result + "<span><a data-id=" + data.Id + " href='#modalContainer' class='" + calendar.UsersClass + "'>Users</a></span>";
 
                         return result;
 
