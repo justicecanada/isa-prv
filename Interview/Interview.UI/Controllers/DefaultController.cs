@@ -3,6 +3,7 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Default;
 using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
@@ -144,6 +145,8 @@ namespace Interview.UI.Controllers
                 await SetInterviewUserViewBag();
             }
 
+            result.VmInterviewerUserIds.InterviewId = (Guid)id;
+
             return PartialView(result);
 
         }
@@ -181,6 +184,15 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddInterviewMember(VmInterviewerUserIds vmInterviewUserIds)
+        {
+
+            return null;
+
+        }
+
         [HttpGet]
         public async Task<ActionResult> InterviewDelete(Guid id)
         {
@@ -195,8 +207,8 @@ namespace Interview.UI.Controllers
         {
 
             Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
-            RoleUser roleUser = await _dal.GetRoleUsersByContestIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-            List<MockUser> mockUsers = new List<MockUser>();
+            List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId(contest.Id);
+            //List<MockUser> mockUsers = new List<MockUser>();
 
             if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
             {
@@ -210,36 +222,36 @@ namespace Interview.UI.Controllers
                     hasAccess = groupOwners.Any();
                 }
 
-                if (hasAccess)
-                {
-                    roleUser = new RoleUser()
-                    {
-                        ContestId = contest.Id,
-                        RoleType = RoleTypes.Admin,
-                        UserId = (Guid)LoggedInMockUser.Id,
-                        LanguageType = LanguageTypes.Bilingual,
-                        HasAcceptedPrivacyStatement = true
-                    };
-                    await _dal.AddEntity<RoleUser>(roleUser);
-                }
+                //if (hasAccess)
+                //{
+                //    roleUser = new RoleUser()
+                //    {
+                //        ContestId = contest.Id,
+                //        RoleType = RoleTypes.Admin,
+                //        UserId = (Guid)LoggedInMockUser.Id,
+                //        LanguageType = LanguageTypes.Bilingual,
+                //        HasAcceptedPrivacyStatement = true
+                //    };
+                //    await _dal.AddEntity<RoleUser>(roleUser);
+                //}
             }
 
             // Handle Users by RoleType
-            foreach (RoleUser contestUserSetting in contest.RoleUsers)
-                mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
+            //foreach (RoleUser contestUserSetting in contest.RoleUsers)
+            //    mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
 
-            ViewBag.CandidateUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
-            ViewBag.InterviewerUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
-            ViewBag.LeadUsers = mockUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
+            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
+            ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
+            ViewBag.LeadUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
 
             // Handle Users as Members?
-            if (roleUser.RoleType == RoleTypes.Assistant)
-            {
-                mockUsers.Clear();
+            //if (roleUser.RoleType == RoleTypes.Assistant)
+            //{
+            //    mockUsers.Clear();
 
-                // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
+            //    // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
 
-            }
+            //}
 
         }
 

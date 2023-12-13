@@ -388,17 +388,17 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<RoleUser?> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId)
-        {
+        //public async Task<RoleUser?> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId)
+        //{
 
-            var result = await _context.RoleUsers.Where(x => (x.ContestId == contestId && x.UserId == userId))
-                .Include(x => x.RoleUserEquities)
-                .ThenInclude(x => x.Equity)
-                .FirstOrDefaultAsync();
+        //    var result = await _context.RoleUsers.Where(x => (x.ContestId == contestId && x.UserId == userId))
+        //        .Include(x => x.RoleUserEquities)
+        //        .ThenInclude(x => x.Equity)
+        //        .FirstOrDefaultAsync();
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         public async Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId)
         {

@@ -1,4 +1,5 @@
 ﻿using Interview.Entities;
+using Interview.UI.Models.Default;
 using System.ComponentModel.DataAnnotations;
 
 namespace Interview.UI.Models
@@ -10,6 +11,7 @@ namespace Interview.UI.Models
         public VmInterview()
         {
             //InterviewUsers = new List<VmInterviewUser>();
+            VmInterviewerUserIds = new VmInterviewerUserIds();
         }
 
         public Guid ContestId { get; set; }
@@ -43,12 +45,10 @@ namespace Interview.UI.Models
         [MaxLength(128, ErrorMessage = "MaxLength")]
         public string? ContactNumber { get; set; }
 
-        public RoleTypes? VmRoleType { get; set; }
+        //public List<VmInterviewUser>? InterviewUsers { get; set; }
 
-        public Guid? VmUserId { get; set;  }
-
-        public List<VmInterviewUser>? InterviewUsers { get; set; }
+        public VmInterviewerUserIds? VmInterviewerUserIds { get; set; }
 
     }
-    
+
 }

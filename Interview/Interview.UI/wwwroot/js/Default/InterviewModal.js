@@ -6,7 +6,7 @@
     Form: null,
     SubmitButtonSelector: "#btnInterviewSave",
     CancelButtonSelector: "#btnInterviewClose",
-    RblRolesSelector: "[name='VmRoleType']",
+    RblRolesSelector: "[name='RoleType']",
 
     Init: function () {
 

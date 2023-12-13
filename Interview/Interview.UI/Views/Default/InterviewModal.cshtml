@@ -18,18 +18,18 @@
 
 <div class="modal-body">
 
-    <form id="interviewForm">
+    <div class="row">
+        <div class="col-md-6">
 
-        @{
-            await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
-        }
+            <form id="interviewForm" action="@Url.Action("InterviewModal", "Default")" method="post">
 
-        @Html.AntiForgeryToken()
+                @{
+                    await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
+                }
 
-        @Html.HiddenFor(x => x.Id)
+                @Html.AntiForgeryToken()
 
-        <div class="row">
-            <div class="col-md-6">
+                @Html.HiddenFor(x => x.Id)
 
                 @Html.EditorFor(x => x.Location, "Question", new { inputControl = Html.TextBoxFor(x => x.Location, new { @class = "form-control" }) })
 
@@ -45,28 +45,28 @@
 
                 @Html.EditorFor(x => x.ContactNumber, "Question", new { inputControl = Html.TextBoxFor(x => x.ContactNumber, new { @class = "form-control" }) })
 
-            </div>
-            <div class="col-md-6">
-                
-                @if (Model.Id != null)
-                {
+                <div class="modal-footer">
+                    <button id="btnInterviewClose" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Close"]</button>
+                    <input id="btnInterviewSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" formaction="/Default/InterviewModal" />
+                    @if (Model.Id != null)
+                    {
+                        @Html.ActionLink(localizer["Delete"].Value, "InterviewDelete", "Default", new { Id = Model.Id }, new { @class = "btn btn-danger" })
+                    }
+                </div>
 
-                    await Html.RenderPartialAsync("InterviewUserPartial", Model);
+            </form>
 
-                }
-
-            </div>
         </div>
 
-        <div class="modal-footer">
-            <button id="btnInterviewClose" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Close"]</button>
-            <input id="btnInterviewSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" />    
+        <div class="col-md-6">
+
             @if (Model.Id != null)
             {
-                @Html.ActionLink(localizer["Delete"].Value, "InterviewDelete", "Default", new { Id = Model.Id }, new { @class = "btn btn-danger" })
+                await Html.RenderPartialAsync("InterviewUserPartial", Model.VmInterviewerUserIds);
             }
+
         </div>
 
-    </form>
-
+    </div>
+ 
 </div>

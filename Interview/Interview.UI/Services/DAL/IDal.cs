@@ -40,7 +40,7 @@ namespace Interview.UI.Services.DAL
 
         Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId);
 
-        Task<RoleUser> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId);
+        //Task<RoleUser> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId);
 
         Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
