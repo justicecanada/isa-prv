@@ -5,6 +5,7 @@ var calendar = {
     Table: null,
     TableSelector: "#tblItems",
     EditClass: "aEdit",
+    UsersClass: "aUser",
 
     Init: function () {
 
@@ -30,8 +31,8 @@ var calendar = {
 
                         var result;
 
-                        result = "<span class='mr-2'><a data-id=" + data.Id + " href='#modalContainer' class='" + calendar.EditClass + "'>Edit</a></span>";
-                        //result = "<span><a data-id=" + data.id + " href='#' class='" + ref.Table.DeleteClass + "'>Delete</a></span>";
+                        result = "<span><a data-id=" + data.Id + " href='#modalContainer' class='" + calendar.EditClass + "'>Edit</a></span>";
+                        result = result + "<span><a data-id=" + data.id + " href='#modalContainer' class='" + calendar.UsersClass + "'>Users</a></span>";
 
                         return result;
 

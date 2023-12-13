@@ -308,10 +308,10 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Add User Modal
+        #region Interview Users Modal
 
         [HttpGet]
-        public async Task<PartialViewResult> AddUserModal()
+        public async Task<PartialViewResult> InterviewUsersModal(Guid interviewId)
         {
 
             return null;
