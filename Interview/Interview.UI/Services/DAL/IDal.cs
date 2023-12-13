@@ -46,6 +46,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
 
+        Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
+        
         #endregion
 
         #region Mock Identity Methods

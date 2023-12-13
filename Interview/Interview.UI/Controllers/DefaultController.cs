@@ -140,12 +140,16 @@ namespace Interview.UI.Controllers
                 result = new VmInterview();
             else
             {
-                Interview.Entities.Interview interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id) as Interview.Entities.Interview;
+                Interview.Entities.Interview interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
+                
                 result = _mapper.Map<VmInterview>(interview);
+                result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
+                result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
+                result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
+                result.VmInterviewerUserIds.InterviewId = (Guid)id;
+
                 await SetInterviewUserViewBag();
             }
-
-            result.VmInterviewerUserIds.InterviewId = (Guid)id;
 
             return PartialView(result);
 
@@ -185,11 +189,29 @@ namespace Interview.UI.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddInterviewMember(VmInterviewerUserIds vmInterviewUserIds)
         {
 
-            return null;
+            if (vmInterviewUserIds.RoleType != null)
+            {
+
+                List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(vmInterviewUserIds.InterviewId);
+                InterviewUser? dbInterviewUser = dbInterviewUsers.Where(x => x.RoleType == vmInterviewUserIds.RoleType).FirstOrDefault();
+
+                if (vmInterviewUserIds.RoleType == RoleTypes.Candidate)
+                    await ResolveInterviewUser(dbInterviewUser, vmInterviewUserIds.CandidateUserId, (RoleTypes)vmInterviewUserIds.RoleType, vmInterviewUserIds.InterviewId);
+                else if (vmInterviewUserIds.RoleType == RoleTypes.Interviewer)
+                    await ResolveInterviewUser(dbInterviewUser, vmInterviewUserIds.InterviewerUserId, (RoleTypes)vmInterviewUserIds.RoleType, vmInterviewUserIds.InterviewId);
+                else if (vmInterviewUserIds.RoleType == RoleTypes.Lead)
+                    await ResolveInterviewUser(dbInterviewUser, vmInterviewUserIds.InterviewerLeadUserId, (RoleTypes)vmInterviewUserIds.RoleType, vmInterviewUserIds.InterviewId);
+
+            }
+
+            return new JsonResult(new { result = true})
+            {
+                StatusCode = 200
+            };
 
         }
 
@@ -252,6 +274,35 @@ namespace Interview.UI.Controllers
             //    // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
 
             //}
+
+        }
+
+        private async Task ResolveInterviewUser(InterviewUser? dbInterviewUser, Guid? userId, RoleTypes roleType, Guid interviewId)
+        {
+
+            if (userId != null)
+            {
+
+                InterviewUser newInterviewUser = new InterviewUser()
+                {
+                    UserId = (Guid)userId,
+                    RoleType = roleType,
+                    InterviewId = interviewId
+                };
+
+                if (dbInterviewUser == null)
+                {
+                    // Add                    
+                    await _dal.AddEntity<InterviewUser>(newInterviewUser);
+                }
+                else if (dbInterviewUser.Id != userId)
+                {
+                    // Update
+                    await _dal.DeleteEntity(dbInterviewUser);
+                    await _dal.AddEntity<InterviewUser>(newInterviewUser);
+                }
+
+            }
 
         }
 

@@ -27,7 +27,8 @@
         interviewerUsersItems.Add(new SelectListItem()
                 {
                     Value = interviewerUser.Id.ToString(),
-                    Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}"
+                    Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}",
+                    Selected = interviewerUser.UserId == Model.InterviewerUserId
                 });
     }
 
@@ -47,7 +48,7 @@
 
 <label>@localizer["AddMemberToTimeSlot"]</label>
 
-<form id="memberForm" action="@Url.Action("AddInterviewMember", "Default")" method="post">
+<form id="userForm" action="@Url.Action("AddInterviewMember", "Default")" method="post">
 
     @Html.AntiForgeryToken()
 
