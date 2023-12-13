@@ -95,6 +95,7 @@ var calendar = {
             this.Data[index] = row;
 
         this.InitTable();
+        users.Init();
 
     },
 
