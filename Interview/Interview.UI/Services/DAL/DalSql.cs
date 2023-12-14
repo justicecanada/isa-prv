@@ -394,18 +394,6 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        //public async Task<RoleUser?> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId)
-        //{
-
-        //    var result = await _context.RoleUsers.Where(x => (x.ContestId == contestId && x.UserId == userId))
-        //        .Include(x => x.RoleUserEquities)
-        //        .ThenInclude(x => x.Equity)
-        //        .FirstOrDefaultAsync();
-
-        //    return result;
-
-        //}
-
         public async Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId)
         {
 
@@ -428,6 +416,15 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.InterviewUsers.Where(x => x.InterviewId == interviewId).ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Schedule>> GetSchedulesByContestId(Guid contestId)
+        {
+
+            var result = await _context.Schedules.Where(x => x.ContestId == contestId).ToListAsync();
 
             return result;
 

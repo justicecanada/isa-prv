@@ -149,7 +149,8 @@ namespace Interview.UI.Controllers
                 result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewId = (Guid)id;
 
-                await SetInterviewUserViewBag();
+                SetInterviewModalViewBag(interview);
+
             }
 
             return PartialView(result);
@@ -196,6 +197,17 @@ namespace Interview.UI.Controllers
             await _dal.DeleteEntity<Interview.Entities.Interview>(id);
 
             return RedirectToAction("Index");
+
+        }
+
+        private async Task SetInterviewModalViewBag(Interview.Entities.Interview interview)
+        {
+
+            List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
+
+            ViewBag.CandidateArrival = 10;
+            ViewBag.InterviewerArrival = 20;
+            ViewBag.Marking = 30;
 
         }
 

@@ -40,13 +40,13 @@ namespace Interview.UI.Services.DAL
 
         Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId);
 
-        //Task<RoleUser> GetRoleUsersByContestIdAndUserId(Guid contestId, Guid userId);
-
         Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
         Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
 
         Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
+
+        Task<List<Schedule>> GetSchedulesByContestId(Guid contestId);
         
         #endregion
 
