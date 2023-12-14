@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 
 namespace Interview.UI.Controllers
@@ -113,9 +114,9 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/jquery-DataTables/datatables.min.css\" />");
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/jquery-DataTables/datatables.min.js\"></script>");
 
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewcalendar.js?v={BuildId}\"></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewmodal.js?v={BuildId}\"></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/default/interviewusersmodal.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewCalendar.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 
         }
 
@@ -195,15 +196,26 @@ namespace Interview.UI.Controllers
         private async Task SetInterviewModalViewBag(Interview.Entities.Interview interview)
         {
 
-            List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
-            TimeSpan startTime = interview.StartDate.Value.TimeOfDay;
-            TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
-            TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
-            TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
+            if (interview.StartDate != null)
+            {
 
-            ViewBag.CandidateArrival = candidateArrival.Add(startTime).ToString(@"hh\:mm");
-            ViewBag.InterviewerArrival = interviewerArrival.Add(startTime).ToString(@"hh\:mm"); ;
-            ViewBag.Marking = marking.Add(startTime).ToString(@"hh\:mm"); ;
+                List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
+                TimeSpan startTime = interview.StartDate.Value.TimeOfDay;
+                TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
+                TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
+                TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
+
+                ViewBag.CandidateArrival = candidateArrival.Add(startTime).ToString(@"hh\:mm");
+                ViewBag.InterviewerArrival = interviewerArrival.Add(startTime).ToString(@"hh\:mm");
+                ViewBag.Marking = marking.Add(startTime).ToString(@"hh\:mm"); ;
+
+            }
+            else
+            {
+                ViewBag.CandidateArrival = string.Empty;
+                ViewBag.InterviewerArrival = string.Empty;
+                ViewBag.Marking = string.Empty;
+            }
 
         }
 

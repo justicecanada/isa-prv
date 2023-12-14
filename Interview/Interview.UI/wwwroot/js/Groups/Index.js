@@ -24,9 +24,9 @@ var searchInternalUser = {
 
                         response($.map(data.results, function (item) {
                             var object = new Object();
-                            object.ID = item.id;
-                            object.label = item.lastName + ", " + item.firstName;
-                            object.value = item.name;
+                            object.ID = item.Id;
+                            object.label = item.LastName + ", " + item.FirstName;
+                            object.value = item.Name;
                             return object
                         }));
 
