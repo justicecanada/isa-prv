@@ -149,7 +149,7 @@ namespace Interview.UI.Controllers
                 result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewId = (Guid)id;
 
-                SetInterviewModalViewBag(interview);
+                await SetInterviewModalViewBag(interview);
 
             }
 
@@ -204,10 +204,14 @@ namespace Interview.UI.Controllers
         {
 
             List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
+            TimeSpan startTime = interview.StartDate.Value.TimeOfDay;
+            TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
+            TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
+            TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
 
-            ViewBag.CandidateArrival = 10;
-            ViewBag.InterviewerArrival = 20;
-            ViewBag.Marking = 30;
+            ViewBag.CandidateArrival = candidateArrival.Add(startTime).ToString(@"hh\:mm");
+            ViewBag.InterviewerArrival = interviewerArrival.Add(startTime).ToString(@"hh\:mm"); ;
+            ViewBag.Marking = marking.Add(startTime).ToString(@"hh\:mm"); ;
 
         }
 
