@@ -1,29 +1,46 @@
 ﻿@using Interview.Entities
 @using Interview.UI.Models
+@using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
 @{
 
     Contest contest = ViewBag.Contest;
+    List<VmInterview> interviews = ViewBag.Interviews;
+
+    string tableData = JsonConvert.SerializeObject(interviews);
 
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="text-info">Placeholder for Calendar - has a dependency on Roles</div>
-    </div>
-</div>
-
 <div id="calendar"></div>
 
+<div class="container">
+    <div class="well well-lg">
+        <div class="row">
+            <div class="text-info">Placeholder for Calendar - has a dependency on Roles</div>
+        </div>
+        <div class="row">
+            <a id="interviewModal" href="#modalContainer">Add Interview</a>
+        </div>
 
-<link href="~/lib/calendar/fullcalendar.min.css" rel="stylesheet" />
-<link href="~/lib/calendar/fullcalendar.print.min.css" rel="stylesheet" />
-<script src="~/lib/calendar/jquery.qtip.min.js"></script>
+        <div class="table-responsive">
+            <table id="tblItems" class="table table-striped" data-tabledata="@tableData">
+                <thead>
+                    <tr>
+                        <th class="tableActionColumn">&nbsp;</th>
+                        <th>Room</th>
+                        <th>Location</th>
+                        <th>ContactName</th>
+                        <th>ContactNumber</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
 
-<script src="~/lib/calendar/moment.min.js"></script>
-<script src="~/lib/calendar/fullcalendar.min.js"></script>
-<script src="~/lib/calendar/locale-all.js"></script>
-<script src="~/lib/calendar/jquery.qtip.min.js"></script>
 
-@*<script src="~/js/default/calendarpartial.js" asp-append-version="true"></script>*@
+    </div>   
+</div>
+
+@{
+    await Html.RenderPartialAsync("ModalContainer");
+}

@@ -70,6 +70,33 @@
     <None Include="wwwroot\lib\jquery-ui-1.13.2.custom\jquery-ui.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\.gitignore" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\.jshintrc" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\.travis.yml" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\dist\jquery.magnific-popup.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\dist\jquery.magnific-popup.min.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\Gruntfile.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\libs\jquery-loader.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\libs\jquery\jquery.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\libs\qunit\qunit.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\LICENSE" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\README.md" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\css\main.scss" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\css\_settings.scss" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\ajax.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\core.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\gallery.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\iframe.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\image.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\inline.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\retina.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\src\js\zoom.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\website\documentation.md" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\website\third-party-libs\jquery.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\website\third-party-libs\jquery.min.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\website\third-party-libs\uglify.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\website\third-party-libs\zepto.js" />
+    <None Include="wwwroot\lib\Magnific-Popup-master\Magnific-Popup-master\website\third-party-libs\zepto.min.js" />
   </ItemGroup>
 
   <ItemGroup>

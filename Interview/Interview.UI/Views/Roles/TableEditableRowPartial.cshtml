@@ -6,25 +6,25 @@
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    UserSetting userSetting = ViewBag.UserSetting;
-    string userName = $"{userSetting.UserLastname}, {userSetting.UserFirstname}";
+    RoleUser roleUser = ViewBag.RoleUser;
+    string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
 
     var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
     rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    rolesItems.Where(x => x.Value == ((int)userSetting.RoleType).ToString()).First().Selected = true;
+    rolesItems.Where(x => x.Value == ((int)roleUser.RoleType).ToString()).First().Selected = true;
 
     var userLanguageItems = Html.GetEnumSelectList<VmLanguageTypes>().ToList();
     userLanguageItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    if (userSetting.LanguageType != null)
-        userLanguageItems.Where(x => x.Value == ((int)userSetting.LanguageType).ToString()).First().Selected = true;
+    if (roleUser.LanguageType != null)
+        userLanguageItems.Where(x => x.Value == ((int)roleUser.LanguageType).ToString()).First().Selected = true;
 
     bool showEquities = ViewBag.ShowEquities;
 
 }
 
 <tr>
-    <form id="editForm" action="/Roles/UpdateUserSettings" method="post">
-        <input type="hidden" value="@Model.UserSettingToEdit.Id" id="Id" name="Id" />
+    <form id="editForm" action="/Roles/UpdateRoleUser" method="post">
+        <input type="hidden" value="@Model.RoleUserToEdit.Id" id="Id" name="Id" />
         @Html.AntiForgeryToken()
         <td>@userName</td>
         <td>@Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" })</td>
@@ -37,7 +37,7 @@
                     {
                         ViewData.TemplateInfo.HtmlFieldPrefix = $"Equities[{i.ToString()}]";
                         VmEquity vmEquity = Model.Equities[i];
-                        vmEquity.IsSelected = Model.UserSettingToEdit.UserSettingEquities.Any(x => x.EquityId == vmEquity.Id);
+                        vmEquity.IsSelected = Model.RoleUserToEdit.RoleUserEquities.Any(x => x.EquityId == vmEquity.Id);
                         ViewBag.EquityIndex = i;
                         await Html.RenderPartialAsync("EquityEditCheckbox", vmEquity);
                     }
@@ -49,7 +49,7 @@
             <a href="@Url.Action("Index", "Roles")">
                 <span class="glyphicon glyphicon-remove text-danger"></span>
             </a>
-            <a id="aSubmit" href="@Url.Action("UpdateUserSettings", "Roles", new { userSettingsId = Model.UserSettingToEdit.Id } )">
+            <a id="aSubmit" href="@Url.Action("UpdateRoleUser", "Roles", new { roleUserId = Model.RoleUserToEdit.Id } )">
                 <span class="glyphicon glyphicon-ok text-success"></span>
             </a>
         </td>   

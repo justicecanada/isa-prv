@@ -41,6 +41,8 @@ namespace Interview.UI
             IMvcBuilder builder = services.AddMvc();
             ConfigureLocalizationServices(services, builder);
 
+            builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
@@ -72,6 +74,7 @@ namespace Interview.UI
             // WET
             services.AddModelAccessor();
             services.ConfigureGoCTemplateRequestLocalization(); // >= v2.3.0
+
         }
 
         private void ConfigureLocalizationServices(IServiceCollection services, IMvcBuilder builder)

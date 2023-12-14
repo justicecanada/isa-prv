@@ -24,24 +24,30 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Contest>> GetContestsForGroupOwner(Guid userId);
 
-        Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId);
+        Task<List<Contest>> GetContestsForRoleUser(Guid userId);
 
-        Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles();
+        Task<List<Contest>> GetAllContestsWithUserRoles();
 
         Task<List<Group>> GetGroups(Guid? userId = null);
 
         Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId);
 
+        Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid contestId, Guid userId);
+
         Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId);
 
         Task<List<Equity>> GetAllEquities();
 
-        Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId);
+        Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId);
 
-        Task<UserSetting> GetUserSettingByContestIdAndUserId(Guid contestId, Guid userId);
+        Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
-        Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId);
+        Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
 
+        Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
+
+        Task<List<Schedule>> GetSchedulesByContestId(Guid contestId);
+        
         #endregion
 
         #region Mock Identity Methods
@@ -51,6 +57,8 @@ namespace Interview.UI.Services.DAL
         Task<List<MockUser>> GetListExistingExternalMockUser();
 
         Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType);
+
+        Task<MockUser?> GetMockUserById(Guid id);
 
         Task<MockUser?> GetMockUserByName(string name);
 

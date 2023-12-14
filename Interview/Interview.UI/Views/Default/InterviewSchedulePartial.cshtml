@@ -1,0 +1,37 @@
+﻿
+@inject IViewLocalizer localizer
+
+@{
+
+
+}
+
+<h3>@localizer["ScheduleOverview"]</h3>
+<hr />
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <label for="candidateArrival">@localizer["CandidateArrival"]</label>
+    </div>
+    <div class="col-md-12">
+        <input type="text" id="candidateArrival" value="@ViewBag.CandidateArrival" disabled class="form-control">
+    </div>
+</div>
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <label for="interviewerArrival">@localizer["InterviewerArrival"]</label>
+    </div>
+    <div class="col-md-12">
+        <input type="text" id="interviewerArrival" value="@ViewBag.InterviewerArrival" disabled class="form-control">
+    </div>
+</div>
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <label for="marking">@localizer["Marking"]</label>
+    </div>
+    <div class="col-md-12">
+        <input type="text" id="marking" value="@ViewBag.Marking" disabled class="form-control">
+    </div>
+</div>

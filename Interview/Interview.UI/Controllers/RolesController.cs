@@ -65,10 +65,10 @@ namespace Interview.UI.Controllers
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
-            if (TempData["UserSettingIdToUpdate"] != null)
+            if (TempData["RoleUserIdToUpdate"] != null)
             {
-                UserSetting userSettingToEdit = ((List<UserSetting>)ViewBag.UserSettings).Where(x => x.Id == (Guid)TempData["UserSettingIdToUpdate"]).First();
-                result.UserSettingToEdit = (VmUserSetting)_mapper.Map(userSettingToEdit, typeof(UserSetting), typeof(VmUserSetting));
+                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.RoleUsers).Where(x => x.Id == (Guid)TempData["RoleUserIdToUpdate"]).First();
+                result.RoleUserToEdit = (VmRoleUser)_mapper.Map(roleUserToEdit, typeof(RoleUser), typeof(VmRoleUser));
             }
 
             return View(result);
@@ -85,9 +85,9 @@ namespace Interview.UI.Controllers
             if (ModelState.IsValid)
             {
 
-                // Handle UserSetting
-                Guid userSettingId;
-                UserSetting userSetting = new UserSetting()
+                // Handle RolesUser
+                Guid roleUserId;
+                RoleUser roleUser = new RoleUser()
                 {
                     ContestId = (Guid)_state.ContestId,
                     LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
@@ -98,19 +98,19 @@ namespace Interview.UI.Controllers
                     IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
                     DateInserted = DateTime.Now
                 };
-                userSettingId = await _dal.AddEntity<UserSetting>(userSetting);
+                roleUserId = await _dal.AddEntity<RoleUser>(roleUser);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
                 if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
                 {                   
                     foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {
-                        var userSettingEquity = new UserSettingEquity()
+                        var roleUserEquity = new RoleUserEquity()
                         {
-                            UserSettingId = userSettingId,
+                            RoleUserId = roleUserId,
                             EquityId = (Guid)equity.Id
                         };
-                        await _dal.AddEntity<UserSettingEquity>(userSettingEquity);
+                        await _dal.AddEntity<RoleUserEquity>(roleUserEquity);
                     }
                 }
 
@@ -136,9 +136,9 @@ namespace Interview.UI.Controllers
             var contest = _state.ContestId == null ? new Contest() : await _dal.GetEntity<Contest>((Guid)_state.ContestId, true);
             ViewBag.Contest = contest;
 
-            // UserSettings
-            var userSettings = _state.ContestId == null ? new List<UserSetting>() : await _dal.GetUserSettingsByContestId((Guid)_state.ContestId);
-            ViewBag.UserSettings = userSettings;
+            // RoleUsers
+            var roleUsers = _state.ContestId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByContestId((Guid)_state.ContestId);
+            ViewBag.RoleUsers = roleUsers;
 
             // Show Equities
             ViewBag.ShowEquities = IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin);
@@ -212,10 +212,10 @@ namespace Interview.UI.Controllers
         #region TablePartial Methods
 
         [HttpGet]
-        public IActionResult UpdateUserSettings(Guid userSettingsId)
+        public IActionResult UpdateRoleUser(Guid roleUserId)
         {
 
-            TempData["UserSettingIdToUpdate"] = userSettingsId;
+            TempData["RoleUserIdToUpdate"] = roleUserId;
 
             return RedirectToAction("Index");
 
@@ -223,38 +223,38 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateUserSettings(VmUserSetting vmUserSetting)
+        public async Task<IActionResult> UpdateRoleUser(VmRoleUser vmRoleUser)
         {
 
-            var dbUserSetting = await _dal.GetEntity<UserSetting>((Guid)vmUserSetting.Id) as UserSetting;
+            var dbRoleUser = await _dal.GetEntity<RoleUser>((Guid)vmRoleUser.Id) as RoleUser;
 
-            // Handle UserSetting
-            dbUserSetting.RoleType = (RoleTypes)vmUserSetting.RoleType;
-            dbUserSetting.LanguageType = vmUserSetting.LanguageType == null ? null : (LanguageTypes)vmUserSetting.LanguageType;
-            await _dal.UpdateEntity(dbUserSetting);
+            // Handle RoleUser
+            dbRoleUser.RoleType = (RoleTypes)vmRoleUser.RoleType;
+            dbRoleUser.LanguageType = vmRoleUser.LanguageType == null ? null : (LanguageTypes)vmRoleUser.LanguageType;
+            await _dal.UpdateEntity(dbRoleUser);
 
             // Handle Equities
             if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
             {
-                var dbUserSettingEquities = await _dal.GetUserSettingEquitiesByUserSettingId((Guid)vmUserSetting.Id);
-                var postedEquities = vmUserSetting.Equities.Where(x => x.IsSelected).ToList();
+                var dbRoleUserEquities = await _dal.GetRoleUserEquitiesByRoleUserId((Guid)vmRoleUser.Id);
+                var postedEquities = vmRoleUser.Equities.Where(x => x.IsSelected).ToList();
 
                 // Delete Equities
-                foreach (UserSettingEquity dbUserSettingEquity in dbUserSettingEquities)
-                    if (!postedEquities.Any(x => x.Id == dbUserSettingEquity.EquityId))
-                        await _dal.DeleteEntity<UserSettingEquity>(dbUserSettingEquity.Id);
+                foreach (RoleUserEquity dbRoleUserEquity in dbRoleUserEquities)
+                    if (!postedEquities.Any(x => x.Id == dbRoleUserEquity.EquityId))
+                        await _dal.DeleteEntity<RoleUserEquity>(dbRoleUserEquity.Id);
 
                 // Add Equities
                 foreach (VmEquity vmEquity in postedEquities)
                 {
-                    if (!dbUserSettingEquities.Any(x => x.EquityId == vmEquity.Id))
+                    if (!dbRoleUserEquities.Any(x => x.EquityId == vmEquity.Id))
                     {
-                        UserSettingEquity userSettingEquity = new UserSettingEquity()
+                        RoleUserEquity roleUserEquity = new RoleUserEquity()
                         {
                             EquityId = (Guid)vmEquity.Id,
-                            UserSettingId = (Guid)vmUserSetting.Id
+                            RoleUserId = (Guid)vmRoleUser.Id
                         };
-                        await _dal.AddEntity<UserSettingEquity>(userSettingEquity);
+                        await _dal.AddEntity<RoleUserEquity>(roleUserEquity);
                     }             
                 }
 
@@ -265,10 +265,10 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteUserSetting(Guid userSettingsId)
+        public async Task<IActionResult> DeleteRoleUser(Guid roleUserId)
         {
 
-            await _dal.DeleteEntity<UserSetting>(userSettingsId);
+            await _dal.DeleteEntity<RoleUser>(roleUserId);
 
             return RedirectToAction("Index");
 

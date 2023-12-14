@@ -4,21 +4,21 @@
 
 @{
 
-    List<UserSetting> userSettings = ViewBag.UserSettings;
+    List<RoleUser> roleUsers = ViewBag.RoleUsers;
 
-    Guid? userSettingIdToUpdate = (Guid?)TempData["UserSettingIdToUpdate"];
+    Guid? roleUserIdToUpdate = (Guid?)TempData["RoleUserIdToUpdate"];
     bool showEquities = ViewBag.ShowEquities;
 
 }
 
-@if (userSettings.Count == 0)
+@if (roleUsers.Count == 0)
 {
     <p>@localizer["NoRoles"]</p>
 }
 else
 {
     <div class="table-responsive">
-        <table id="userSettings" class="table table-striped" data-toggle="table" data-pagination="true">
+        <table id="roleUsers" class="table table-striped" data-toggle="table" data-pagination="true">
             <thead>
                 <tr>
                     <th>@localizer["UserName"]</th>
@@ -32,10 +32,10 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (UserSetting userSetting in userSettings)
+                @foreach (RoleUser roleUser in roleUsers)
                 {
-                    ViewBag.UserSetting = userSetting;
-                    if (userSetting.Id == userSettingIdToUpdate)
+                    ViewBag.RoleUser = roleUser;
+                    if (roleUser.Id == roleUserIdToUpdate)
                     {
                         await Html.RenderPartialAsync("TableEditableRowPartial");
                     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20231006131213_InterviewInitial")]
-    partial class InterviewInitial
+    [Migration("20231213142223_InterviewUserCorrection")]
+    partial class InterviewUserCorrection
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,19 +40,19 @@ namespace Interview.UI.Migrations
                     b.ToTable("ContestGroup");
                 });
 
-            modelBuilder.Entity("EquityUserSetting", b =>
+            modelBuilder.Entity("EquityRoleUser", b =>
                 {
                     b.Property<Guid>("EquitiesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserSettingsId")
+                    b.Property<Guid>("RoleUsersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("EquitiesId", "UserSettingsId");
+                    b.HasKey("EquitiesId", "RoleUsersId");
 
-                    b.HasIndex("UserSettingsId");
+                    b.HasIndex("RoleUsersId");
 
-                    b.ToTable("EquityUserSetting");
+                    b.ToTable("EquityRoleUser");
                 });
 
             modelBuilder.Entity("Interview.Entities.Contest", b =>
@@ -293,17 +293,78 @@ namespace Interview.UI.Migrations
                     b.Property<Guid>("InterviewId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("RoleId")
+                    b.Property<int>("RoleType")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InterviewId");
 
                     b.ToTable("InterviewUsers");
+                });
+
+            modelBuilder.Entity("Interview.Entities.RoleUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ContestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateInserted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("HasAcceptedPrivacyStatement")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsExternal")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("LanguageType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserFirstname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserLastname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContestId");
+
+                    b.ToTable("RoleUsers");
+                });
+
+            modelBuilder.Entity("Interview.Entities.RoleUserEquity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquityId");
+
+                    b.HasIndex("RoleUserId");
+
+                    b.ToTable("RoleUserEquities");
                 });
 
             modelBuilder.Entity("Interview.Entities.Schedule", b =>
@@ -329,64 +390,6 @@ namespace Interview.UI.Migrations
                     b.HasIndex("ContestId");
 
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("Interview.Entities.UserSetting", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateInserted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsExternal")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("LanguageType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserFirstname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserLastname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContestId");
-
-                    b.ToTable("UserSettings");
-                });
-
-            modelBuilder.Entity("Interview.Entities.UserSettingEquity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("EquityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserSettingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EquityId");
-
-                    b.HasIndex("UserSettingId");
-
-                    b.ToTable("UserSettingEquities");
                 });
 
             modelBuilder.Entity("Interview.UI.Services.Mock.Departments.MockDepartment", b =>
@@ -426,8 +429,8 @@ namespace Interview.UI.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Roles")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RoleType")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
@@ -455,7 +458,7 @@ namespace Interview.UI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EquityUserSetting", b =>
+            modelBuilder.Entity("EquityRoleUser", b =>
                 {
                     b.HasOne("Interview.Entities.Equity", null)
                         .WithMany()
@@ -463,9 +466,9 @@ namespace Interview.UI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Interview.Entities.UserSetting", null)
+                    b.HasOne("Interview.Entities.RoleUser", null)
                         .WithMany()
-                        .HasForeignKey("UserSettingsId")
+                        .HasForeignKey("RoleUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -527,25 +530,16 @@ namespace Interview.UI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Interview.Entities.Schedule", b =>
+            modelBuilder.Entity("Interview.Entities.RoleUser", b =>
                 {
                     b.HasOne("Interview.Entities.Contest", null)
-                        .WithMany("Schedules")
+                        .WithMany("RoleUsers")
                         .HasForeignKey("ContestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Interview.Entities.UserSetting", b =>
-                {
-                    b.HasOne("Interview.Entities.Contest", null)
-                        .WithMany("UserSettings")
-                        .HasForeignKey("ContestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Interview.Entities.UserSettingEquity", b =>
+            modelBuilder.Entity("Interview.Entities.RoleUserEquity", b =>
                 {
                     b.HasOne("Interview.Entities.Equity", "Equity")
                         .WithMany("EmailTemplateEquities")
@@ -553,15 +547,24 @@ namespace Interview.UI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Interview.Entities.UserSetting", "UserSetting")
-                        .WithMany("UserSettingEquities")
-                        .HasForeignKey("UserSettingId")
+                    b.HasOne("Interview.Entities.RoleUser", "RoleUser")
+                        .WithMany("RoleUserEquities")
+                        .HasForeignKey("RoleUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Equity");
 
-                    b.Navigation("UserSetting");
+                    b.Navigation("RoleUser");
+                });
+
+            modelBuilder.Entity("Interview.Entities.Schedule", b =>
+                {
+                    b.HasOne("Interview.Entities.Contest", null)
+                        .WithMany("Schedules")
+                        .HasForeignKey("ContestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Interview.Entities.Contest", b =>
@@ -572,9 +575,9 @@ namespace Interview.UI.Migrations
 
                     b.Navigation("Interviews");
 
-                    b.Navigation("Schedules");
+                    b.Navigation("RoleUsers");
 
-                    b.Navigation("UserSettings");
+                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("Interview.Entities.Equity", b =>
@@ -594,9 +597,9 @@ namespace Interview.UI.Migrations
                     b.Navigation("InterviewUsers");
                 });
 
-            modelBuilder.Entity("Interview.Entities.UserSetting", b =>
+            modelBuilder.Entity("Interview.Entities.RoleUser", b =>
                 {
-                    b.Navigation("UserSettingEquities");
+                    b.Navigation("RoleUserEquities");
                 });
 #pragma warning restore 612, 618
         }

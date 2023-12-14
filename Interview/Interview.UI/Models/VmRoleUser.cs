@@ -3,12 +3,12 @@
 namespace Interview.UI.Models
 {
 
-    public class VmUserSetting : VmBase
+    public class VmRoleUser : VmBase
     {
 
-        public VmUserSetting()
+        public VmRoleUser()
         {
-            UserSettingEquities = new List<VmUserSettingEquity>();
+            RoleUserEquities = new List<VmRoleUserEquity>();
             Equities = new List<VmEquity>();
         }
 
@@ -23,7 +23,7 @@ namespace Interview.UI.Models
 
         // Many to Many
         // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
-        public List<VmUserSettingEquity> UserSettingEquities { get; set; }
+        public List<VmRoleUserEquity> RoleUserEquities { get; set; }
         public List<VmEquity> Equities { get; set; }
 
     }

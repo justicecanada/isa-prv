@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Interview.Entities;
 using Interview.UI.Models;
+using System.Globalization;
+using System;
 using System.Xml;
 
 namespace Interview.UI.Services.Automapper
@@ -17,20 +19,29 @@ namespace Interview.UI.Services.Automapper
             CreateMap<VmContest, Contest>()
                 .ForMember(d => d.InterviewDuration, opt => opt.ConvertUsing(new IntToTimeSpanConverter()));
 
-            CreateMap<UserSetting, VmUserSetting>();
-            CreateMap<VmUserSetting, UserSetting>();
+            CreateMap<RoleUser, VmRoleUser>();
+            CreateMap<VmRoleUser, RoleUser>();
 
             CreateMap<Schedule, VmSchedule>();
             CreateMap<VmSchedule, Schedule>();
 
-            CreateMap<UserSetting, VmUserSetting>();
-            CreateMap<VmUserSetting, UserSetting>();
+            CreateMap<RoleUser, VmRoleUser>();
+            CreateMap<VmRoleUser, RoleUser>();
 
             CreateMap<Equity, VmEquity>();
             CreateMap<VmEquity, Equity>();
 
-            CreateMap<UserSettingEquity, VmUserSettingEquity>();
-            CreateMap<VmUserSettingEquity, UserSettingEquity>();
+            CreateMap<RoleUserEquity, VmRoleUserEquity>();
+            CreateMap<VmRoleUserEquity, RoleUserEquity>();
+
+            CreateMap<Interview.Entities.Interview, VmInterview>()
+                .ForMember(x => x.VmStartDate, opt => opt.MapFrom<DateTimeOffsetToDateTime>())
+                .ForMember(x => x.VmStartTime, opt => opt.MapFrom<DateTimeOffSetToTimeSpan>());
+            CreateMap<VmInterview, Interview.Entities.Interview>()
+                .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffset>());
+
+            CreateMap<InterviewUser, VmInterview>();
+            CreateMap<VmInterview, VmInterviewUser>();
 
             #region ~/Groups
 

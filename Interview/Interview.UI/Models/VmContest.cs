@@ -86,15 +86,26 @@ namespace Interview.UI.Models
         [Display(Name = "DepartmentId")]
         public Guid? DepartmentId { get; set; }
 
+        [Required]
+        [Display(Name = "ScheduleCandidateStart")]
+        public int? VmScheduleCandidateStart { get; set;  }
+
+        [Required]
+        [Display(Name = "ScheduleMembersStart")]
+        public int? VmScheduleMembersStart { get; set; }
+
+        [Required]
+        [Display(Name = "ScheduleMarkingStart")]
+        public int? VmScheduleMarkingStart { get; set; }
+
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview> Interviews { get; set; }
-        //public List<VmUserSetting>? UserSettings { get; set; }
         //public List<Schedule> Schedules { get; set; }
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview.Entities.Interview> Interviews { get; set; }
-        public List<VmUserSetting>? UserSettings { get; set; }
+        public List<VmRoleUser>? RoleUsers { get; set; }
         //public List<Schedule> Schedules { get; set; }
         //public List<Group> Groups { get; set; }
 

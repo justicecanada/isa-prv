@@ -4,6 +4,8 @@ using Interview.UI.Models.Roles;
 using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using Group = Interview.Entities.Group;
 
 namespace Interview.UI.Services.DAL
 {
@@ -21,7 +23,11 @@ namespace Interview.UI.Services.DAL
 
         public DalSql(SqlContext context)
         {
+            
             _context = context;
+
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
         }
 
         #endregion
@@ -72,12 +78,12 @@ namespace Interview.UI.Services.DAL
                     _context.Schedules.Add((Schedule)entity);
                     break;
 
-                case nameof(UserSetting):
-                    _context.UserSettings.Add((UserSetting)entity);
+                case nameof(RoleUser):
+                    _context.RoleUsers.Add((RoleUser)entity);
                     break;
 
-                case nameof(UserSettingEquity):
-                    _context.UserSettingEquities.Add((UserSettingEquity)entity);
+                case nameof(RoleUserEquity):
+                    _context.RoleUserEquities.Add((RoleUserEquity)entity);
                     break;
 
             }
@@ -112,7 +118,7 @@ namespace Interview.UI.Services.DAL
                             .Include(x => x.EmailTemplates)
                             .Include(x => x.Interviews)
                             .ThenInclude(x => x.InterviewUsers)
-                            .Include(x => x.UserSettings)
+                            .Include(x => x.RoleUsers)
                             .Include(x => x.Schedules)
                             .Include(x => x.ContestGroups)
                             .ThenInclude(x => x.Group)
@@ -132,7 +138,7 @@ namespace Interview.UI.Services.DAL
 
                     if (getChildObjects)
                         result = await _context.Equities.Where(x => x.Id == id)
-                            .Include(x => x.UserSettings)
+                            .Include(x => x.RoleUsers)
                             .FirstOrDefaultAsync();
                     else
                         result = await _context.Equities.FindAsync(id);
@@ -175,10 +181,10 @@ namespace Interview.UI.Services.DAL
                     result = await _context.Schedules.FindAsync(id);
                     break;
 
-                case nameof(UserSetting):
+                case nameof(RoleUser):
 
                     // No child objects
-                    result = await _context.UserSettings.FindAsync(id);
+                    result = await _context.RoleUsers.FindAsync(id);
                     break;
 
             }
@@ -237,14 +243,14 @@ namespace Interview.UI.Services.DAL
                     _context.Schedules.Remove(schedule);
                     break;
 
-                case nameof(UserSetting):
-                    UserSetting? userSettings = await _context.UserSettings.FindAsync(id);
-                    _context.UserSettings.Remove(userSettings);
+                case nameof(RoleUser):
+                    RoleUser? roleUser = await _context.RoleUsers.FindAsync(id);
+                    _context.RoleUsers.Remove(roleUser);
                     break;
 
-                case nameof(UserSettingEquity):
-                    UserSettingEquity? userSettingEquity = await _context.UserSettingEquities.FindAsync(id);
-                    _context.UserSettingEquities.Remove(userSettingEquity);
+                case nameof(RoleUserEquity):
+                    RoleUserEquity? roleUserEquity = await _context.RoleUserEquities.FindAsync(id);
+                    _context.RoleUserEquities.Remove(roleUserEquity);
                     break;
 
             }
@@ -269,7 +275,8 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.Contests.Where(x => !x.IsDeleted)
-                .Include(x => x.UserSettings)
+                .Include(x => x.RoleUsers)
+                .Include(x => x.Schedules)
                 .ToListAsync();
 
             return result;
@@ -281,29 +288,30 @@ namespace Interview.UI.Services.DAL
 
             var result = await _context.Contests.Where(x => !x.IsDeleted &&
                 (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
-                || x.UserSettings.Any(y => y.UserId.Equals(userId))))
+                || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
+                .Include(x => x.Schedules)
                 .ToListAsync();
 
             return result;
 
         }
 
-        public async Task<List<Contest>> GetContestsForUserSettingsUser(Guid userId)
+        public async Task<List<Contest>> GetContestsForRoleUser(Guid userId)
         {
 
             var result = await _context.Contests.Where(x => !x.IsDeleted &&
-                x.UserSettings.Any(y => y.UserId.Equals(userId)))
+                x.RoleUsers.Any(y => y.UserId.Equals(userId)))
                 .ToListAsync();
 
             return result;
 
         }
 
-        public async Task<List<Contest>> GetAllContestsWithUserSettingsAndRoles()
+        public async Task<List<Contest>> GetAllContestsWithUserRoles()
         {
 
             var result = await _context.Contests.Where(x => !x.IsDeleted)
-                .Include(x => x.UserSettings)
+                .Include(x => x.RoleUsers)
                 //.ThenInclude(x => x.Role)
                 .ToListAsync();
 
@@ -346,6 +354,16 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid contestId, Guid userId)
+        {
+
+            List<GroupOwner> result = await _context.GroupsOwners.Where(x => (x.UserId == userId &&
+                x.Group.Contests.Any(x => x.Id == contestId))).ToListAsync();
+
+            return result;
+
+        }
+
         public async Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId)
         {
 
@@ -364,11 +382,11 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<UserSetting>> GetUserSettingsByContestId(Guid contestId)
+        public async Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId)
         {
 
-            var result = await _context.UserSettings.Where(x => x.ContestId == contestId)
-                .Include(x => x.UserSettingEquities)
+            var result = await _context.RoleUsers.Where(x => x.ContestId == contestId)
+                .Include(x => x.RoleUserEquities)
                 .ThenInclude(x => x.Equity)
                 .ToListAsync();
 
@@ -376,22 +394,37 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<UserSetting?> GetUserSettingByContestIdAndUserId(Guid contestId, Guid userId)
+        public async Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId)
         {
 
-            var result = await _context.UserSettings.Where(x => (x.ContestId == contestId && x.UserId == userId))
-                .Include(x => x.UserSettingEquities)
-                .ThenInclude(x => x.Equity)
-                .FirstOrDefaultAsync();
+            var result = await _context.RoleUserEquities.Where(x => x.RoleUserId == userId).ToListAsync();
 
             return result;
 
         }
 
-        public async Task<List<UserSettingEquity>> GetUserSettingEquitiesByUserSettingId(Guid userSettingId)
+        public async Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId)
         {
 
-            var result = await _context.UserSettingEquities.Where(x => x.UserSettingId == userSettingId).ToListAsync();
+            var result = await _context.Interviews.Where(x => x.ContestId == contestId).ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId)
+        {
+
+            var result = await _context.InterviewUsers.Where(x => x.InterviewId == interviewId).ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Schedule>> GetSchedulesByContestId(Guid contestId)
+        {
+
+            var result = await _context.Schedules.Where(x => x.ContestId == contestId).ToListAsync();
 
             return result;
 
@@ -425,6 +458,15 @@ namespace Interview.UI.Services.DAL
 
             MockUser? result = await _context.MockUsers.Where(x => (x.Id == id &&
                         x.UserType == userType)).FirstOrDefaultAsync();
+
+            return result;
+
+        }
+
+        public async Task<MockUser?> GetMockUserById(Guid id)
+        {
+
+            MockUser? result = await _context.MockUsers.Where(x => (x.Id == id)).FirstOrDefaultAsync();
 
             return result;
 

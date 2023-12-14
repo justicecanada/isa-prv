@@ -43,8 +43,8 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }
         public DbSet<Interview.Entities.InterviewUser> InterviewUsers { get; set; }     
         public DbSet<Interview.Entities.Schedule> Schedules { get; set; }
-        public DbSet<Interview.Entities.UserSetting> UserSettings { get; set; }
-        public DbSet<Interview.Entities.UserSettingEquity> UserSettingEquities { get; set; }
+        public DbSet<Interview.Entities.RoleUser> RoleUsers { get; set; }
+        public DbSet<Interview.Entities.RoleUserEquity> RoleUserEquities { get; set; }
 
         // Mocked up data
         public DbSet<Interview.UI.Services.Mock.Identity.MockUser> MockUsers { get; set; }

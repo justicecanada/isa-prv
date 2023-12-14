@@ -132,6 +132,17 @@
                     @Html.EditorFor(x => x.InterviewDuration, "Question", new { inputControl = Html.TextBoxFor(x => x.InterviewDuration, new { @class = "form-control" }) })
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.EditorFor(x => x.VmScheduleCandidateStart, "Question", new { inputControl = Html.TextBoxFor(x => x.VmScheduleCandidateStart, new { @class = "form-control" }) })
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(x => x.VmScheduleMembersStart, "Question", new { inputControl = Html.TextBoxFor(x => x.VmScheduleMembersStart, new { @class = "form-control" }) })
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(x => x.VmScheduleMarkingStart, "Question", new { inputControl = Html.TextBoxFor(x => x.VmScheduleMarkingStart, new { @class = "form-control" }) })
+                </div>
+            </div>
             <div class="row mt-3">
                 <div class="col-md-12">
                     <div class="text-info">Placeholder for slider...</div>
