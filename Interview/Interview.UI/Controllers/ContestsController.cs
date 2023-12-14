@@ -183,12 +183,14 @@ namespace Interview.UI.Controllers
         private void HandleScheduleModelState(VmContest vmContest)
         {
 
-            int candidateStart = vmContest.VmScheduleCandidateStart == null ? 0 : (int)vmContest.VmScheduleCandidateStart;
-            int memberStart = vmContest.VmScheduleMembersStart == null ? 0 : (int)vmContest.VmScheduleMembersStart;
-            int markingStart = vmContest.VmScheduleMarkingStart == null ? 0 : (int)vmContest.VmScheduleMarkingStart;
+            if (vmContest.VmScheduleCandidateStart > vmContest.VmScheduleMembersStart)
+                ModelState.AddModelError("VmScheduleCandidateStart", "Schedule Candidate Start cannot be > Schedule Members Start");
 
-            if ((candidateStart + memberStart + markingStart) > vmContest.InterviewDuration)
-                ModelState.AddModelError("InterviewDuration", "CandidateStart, MemberStart and MarkerStart cannot add up to > Interview Duration");
+            if (vmContest.VmScheduleMembersStart > vmContest.VmScheduleMarkingStart)
+                ModelState.AddModelError("VmScheduleMembersStart", "Schedule Members Start cannot be > Schedule Marking Start");
+
+            if (vmContest.VmScheduleMarkingStart > vmContest.InterviewDuration)
+                ModelState.AddModelError("VmScheduleMarkingStart", "Schedule Marking Start cannot be > Interview Duration");
 
         }
 
