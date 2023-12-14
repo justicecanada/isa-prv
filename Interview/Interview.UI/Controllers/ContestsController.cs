@@ -41,16 +41,8 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Contest> contests = null;
+            List<Contest> contests = await GetContestsForLoggedInUser();
             Guid? contestId = null;
-
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
-                contests = await _dal.GetAllContests();
-            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
-                throw new NotImplementedException();                            // Will need to create appsetting for MockUser.Department Name (like MockLoggedInUserName)
-            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                contests = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
-            contests.OrderByDescending(x => x.CreatedDate);
             List<MockDepartment> mockDepartments = await _dal.GetAllMockDepatments();
 
             ViewBag.Contests = contests;
