@@ -43,16 +43,8 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Contest> contests = null;
+            List<Contest> contests = await GetContestsForLoggedInUser();
             Guid? contestId = null;
-
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
-                contests = await _dal.GetAllContests();
-            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                contests = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
-            else
-                contests = await _dal.GetContestsForRoleUser((Guid)LoggedInMockUser.Id);
-            contests.OrderByDescending(x => x.CreatedDate);
 
             if (contests.Any())
                 _state.ContestId = contests.First().Id;

@@ -1,5 +1,6 @@
 ﻿using GoC.WebTemplate.Components.Core.Services;
 using GoC.WebTemplate.CoreMVC.Controllers;
+using Interview.Entities;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
@@ -96,6 +97,23 @@ namespace Interview.UI.Controllers
         protected bool IsLoggedInMockUserInRole(MockLoggedInUserRoles roleType)
         {
             return _justiceOptions.Value.MockLoggedInUserRole == roleType;
+        }
+
+        protected async Task<List<Contest>> GetContestsForLoggedInUser()
+        {
+
+            List<Contest> result = null;
+
+            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+                result = await _dal.GetAllContests();
+            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                result = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
+            else
+                result = await _dal.GetContestsForRoleUser((Guid)LoggedInMockUser.Id);
+            result.OrderByDescending(x => x.CreatedDate);
+
+            return result;
+
         }
 
         #endregion
