@@ -90,6 +90,7 @@ namespace Interview.UI.Controllers
             {
                 var contest = await _dal.GetEntity<Contest>((Guid)contestId, true) as Contest;
                 vmContest = _mapper.Map<VmContest>(contest);
+                PopulateContestSchedulePropertiesFromSchedule(vmContest, contest.Schedules);
             }
 
             await ContestsSetViewBag();
@@ -102,13 +103,16 @@ namespace Interview.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ContestNext(VmContest vmContest)
         {
-            
+
+            HandleScheduleModelState(vmContest);     // This is temporary until the slider is on the view
+
             if (ModelState.IsValid)
             {
                 var contest = _mapper.Map<Contest>(vmContest);
 
                 contest.CreatedDate = DateTime.Now;
                 contest.InitUserId = LoggedInMockUser.Id;
+                contest.Schedules = GetSchedules(vmContest);
                 await _dal.AddEntity<Contest>(contest);
 
                 return RedirectToAction("Index", "Emails", new { id = vmContest.Id });
@@ -122,19 +126,28 @@ namespace Interview.UI.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost]  
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ContestSave(VmContest vmContest)
         {
 
+            HandleScheduleModelState(vmContest);     // This is temporary until the slider is on the view
+
             if (ModelState.IsValid)
             {
-                var contest = _mapper.Map<Contest>(vmContest);
-                Contest dbContest = await _dal.GetEntity<Contest>((Guid)vmContest.Id) as Contest;
+                Contest postedContext = _mapper.Map<Contest>(vmContest);
+                List<Schedule> postedSchedules = GetSchedules(vmContest);
+                Contest dbContest = await _dal.GetEntity<Contest>((Guid)vmContest.Id, true) as Contest;
+                
+                // Resolve Schedules
+                ResolveSchedules(postedSchedules, dbContest.Schedules);
+                foreach (Schedule schedule in dbContest.Schedules)
+                    await _dal.UpdateEntity(schedule);
 
-                contest.CreatedDate = dbContest.CreatedDate;
-                contest.InitUserId = dbContest.InitUserId;
-                await _dal.UpdateEntity(contest);
+                // Save Contest
+                postedContext.CreatedDate = dbContest.CreatedDate;
+                postedContext.InitUserId = dbContest.InitUserId;
+                await _dal.UpdateEntity(postedContext);
 
                 return RedirectToAction("Index", "Default");
 
@@ -154,6 +167,68 @@ namespace Interview.UI.Controllers
             // Departments
             var mockDepartments = await _dal.GetAllMockDepatments();
             ViewBag.MockDepartments = mockDepartments;
+
+        }
+
+        #endregion
+
+        #region Private Schedules Methods
+
+        // Typically Schedules would be rendered to the view as Contest.Schedules (List<Schedule), then a partial view would be created to represent each Schedule in the list.
+        // The Schedule.StartValue would be represented as a text box.
+        // However, the Schedule concerns will be represented with a slider within the view. At this time I'm not sure how the model abstraction would be handled
+        // in the view for the slider. So keeping the model simple / flat (Schedule.VmScheduleCandidateStart, Schedule.VmScheduleMembersStart, Schedule.VmScheduleMarkingStart)
+        // and let the controller stick handle mapping these properties to proper Schedule objects.
+
+        private void HandleScheduleModelState(VmContest vmContest)
+        {
+
+            int candidateStart = vmContest.VmScheduleCandidateStart == null ? 0 : (int)vmContest.VmScheduleCandidateStart;
+            int memberStart = vmContest.VmScheduleMembersStart == null ? 0 : (int)vmContest.VmScheduleMembersStart;
+            int markingStart = vmContest.VmScheduleMarkingStart == null ? 0 : (int)vmContest.VmScheduleMarkingStart;
+
+            if ((candidateStart + memberStart + markingStart) > vmContest.InterviewDuration)
+                ModelState.AddModelError("InterviewDuration", "CandidateStart, MemberStart and MarkerStart cannot add up to > Interview Duration");
+
+        }
+
+        private List<Schedule> GetSchedules(VmContest vmContest)
+        {
+
+            List<Schedule> result = new List<Schedule>();
+
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = vmContest.VmScheduleCandidateStart });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Members, StartValue = vmContest.VmScheduleMembersStart });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Marking, StartValue = vmContest.VmScheduleMarkingStart });
+
+            return result;
+
+        }
+
+        private void ResolveSchedules(List<Schedule> postedSchedules, List<Schedule> dbSchedules)
+        {
+
+            //List<VmSchedule> result = null;
+
+            dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue =
+                postedSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue;
+            dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue =
+                postedSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue;
+            dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue =
+                postedSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue;
+
+                //result = _mapper.Map<List<VmSchedule>>(dbSchedules);
+
+                //return result;
+
+        }
+
+        private void PopulateContestSchedulePropertiesFromSchedule(VmContest contest, List<Schedule> dbSchedules)
+        {
+
+            contest.VmScheduleCandidateStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue;
+            contest.VmScheduleMembersStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue;
+            contest.VmScheduleMarkingStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue;
 
         }
 

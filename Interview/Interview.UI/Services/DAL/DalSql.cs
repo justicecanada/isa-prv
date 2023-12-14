@@ -23,7 +23,11 @@ namespace Interview.UI.Services.DAL
 
         public DalSql(SqlContext context)
         {
+            
             _context = context;
+
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
         }
 
         #endregion
@@ -272,6 +276,7 @@ namespace Interview.UI.Services.DAL
 
             var result = await _context.Contests.Where(x => !x.IsDeleted)
                 .Include(x => x.RoleUsers)
+                .Include(x => x.Schedules)
                 .ToListAsync();
 
             return result;
@@ -284,6 +289,7 @@ namespace Interview.UI.Services.DAL
             var result = await _context.Contests.Where(x => !x.IsDeleted &&
                 (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
                 || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
+                .Include(x => x.Schedules)
                 .ToListAsync();
 
             return result;

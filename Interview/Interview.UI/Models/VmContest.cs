@@ -86,6 +86,18 @@ namespace Interview.UI.Models
         [Display(Name = "DepartmentId")]
         public Guid? DepartmentId { get; set; }
 
+        [Required]
+        [Display(Name = "ScheduleCandidateStart")]
+        public int? VmScheduleCandidateStart { get; set;  }
+
+        [Required]
+        [Display(Name = "ScheduleMembersStart")]
+        public int? VmScheduleMembersStart { get; set; }
+
+        [Required]
+        [Display(Name = "ScheduleMarkingStart")]
+        public int? VmScheduleMarkingStart { get; set; }
+
 
         //public List<EmailTemplate> EmailTemplates { get; set; }
         //public List<Interview> Interviews { get; set; }
