@@ -27,7 +27,7 @@
 
     HookupMagnificPopup: function () {
 
-        $("." + calendar.UsersClass).magnificPopup({
+        $("." + table.UsersClass).magnificPopup({
             type: 'inline',
             modal: true,
             callbacks: {

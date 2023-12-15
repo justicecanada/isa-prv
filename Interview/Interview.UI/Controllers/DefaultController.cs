@@ -114,7 +114,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/jquery-DataTables/datatables.min.css\" />");
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/jquery-DataTables/datatables.min.js\"></script>");
 
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewCalendar.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 

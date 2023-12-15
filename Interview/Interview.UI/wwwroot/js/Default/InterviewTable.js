@@ -1,5 +1,5 @@
 ﻿
-var calendar = {
+var table = {
 
     Data: [],
     Table: null,
@@ -31,8 +31,8 @@ var calendar = {
 
                         var result;
 
-                        result = "<span class='mrgn-rght-sm'><a data-id=" + data.Id + " href='#modalContainer' class='" + calendar.EditClass + "'>Edit</a></span>";
-                        result = result + "<span><a data-id=" + data.Id + " href='#modalContainer' class='" + calendar.UsersClass + "'>Users</a></span>";
+                        result = "<span class='mrgn-rght-sm'><a data-id=" + data.Id + " href='#modalContainer' class='" + table.EditClass + "'>Edit</a></span>";
+                        result = result + "<span><a data-id=" + data.Id + " href='#modalContainer' class='" + table.UsersClass + "'>Users</a></span>";
 
                         return result;
 
@@ -74,7 +74,7 @@ var calendar = {
                     }
                 },
             ],
-            data: calendar.Data,
+            data: table.Data,
             //language: Resources.DataTablesLanguage,
         });
 
@@ -101,4 +101,4 @@ var calendar = {
 
 }
 
-calendar.Init();
+table.Init();

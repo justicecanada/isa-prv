@@ -28,7 +28,7 @@
 
     HookupMagnificPopup: function () {
 
-        $(this.OpenLink + ", ." + calendar.EditClass).magnificPopup({
+        $(this.OpenLink + ", ." + table.EditClass).magnificPopup({
             type: 'inline',
             modal: true,
             callbacks: {
@@ -43,7 +43,7 @@
 
     ElementParse: function (item) {
 
-        if ($(item.el[0]).hasClass(calendar.EditClass)) {
+        if ($(item.el[0]).hasClass(table.EditClass)) {
 
             var id = $(item.el[0]).data().id;
 
@@ -103,7 +103,7 @@
 
         if (data.result) {
             $.magnificPopup.close();
-            calendar.UpdateTable(data.item);
+            table.UpdateTable(data.item);
             interview.HookupMagnificPopup();
         }
         else {
