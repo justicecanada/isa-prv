@@ -124,7 +124,8 @@ namespace Interview.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Default}/{action=Index}");
+                    //pattern: "{controller=Default}/{action=Index}");
+                    pattern: "{controller=Account}/{action=SignIn}");
             });
 
             // WET
