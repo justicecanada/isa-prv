@@ -52,7 +52,8 @@ namespace Interview.UI
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.Cookie.Name = ".GoCWebTemplate.Session";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

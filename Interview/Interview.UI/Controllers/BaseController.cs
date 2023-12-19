@@ -47,6 +47,23 @@ namespace Interview.UI.Controllers
             // Identifier
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
 
+            // Session Timeout
+            // TODO:
+            // 1 - Try to move this to Startup.cs
+            // 2 - Create appSettings for values
+            // 3 - Create Logout Url
+            // 4 - Create RefreshCallbackUrl
+            WebTemplateModel.Settings.SessionTimeout.Enabled = true;
+            WebTemplateModel.Settings.SessionTimeout.Inactivity = 30000;
+            WebTemplateModel.Settings.SessionTimeout.ReactionTime = 10000;
+            WebTemplateModel.Settings.SessionTimeout.SessionAlive = 40000;
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
+            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
+            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = false;
+            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = 3;
+            WebTemplateModel.Settings.SessionTimeout.Method = "";
+            WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
+
         }
 
         #endregion
