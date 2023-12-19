@@ -60,6 +60,7 @@ namespace Interview.UI
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
+                options.Filters.Add(typeof(LanguageFilter));
             })
                 .AddRazorRuntimeCompilation();
 
@@ -116,6 +117,7 @@ namespace Interview.UI
             app.UseExceptionHandler("/Home/Error");
             app.UseStaticFiles();
 
+            app.UseRequestLocalization(); // >= v2.3.0
             app.UseRouting();
             //app.UseAuthorization();
             app.UseSession();
@@ -126,10 +128,6 @@ namespace Interview.UI
                     name: "default",
                     pattern: "{controller=Default}/{action=Index}");
             });
-
-            // WET
-            app.UseRequestLocalization(); // >= v2.3.0
-            app.UseRequestLocalization(CultureConfiguration.GetLocalizationOptions()); // <= v2.3.0
 
         }
 
