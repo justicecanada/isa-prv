@@ -44,7 +44,7 @@ label.required-fr::before {
 }
 
 label.required-fr::after {
-    content: " (Required fr)";
+    content: " (Obligatoire)";
     color: #dc3545;
     font-weight: 500;
 }
