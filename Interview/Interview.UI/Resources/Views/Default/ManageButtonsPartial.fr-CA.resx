@@ -121,7 +121,7 @@
     <value>Gestion du processus</value>
   </data>
   <data name="ManageEmails" xml:space="preserve">
-    <value>Emails (fr)</value>
+    <value>Emails</value>
   </data>
   <data name="ManageProcess" xml:space="preserve">
     <value>Gestion de la configuration du processus</value>
