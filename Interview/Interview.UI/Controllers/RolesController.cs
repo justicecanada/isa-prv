@@ -33,7 +33,8 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
-            IOptions<JusticeOptions> justiceOptions) : base(modelAccessor, justiceOptions, dal)
+            IOptions<JusticeOptions> justiceOptions, IOptions<Models.AppSettings.SessionTimeout> sessionTimeoutOptions) 
+            : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             
             _mapper = mapper;

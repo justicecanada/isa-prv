@@ -26,8 +26,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
-            : base(modelAccessor, justiceOptions, dal)
+        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+            IOptions<SessionTimeout> sessionTimeoutOptions) 
+            : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             _mapper = mapper;
             _state = state;

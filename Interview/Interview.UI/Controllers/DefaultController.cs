@@ -29,8 +29,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
-            : base(modelAccessor, justiceOptions, dal)
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+            IOptions<SessionTimeout> sessionTimeoutOptions) 
+            : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             _mapper = mapper;
             _state = state;
