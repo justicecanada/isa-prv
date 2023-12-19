@@ -27,7 +27,8 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, DalSql dal) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, IOptions<SessionTimeout> sessionTimeoutOptions, DalSql dal) 
+            : base(modelAccessor)
         {
 
             _justiceOptions = justiceOptions;
@@ -53,14 +54,14 @@ namespace Interview.UI.Controllers
             // 2 - Create appSettings for values
             // 3 - Create Logout Url
             // 4 - Create RefreshCallbackUrl
-            WebTemplateModel.Settings.SessionTimeout.Enabled = true;
-            WebTemplateModel.Settings.SessionTimeout.Inactivity = 30000;
-            WebTemplateModel.Settings.SessionTimeout.ReactionTime = 10000;
-            WebTemplateModel.Settings.SessionTimeout.SessionAlive = 40000;
+            WebTemplateModel.Settings.SessionTimeout.Enabled = sessionTimeoutOptions.Value.Enabled;
+            WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
             WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
-            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = false;
-            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = 3;
+            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
+            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.Method = "";
             WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
 

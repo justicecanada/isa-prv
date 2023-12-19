@@ -27,8 +27,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state) 
-            : base(modelAccessor, justiceOptions, dal)
+        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state,
+            IOptions<SessionTimeout> sessionTimeoutOptions) 
+            : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             _mapper = mapper;
             _state = state;

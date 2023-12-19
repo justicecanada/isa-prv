@@ -19,8 +19,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public StatsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions) 
-            : base(modelAccessor, justiceOptions, dal)
+        public StatsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions,
+            IOptions<SessionTimeout> sessionTimeoutOptions)
+            : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             _mapper = mapper;
         }

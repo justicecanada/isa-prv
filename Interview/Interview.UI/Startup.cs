@@ -52,7 +52,7 @@ namespace Interview.UI
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.IdleTimeout = TimeSpan.FromSeconds(Configuration.GetValue<double>("SessionTimeout:IdleTimeoutInMinutes"));
                 options.Cookie.Name = ".GoCWebTemplate.Session";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
@@ -67,6 +67,7 @@ namespace Interview.UI
 
             services.AddScoped<IState, SessionState>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
+            services.Configure<SessionTimeout>(Configuration.GetSection("SessionTimeout"));
 
             // Mocked Services
             services.AddTransient<MockSeeder>();
