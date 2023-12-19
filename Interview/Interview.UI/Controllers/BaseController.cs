@@ -20,6 +20,7 @@ namespace Interview.UI.Controllers
         private string _assemblyVersion;
         private string _buildId;
         private readonly IOptions<JusticeOptions> _justiceOptions;
+        private readonly IOptions<SessionTimeout> _sessionTimeoutOptions;
         protected readonly DalSql _dal;
         private MockUser _loggedInMockUser;
 
@@ -49,17 +50,13 @@ namespace Interview.UI.Controllers
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
 
             // Session Timeout
-            // TODO:
-            // 1 - Try to move this to Startup.cs
-            // 2 - Create appSettings for values
-            // 3 - Create Logout Url
-            // 4 - Create RefreshCallbackUrl
+            _sessionTimeoutOptions = sessionTimeoutOptions;
             WebTemplateModel.Settings.SessionTimeout.Enabled = sessionTimeoutOptions.Value.Enabled;
             WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
-            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Base/Logout";
+            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "Base/SessionValidity";
             WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
             WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.Method = "";
@@ -151,6 +148,31 @@ namespace Interview.UI.Controllers
             {
                 StatusCode = 200
             };
+
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+
+            IActionResult result = null;
+
+            // Handle where to redirect
+            if (User.Identity.IsAuthenticated)
+                result = new RedirectToActionResult("Index", "Account", null);
+            else
+                result = new ViewResult();
+
+            // Handle Session
+            HttpContext.Session.Clear();
+
+            return result;
+
+        }
+
+        [HttpGet]
+        public void SessionValidity()
+        {
 
         }
 

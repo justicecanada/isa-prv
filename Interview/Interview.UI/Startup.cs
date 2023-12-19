@@ -53,7 +53,7 @@ namespace Interview.UI
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(Configuration.GetValue<double>("SessionTimeout:IdleTimeoutInMinutes"));
-                options.Cookie.Name = ".GoCWebTemplate.Session";
+                options.Cookie.Name = Configuration.GetValue<string>("SessionTimeout:CookieName");
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

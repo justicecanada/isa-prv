@@ -4,6 +4,8 @@
     public class SessionTimeout
     {
 
+        public string CookieName { get; set;  }
+
         public bool Enabled { get; set; }
 
         public int IdleTimeoutInMinutes { get; set; }   
