@@ -55,7 +55,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Base/Logout";
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Account/SignOut";
             WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "Base/SessionValidity";
             WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
             WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
@@ -148,25 +148,6 @@ namespace Interview.UI.Controllers
             {
                 StatusCode = 200
             };
-
-        }
-
-        [HttpGet]
-        public IActionResult Logout()
-        {
-
-            IActionResult result = null;
-
-            // Handle where to redirect
-            if (User.Identity.IsAuthenticated)
-                result = new RedirectToActionResult("Index", "Account", null);
-            else
-                result = new ViewResult();
-
-            // Handle Session
-            HttpContext.Session.Clear();
-
-            return result;
 
         }
 
