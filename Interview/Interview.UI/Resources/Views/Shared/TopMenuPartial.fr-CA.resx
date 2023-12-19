@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dashboard" xml:space="preserve">
-    <value>Dashboard (fr)</value>
+    <value>Tableau de bord</value>
   </data>
   <data name="GroupList" xml:space="preserve">
-    <value>Group List (fr)</value>
+    <value>Liste des groupes</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home (fr)</value>
+    <value>Accueil</value>
   </data>
   <data name="ProcessList" xml:space="preserve">
-    <value>Process List (fr)</value>
+    <value>Liste des processus</value>
   </data>
 </root>
