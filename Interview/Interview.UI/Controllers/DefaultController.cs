@@ -62,6 +62,7 @@ namespace Interview.UI.Controllers
             }
 
             await SetIndexViewBag(contests, contestId);
+            SetupAuthViewBag();
             RegisterIndexClientResources();
             
             return View();
@@ -103,6 +104,15 @@ namespace Interview.UI.Controllers
                 
 
             }
+
+        }
+
+        private void SetupAuthViewBag()
+        {
+
+            ViewBag.userExists = User != null;
+            ViewBag.userAuthenticated = User?.Identity?.IsAuthenticated;
+            ViewBag.userName = User?.Identity?.Name;
 
         }
 

@@ -116,6 +116,17 @@ namespace Interview.UI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
 
+            string routePattern = null;
+
+            if (env.IsDevelopment())
+            {
+                routePattern = "{controller=Default}/{action=Index}";
+            }
+            else
+            {
+                routePattern = "{controller=Account}/{action=SignIn}";
+            }
+
             app.UseExceptionHandler("/Home/Error");
             app.UseStaticFiles();
 
@@ -127,9 +138,8 @@ namespace Interview.UI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                //pattern: "{controller=Default}/{action=Index}");
-                pattern: "{controller=Account}/{action=SignIn}");
+                name: "default",
+                pattern: routePattern);
             });
 
         }
