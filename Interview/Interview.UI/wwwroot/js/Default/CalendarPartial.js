@@ -7,10 +7,19 @@ $(document).on("wb-ready.wb-calevt", ".wb-calevt", function (event) {
 var calendar = {
 
     Control: $("#interviewCalendar")[0],
+    CurrentMonthSelector: ".current-month",
 
     Init: function () {
 
-        //debugger;
+        $(document).on("wb-updated.wb-calevt", ".wb-calevt", function (event, e) {
+
+            debugger;
+
+            var selectedMonth = $(calendar.CurrentMonthSelector)[0].innerHTML;
+
+            debugger;
+
+        });
 
     }, 
 
