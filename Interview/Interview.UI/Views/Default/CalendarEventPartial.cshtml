@@ -3,7 +3,9 @@
 @{
 
 	VmInterview vmInterview = (VmInterview)ViewData["vmInterview"];
-	string description = $"{vmInterview.Location}, {vmInterview.Room}";
+	TimeSpan duration = new TimeSpan((int)vmInterview.Duration);
+	string startAndEndTime = $"{vmInterview.VmStartTime.ToString(@"hh\:mm")} - {vmInterview.VmStartTime.Add(duration).ToString(@"hh\:mm")}";
+	string description = $"{startAndEndTime}, {vmInterview.Location}, {vmInterview.Room}";
 
 }
 
