@@ -17,16 +17,19 @@ namespace Interview.UI.Models
         public Guid ContestId { get; set; }
 
         [Display(Name = "Room")]
-        [MaxLength(128, ErrorMessage = "MaxLength")]
+		[Required]
+		[MaxLength(128, ErrorMessage = "MaxLength")]
         public string? Room { get; set; }
 
         [Display(Name = "Location")]
-        [MaxLength(128, ErrorMessage = "MaxLength")]
+		[Required]
+		[MaxLength(128, ErrorMessage = "MaxLength")]
         public string? Location { get; set; }
 
         [Display(Name = "StartDate")]
-        //[MaxLength(128, ErrorMessage = "MaxLength")]
-        public DateTime? VmStartDate { get; set; }
+		[Required]
+		//[MaxLength(128, ErrorMessage = "MaxLength")]
+		public DateTime? VmStartDate { get; set; }
 
         [Display(Name = "StartTime")]
         public TimeSpan? VmStartTime { get; set;  }

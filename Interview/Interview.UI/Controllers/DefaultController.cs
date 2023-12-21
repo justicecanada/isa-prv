@@ -86,18 +86,14 @@ namespace Interview.UI.Controllers
             if (contestId != null)
             {
 
-                // This method mimics the Entrevue.Default.SetCalendar() method. That method has a few concerns:
-                // 1. Populating dropdowns
-                // 2. Setting the visibility of various form elements
-                // 3. Setting the wording of various form elements
-                // Within an MVC framework, these concerns are handled at the View layer (not the Controller layer).
-                // However, the Controller here will set the items for dropdowns in viewbag.
-
                 Contest contest = contests.Where(x => x.Id == contestId).First();
-                List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
+                DateTime startDate = GetMonthStartDate(DateTime.Now);
+				DateTime endDate = GetMonthEndDate(DateTime.Now);
+				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)contestId, startDate, endDate);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+                //Dictionary<DateTime, VmInterview> dictInterviews = vmInterviews.ToDictionary(x => x.VmStartDate, x => x);
 
-                ViewBag.Interviews = vmInterviews;
+                ViewBag.VmInterviews = vmInterviews;
 
             }
 
@@ -119,6 +115,24 @@ namespace Interview.UI.Controllers
             //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 
         }
+
+        private DateTime GetMonthStartDate(DateTime date)
+        {
+
+            DateTime result = new DateTime(date.Year, date.Month, 1);
+
+            return result;
+
+        }
+
+        private DateTime GetMonthEndDate(DateTime date)
+        {
+
+			DateTime result = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddSeconds(-1);
+
+			return result;
+
+		}
 
         #endregion
 

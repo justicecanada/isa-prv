@@ -1,9 +1,8 @@
-﻿
-@inject IViewLocalizer localizer
+﻿@inject IViewLocalizer localizer
 
 @{
 
-
+	List<VmInterview> VmInterviews = ViewBag.VmInterviews;
 
 }
 
@@ -13,6 +12,7 @@
 
 <div class="wb-calevt evt-anchor" data-wb-calevt='{"year": @DateTime.Now.ToString("yyyy"), "month": @DateTime.Now.ToString("M")}' data-calevt-src="interviewCalendar">
 	<ul class="hidden">
+		@*Set Calendar month range:*@
 		<li class="cal-disp-onshow">
 			<section>
 				<h4><a href="">Single-Day Event</a></h4>
@@ -27,5 +27,11 @@
 				<p>Event Description</p>
 			</section>
 		</li>
+
+		@foreach (VmInterview vmInterview in VmInterviews)
+		{
+			await Html.RenderPartialAsync("CalendarEventPartial", new ViewDataDictionary(ViewData) { { "vmInterview", vmInterview } });
+		}
+
 	</ul>
 </div>

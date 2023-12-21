@@ -1,0 +1,16 @@
+﻿
+
+@{
+
+	VmInterview vmInterview = (VmInterview)ViewData["vmInterview"];
+	string description = $"{vmInterview.Location}, {vmInterview.Room}";
+
+}
+
+<li class="cal-disp-onshow">
+	<section>
+		<h4><a href="">@description</a></h4>
+		<p><time datetime="@((DateTime)vmInterview.VmStartDate).ToString(Constants.DateFormat)">StartDate</time></p>
+		<p>Event Description</p>
+	</section>
+</li>

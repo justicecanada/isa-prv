@@ -403,10 +403,11 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId)
+        public async Task<List<Interview.Entities.Interview>> GetInterViewsByContestIdAndDateRange(Guid contestId, DateTime startDate, DateTime endDate)
         {
 
-            var result = await _context.Interviews.Where(x => x.ContestId == contestId).ToListAsync();
+            var result = await _context.Interviews.Where(x => (x.ContestId == contestId && (x.StartDate > startDate && x.StartDate < endDate)))
+                .ToListAsync();
 
             return result;
 
