@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 
 namespace Interview.UI.Controllers
@@ -77,7 +78,24 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
+        [HttpGet]
+        public async Task<PartialViewResult> MonthylyInterviewsPartial(string currentMonth)
+        {
+
+            DateTime monthDate = GetMonthlyDateFromString(currentMonth);
+			DateTime startDate = GetMonthStartDate(monthDate);
+			DateTime endDate = GetMonthEndDate(monthDate);
+			List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)_state.ContestId, startDate, endDate);
+			List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+
+			ViewBag.VmInterviews = vmInterviews;
+
+			return PartialView();
+
+        }
+
+
+		private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
         {
 
             ViewBag.Contests = contests;
@@ -132,6 +150,20 @@ namespace Interview.UI.Controllers
 			return result;
 
 		}
+
+        private DateTime GetMonthlyDateFromString(string currentMonth)
+        {
+
+            DateTime result;
+            string[] split = currentMonth.Split(" ");
+			int year = System.Convert.ToInt16(split[1]);
+			int month = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList().IndexOf(split[0]) + 1;
+            
+            result = new DateTime(year, month, 1);
+
+            return result;
+
+        }
 
         #endregion
 

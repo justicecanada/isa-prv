@@ -11,26 +11,5 @@
 <div id="interviewCalendar" class="cal-cnt-fluid"></div>
 
 <div class="wb-calevt evt-anchor" data-wb-calevt='{"year": @DateTime.Now.ToString("yyyy"), "month": @DateTime.Now.ToString("M")}' data-calevt-src="interviewCalendar">
-	<ul class="hidden">
-		@*Set Calendar month range:*@
-		<li class="cal-disp-onshow">
-			<section>
-				<h4><a href="">Single-Day Event</a></h4>
-				<p><time datetime="@DateTime.Now.AddMonths(-1).ToString(Constants.DateFormat)">StartDate</time></p>
-				<p>Event Description</p>
-			</section>
-		</li>
-		<li class="cal-disp-onshow">
-			<section>
-				<h4><a href="">Single-Day Event</a></h4>
-				<p><time datetime="@DateTime.Now.AddYears(1).ToString(Constants.DateFormat)">EndDate</time></p>
-				<p>Event Description</p>
-			</section>
-		</li>
-
-		@{
-			await Html.RenderPartialAsync("MonthylyInterviewsPartial");
-		}
-
-	</ul>
+	@{ await Html.RenderPartialAsync("MonthylyInterviewsPartial"); }
 </div>
