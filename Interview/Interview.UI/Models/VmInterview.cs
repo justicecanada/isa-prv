@@ -29,10 +29,11 @@ namespace Interview.UI.Models
         [Display(Name = "StartDate")]
 		[Required]
 		//[MaxLength(128, ErrorMessage = "MaxLength")]
-		public DateTime? VmStartDate { get; set; }
+		public DateTime VmStartDate { get; set; }
 
         [Display(Name = "StartTime")]
-        public TimeSpan? VmStartTime { get; set;  }
+		[Required]
+		public TimeSpan VmStartTime { get; set;  }
 
         [Display(Name = "Duration")]
         //[RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]

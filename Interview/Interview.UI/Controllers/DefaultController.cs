@@ -91,7 +91,6 @@ namespace Interview.UI.Controllers
 				DateTime endDate = GetMonthEndDate(DateTime.Now);
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)contestId, startDate, endDate);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
-                //Dictionary<DateTime, VmInterview> dictInterviews = vmInterviews.ToDictionary(x => x.VmStartDate, x => x);
 
                 ViewBag.VmInterviews = vmInterviews;
 
