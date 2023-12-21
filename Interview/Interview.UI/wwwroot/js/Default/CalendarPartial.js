@@ -1,8 +1,8 @@
 ﻿//https://wet-boew.github.io/wet-boew/demos/cal-events/cal-events-en.html#calendar4
 
-//$(document).ready(function () {
-//    calendar.Init();
-//});
+$(document).on("wb-ready.wb-calevt", ".wb-calevt", function (event) {
+    calendar.Init();
+});
 
 var calendar = {
 
@@ -10,12 +10,8 @@ var calendar = {
 
     Init: function () {
 
-        debugger;
-
-        //$(this.Control).trigger("wb-init.wb-calevt");
+        //debugger;
 
     }, 
 
 }
-
-calendar.Init();
