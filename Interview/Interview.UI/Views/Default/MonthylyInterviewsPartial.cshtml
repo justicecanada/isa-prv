@@ -1,0 +1,36 @@
+﻿
+@{
+
+    List<VmInterview> VmInterviews = ViewBag.VmInterviews;
+
+}
+
+@functions {
+
+	public string GetDescription(VmInterview vmInterview)
+	{
+
+		string result = "Hey!";
+		TimeSpan duration = new TimeSpan(0, (int)vmInterview.Duration, 0);
+		string startAndEndTime = $"{vmInterview.VmStartTime.ToString(@"hh\:mm")} - {vmInterview.VmStartTime.Add(duration).ToString(@"hh\:mm")}";
+
+		result = $"{startAndEndTime}, {vmInterview.Location}, {vmInterview.Room}";
+
+		return result;
+	
+	}
+
+}
+
+@foreach (VmInterview vmInterview in VmInterviews)
+{
+	
+	<li class="cal-disp-onshow">
+		<section>
+			<h4><a href="">@GetDescription(vmInterview)</a></h4>
+			<p><time datetime="@((DateTime)vmInterview.VmStartDate).ToString(Constants.DateFormat)">StartDate</time></p>
+			<p>Event Description</p>
+		</section>
+	</li>
+
+}

@@ -28,9 +28,8 @@
 			</section>
 		</li>
 
-		@foreach (VmInterview vmInterview in VmInterviews)
-		{
-			await Html.RenderPartialAsync("CalendarEventPartial", new ViewDataDictionary(ViewData) { { "vmInterview", vmInterview } });
+		@{
+			await Html.RenderPartialAsync("MonthylyInterviewsPartial");
 		}
 
 	</ul>

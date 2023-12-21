@@ -11,16 +11,16 @@ var calendar = {
 
     Init: function () {
 
-        $(document).on("wb-updated.wb-calevt", ".wb-calevt", function (event, e) {
-
-            debugger;
-
-            var selectedMonth = $(calendar.CurrentMonthSelector)[0].innerHTML;
-
-            debugger;
-
-        });
+        $(document).on("wb-updated.wb-calevt", ".wb-calevt", calendar.ChangeMonth);
 
     }, 
+
+    ChangeMonth: function () {
+
+        debugger;
+
+        var selectedMonth = $(calendar.CurrentMonthSelector)[0].innerHTML;
+
+    }
 
 }
