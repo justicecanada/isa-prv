@@ -214,7 +214,7 @@ namespace Interview.UI.Controllers
             {
 
                 List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
-                TimeSpan startTime = interview.StartDate.Value.TimeOfDay;
+                TimeSpan startTime = interview.StartDate.TimeOfDay;
                 TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
                 TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
                 TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
