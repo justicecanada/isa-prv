@@ -99,8 +99,6 @@ namespace Interview.UI.Controllers
 
                 ViewBag.Interviews = vmInterviews;
 
-                
-
             }
 
         }
@@ -116,7 +114,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/jquery-DataTables/datatables.min.js\"></script>");
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/CalendarPartial.js?v={BuildId}\"></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");              // Temp
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 

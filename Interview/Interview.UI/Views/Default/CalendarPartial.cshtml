@@ -1,43 +1,10 @@
-﻿@using Interview.Entities
-@using Interview.UI.Models
-@using Newtonsoft.Json
+﻿
 @inject IViewLocalizer localizer
 
 @{
 
-    Contest contest = ViewBag.Contest;
-    List<VmInterview> interviews = ViewBag.Interviews;
 
-    string tableData = JsonConvert.SerializeObject(interviews);
 
 }
 
-<div id="calendar"></div>
-
-<div class="container row">
-    <div class="well well-lg">
-        <div class="row">
-            <a id="interviewModal" href="#modalContainer">Add Interview</a>
-        </div>
-
-        <div class="table-responsive">
-            <table id="tblItems" class="table table-striped" data-tabledata="@tableData">
-                <thead>
-                    <tr>
-                        <th class="tableActionColumn">&nbsp;</th>
-                        <th>Room</th>
-                        <th>Location</th>
-                        <th>ContactName</th>
-                        <th>ContactNumber</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
-
-    </div>   
-</div>
-
-@{
-    await Html.RenderPartialAsync("ModalContainer");
-}
+<h2>CalendarPartial</h2>
