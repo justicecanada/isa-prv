@@ -6,9 +6,13 @@
 
 var calendar = {
 
+    Control: $("#interviewCalendar")[0],
+
     Init: function () {
 
-        //debugger;
+        debugger;
+
+        //$(this.Control).trigger("wb-init.wb-calevt");
 
     }, 
 
