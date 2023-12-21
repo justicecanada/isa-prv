@@ -46,6 +46,7 @@ namespace Interview.UI
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
+            services.AddHttpClient<IDalAuth, DalAuth>();
 
             services.AddAutoMapper(typeof(MapperConfig));
 
@@ -116,17 +117,6 @@ namespace Interview.UI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
 
-            string routePattern = null;
-
-            if (env.IsDevelopment())
-            {
-                routePattern = "{controller=Default}/{action=Index}";
-            }
-            else
-            {
-                routePattern = "{controller=Account}/{action=SignIn}";
-            }
-
             app.UseExceptionHandler("/Home/Error");
             app.UseStaticFiles();
 
@@ -135,6 +125,7 @@ namespace Interview.UI
             //app.UseAuthorization();
             app.UseSession();
 
+            string routePattern = env.IsDevelopment() ? "{controller=Default}/{action=Index}" : "{controller=Account}/{action=SignIn}";
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,0 +1,49 @@
+﻿
+@using Interview.UI.Models.Auth
+@using Newtonsoft.Json
+
+@{
+
+    GetAuthToken getAuthToken = ViewBag.GetAuthToken;
+    //string serializedAuthToken = JsonConvert.SerializeObject(getAuthToken);
+
+}
+
+
+<div class="container">
+
+    <div class="row well well-sm">
+
+        <small>
+
+            <div class="col-md-12">
+                Build ID = @ViewBag.Buildid
+            </div>
+
+            <div class="col-md-12">
+                Referer = @ViewBag.Referer
+            </div>
+            <div class="col-md-12">
+                @*<li>Referrer Headers = @ViewBag.Headers</li>*@
+                Cookies = @ViewBag.Cookies
+            </div>
+ 
+            @*<div class="col-md-12">
+                User Exists = @ViewBag.UserExists
+            </div>*@
+            <div class="col-md-12">
+                User Authenticated = @ViewBag.UserAuthenticated
+            </div>
+            <div class="col-md-12">
+                User Name = @ViewBag.UserName
+            </div>
+
+        </small>
+
+        @*<pre>
+            @Html.Raw(JsonConvert.SerializeObject(getAuthToken, Formatting.Indented))
+        </pre>*@
+
+    </div>
+
+</div>

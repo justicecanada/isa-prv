@@ -26,21 +26,6 @@
 
 }
 
-<div class="container">
-    <div class="row well well-lg small">
-        <div class="col-md-12">
-            User Exists = @ViewBag.userExists
-        </div>
-        <div class="col-md-12">
-            User Authenticated = @ViewBag.userAuthenticated
-        </div>
-        <div class="col-md-12">
-            User Name = @ViewBag.userName
-        </div>
-    </div>
-</div>
-
-
 @{
     await Html.RenderPartialAsync("TopMenuPartial");
     await Html.RenderPartialAsync("ManageButtonsPartial");
@@ -63,6 +48,7 @@
     await Html.RenderPartialAsync("MembersWelcomePartial");
     await Html.RenderPartialAsync("RulesPartial");
     await Html.RenderPartialAsync("CalendarPartial");
+    await Html.RenderPartialAsync("AuthTokenPartial");
 }
 
 <script src="~/js/default/index.js" asp-append-version="true"></script>

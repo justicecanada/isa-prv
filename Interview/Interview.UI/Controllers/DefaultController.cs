@@ -3,11 +3,13 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Auth;
 using Interview.UI.Models.Default;
 using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -24,17 +26,19 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IDalAuth _dalAuth;
 
         #endregion
 
         #region Constructors
 
         public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
-            IOptions<SessionTimeout> sessionTimeoutOptions) 
+            IOptions<SessionTimeout> sessionTimeoutOptions, IDalAuth dalAuth) 
             : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             _mapper = mapper;
             _state = state;
+            _dalAuth = dalAuth;
         }
 
         #endregion
@@ -62,7 +66,7 @@ namespace Interview.UI.Controllers
             }
 
             await SetIndexViewBag(contests, contestId);
-            SetupAuthViewBag();
+            await SetupAuthViewBag();
             RegisterIndexClientResources();
             
             return View();
@@ -107,12 +111,30 @@ namespace Interview.UI.Controllers
 
         }
 
-        private void SetupAuthViewBag()
+        private async Task SetupAuthViewBag()
         {
 
-            ViewBag.userExists = User != null;
-            ViewBag.userAuthenticated = User?.Identity?.IsAuthenticated;
-            ViewBag.userName = User?.Identity?.Name;
+            List<string> keys = new List<string>();
+
+            ViewBag.Buildid = BuildId;
+
+            // Request Params
+            ViewBag.Referer = Request.Headers["Referer"].ToString();
+            //foreach (var header in Request.Headers.Keys)
+            //    keys.Add(header);
+            //ViewBag.Headers = string.Join(", ", keys);
+            //keys.Clear();
+            foreach (var header in Request.Cookies.Keys)
+                keys.Add(header);
+            ViewBag.Cookies = string.Join(", ", keys);
+
+            // User Auth
+            //ViewBag.UserExists = User != null;
+            ViewBag.UserAuthenticated = User.Identity.IsAuthenticated;
+            ViewBag.UserName = User.Identity.Name;
+
+            // Get Access Token
+            //ViewBag.GetAuthToken = await _dalAuth.GetAuthToken();
 
         }
 
