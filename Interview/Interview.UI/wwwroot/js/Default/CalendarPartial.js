@@ -7,10 +7,10 @@
 var calendar = {
 
     Control: $("#interviewCalendar")[0],
+    InterviewList: $("#interviewList")[0],
     CurrentMonthSelector: ".current-month",
     GetMonthUri: "Default/MonthylyInterviewsPartial",
-    InterviewList: $("#interviewList")[0],
-
+    
     Init: function () {
 
         $(document).on("wb-updated.wb-calevt", ".wb-calevt", calendar.ChangeMonth);
@@ -27,7 +27,7 @@ var calendar = {
 
             $.get(calendar.GetMonthUri + "?currentMonth=" + currentMonth)
                 .done(function (data, textStatus, jqXHR) {
-                    $(calendar.InterviewList).html(data);
+                    $(calendar.InterviewList).replaceWith(data);
                     // TODO: https://wet-boew.github.io/wet-boew/docs/ref/cal-events/cal-events-en.html
                     // 1. Look here to reinitialize the calendar. Which element is $elm? (calendar.InterviewList or calendar.Control)
                     // 2. Monthly Interviews partial reapply the hidden style to ul

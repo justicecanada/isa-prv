@@ -1,7 +1,8 @@
 ﻿
 @{
 
-    List<VmInterview> VmInterviews = ViewBag.VmInterviews;
+    DateTime currentMonth = ViewBag.CurrentMonth;
+	List<VmInterview> VmInterviews = ViewBag.VmInterviews;
 
 }
 
@@ -22,34 +23,38 @@
 
 }
 
-@*<ul id="interviewList" class="hidden">*@
-<ul id="interviewList">
-	@*Set Calendar month range:*@
-	<li class="cal-disp-onshow">
-		<section>
-			<h4><a href="">Single-Day Event</a></h4>
-			<p><time datetime="@DateTime.Now.AddMonths(-1).ToString(Constants.DateFormat)">StartDate</time></p>
-			<p>Event Description</p>
-		</section>
-	</li>
-	<li class="cal-disp-onshow">
-		<section>
-			<h4><a href="">Single-Day Event</a></h4>
-			<p><time datetime="@DateTime.Now.AddYears(1).ToString(Constants.DateFormat)">EndDate</time></p>
-			<p>Event Description</p>
-		</section>
-	</li>
+<div id="interviewList" class="wb-calevt evt-anchor" data-wb-calevt='{"year": @currentMonth.ToString("yyyy"), "month": @currentMonth.ToString("M")}' data-calevt-src="interviewCalendar">
 
-	@foreach (VmInterview vmInterview in VmInterviews)
-	{
-	
-		<li class="cal-disp-onshow monthlyInterview">
+	@*<ul id="interviewList" class="hidden">*@
+	<ul >
+		@*Set Calendar month range:*@
+		<li class="cal-disp-onshow">
 			<section>
-				<h4><a href="">@GetDescription(vmInterview)</a></h4>
-				<p><time datetime="@((DateTime)vmInterview.VmStartDate).ToString(Constants.DateFormat)">StartDate</time></p>
+				<h4><a href="">Single-Day Event</a></h4>
+				<p><time datetime="@DateTime.Now.AddMonths(-1).ToString(Constants.DateFormat)">StartDate</time></p>
+				<p>Event Description</p>
+			</section>
+		</li>
+		<li class="cal-disp-onshow">
+			<section>
+				<h4><a href="">Single-Day Event</a></h4>
+				<p><time datetime="@DateTime.Now.AddYears(1).ToString(Constants.DateFormat)">EndDate</time></p>
 				<p>Event Description</p>
 			</section>
 		</li>
 
-	}
-</ul>
+		@foreach (VmInterview vmInterview in VmInterviews)
+		{
+	
+			<li class="cal-disp-onshow monthlyInterview">
+				<section>
+					<h4><a href="">@GetDescription(vmInterview)</a></h4>
+					<p><time datetime="@((DateTime)vmInterview.VmStartDate).ToString(Constants.DateFormat)">StartDate</time></p>
+					<p>Event Description</p>
+				</section>
+			</li>
+
+		}
+	</ul>
+
+</div>

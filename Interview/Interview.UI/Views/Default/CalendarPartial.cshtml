@@ -2,14 +2,10 @@
 
 @{
 
-	List<VmInterview> VmInterviews = ViewBag.VmInterviews;
-
 }
 
 <h2>Calendar Partial</h2>
 
 <div id="interviewCalendar" class="cal-cnt-fluid"></div>
 
-<div class="wb-calevt evt-anchor" data-wb-calevt='{"year": @DateTime.Now.ToString("yyyy"), "month": @DateTime.Now.ToString("M")}' data-calevt-src="interviewCalendar">
-	@{ await Html.RenderPartialAsync("MonthylyInterviewsPartial"); }
-</div>
+@{ await Html.RenderPartialAsync("MonthylyInterviewsPartial"); }

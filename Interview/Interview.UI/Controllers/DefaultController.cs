@@ -88,12 +88,12 @@ namespace Interview.UI.Controllers
 			List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)_state.ContestId, startDate, endDate);
 			List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
+			ViewBag.CurrentMonth = startDate;
 			ViewBag.VmInterviews = vmInterviews;
 
 			return PartialView();
 
         }
-
 
 		private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
         {
@@ -110,6 +110,7 @@ namespace Interview.UI.Controllers
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)contestId, startDate, endDate);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
+                ViewBag.CurrentMonth = startDate;
                 ViewBag.VmInterviews = vmInterviews;
 
             }
