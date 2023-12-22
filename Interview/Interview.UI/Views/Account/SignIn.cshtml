@@ -8,4 +8,10 @@
 
 <h1>Sign In</h1>
 
-<a href="/.auth/login/aad?post_login_redirect_uri=/Default/Index">Log in with the Microsoft Identity Platform</a>
+@*<a href="/.auth/login/aad?post_login_redirect_uri=/Default/Index">Log in with the Microsoft Identity Platform</a>*@
+
+<p>Before rendering the page, the Page Model was able to make a call to Microsoft Graph's <code>/me</code> API for your user and received the following:</p>
+
+<p><pre><code class="language-js">@ViewData["ApiResult"]</code></pre></p>
+
+<p>Refreshing this page will continue to use the cached access token acquired for Microsoft Graph, which is valid for future page views will attempt to refresh this token as it nears its expiration.</p>

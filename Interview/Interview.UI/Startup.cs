@@ -124,19 +124,22 @@ namespace Interview.UI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseExceptionHandler("/Home/Error");
             app.UseStaticFiles();
 
             app.UseRequestLocalization(); // >= v2.3.0
-            app.UseRouting();
-            //app.UseAuthorization();
+            app.UseRouting();          
             app.UseSession();
 
-            app.UseEndpoints(endpoints =>
+			string routePattern = env.IsDevelopment() ? "{controller=Default}/{action=Index}" : "{controller=Account}/{action=SignIn}";
+			app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Default}/{action=Index}");
+                pattern: "{controller=Account}/{action=SignIn}");
             });
 
         }
