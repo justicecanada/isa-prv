@@ -21,6 +21,7 @@ using Interview.UI.Services.Mock;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Mock.Departments;
+using Microsoft.Identity.Web;
 
 namespace Interview.UI
 {
@@ -43,7 +44,13 @@ namespace Interview.UI
 
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
-            services.AddTransient<DalSql>();
+			IEnumerable<string>? initialScopes = Configuration["DownstreamApi:Scopes"]?.Split(' ');
+			builder.Services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd")
+	            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+		            .AddDownstreamWebApi("DownstreamApi", Configuration.GetSection("DownstreamApi"))
+		            .AddInMemoryTokenCaches();
+
+			services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
             services.AddHttpClient<IDalAuth, DalAuth>();
@@ -125,12 +132,11 @@ namespace Interview.UI
             //app.UseAuthorization();
             app.UseSession();
 
-            string routePattern = env.IsDevelopment() ? "{controller=Default}/{action=Index}" : "{controller=Account}/{action=SignIn}";
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                 name: "default",
-                pattern: routePattern);
+                pattern: "{controller=Default}/{action=Index}");
             });
 
         }
