@@ -1,8 +1,8 @@
 ﻿//https://wet-boew.github.io/wet-boew/demos/cal-events/cal-events-en.html#calendar4
 
-//$(document).on("wb-ready.wb-calevt", ".wb-calevt", function (event) {
-//    calendar.Init();
-//});
+$(document).on("wb-ready.wb-calevt", ".wb-calevt", function (event) {
+    calendar.Init();
+});
 
 var calendar = {
 
@@ -13,6 +13,7 @@ var calendar = {
     
     Init: function () {
 
+        $(document).off("wb-updated.wb-calevt", ".wb-calevt");
         $(document).on("wb-updated.wb-calevt", ".wb-calevt", calendar.ChangeMonth);
 
     }, 
@@ -31,7 +32,8 @@ var calendar = {
                     // TODO: https://wet-boew.github.io/wet-boew/docs/ref/cal-events/cal-events-en.html
                     // 1. Look here to reinitialize the calendar. Which element is $elm? (calendar.InterviewList or calendar.Control)
                     // 2. Monthly Interviews partial reapply the hidden style to ul
-                    $(calendar.InterviewList).trigger("wb-init.wb-calevt");
+                    $(calendar.Control).trigger("wb-redraw.wb-calevt");
+                    calendar.Init();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     debugger;
@@ -43,4 +45,4 @@ var calendar = {
 
 }
 
-calendar.Init();
+//calendar.Init();
