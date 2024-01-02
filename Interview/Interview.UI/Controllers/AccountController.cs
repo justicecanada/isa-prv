@@ -10,8 +10,9 @@ using System.Text.Json;
 
 namespace Interview.UI.Controllers
 {
-    
-    public class AccountController : BaseController
+
+	[AuthorizeForScopes(ScopeKeySection = "DownstreamApi:Scopes")]
+	public class AccountController : BaseController
     {
 
 		#region Declarations
@@ -34,7 +35,7 @@ namespace Interview.UI.Controllers
         #region SignIn
 
         [HttpGet]
-        public async Task<IActionResult> SignIn()
+        public async Task<IActionResult> SignedIn()
         {
 
 			using var response = await _downstreamWebApi.CallWebApiForUserAsync("DownstreamApi").ConfigureAwait(false);

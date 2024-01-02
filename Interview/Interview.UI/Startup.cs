@@ -22,6 +22,9 @@ using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Mock.Departments;
 using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web.UI;
 
 namespace Interview.UI
 {
@@ -46,9 +49,9 @@ namespace Interview.UI
 
 			IEnumerable<string>? initialScopes = Configuration["DownstreamApi:Scopes"]?.Split(' ');
 			builder.Services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd")
-	            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-		            .AddDownstreamWebApi("DownstreamApi", Configuration.GetSection("DownstreamApi"))
-		            .AddInMemoryTokenCaches();
+                .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+                    .AddDownstreamWebApi("DownstreamApi", Configuration.GetSection("DownstreamApi"))
+                    .AddInMemoryTokenCaches();
 
 			services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
@@ -66,12 +69,15 @@ namespace Interview.UI
                 options.Cookie.IsEssential = true;
             });
 
+            var authPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
             services.AddControllersWithViews(options =>
             {
+                options.Filters.Add(new AuthorizeFilter(authPolicy));
                 options.Filters.Add(typeof(ExceptionFilter));
                 options.Filters.Add(typeof(LanguageFilter));
-            })
-                .AddRazorRuntimeCompilation();
+            }) 
+				.AddMicrosoftIdentityUI()
+				.AddRazorRuntimeCompilation();
 
             services.AddScoped<IState, SessionState>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
@@ -139,7 +145,7 @@ namespace Interview.UI
             {
                 endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=SignIn}");
+                pattern: "{controller=Account}/{action=SignedIn}");
             });
 
         }
