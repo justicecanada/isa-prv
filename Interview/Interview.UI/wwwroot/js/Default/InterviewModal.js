@@ -1,6 +1,16 @@
-﻿var interview = {
+﻿
+
+if (wb.isReady)
+    interview.Init();
+else
+    $(document).on("wb-ready.wb", function (event) {
+        interview.Init();
+    });
+
+var interview = {
 
     OpenLink: "#interviewModal",
+    EditClass: "cal-curr-day",
     ModalSelector: "#modalContainer",
     Uri: "/Default/InterviewModal",
     Form: null,
@@ -28,7 +38,7 @@
 
     HookupMagnificPopup: function () {
 
-        $(this.OpenLink + ", ." + table.EditClass).magnificPopup({
+        $(this.OpenLink + ", ." + this.EditClass).magnificPopup({
             type: 'inline',
             modal: true,
             callbacks: {
@@ -43,7 +53,7 @@
 
     ElementParse: function (item) {
 
-        if ($(item.el[0]).hasClass(table.EditClass)) {
+        if ($(item.el[0]).hasClass(interview.EditClass)) {
 
             var id = $(item.el[0]).data().id;
 
@@ -118,5 +128,3 @@
     },
 
 }
-
-interview.Init();
