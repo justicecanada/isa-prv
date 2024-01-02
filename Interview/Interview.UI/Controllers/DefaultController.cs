@@ -78,23 +78,6 @@ namespace Interview.UI.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<PartialViewResult> MonthylyInterviewsPartial(string currentMonth)
-        {
-
-            DateTime monthDate = GetMonthlyDateFromString(currentMonth);
-			DateTime startDate = GetMonthStartDate(monthDate);
-			DateTime endDate = GetMonthEndDate(monthDate);
-			List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)_state.ContestId, startDate, endDate);
-			List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
-
-			ViewBag.CurrentMonth = startDate;
-			ViewBag.VmInterviews = vmInterviews;
-
-			return PartialView();
-
-        }
-
 		private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
         {
 
@@ -105,12 +88,9 @@ namespace Interview.UI.Controllers
             {
 
                 Contest contest = contests.Where(x => x.Id == contestId).First();
-                DateTime startDate = GetMonthStartDate(DateTime.Now);
-				DateTime endDate = GetMonthEndDate(DateTime.Now);
-				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestIdAndDateRange((Guid)contestId, startDate, endDate);
+				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
-                ViewBag.CurrentMonth = startDate;
                 ViewBag.VmInterviews = vmInterviews;
 
             }
@@ -126,43 +106,9 @@ namespace Interview.UI.Controllers
             // These datatable libraries will be removed once the WET Calendar is working.
             //WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/jquery-DataTables/datatables.min.css\" />");
             //WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/jquery-DataTables/datatables.min.js\"></script>");
-			//WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");            
-			//WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
-			//WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
-
-			WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/CalendarPartial.js?v={BuildId}\"></script>");        
-
-        }
-
-        private DateTime GetMonthStartDate(DateTime date)
-        {
-
-            DateTime result = new DateTime(date.Year, date.Month, 1);
-
-            return result;
-
-        }
-
-        private DateTime GetMonthEndDate(DateTime date)
-        {
-
-			DateTime result = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddSeconds(-1);
-
-			return result;
-
-		}
-
-        private DateTime GetMonthlyDateFromString(string currentMonth)
-        {
-
-            DateTime result;
-            string[] split = currentMonth.Split(" ");
-			int year = System.Convert.ToInt16(split[1]);
-			int month = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList().IndexOf(split[0]) + 1;
-            
-            result = new DateTime(year, month, 1);
-
-            return result;
+            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");            
+            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
+            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 
         }
 

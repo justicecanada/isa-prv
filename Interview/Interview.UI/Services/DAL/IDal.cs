@@ -42,7 +42,7 @@ namespace Interview.UI.Services.DAL
 
         Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
-        Task<List<Interview.Entities.Interview>> GetInterViewsByContestIdAndDateRange(Guid contestId, DateTime startDate, DateTime endDate);
+        Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
 
         Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
 
