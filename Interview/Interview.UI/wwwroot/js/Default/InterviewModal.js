@@ -1,6 +1,4 @@
-﻿
-
-if (wb.isReady)
+﻿if (wb.isReady)
     interview.Init();
 else
     $(document).on("wb-ready.wb", function (event) {
@@ -22,6 +20,8 @@ var interview = {
 
         this.ManageCalendarAnchors();
         this.HookupMagnificPopup();
+        $(document).off("wb-updated.wb-calevt", ".wb-calevt");
+        $(document).on("wb-updated.wb-calevt", ".wb-calevt", interview.HandleCalendarUpdate);
 
     },
 
@@ -43,9 +43,15 @@ var interview = {
         $("." + this.EditClass).each(function () {
             var source = this.hash;
             var id = $(source).find(".interviewId").val();
-            $(this).attr("href", "#");
+            $(this).attr("href", interview.ModalSelector);
             $(this).attr("data-id", id);
         });
+
+    },
+
+    HandleCalendarUpdate: function (e) {
+
+        interview.Init();
 
     },
 
@@ -69,12 +75,10 @@ var interview = {
         if ($(item.el[0]).hasClass(interview.EditClass)) {
 
             var id = $(item.el[0]).data().id;
-            //var source = $(item.el[0].hash);
-            //var id = $(source).find(".interviewId").val();
 
             $.get(interview.Uri + "?id=" + id)
                 .done(function (data, textStatus, jqXHR) {
-                    $("#modalContainer").html(data);
+                    $(interview.ModalSelector).html($(data));
                     interview.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
