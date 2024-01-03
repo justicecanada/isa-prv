@@ -7,7 +7,7 @@ namespace Interview.UI.Models.Default
     public class VmInterviewerUserIds
     {
 
-        public Guid InterviewId { get; set; }
+        public Guid? InterviewId { get; set; }
 
         [Display(Name = "CandidateUserId")]
         public Guid? CandidateUserId { get; set; }

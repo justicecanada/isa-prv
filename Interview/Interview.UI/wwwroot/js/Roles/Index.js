@@ -1,7 +1,12 @@
-﻿$(document).on("wb-ready.wb", function (event) {
+﻿if (wb.isReady) {}
     userType.Init();
     searchInternalUser.Init();
-});
+}
+else
+    $(document).on("wb-ready.wb", function (event) {
+        userType.Init();
+        searchInternalUser.Init();
+    });
 
 var userType = {
 
