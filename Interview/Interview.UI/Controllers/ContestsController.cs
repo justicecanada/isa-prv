@@ -202,18 +202,12 @@ namespace Interview.UI.Controllers
         private void ResolveSchedules(List<Schedule> postedSchedules, List<Schedule> dbSchedules)
         {
 
-            //List<VmSchedule> result = null;
-
             dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue =
                 postedSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue;
             dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue =
                 postedSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue;
             dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue =
                 postedSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue;
-
-                //result = _mapper.Map<List<VmSchedule>>(dbSchedules);
-
-                //return result;
 
         }
 

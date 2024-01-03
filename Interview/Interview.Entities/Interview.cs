@@ -18,7 +18,7 @@ namespace Interview.Entities
         public Guid ContestId { get; set;  }
         public string? Room { get; set; }
         public string? Location { get; set; }
-        public DateTimeOffset? StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
         public int? Duration { get; set; }
         public int? Status { get; set; }
         public string? ContactName { get; set; }

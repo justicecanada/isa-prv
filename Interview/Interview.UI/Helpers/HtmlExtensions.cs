@@ -46,36 +46,42 @@ namespace Interview.UI.Helpers
         {
 
             TagBuilder result = new TagBuilder("input");
-            string fieldName = expression.Body.ToString().Replace("x.", "");
+            string fieldName = expression.Body.ToString().Replace("x.", "").Replace("Convert(", "").Replace(", Nullable`1)", "");
             Type type = html.ViewData.ModelExplorer.Model.GetType();
-            //string propertyName = ((Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper)html).ViewData.ModelMetadata.Name;
             var metaData = html.MetadataProvider.GetMetadataForProperty(type, fieldName);
             bool noFutureDates = false;
 
-            //if (metaData.ContainerType != null)
-            //    noFutureDates = metaData.ContainerType.GetProperty(metaData.PropertyName).GetCustomAttributes(typeof(NoFutureDateAttribute), false).Length == 1;
-
-            if (noFutureDates)
-            {
-                result.AddCssClass("noFutureDates");
-                result.Attributes.Add("data-date-end-date", "0d");
-            }
-
             result.GenerateId(fieldName, "");
             result.Attributes.Add("name", fieldName);
-            //result.Attributes.Add("type", "text");
-            //result.Attributes.Add("placeholder", Constants.DateFormat.ToLower());
-            //result.AddCssClass("date date-picker form-control");
             result.AddCssClass("form-control");
             result.Attributes.Add("type", "date");
 
             if (obj != null)
             {
+
                 Type t = obj.GetType();
-                PropertyInfo p = t.GetProperty("date");
-                DateTime value = System.Convert.ToDateTime(p.GetValue(obj, null));
-                if (value.ToString("yyyy-MM-dd") != DateTime.MinValue.ToString("yyyy-MM-dd"))
-                    result.Attributes.Add("value", value.ToString("yyyy-MM-dd"));
+                PropertyInfo p;
+                DateTime date;
+
+                p = t.GetProperty("date");
+                date = System.Convert.ToDateTime(p.GetValue(obj, null));
+                if (date.ToString("yyyy-MM-dd") != DateTime.MinValue.ToString("yyyy-MM-dd"))
+                    result.Attributes.Add("value", date.ToString("yyyy-MM-dd"));
+
+                p = t.GetProperty("min");
+                if (p != null)
+                {
+                    date = System.Convert.ToDateTime(p.GetValue(obj, null));
+                    result.Attributes.Add("min", date.ToString("yyyy-MM-dd"));
+                }
+
+                p = t.GetProperty("max");
+                if (p != null)
+                { 
+                    date = System.Convert.ToDateTime(p.GetValue(obj, null));
+                    result.Attributes.Add("max", date.ToString("yyyy-MM-dd"));
+                }
+
             }
 
             return result;

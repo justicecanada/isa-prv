@@ -4,15 +4,18 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
-using Interview.UI.Models.Groups;
+//using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 
 namespace Interview.UI.Controllers
@@ -24,16 +27,19 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IStringLocalizer<DefaultController> _localizer;
 
         #endregion
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+            IStringLocalizer<DefaultController> localizer) 
             : base(modelAccessor, justiceOptions, dal)
         {
             _mapper = mapper;
             _state = state;
+            _localizer = localizer;
         }
 
         #endregion
@@ -44,30 +50,28 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
+            VmIndex result = new VmIndex();
             List<Contest> contests = await GetContestsForLoggedInUser();
             Guid? contestId = null;
-
-            if (contests.Any())
-                _state.ContestId = contests.First().Id;
 
             // Look to Session for ContestId
             if (_state.ContestId != null)
                 contestId = _state.ContestId;
             // Look to first item in list if _state.ContestId isn't set by user
             else if (contests.Any())
-            {
                 contestId = contests.First().Id;
-                _state.ContestId = contestId;
-            }
 
             await SetIndexViewBag(contests, contestId);
             RegisterIndexClientResources();
+            _state.ContestId = contestId;
+            result.ContestId = contestId;
             
-            return View();
+            return View(result);
 
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SwitchContest(Guid contestId)
         {
 
@@ -77,7 +81,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
+		private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
         {
 
             ViewBag.Contests = contests;
@@ -86,20 +90,13 @@ namespace Interview.UI.Controllers
             if (contestId != null)
             {
 
-                // This method mimics the Entrevue.Default.SetCalendar() method. That method has a few concerns:
-                // 1. Populating dropdowns
-                // 2. Setting the visibility of various form elements
-                // 3. Setting the wording of various form elements
-                // Within an MVC framework, these concerns are handled at the View layer (not the Controller layer).
-                // However, the Controller here will set the items for dropdowns in viewbag.
-
                 Contest contest = contests.Where(x => x.Id == contestId).First();
-                List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
+				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
-                ViewBag.Interviews = vmInterviews;
-
-                
+				ViewBag.ContestStartDate = contest.StartDate;
+				ViewBag.ContestEndDate = contest.EndDate;
+				ViewBag.VmInterviews = vmInterviews;
 
             }
 
@@ -111,12 +108,9 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
 
-            WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/jquery-DataTables/datatables.min.css\" />");
-            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/jquery-DataTables/datatables.min.js\"></script>");
-
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewCalendar.js?v={BuildId}\"></script>");
+            // These datatable libraries will be removed once the WET Calendar is working.           
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
+            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 
         }
 
@@ -129,25 +123,25 @@ namespace Interview.UI.Controllers
         {
 
             VmInterview result = null;
+            Interview.Entities.Interview interview = null;
 
             if (id == null)
-                result = new VmInterview();
+                result = new VmInterview() { ContestId = (Guid)_state.ContestId };
             else
             {
-                Interview.Entities.Interview interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
-                
+                interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
                 result = _mapper.Map<VmInterview>(interview);
+
                 result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewId = (Guid)id;
-
-                await SetInterviewModalViewBag(interview);
-
+                result.VmInterviewerUserIds.InterviewId = id;
             }
 
-            return PartialView(result);
+			await SetInterviewModalViewBag(interview);
 
+			return PartialView(result);
+            
         }
 
         [HttpPost]
@@ -155,11 +149,14 @@ namespace Interview.UI.Controllers
         public async Task<ActionResult> InterviewModal(VmInterview vmInterview)
         {
 
+            await HandleInterviewModalModelState(vmInterview);
+
             if (ModelState.IsValid)
             {
 
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
 
+                // Handle Interview
                 interview.ContestId = (Guid)_state.ContestId;
                 if (vmInterview.Id == null)
                 {
@@ -168,6 +165,13 @@ namespace Interview.UI.Controllers
                 else
                 {
                     await _dal.UpdateEntity(interview);
+
+                    // Handle Users
+                    List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.CandidateUserId, dbInterviewUsers, RoleTypes.Candidate, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleTypes.Interviewer, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleTypes.Lead, (Guid)vmInterview.Id);
+
                 }
 
                 return new JsonResult(new { result = true, item = vmInterview })
@@ -178,6 +182,10 @@ namespace Interview.UI.Controllers
             }
             else
             {
+                Interview.Entities.Interview interview = vmInterview.Id == null ? null : await _dal.GetEntity<Interview.Entities.Interview>((Guid)vmInterview.Id, true) as Interview.Entities.Interview;
+
+                await SetInterviewModalViewBag(interview);
+
                 return PartialView(vmInterview);
             }
 
@@ -193,14 +201,15 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetInterviewModalViewBag(Interview.Entities.Interview interview)
+        private async Task SetInterviewModalViewBag(Interview.Entities.Interview? interview)
         {
 
-            if (interview.StartDate != null)
+            // Handle Interview Schedule
+            if (interview != null)
             {
 
                 List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
-                TimeSpan startTime = interview.StartDate.Value.TimeOfDay;
+                TimeSpan startTime = interview.StartDate.TimeOfDay;
                 TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
                 TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
                 TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
@@ -217,99 +226,30 @@ namespace Interview.UI.Controllers
                 ViewBag.Marking = string.Empty;
             }
 
-        }
-
-        #endregion
-
-        #region Interview Users Modal
-
-        [HttpGet]
-        public async Task<PartialViewResult> InterviewUsersModal(Guid interviewId)
-        {
-
-            VmInterviewerUserIds result = new VmInterviewerUserIds();
-            List<InterviewUser> interviewUsers = await _dal.GetInterviewUsersByInterviewId(interviewId);
-
-            result.InterviewerUserId = interviewId;
-            result.CandidateUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
-            result.InterviewerUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
-            result.InterviewerLeadUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
-
-            await SetInterviewUserViewBag();
-
-            return PartialView(result);
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> InterviewUsersModal(VmInterviewerUserIds vmInterviewUserIds)
-        {
-
-            List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(vmInterviewUserIds.InterviewId);
-
-            await ResolveInterviewUser(vmInterviewUserIds.CandidateUserId, dbInterviewUsers, RoleTypes.Candidate, vmInterviewUserIds.InterviewId);
-            await ResolveInterviewUser(vmInterviewUserIds.InterviewerUserId, dbInterviewUsers, RoleTypes.Interviewer, vmInterviewUserIds.InterviewId);
-            await ResolveInterviewUser(vmInterviewUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleTypes.Lead, vmInterviewUserIds.InterviewId);
-
-            return new JsonResult(new { result = true })
-            {
-                StatusCode = 200
-            };
-
-        }
-
-        private async Task SetInterviewUserViewBag()
-        {
-
+            // Handle Interview Start and End Dates
             Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
-            List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId(contest.Id);
-            //List<MockUser> mockUsers = new List<MockUser>();
+			ViewBag.ContestStartDate = contest.StartDate;
+			ViewBag.ContestEndDate = contest.EndDate;
 
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
-            {
-                bool hasAccess = true;
-                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                {
-                    //hasAccess = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id).Any();
-                    // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
-                    // get the list as a variable first. Moving on...
-                    var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-                    hasAccess = groupOwners.Any();
-                }
+			// Handle Interview Users
+			List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId((Guid)_state.ContestId);
+			if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+			{
+				bool hasAccess = true;
+				if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+				{
+					// Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
+					// get the list as a variable first. Moving on...
+					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ContestId, (Guid)LoggedInMockUser.Id);
+					hasAccess = groupOwners.Any();
+				}
+			}
 
-                //if (hasAccess)
-                //{
-                //    roleUser = new RoleUser()
-                //    {
-                //        ContestId = contest.Id,
-                //        RoleType = RoleTypes.Admin,
-                //        UserId = (Guid)LoggedInMockUser.Id,
-                //        LanguageType = LanguageTypes.Bilingual,
-                //        HasAcceptedPrivacyStatement = true
-                //    };
-                //    await _dal.AddEntity<RoleUser>(roleUser);
-                //}
-            }
+			ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
+			ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
+			ViewBag.LeadUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
 
-            // Handle Users by RoleType
-            //foreach (RoleUser contestUserSetting in contest.RoleUsers)
-            //    mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
-
-            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
-            ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
-            ViewBag.LeadUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
-
-            // Handle Users as Members?
-            //if (roleUser.RoleType == RoleTypes.Assistant)
-            //{
-            //    mockUsers.Clear();
-
-            //    // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
-
-            //}
-
-        }
+		}
 
         private async Task ResolveInterviewUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleTypes roleType, Guid interviewId)
         {
@@ -343,6 +283,27 @@ namespace Interview.UI.Controllers
             {
                 // Delete
                 await _dal.DeleteEntity(dbInterviewUser);
+            }
+
+        }
+
+        private async Task HandleInterviewModalModelState(VmInterview vmInterview)
+        {
+
+            if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
+            {
+
+                Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
+                //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
+                DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
+
+                if (vmInterview.VmStartTime < contest.MinTime || interviewEndTime.TimeOfDay > contest.MaxTime)
+                {
+                    ModelState.AddModelError("VmStartTime", _localizer["InterviewVmStartDateAndDuration"].Value
+                        .Replace("{min}", ((TimeSpan)contest.MinTime).ToString())
+                        .Replace("{max}", ((TimeSpan)contest.MaxTime).ToString()));
+                }
+
             }
 
         }

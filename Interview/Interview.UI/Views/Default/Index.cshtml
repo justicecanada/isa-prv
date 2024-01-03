@@ -1,4 +1,6 @@
-﻿@using Interview.Entities
+﻿@model VmIndex
+@using Interview.UI.Models.Default
+@using Interview.Entities
 @using Interview.UI.Models
 @using System.Linq
 @inject IViewLocalizer localizer
@@ -6,10 +8,9 @@
 @{
 
     ViewBag.Title = localizer["Title"].Value;
-    
-    Guid? contestId = ViewBag.ContestId;
+
     List<Contest> contests = ViewBag.Contests;
-    Contest? contest = contestId == null ? null : contests.Where(x => x.Id == contestId).First();
+    Contest? contest = Model.ContestId == null ? null : contests.Where(x => x.Id == Model.ContestId).First();
 
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
     foreach (var contestItem in contests)
@@ -18,7 +19,7 @@
         {         
             Value = contestItem.Id.ToString(),
             Text = contestItem.NoProcessus,
-            Selected = contestItem.Id == contestId
+            Selected = contestItem.Id == Model.ContestId
         });
     }
 
@@ -34,12 +35,16 @@
 @*Only form control*@
 <div class="container">
     <div class="row well well-lg">
-        <div class="col-md-12">
-            @Html.Label("lblContests", localizer["ListOfProcesses"].Value, new { @for = "Contests" }):
-        </div>
-        <div class="col-md-12">
-            @Html.DropDownList("Contests", vmContestItems, new { @class = "form-control" })
-        </div>
+        @using (Html.BeginForm("SwitchContest", "Default", null, FormMethod.Post, null, new { id = "formContest" }))
+        {
+            @Html.AntiForgeryToken()            
+            <div class="col-md-12">
+                @Html.Label("lblContests", localizer["ListOfProcesses"].Value, new { @for = "ContestId" }):
+            </div>
+            <div class="col-md-12">          
+                @Html.DropDownListFor(x => x.ContestId, vmContestItems, new { @class = "form-control" })
+            </div>
+        }
     </div>
 </div>
 
@@ -47,7 +52,9 @@
     await Html.RenderPartialAsync("LegendPartial");
     await Html.RenderPartialAsync("MembersWelcomePartial");
     await Html.RenderPartialAsync("RulesPartial");
-    await Html.RenderPartialAsync("CalendarPartial");
+    if (Model.ContestId != null)
+        await Html.RenderPartialAsync("CalendarPartial");
+    await Html.RenderPartialAsync("ModalContainer");
 }
 
 <script src="~/js/default/index.js" asp-append-version="true"></script>

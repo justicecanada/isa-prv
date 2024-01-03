@@ -45,29 +45,8 @@
 
 }
 
-<header class="modal-header">
-    <h2 class="modal-title">Interview Users Modal</h2>
-</header>
+@Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
 
-<div class="modal-body">
+@Html.EditorFor(x => x.InterviewerUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerUserId, interviewerUsersItems, new { @class = "form-control" }) })
 
-    <form id="userForm" action="@Url.Action("InterviewUsersModal", "Default")" method="post">
-
-        @Html.AntiForgeryToken()
-
-        @Html.HiddenFor(x => x.InterviewId)
-
-        @Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
-
-        @Html.EditorFor(x => x.InterviewerUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerUserId, interviewerUsersItems, new { @class = "form-control" }) })
-
-        @Html.EditorFor(x => x.InterviewerLeadUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerLeadUserId, leadItems, new { @class = "form-control" }) })
-
-        <div class="modal-footer">
-            <button id="btnInterviewUsersClose" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Close"]</button>
-            <input id="btnInterviewUsersSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" />
-        </div>
-
-    </form>
-
-</div>  
+@Html.EditorFor(x => x.InterviewerLeadUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerLeadUserId, leadItems, new { @class = "form-control" }) })
