@@ -46,7 +46,7 @@ namespace Interview.UI.Helpers
         {
 
             TagBuilder result = new TagBuilder("input");
-            string fieldName = expression.Body.ToString().Replace("x.", "");
+            string fieldName = expression.Body.ToString().Replace("x.", "").Replace("Convert(", "").Replace(", Nullable`1)", "");
             Type type = html.ViewData.ModelExplorer.Model.GetType();
             //string propertyName = ((Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper)html).ViewData.ModelMetadata.Name;
             var metaData = html.MetadataProvider.GetMetadataForProperty(type, fieldName);

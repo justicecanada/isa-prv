@@ -10,7 +10,7 @@ else
 var interview = {
 
     OpenLink: "#interviewModal",
-    EditClass: "cal-curr-day",
+    EditClass: "cal-evt-lnk",
     ModalSelector: "#modalContainer",
     Uri: "/Default/InterviewModal",
     Form: null,
@@ -19,6 +19,8 @@ var interview = {
 
     Init: function () {
 
+
+        this.ManageCalendarAnchors();
         this.HookupMagnificPopup();
 
     },
@@ -32,6 +34,17 @@ var interview = {
         $(this.CancelButtonSelector).on("click", function (e) {
             e.preventDefault();
             $.magnificPopup.instance.close();
+        });
+
+    },
+
+    ManageCalendarAnchors: function () {
+
+        $("." + this.EditClass).each(function () {
+            var source = this.hash;
+            var id = $(source).find(".interviewId").val();
+            $(this).attr("href", "#");
+            $(this).attr("data-id", id);
         });
 
     },
@@ -56,10 +69,12 @@ var interview = {
         if ($(item.el[0]).hasClass(interview.EditClass)) {
 
             var id = $(item.el[0]).data().id;
+            //var source = $(item.el[0].hash);
+            //var id = $(source).find(".interviewId").val();
 
             $.get(interview.Uri + "?id=" + id)
                 .done(function (data, textStatus, jqXHR) {
-                    $("#modalContainer").html($(data));
+                    $("#modalContainer").html(data);
                     interview.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {

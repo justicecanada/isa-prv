@@ -50,15 +50,14 @@
 
 		@foreach (VmInterview vmInterview in VmInterviews)
 		{
-
-				<li class="cal-disp-onshow monthlyInterview">
-					<section>
-						<h4><a href="">@GetDescription(vmInterview)</a></h4>
-						<p><time datetime="@((DateTime)vmInterview.VmStartDate).ToString(Constants.DateFormat)">StartDate</time></p>
-						<p>Event Description</p>
-					</section>
-				</li>
-
+			<li class="cal-disp-onshow monthlyInterview">
+				<section>
+				<h4><a>@GetDescription(vmInterview)</a></h4>
+					<p><time datetime="@((DateTime)vmInterview.VmStartDate).ToString(Constants.DateFormat)">StartDate</time></p>
+					<p>Event Description</p>
+					<input type="hidden" class="interviewId" value="@vmInterview.Id">
+				</section>
+			</li>
 		}
 	</ul>
 
