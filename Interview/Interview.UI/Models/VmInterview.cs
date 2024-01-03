@@ -36,8 +36,9 @@ namespace Interview.UI.Models
 		public TimeSpan VmStartTime { get; set;  }
 
         [Display(Name = "Duration")]
-        //[RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
-        public int? Duration { get; set; }
+		//[RegularExpression(@"^[0-9]*$", ErrorMessage = "InterviewDurationNumeric")]
+		[Required]
+		public int? Duration { get; set; }
 
         public int? Status { get; set; }
 
