@@ -9,6 +9,7 @@ using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
@@ -298,7 +299,7 @@ namespace Interview.UI.Controllers
 
                 if (vmInterview.VmStartTime < contest.MinTime || interviewEndTime.TimeOfDay > contest.MaxTime)
                 {
-                    ModelState.AddModelError("VmStartTime", $"The interview cannot start before {((TimeSpan)contest.MinTime).ToString()} or end after {((TimeSpan)contest.MaxTime).ToString()}");
+                    ModelState.AddModelError("VmStartTime", string.Format(_localizer["InternalUserDoesNotExist"].Value, (TimeSpan)contest.MinTime).ToString(), ((TimeSpan)contest.MaxTime).ToString()));
                 }
 
             }
