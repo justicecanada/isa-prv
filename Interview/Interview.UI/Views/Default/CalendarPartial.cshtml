@@ -2,8 +2,10 @@
 
 @{
 
-    List<VmInterview> VmInterviews = ViewBag.VmInterviews;
-	DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1); ;
+	List<VmInterview> VmInterviews = ViewBag.VmInterviews;
+	DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+	DateTime contestStartDate = ViewBag.ContestStartDate;
+	DateTime contestEndDate = ViewBag.ContestEndDate;
 
 }
 
@@ -38,14 +40,14 @@
 		<li class="cal-disp-onshow">
 			<section>
 				<h4><a href="">Single-Day Event</a></h4>
-				<p><time datetime="@DateTime.Now.AddMonths(-1).ToString(Constants.DateFormat)">StartDate</time></p>
+				<p><time datetime="@contestStartDate">StartDate</time></p>
 				<p>Event Description</p>
 			</section>
 		</li>
 		<li class="cal-disp-onshow">
 			<section>
 				<h4><a href="">Single-Day Event</a></h4>
-				<p><time datetime="@DateTime.Now.AddYears(1).ToString(Constants.DateFormat)">EndDate</time></p>
+				<p><time datetime="@contestEndDate">EndDate</time></p>
 				<p>Event Description</p>
 			</section>
 		</li>

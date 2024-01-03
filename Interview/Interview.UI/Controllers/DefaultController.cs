@@ -91,7 +91,9 @@ namespace Interview.UI.Controllers
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
-                ViewBag.VmInterviews = vmInterviews;
+				ViewBag.ContestStartDate = contest.StartDate;
+				ViewBag.ContestEndDate = contest.EndDate;
+				ViewBag.VmInterviews = vmInterviews;
 
             }
 
@@ -193,7 +195,7 @@ namespace Interview.UI.Controllers
         private async Task SetInterviewModalViewBag(Interview.Entities.Interview interview)
         {
 
-            // Handle Schedule
+            // Handle Interview Schedule
             if (interview.StartDate != null)
             {
 
@@ -215,7 +217,12 @@ namespace Interview.UI.Controllers
                 ViewBag.Marking = string.Empty;
             }
 
-			// Handle Users
+            // Handle Interview Start and End Dates
+            Contest contest = await _dal.GetEntity<Contest>(interview.ContestId) as Contest;
+			ViewBag.ContestStartDate = contest.StartDate;
+			ViewBag.ContestEndDate = contest.EndDate;
+
+			// Handle Interview Users
 			List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId(interview.ContestId);
 
 			if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
