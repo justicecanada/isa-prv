@@ -10,6 +10,9 @@
         "Location", "Room", "VmStartDate", "VmDuration", "ContactName", "ContactNumber"
     }).Select(x => x.ToLower()).ToList();
 
+    DateTime contestStartDate = ViewBag.ContestStartDate;
+    DateTime contestEndDate = ViewBag.ContestEndDate;
+
 }
 
 <header class="modal-header">
@@ -35,7 +38,8 @@
 
                 @Html.EditorFor(x => x.Room, "Question", new { inputControl = Html.TextBoxFor(x => x.Room, new { @class = "form-control" }) })
 
-                @Html.EditorFor(x => x.VmStartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.VmStartDate, new { date = Model.VmStartDate }) })
+                @Html.EditorFor(x => x.VmStartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.VmStartDate, 
+                    new { date = Model.VmStartDate, min = contestStartDate, max = contestEndDate }) })
 
                 @Html.EditorFor(x => x.VmStartTime, "Question", new { inputControl = Html.TextBoxFor(x => x.VmStartTime, new { @class = "form-control" }) })
 
