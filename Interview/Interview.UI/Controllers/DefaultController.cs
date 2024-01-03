@@ -149,6 +149,7 @@ namespace Interview.UI.Controllers
 
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
 
+                // Handle Interview
                 interview.ContestId = (Guid)_state.ContestId;
                 if (vmInterview.Id == null)
                 {
@@ -157,6 +158,13 @@ namespace Interview.UI.Controllers
                 else
                 {
                     await _dal.UpdateEntity(interview);
+
+                    // Handle Users
+                    List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.CandidateUserId, dbInterviewUsers, RoleTypes.Candidate, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleTypes.Interviewer, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleTypes.Lead, (Guid)vmInterview.Id);
+
                 }
 
                 return new JsonResult(new { result = true, item = vmInterview })
@@ -185,6 +193,7 @@ namespace Interview.UI.Controllers
         private async Task SetInterviewModalViewBag(Interview.Entities.Interview interview)
         {
 
+            // Handle Schedule
             if (interview.StartDate != null)
             {
 
@@ -206,99 +215,26 @@ namespace Interview.UI.Controllers
                 ViewBag.Marking = string.Empty;
             }
 
-        }
+			// Handle Users
+			List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId(interview.ContestId);
 
-        #endregion
+			if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+			{
+				bool hasAccess = true;
+				if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+				{
+					// Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
+					// get the list as a variable first. Moving on...
+					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(interview.ContestId, (Guid)LoggedInMockUser.Id);
+					hasAccess = groupOwners.Any();
+				}
+			}
 
-        #region Interview Users Modal
+			ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
+			ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
+			ViewBag.LeadUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
 
-        [HttpGet]
-        public async Task<PartialViewResult> InterviewUsersModal(Guid interviewId)
-        {
-
-            VmInterviewerUserIds result = new VmInterviewerUserIds();
-            List<InterviewUser> interviewUsers = await _dal.GetInterviewUsersByInterviewId(interviewId);
-
-            result.InterviewerUserId = interviewId;
-            result.CandidateUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
-            result.InterviewerUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
-            result.InterviewerLeadUserId = interviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
-
-            await SetInterviewUserViewBag();
-
-            return PartialView(result);
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> InterviewUsersModal(VmInterviewerUserIds vmInterviewUserIds)
-        {
-
-            List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(vmInterviewUserIds.InterviewId);
-
-            await ResolveInterviewUser(vmInterviewUserIds.CandidateUserId, dbInterviewUsers, RoleTypes.Candidate, vmInterviewUserIds.InterviewId);
-            await ResolveInterviewUser(vmInterviewUserIds.InterviewerUserId, dbInterviewUsers, RoleTypes.Interviewer, vmInterviewUserIds.InterviewId);
-            await ResolveInterviewUser(vmInterviewUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleTypes.Lead, vmInterviewUserIds.InterviewId);
-
-            return new JsonResult(new { result = true })
-            {
-                StatusCode = 200
-            };
-
-        }
-
-        private async Task SetInterviewUserViewBag()
-        {
-
-            Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
-            List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId(contest.Id);
-            //List<MockUser> mockUsers = new List<MockUser>();
-
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
-            {
-                bool hasAccess = true;
-                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                {
-                    //hasAccess = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id).Any();
-                    // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
-                    // get the list as a variable first. Moving on...
-                    var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(contest.Id, (Guid)LoggedInMockUser.Id);
-                    hasAccess = groupOwners.Any();
-                }
-
-                //if (hasAccess)
-                //{
-                //    roleUser = new RoleUser()
-                //    {
-                //        ContestId = contest.Id,
-                //        RoleType = RoleTypes.Admin,
-                //        UserId = (Guid)LoggedInMockUser.Id,
-                //        LanguageType = LanguageTypes.Bilingual,
-                //        HasAcceptedPrivacyStatement = true
-                //    };
-                //    await _dal.AddEntity<RoleUser>(roleUser);
-                //}
-            }
-
-            // Handle Users by RoleType
-            //foreach (RoleUser contestUserSetting in contest.RoleUsers)
-            //    mockUsers.Add(await _dal.GetMockUserById(contestUserSetting.UserId));
-
-            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
-            ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
-            ViewBag.LeadUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
-
-            // Handle Users as Members?
-            //if (roleUser.RoleType == RoleTypes.Assistant)
-            //{
-            //    mockUsers.Clear();
-
-            //    // Look at Entrevue.SDefault.SetCalendar lines 287 - 319
-
-            //}
-
-        }
+		}
 
         private async Task ResolveInterviewUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleTypes roleType, Guid interviewId)
         {

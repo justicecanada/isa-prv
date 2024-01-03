@@ -50,6 +50,9 @@
 
                 @if (Model.Id != null)
                 {
+                    ViewData.TemplateInfo.HtmlFieldPrefix = "VmInterviewerUserIds";
+                    await Html.RenderPartialAsync("InterviewUsersPartial", Model.VmInterviewerUserIds);
+                    ViewData.TemplateInfo.HtmlFieldPrefix = "";
                     await Html.RenderPartialAsync("InterviewSchedulePartial");                   
                 }
 
