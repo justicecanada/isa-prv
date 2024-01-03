@@ -132,8 +132,9 @@ var interview = {
 
         if (data.result) {
             $.magnificPopup.close();
-            table.UpdateTable(data.item);
-            interview.HookupMagnificPopup();
+            interview.PosbBack();
+            //table.UpdateTable(data.item);
+            //interview.HookupMagnificPopup();
         }
         else {
             $(interview.ModalSelector).html($(data));
@@ -145,5 +146,12 @@ var interview = {
     PostFail: function (e) {
         $.magnificPopup.close();
     },
+
+    PosbBack: function () {
+
+        var href = window.location.origin;
+        window.location.href = href;
+
+    }
 
 }
