@@ -52,7 +52,8 @@
     await Html.RenderPartialAsync("LegendPartial");
     await Html.RenderPartialAsync("MembersWelcomePartial");
     await Html.RenderPartialAsync("RulesPartial");
-    await Html.RenderPartialAsync("CalendarPartial");
+    if (Model.ContestId != null)
+        await Html.RenderPartialAsync("CalendarPartial");
     await Html.RenderPartialAsync("ModalContainer");
 }
 

@@ -118,25 +118,25 @@ namespace Interview.UI.Controllers
         {
 
             VmInterview result = null;
+            Interview.Entities.Interview interview = null;
 
             if (id == null)
-                result = new VmInterview();
+                result = new VmInterview() { ContestId = (Guid)_state.ContestId };
             else
             {
-                Interview.Entities.Interview interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
-                
+                interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
                 result = _mapper.Map<VmInterview>(interview);
+
                 result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewId = (Guid)id;
-
-                await SetInterviewModalViewBag(interview);
-
+                result.VmInterviewerUserIds.InterviewId = id;
             }
 
-            return PartialView(result);
+			await SetInterviewModalViewBag(interview);
 
+			return PartialView(result);
+            
         }
 
         [HttpPost]
@@ -175,6 +175,10 @@ namespace Interview.UI.Controllers
             }
             else
             {
+                Interview.Entities.Interview interview = vmInterview.Id == null ? null : await _dal.GetEntity<Interview.Entities.Interview>((Guid)vmInterview.Id, true) as Interview.Entities.Interview;
+
+                await SetInterviewModalViewBag(interview);
+
                 return PartialView(vmInterview);
             }
 
@@ -190,11 +194,11 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetInterviewModalViewBag(Interview.Entities.Interview interview)
+        private async Task SetInterviewModalViewBag(Interview.Entities.Interview? interview)
         {
 
             // Handle Interview Schedule
-            if (interview.StartDate != null)
+            if (interview != null)
             {
 
                 List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
@@ -216,13 +220,12 @@ namespace Interview.UI.Controllers
             }
 
             // Handle Interview Start and End Dates
-            Contest contest = await _dal.GetEntity<Contest>(interview.ContestId) as Contest;
+            Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
 			ViewBag.ContestStartDate = contest.StartDate;
 			ViewBag.ContestEndDate = contest.EndDate;
 
 			// Handle Interview Users
-			List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId(interview.ContestId);
-
+			List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId((Guid)_state.ContestId);
 			if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
 			{
 				bool hasAccess = true;
@@ -230,7 +233,7 @@ namespace Interview.UI.Controllers
 				{
 					// Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
 					// get the list as a variable first. Moving on...
-					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId(interview.ContestId, (Guid)LoggedInMockUser.Id);
+					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ContestId, (Guid)LoggedInMockUser.Id);
 					hasAccess = groupOwners.Any();
 				}
 			}

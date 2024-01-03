@@ -7,7 +7,7 @@
 
     ViewBag.FieldOrder = new List<string>(new string[]
     {
-        "Location", "Room", "VmStartDate", "VmDuration", "ContactName", "ContactNumber"
+        "Location", "Room", "VmStartDate", "Duration", "ContactName", "ContactNumber"
     }).Select(x => x.ToLower()).ToList();
 
     DateTime contestStartDate = ViewBag.ContestStartDate;
