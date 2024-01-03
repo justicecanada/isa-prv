@@ -62,8 +62,6 @@ var interview = {
             modal: true,
             callbacks: {
                 elementParse: interview.ElementParse,
-                open: interview.Open,
-                beforeClose: interview.BeforeClose,
                 close: interview.Close,
             }
         });
@@ -98,14 +96,6 @@ var interview = {
                 });
 
         }
-
-    },
-
-    Open: function () {
-
-    },
-
-    BeforeClose: function () {
 
     },
 
