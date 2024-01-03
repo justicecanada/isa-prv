@@ -4,7 +4,7 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
-using Interview.UI.Models.Groups;
+//using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
@@ -45,30 +45,28 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
+            VmIndex result = new VmIndex();
             List<Contest> contests = await GetContestsForLoggedInUser();
             Guid? contestId = null;
-
-            if (contests.Any())
-                _state.ContestId = contests.First().Id;
 
             // Look to Session for ContestId
             if (_state.ContestId != null)
                 contestId = _state.ContestId;
             // Look to first item in list if _state.ContestId isn't set by user
             else if (contests.Any())
-            {
                 contestId = contests.First().Id;
-                _state.ContestId = contestId;
-            }
 
             await SetIndexViewBag(contests, contestId);
             RegisterIndexClientResources();
+            _state.ContestId = contestId;
+            result.ContestId = contestId;
             
-            return View();
+            return View(result);
 
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SwitchContest(Guid contestId)
         {
 
