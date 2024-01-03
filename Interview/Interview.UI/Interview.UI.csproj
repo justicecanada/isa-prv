@@ -38,10 +38,81 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\lib\ckeditor5\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\ckeditor.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\ckeditor.js.map" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\af.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ar.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ast.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\az.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\bg.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\bn.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\bs.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ca.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\cs.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\da.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\de-ch.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\de.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\el.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\en-au.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\en-gb.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\eo.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\es-co.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\es.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\et.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\eu.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\fa.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\fi.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\fr.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\gl.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\gu.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\he.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\hi.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\hr.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\hu.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\hy.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\id.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\it.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ja.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\jv.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\km.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\kn.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ko.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ku.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\lt.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\lv.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ms.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\nb.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ne.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\nl.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\no.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\oc.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\pl.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\pt-br.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\pt.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ro.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ru.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\si.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\sk.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\sl.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\sq.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\sr-latn.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\sr.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\sv.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\th.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\tk.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\tr.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\tt.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ug.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\uk.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\ur.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\uz.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\vi.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\zh-cn.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\build\translations\zh.js" />
+    <None Include="wwwroot\assets\vendor\ckeditor5\sample\script.js" />
     <None Include="wwwroot\js\Dashboard.js" />
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap.js" />
     <None Include="wwwroot\lib\jquery-DataTables\DataTables-1.13.6\js\dataTables.bootstrap.min.js" />
@@ -116,6 +187,11 @@
     <Reference Include="GoC.WebTemplate.CoreMVC.Views">
       <HintPath>bin\Debug\net7.0\GoC.WebTemplate.CoreMVC.Views.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\assets\vendor\ckeditor5\build\ckeditor.d.ts" />
+    <TypeScriptCompile Include="wwwroot\assets\vendor\ckeditor5\src\ckeditor.ts" />
   </ItemGroup>
 
   <ItemGroup>
