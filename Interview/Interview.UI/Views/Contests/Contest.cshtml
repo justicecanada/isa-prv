@@ -161,7 +161,10 @@
         <div class="panel-body">
             <div class="row mt-0">
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroEN, new { @class = "form-control" }) })
+                    @*@Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroEN, new { @class = "form-control" }) })*@
+
+                    <div id="editor"></div>
+
                 </div>
                 <div class="col-md-6">
                     @Html.EditorFor(x => x.MembersIntroFR, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroFR, new { @class = "form-control" }) })
