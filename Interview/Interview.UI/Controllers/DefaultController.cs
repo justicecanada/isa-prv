@@ -9,6 +9,7 @@ using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -25,16 +26,19 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IStringLocalizer<DefaultController> _localizer;
 
         #endregion
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+            IStringLocalizer<DefaultController> localizer) 
             : base(modelAccessor, justiceOptions, dal)
         {
             _mapper = mapper;
             _state = state;
+            _localizer = localizer;
         }
 
         #endregion
@@ -143,6 +147,8 @@ namespace Interview.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> InterviewModal(VmInterview vmInterview)
         {
+
+            await HandleInterviewModalModelState(vmInterview);
 
             if (ModelState.IsValid)
             {
@@ -276,6 +282,25 @@ namespace Interview.UI.Controllers
             {
                 // Delete
                 await _dal.DeleteEntity(dbInterviewUser);
+            }
+
+        }
+
+        private async Task HandleInterviewModalModelState(VmInterview vmInterview)
+        {
+
+            if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
+            {
+
+                Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
+                //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
+                DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
+
+                if (vmInterview.VmStartTime < contest.MinTime || interviewEndTime.TimeOfDay > contest.MaxTime)
+                {
+                    ModelState.AddModelError("VmStartTime", $"The interview cannot start before {((TimeSpan)contest.MinTime).ToString()} or end after {((TimeSpan)contest.MaxTime).ToString()}");
+                }
+
             }
 
         }
