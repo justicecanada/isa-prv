@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InterviewVmStartDateAndDuration" xml:space="preserve">
-    <value>The interview cannot start before {0} or end after {1}</value>
+    <value>The interview cannot start before {min} or end after {max}</value>
   </data>
 </root>

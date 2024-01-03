@@ -299,7 +299,9 @@ namespace Interview.UI.Controllers
 
                 if (vmInterview.VmStartTime < contest.MinTime || interviewEndTime.TimeOfDay > contest.MaxTime)
                 {
-                    ModelState.AddModelError("VmStartTime", string.Format(_localizer["InternalUserDoesNotExist"].Value, (TimeSpan)contest.MinTime).ToString(), ((TimeSpan)contest.MaxTime).ToString()));
+                    ModelState.AddModelError("VmStartTime", _localizer["InterviewVmStartDateAndDuration"].Value
+                        .Replace("{min}", ((TimeSpan)contest.MinTime).ToString())
+                        .Replace("{max}", ((TimeSpan)contest.MaxTime).ToString()));
                 }
 
             }

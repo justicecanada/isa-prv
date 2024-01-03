@@ -17,7 +17,6 @@ var interview = {
 
     Init: function () {
 
-
         this.ManageCalendarAnchors();
         this.HookupMagnificPopup();
         $(document).off("wb-updated.wb-calevt", ".wb-calevt");
