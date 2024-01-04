@@ -23,9 +23,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state) 
-            : base(modelAccessor, justiceOptions, dal)
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions,
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state,
             IOptions<SessionTimeout> sessionTimeoutOptions) 
             : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
