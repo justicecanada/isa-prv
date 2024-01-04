@@ -161,10 +161,10 @@
         <div class="panel-body">
             <div class="row mt-0">
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroEN, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.JusRichTextBoxFor(x => x.MembersIntroEN, new { value = Model.MembersIntroEN }) })
                 </div>
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.MembersIntroFR, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroFR, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.MembersIntroFR, "Question", new { inputControl = Html.JusRichTextBoxFor(x => x.MembersIntroFR, new { value = Model.MembersIntroFR }) })
                 </div>
             </div>
         </div>
@@ -179,10 +179,10 @@
         <div class="panel-body">
             <div class="row mt-0">
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.CandidatesIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.CandidatesIntroEN, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.CandidatesIntroEN, "Question", new { inputControl = Html.JusRichTextBoxFor(x => x.CandidatesIntroEN, new { value = Model.CandidatesIntroEN }) })
                 </div>
                 <div class="col-md-6">
-                    @Html.EditorFor(x => x.CandidatesIntroFR, "Question", new { inputControl = Html.TextBoxFor(x => x.CandidatesIntroFR, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.CandidatesIntroFR, "Question", new { inputControl = Html.JusRichTextBoxFor(x => x.CandidatesIntroFR, new { value = Model.CandidatesIntroFR }) })
                 </div>
             </div>
         </div>
@@ -206,13 +206,3 @@
     </div>
 
 </form>
-
-<script type="text/javascript" defer>
-
-    $(document).ready(function () {
-        //slider.Init();
-    });
-
-</script>
-
-@*<script src="~/js/contests/contest.js" asp-append-version="true"></script>*@

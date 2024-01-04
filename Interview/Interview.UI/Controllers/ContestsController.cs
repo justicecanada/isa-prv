@@ -87,6 +87,7 @@ namespace Interview.UI.Controllers
             }
 
             await ContestsSetViewBag();
+            RegisterContestsClientResources();
 
             return View(vmContest);
 
@@ -113,6 +114,7 @@ namespace Interview.UI.Controllers
             else
             {
                 await ContestsSetViewBag();
+                RegisterContestsClientResources();
 
                 return View("Contest", vmContest);
             }
@@ -148,6 +150,7 @@ namespace Interview.UI.Controllers
             else
             {
                 await ContestsSetViewBag();
+                RegisterContestsClientResources();
 
                 return View("Contest", vmContest);
             }
@@ -160,6 +163,15 @@ namespace Interview.UI.Controllers
             // Departments
             var mockDepartments = await _dal.GetAllMockDepatments();
             ViewBag.MockDepartments = mockDepartments;
+
+        }
+
+        private void RegisterContestsClientResources()
+        {
+
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
+
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/JusRichTextBoxFor.js?v={BuildId}\"></script>");
 
         }
 
