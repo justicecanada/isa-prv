@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\js\Contests\" />
   </ItemGroup>
 
   <ItemGroup>
