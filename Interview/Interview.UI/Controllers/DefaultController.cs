@@ -108,9 +108,8 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
 
-            // These datatable libraries will be removed once the WET Calendar is working.           
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/Index.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
-            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewUsersModal.js?v={BuildId}\"></script>");
 
         }
 

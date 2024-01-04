@@ -1,8 +1,4 @@
-﻿$(document).on("wb-ready.wb", function (event) {
-    searchInternalUser.Init();
-});
-
-var searchInternalUser = {
+﻿var searchInternalUser = {
 
     Uri: "/Groups/LookupInteralUser",
     InputSelector: ".internalName",
@@ -42,3 +38,10 @@ var searchInternalUser = {
     }
 
 }
+
+if (wb.isReady)
+    searchInternalUser.Init();
+else
+    $(document).on("wb-ready.wb", function (event) {
+        searchInternalUser.Init();
+    });

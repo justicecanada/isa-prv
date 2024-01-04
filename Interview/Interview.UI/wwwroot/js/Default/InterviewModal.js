@@ -1,11 +1,4 @@
-﻿if (wb.isReady)
-    interview.Init();
-else
-    $(document).on("wb-ready.wb", function (event) {
-        interview.Init();
-    });
-
-var interview = {
+﻿var interview = {
 
     OpenLink: "#interviewModal",
     EditClass: "cal-evt-lnk",
@@ -144,3 +137,10 @@ var interview = {
     }
 
 }
+
+if (wb.isReady)
+    interview.Init();
+else
+    $(document).on("wb-ready.wb", function (event) {
+        interview.Init();
+    });

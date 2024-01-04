@@ -1,14 +1,4 @@
-﻿if (wb.isReady) {}
-    userType.Init();
-    searchInternalUser.Init();
-}
-else
-    $(document).on("wb-ready.wb", function (event) {
-        userType.Init();
-        searchInternalUser.Init();
-    });
-
-var userType = {
+﻿var userType = {
 
     Rbl: $("[name='UserType']"),
     InternalDetails: $("#internalDetails"),
@@ -74,3 +64,13 @@ var searchInternalUser = {
     }
 
 }
+
+if (wb.isReady) { 
+    userType.Init();
+    searchInternalUser.Init();
+}
+else
+    $(document).on("wb-ready.wb", function (event) {
+        userType.Init();
+        searchInternalUser.Init();
+    });
