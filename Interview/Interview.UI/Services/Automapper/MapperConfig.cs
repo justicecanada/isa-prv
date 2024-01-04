@@ -43,6 +43,9 @@ namespace Interview.UI.Services.Automapper
             CreateMap<InterviewUser, VmInterview>();
             CreateMap<VmInterview, VmInterviewUser>();
 
+            CreateMap<EmailTemplate, VmEmailTemplate>();
+            CreateMap<VmEmailTemplate, EmailTemplate>();
+
             #region ~/Groups
 
             CreateMap<Contest, Interview.UI.Models.Groups.VmContest>();

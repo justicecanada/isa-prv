@@ -9,15 +9,12 @@ namespace Interview.UI.Models
 
         public Guid ContestId { get; set; }
 
-        [Required]
         [Display(Name = "EmailType")]
         public EmailTypes EmailType { get; set; }
 
-        [Required]
         [Display(Name = "EmailSubject")]
         public string? EmailSubject { get; set; }
 
-        [Required]
         [Display(Name = "EmailBody")]
         public string? EmailBody { get; set; }
 

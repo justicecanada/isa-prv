@@ -35,7 +35,7 @@ namespace Interview.UI.Controllers
         #region Public Index Methods
 
         [HttpGet]
-        public async Task<IActionResult> Index(Guid id)
+        public async Task<IActionResult> Index()
         {
 
             VmIndex result = new VmIndex();
@@ -59,10 +59,23 @@ namespace Interview.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Save(VmIndex vmIndex)
         {
 
-            return View("Index");
+            Guid contestId = (Guid)_state.ContestId;
+            List<EmailTemplate> emailTemplates = _mapper.Map<List<EmailTemplate>>(vmIndex.EmailTemplates);
+
+            foreach (EmailTemplate emailTemplate in emailTemplates)
+            {
+                emailTemplate.ContestId = contestId;
+                if (emailTemplate.Id == Guid.Empty)
+                    await _dal.AddEntity<EmailTemplate>(emailTemplate);
+                else
+                    await _dal.UpdateEntity(emailTemplate);
+            }
+
+            return RedirectToAction("Index");
 
         }
 
