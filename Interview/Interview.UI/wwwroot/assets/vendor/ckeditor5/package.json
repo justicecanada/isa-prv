@@ -9,7 +9,7 @@
   "types": "./build/ckeditor.d.ts",
   "dependencies": {
     "@ckeditor/ckeditor5-basic-styles": "40.2.0",
-    "@ckeditor/ckeditor5-editor-inline": "40.2.0",
+    "@ckeditor/ckeditor5-editor-classic": "40.2.0",
     "@ckeditor/ckeditor5-essentials": "40.2.0",
     "@ckeditor/ckeditor5-link": "40.2.0",
     "@ckeditor/ckeditor5-list": "40.2.0",

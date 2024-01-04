@@ -1,4 +1,4 @@
-InlineEditor
+ClassicEditor
 	.create( document.querySelector( '.editor' ), {
 		// Editor configuration.
 	} )
@@ -12,7 +12,7 @@ function handleSampleError( error ) {
 
 	const message = [
 		'Oops, something went wrong!',
-		`Please, report the following error on ${ issueUrl } with the build id "mnizij7qzdc5-wvvi4djbxinq" and the error stack trace:`
+		`Please, report the following error on ${ issueUrl } with the build id "1t4gcqchbqc7-wf0opyz3bqur" and the error stack trace:`
 	].join( '\n' );
 
 	console.error( message );

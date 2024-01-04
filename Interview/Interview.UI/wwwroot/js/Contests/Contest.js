@@ -4,7 +4,7 @@ var contest = {
 
     Init: function () {
 
-        InlineEditor.create(document.querySelector('#editor'))
+        ClassicEditor.create(document.querySelector('#editor'))
             .catch(error => {
                 console.error(error);
             });
