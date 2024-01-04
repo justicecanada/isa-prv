@@ -20,11 +20,11 @@
         <div>
             @if (cultureName == Constants.EnglishCulture)
             {
-                <p>@contest.MembersIntroEN</p>
+                @Html.Raw(contest.MembersIntroEN)
             }
             else if (cultureName == Constants.FrenchCulture)
             {
-                <p>@contest.MembersIntroFR</p>
+                @Html.Raw(contest.MembersIntroFR)
             }
         </div>
     </section>
