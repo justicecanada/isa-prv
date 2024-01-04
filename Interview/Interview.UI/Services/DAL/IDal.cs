@@ -47,6 +47,8 @@ namespace Interview.UI.Services.DAL
         Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
 
         Task<List<Schedule>> GetSchedulesByContestId(Guid contestId);
+
+        Task<List<EmailTemplate>> GetEmailTemplatesByContestId(Guid contestId);
         
         #endregion
 

@@ -430,6 +430,15 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<EmailTemplate>> GetEmailTemplatesByContestId(Guid contestId)
+        {
+
+            var result = await _context.EmailTemplates.Where(x => x.ContestId == contestId).ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
         #region Mock Identity Methods

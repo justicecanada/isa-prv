@@ -118,12 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Back" xml:space="preserve">
-    <value>Back (fr)</value>
+    <value>Retour à l'accueil</value>
+  </data>
+  <data name="CandidateAddedByHR" xml:space="preserve">
+    <value>Email envoyé losqu'un candidat est ajouté par admin ou un RH</value>
+  </data>
+  <data name="CandidateExternal" xml:space="preserve">
+    <value>Email envoyé à un candidat externe</value>
+  </data>
+  <data name="CandidateInterviewReminder" xml:space="preserve">
+    <value>Email envoyé à un candidat 2 jours avant l'entrevue</value>
+  </data>
+  <data name="CandidateRegisteredTimeSlot" xml:space="preserve">
+    <value>Email envoyé à un candidat qui s'inscrit à une plage horaire</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>&lt;strong&gt;Consignes importantes à suivre&lt;/strong&gt;&lt;p&gt;Afin d'insérer les information dans votre email, vous devez insérer des balises dans le contenu de vos messages.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;{0}&lt;/b&gt; : Processus de sélection&lt;/li&gt;&lt;li&gt;&lt;b&gt;{1}&lt;/b&gt; : Groupe et niveau&lt;/li&gt;&lt;li&gt;&lt;b&gt;{2}&lt;/b&gt; : Date de l'entrevue&lt;/li&gt;&lt;li&gt;&lt;b&gt;{3}&lt;/b&gt; : Période pour préparer les questions d’entrevue&lt;/li&gt;&lt;li&gt;&lt;b&gt;{4}&lt;/b&gt; : Heure de l'entrevue orale&lt;/li&gt;&lt;li&gt;&lt;b&gt;{5}&lt;/b&gt; : Lieu de l'entrevue&lt;/li&gt;&lt;li&gt;&lt;b&gt;{6}&lt;/b&gt; : Nom du contact&lt;/li&gt;&lt;li&gt;&lt;b&gt;{7}&lt;/b&gt; : Numéro de téléphone du contact&lt;/li&gt;&lt;li&gt;&lt;b&gt;{8}&lt;/b&gt; : Code d'activation &lt;b&gt;(candidat externe seulement)&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;{9}&lt;/b&gt; : Lien vers l'application externe &lt;b&gt;(candidat externe seulement)&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;&lt;i&gt;&lt;b&gt;Exemple d'utilisation: La date de l'entrevue est le {2}&lt;/b&gt;&lt;/i&gt;.&lt;p&gt;&lt;/p&gt;</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save (fr)</value>
+    <value>Sauvegarder</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Emails (fr)</value>
+    <value>Gestion des emails envoyés aux candidats</value>
   </data>
 </root>
