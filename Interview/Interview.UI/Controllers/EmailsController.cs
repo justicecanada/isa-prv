@@ -59,7 +59,7 @@ namespace Interview.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save()
+        public async Task<IActionResult> Save(VmIndex vmIndex)
         {
 
             return View("Index");
