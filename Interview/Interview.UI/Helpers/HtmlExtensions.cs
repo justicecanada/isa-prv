@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Interview.UI.Helpers
 {
@@ -80,6 +81,47 @@ namespace Interview.UI.Helpers
                 { 
                     date = System.Convert.ToDateTime(p.GetValue(obj, null));
                     result.Attributes.Add("max", date.ToString("yyyy-MM-dd"));
+                }
+
+            }
+
+            return result;
+
+        }
+
+        public static TagBuilder JusRichTextBoxFor<TModel>(this IHtmlHelper<TModel> html, Expression<Func<TModel, string?>> expression, object obj = null)
+        {
+
+            TagBuilder result = new TagBuilder("textarea");
+            string fieldName = expression.Body.ToString().Replace("x.", "").Replace("Convert(", "").Replace(", Nullable`1)", "");
+            Type type = html.ViewData.ModelExplorer.Model.GetType();
+            var metaData = html.MetadataProvider.GetMetadataForProperty(type, fieldName);
+
+            result.GenerateId(fieldName, "");
+            result.Attributes.Add("name", fieldName);
+            result.AddCssClass("form-control");
+            result.AddCssClass("richTextBox");
+            result.AddCssClass("ckEditor-med-height");
+
+            if (obj != null)
+            {
+                Type t = obj.GetType();
+                PropertyInfo p;
+
+                p = t.GetProperty("value");
+                if (p != null)
+                {
+                    var value = p.GetValue(obj, null);
+                    if (value != null)
+                        result.InnerHtml.Append(value.ToString());
+                }
+
+                p = t.GetProperty("height");
+                if (p != null)
+                {
+                    var value = p.GetValue(obj, null);
+                    if (value != null)
+                        result.Attributes.Add("data-height", value.ToString());
                 }
 
             }
