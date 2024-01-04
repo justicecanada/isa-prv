@@ -1,8 +1,4 @@
-﻿$(document).on("wb-ready.wb", function (event) {
-    table.Init();
-});
-
-var table = {
+﻿var table = {
 
     Table: $("#roleUsers")[0],
     EditForm: $("#editForm")[0],
@@ -30,3 +26,11 @@ var table = {
     }
 
 }
+
+if (wb.isReady) {
+    table.Init();
+}
+else
+    $(document).on("wb-ready.wb", function (event) {
+        table.Init();
+    });
