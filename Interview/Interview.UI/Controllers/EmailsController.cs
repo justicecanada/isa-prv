@@ -2,8 +2,10 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.Emails;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -15,15 +17,17 @@ namespace Interview.UI.Controllers
         #region Declarations
 
         private readonly IMapper _mapper;
+        private readonly IState _state;
 
         #endregion
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions) 
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state) 
             : base(modelAccessor, justiceOptions, dal)
         {
             _mapper = mapper;
+            _state = state;
         }
 
         #endregion
@@ -34,10 +38,23 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index(Guid id)
         {
 
-            var contest = await _dal.GetEntity<Contest>(id, true) as Contest;
-            var vmContest = _mapper.Map<VmContest>(contest);
+            VmIndex result = new VmIndex();
 
-            return View(vmContest);
+            if (_state.ContestId != null)
+            {
+                
+                var emailTemplates = await _dal.GetEmailTemplatesByContestId((Guid)_state.ContestId);
+                result.EmailTemplates = _mapper.Map<List<VmEmailTemplate>>(emailTemplates);
+
+                foreach (EmailTypes emailType in Enum.GetValues(typeof(EmailTypes)))
+                    if (!result.EmailTemplates.Any(x => x.EmailType == emailType))
+                        result.EmailTemplates.Add(new VmEmailTemplate() { EmailType = emailType });
+
+            }
+
+            RegisterIndexClientResources();
+
+            return View(result);
 
         }
 
@@ -46,6 +63,15 @@ namespace Interview.UI.Controllers
         {
 
             return View("Index");
+
+        }
+
+        private void RegisterIndexClientResources()
+        {
+
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
+
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/JusRichTextBoxFor.js?v={BuildId}\"></script>");
 
         }
 

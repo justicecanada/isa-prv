@@ -1,0 +1,28 @@
+﻿@model VmEmailTemplate
+@using Interview.UI.Models
+@using Interview.UI.Helpers
+
+@{
+
+
+
+}
+
+@Html.HiddenFor(x => x.EmailType)
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.EditorFor(x => x.EmailSubject, "Question", new { inputControl = Html.TextBoxFor(x => x.EmailSubject, new { @class = "form-control" }) })
+    </div>
+    <div class="col-md-6">
+        @Html.EditorFor(x => x.EmailCC, "Question", new { inputControl = Html.TextBoxFor(x => x.EmailCC, new { @class = "form-control" }) })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.EditorFor(x => x.EmailBody, "Question", new { inputControl = Html.JusRichTextBoxFor(x => x.EmailBody, new { value = Model.EmailBody }) })
+    </div>
+</div>
+
+<hr />

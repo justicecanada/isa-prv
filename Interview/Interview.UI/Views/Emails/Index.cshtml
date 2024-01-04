@@ -1,8 +1,12 @@
-﻿@using Interview.UI.Models
+﻿@model VmIndex
+@using Interview.UI.Models
+@using Interview.UI.Models.Emails
 @inject IViewLocalizer localizer
 
 @{
+    
     ViewBag.Title = localizer["Title"].Value;
+
 }
 
 @{
@@ -11,9 +15,18 @@
 
 <h1>@localizer["Title"]</h1>
 
+<div role="alert" id="ctl00_cphMainContent_wetInfoVar" class="alert-info alert">
+    @Html.Raw(localizer["Message"].Value)
+</div>
+
 <form>
 
-    @*@Html.HiddenFor(x => x.Id)*@
+    @for (int i = 0; i < Model.EmailTemplates.Count; i++)
+    {
+        ViewData.TemplateInfo.HtmlFieldPrefix = $"EmailTemplates[{i.ToString()}]";
+        VmEmailTemplate emailTempalte = Model.EmailTemplates[i];
+        await Html.RenderPartialAsync("TemplatePartial", emailTempalte);
+    }
 
     <div>
  
