@@ -97,6 +97,9 @@ namespace Interview.UI.Helpers
             Type type = html.ViewData.ModelExplorer.Model.GetType();
             var metaData = html.MetadataProvider.GetMetadataForProperty(type, fieldName);
 
+            if (!string.IsNullOrEmpty(html.ViewData.TemplateInfo.HtmlFieldPrefix))
+                fieldName = $"{html.ViewData.TemplateInfo.HtmlFieldPrefix}.{fieldName}";
+
             result.GenerateId(fieldName, "");
             result.Attributes.Add("name", fieldName);
             result.AddCssClass("form-control");

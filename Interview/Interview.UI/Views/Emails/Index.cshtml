@@ -1,8 +1,12 @@
-﻿@using Interview.UI.Models
+﻿@model VmIndex
+@using Interview.UI.Models
+@using Interview.UI.Models.Emails
 @inject IViewLocalizer localizer
 
 @{
+    
     ViewBag.Title = localizer["Title"].Value;
+
 }
 
 @{
@@ -11,16 +15,43 @@
 
 <h1>@localizer["Title"]</h1>
 
+<div role="alert" id="ctl00_cphMainContent_wetInfoVar" class="alert-info alert">
+    @Html.Raw(localizer["Message"].Value)
+</div>
+
 <form>
 
-    @*@Html.HiddenFor(x => x.Id)*@
+    @Html.AntiForgeryToken()
+
+    @if (Model.EmailTemplates.Count != 0)
+    {
+
+        <ul class="list-unstyled">
+
+            @for (int i = 0; i < Model.EmailTemplates.Count; i++)
+            {              
+                <li><details>
+                 <summary>
+                    @localizer[Model.EmailTemplates[i].EmailType.ToString()].Value
+                 </summary>
+                @{
+                    ViewData.TemplateInfo.HtmlFieldPrefix = $"EmailTemplates[{i.ToString()}]";
+                    VmEmailTemplate emailTempalte = Model.EmailTemplates[i];
+                    await Html.RenderPartialAsync("TemplatePartial", emailTempalte);
+                }
+                </details> </li>
+            }
+
+        </ul>
+
+    }
 
     <div>
  
+        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-default" })
         <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary" formaction=@Url.Action("Save", "Emails")
                formmethod="post" />
-        @Html.ActionLink(localizer["Back"].Value, "Index", "Default", null, new { @class = "btn btn-primary" })
-
+        
     </div>
 
 </form>
