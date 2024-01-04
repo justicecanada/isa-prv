@@ -101,17 +101,29 @@ namespace Interview.UI.Helpers
             result.Attributes.Add("name", fieldName);
             result.AddCssClass("form-control");
             result.AddCssClass("richTextBox");
+            result.AddCssClass("ckEditor-med-height");
 
             if (obj != null)
             {
                 Type t = obj.GetType();
-                PropertyInfo p = t.GetProperty("value");
+                PropertyInfo p;
+
+                p = t.GetProperty("value");
                 if (p != null)
                 {
                     var value = p.GetValue(obj, null);
                     if (value != null)
                         result.InnerHtml.Append(value.ToString());
                 }
+
+                p = t.GetProperty("height");
+                if (p != null)
+                {
+                    var value = p.GetValue(obj, null);
+                    if (value != null)
+                        result.Attributes.Add("data-height", value.ToString());
+                }
+
             }
 
             return result;
