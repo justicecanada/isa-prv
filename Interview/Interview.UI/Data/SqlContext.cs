@@ -23,7 +23,7 @@ namespace Interview.UI.Data
 
             //Database.EnsureDeletedAsync().Wait();
             //Database.EnsureCreatedAsync().Wait();
-            Database.MigrateAsync().Wait();
+            //Database.MigrateAsync().Wait();
 
         }
 
