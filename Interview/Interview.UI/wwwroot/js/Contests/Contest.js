@@ -4,7 +4,7 @@ var contest = {
 
     Init: function () {
 
-        ClassicEditor.create(document.querySelector('#editor'))
+        ClassicEditor.create(document.querySelector('.richTextBox'))
             .catch(error => {
                 console.error(error);
             });

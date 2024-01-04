@@ -163,10 +163,11 @@
                 <div class="col-md-6">
                     @*@Html.EditorFor(x => x.MembersIntroEN, "Question", new { inputControl = Html.TextBoxFor(x => x.MembersIntroEN, new { @class = "form-control" }) })*@
 
-                    @*<div id="editor"></div>*@
-                    <textarea name="MembersIntroEN" id="editor" class="form-control">
-                        &lt;p&gt;This is some sample content.&lt;/p&gt;
-                    </textarea>
+                    @*<textarea name="editor" id="editor" class="form-control">
+                        Here I am!
+                    </textarea>*@
+
+                    @Html.JusRichTextBoxFor(x => x.MembersIntroEN, new { value = Model.MembersIntroEN })
 
                 </div>
                 <div class="col-md-6">
