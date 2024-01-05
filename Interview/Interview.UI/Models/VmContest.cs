@@ -84,7 +84,7 @@ namespace Interview.UI.Models
         public string? EmailServiceSentFrom { get; set; }
 
         [Display(Name = "DepartmentId")]
-        public Guid? DepartmentId { get; set; }
+        public string? DepartmentKey { get; set; }
 
         [Required]
         [Display(Name = "ScheduleCandidateStart")]

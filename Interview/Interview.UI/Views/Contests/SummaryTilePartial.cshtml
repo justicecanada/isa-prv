@@ -1,17 +1,17 @@
 ﻿@using Interview.Entities
-@using Interview.UI.Services.Mock.Departments
+@using Interview.UI.Models.Options
 @inject IViewLocalizer localizer
 
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     Contest contest = ViewBag.Contest;
-    List<MockDepartment> mockDepartments = ViewBag.MockDepartments;
+    List<DepartmentOption> departments = ViewBag.Departments;
 
     string departmentName = "";
-    if (contest.DepartmentId != null)
+    if (contest.DepartmentKey != null)
     {
-        var mockDepartment = mockDepartments.Where(x => x.Id == contest.DepartmentId).FirstOrDefault();
+        var mockDepartment = departments.Where(x => x.Key == contest.DepartmentKey).FirstOrDefault();
         if (mockDepartment != null)
             departmentName = cultureName == Constants.EnglishCulture ? mockDepartment.NameEN : mockDepartment.NameFR;
     }

@@ -11,6 +11,8 @@ using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Models.AppSettings;
 using Microsoft.Extensions.Options;
 using Interview.UI.Services.Mock.Identity;
+using Interview.UI.Services.Options;
+using Interview.UI.Models.Options;
 
 namespace Interview.UI.Controllers
 {
@@ -21,16 +23,19 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IOptions _options;
 
         #endregion
 
         #region Constructors
 
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions) 
+        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+            IOptions options) 
             : base(modelAccessor, justiceOptions, dal)
         {
             _mapper = mapper;
             _state = state;
+            _options = options;
         }
 
         #endregion
@@ -41,12 +46,7 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Contest> contests = await GetContestsForLoggedInUser();
-            Guid? contestId = null;
-            List<MockDepartment> mockDepartments = await _dal.GetAllMockDepatments();
-
-            ViewBag.Contests = contests;
-            ViewBag.MockDepartments = mockDepartments;
+            await IndexSetViewBag();
 
             return View();
 
@@ -61,6 +61,18 @@ namespace Interview.UI.Controllers
             _state.ContestId = null;
 
             return RedirectToAction("Index");
+
+        }
+
+        public async Task IndexSetViewBag()
+        {
+
+            List<Contest> contests = await GetContestsForLoggedInUser();
+            Guid? contestId = null;
+            List<DepartmentOption> departments = _options.GetDepartmentOptions();
+
+            ViewBag.Contests = contests;
+            ViewBag.Departments = departments;
 
         }
 
@@ -160,8 +172,8 @@ namespace Interview.UI.Controllers
         {
 
             // Departments
-            var mockDepartments = await _dal.GetAllMockDepatments();
-            ViewBag.MockDepartments = mockDepartments;
+            List<DepartmentOption> departments = _options.GetDepartmentOptions();
+            ViewBag.Departments = departments;
 
         }
 

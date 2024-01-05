@@ -2,7 +2,7 @@
 @using Interview.Entities
 @using Interview.UI.Models
 @using Interview.UI.Helpers
-@using Interview.UI.Services.Mock.Departments
+@using Interview.UI.Models.Options
 @using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
@@ -19,14 +19,14 @@
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     string h3 = Model.Id == null ? localizer["AddProcess"].Value : localizer["EditProcess"].Value;
 
-    List<MockDepartment> mockDepartments = ViewBag.MockDepartments;
-    List<SelectListItem> mockDepartmentItems = new List<SelectListItem>();
-    mockDepartmentItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var mockDepartment in mockDepartments)
+    List<DepartmentOption> departments = ViewBag.Departments;
+    List<SelectListItem> departmentItems = new List<SelectListItem>();
+    departmentItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var mockDepartment in departments)
     {
-        mockDepartmentItems.Add(new SelectListItem()
+        departmentItems.Add(new SelectListItem()
         {         
-            Value = mockDepartment.Id.ToString(),
+            Value = mockDepartment.Key,
             Text = cultureName == Constants.EnglishCulture ? mockDepartment.NameEN : mockDepartment.NameFR
         });
     }
@@ -68,7 +68,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    @Html.EditorFor(x => x.DepartmentId, "Question", new { inputControl = @Html.DropDownList("DepartmentId", mockDepartmentItems, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.DepartmentKey, "Question", new { inputControl = @Html.DropDownList("DepartmentKey", departmentItems, new { @class = "form-control" }) })
                 </div>
             </div>
 

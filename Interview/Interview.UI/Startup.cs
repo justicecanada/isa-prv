@@ -21,6 +21,7 @@ using Interview.UI.Services.Mock;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Mock.Departments;
+using Interview.UI.Services.Options;
 
 namespace Interview.UI
 {
@@ -66,6 +67,7 @@ namespace Interview.UI
 
             services.AddScoped<IState, SessionState>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
+            services.AddTransient<IOptions, JsonOptions>();
 
             // Mocked Services
             services.AddTransient<MockSeeder>();

@@ -33,7 +33,7 @@
         public string? CandidatesIntroEN { get; set; }
         public string? CandidatesIntroFR { get; set; }
         public string? EmailServiceSentFrom { get; set; }
-        public Guid? DepartmentId { get; set; }
+        public string? DepartmentKey { get; set; }
 
         public List<EmailTemplate> EmailTemplates { get; set; }
         public List<Interview> Interviews { get; set; }
