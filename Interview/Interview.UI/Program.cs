@@ -13,7 +13,6 @@ namespace Interview.UI
 
                 await SeedMockedData(host);
                 await SeedMockUsers(host);
-                await SeedMockDepartments(host);
                 host.Run();
 
             }
@@ -53,19 +52,6 @@ namespace Interview.UI
             {
                 var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.Identity.MockIdentitySeeder>();
                 await seeder.EnsureUsers();
-            }
-
-        }
-
-        private static async Task SeedMockDepartments(IHost host)
-        {
-
-            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.Departments.MockDepartmentSeeder>();
-                await seeder.EnsureDepartments();
             }
 
         }

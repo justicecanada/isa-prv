@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Interview.UI.Services.Mock;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
-using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Options;
 
 namespace Interview.UI
@@ -72,7 +71,6 @@ namespace Interview.UI
             // Mocked Services
             services.AddTransient<MockSeeder>();
             services.AddTransient<MockIdentitySeeder>();
-            services.AddTransient<MockDepartmentSeeder>();
 
             // WET
             services.AddModelAccessor();

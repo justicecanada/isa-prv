@@ -7,7 +7,6 @@ using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
-using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Models.AppSettings;
 using Microsoft.Extensions.Options;
 using Interview.UI.Services.Mock.Identity;

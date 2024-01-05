@@ -48,7 +48,6 @@ namespace Interview.UI.Data
 
         // Mocked up data
         public DbSet<Interview.UI.Services.Mock.Identity.MockUser> MockUsers { get; set; }
-        public DbSet<Interview.UI.Services.Mock.Departments.MockDepartment> MockDepartments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
