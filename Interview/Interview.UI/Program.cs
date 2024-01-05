@@ -37,7 +37,7 @@ namespace Interview.UI
 
             using (var scope = scopeFactory.CreateScope())
             {
-                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Mock.MockSeeder>();
+                var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Seeder.EquitySeeder>();
                 await seeder.EnsureEquities();
             }
 
