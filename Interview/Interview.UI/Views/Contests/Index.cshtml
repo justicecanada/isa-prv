@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = localizer["Title"].Value;
 
-    List<Contest> contests = ViewBag.Contests;
+    List<Process> contests = ViewBag.Contests;
 
 }
 
@@ -19,7 +19,7 @@
 </div>
 
 <div class="row">
-    @foreach (Contest contest in contests)
+    @foreach (Process contest in contests)
     {
         ViewBag.Contest = contest;
         await Html.RenderPartialAsync("SummaryTilePartial");

@@ -11,7 +11,7 @@ namespace Interview.UI.Models.Groups
         public VmGroup()
         {
             ContestGroups = new List<VmContestGroup>();
-            Contests = new List<VmContest>();
+            Processes = new List<VmProcess>();
             GroupOwners = new List<VmGroupOwner>();
         }
 
@@ -26,13 +26,13 @@ namespace Interview.UI.Models.Groups
         [Display(Name = "HasAccessEE")]
         public bool HasAccessEE { get; set; }
 
-        [Display(Name = "ContestIdToAdd")]
-        public Guid? ContestIdToAdd { get; set; }
+        [Display(Name = "ProcessIdToAdd")]
+        public Guid? ProcessIdToAdd { get; set; }
 
         public bool EditThisGroup { get; set; }
 
         public List<VmContestGroup> ContestGroups { get; set; }
-        public List<VmContest> Contests { get; set; }
+        public List<VmProcess> Processes { get; set; }
         public List<VmGroupOwner> GroupOwners { get; set; }
 
     }

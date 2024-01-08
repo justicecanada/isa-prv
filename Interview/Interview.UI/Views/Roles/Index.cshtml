@@ -16,7 +16,7 @@
     }).Select(x => x.ToLower()).ToList();
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    Contest contest = ViewBag.Contest;
+    Process contest = ViewBag.Contest;
 
     List<MockUser> mockExistingExternalUsers = ViewBag.MockExistingExternalUsers;
     List<SelectListItem> mockExistingExternalUsersItems = new List<SelectListItem>();

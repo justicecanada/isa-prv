@@ -9,8 +9,8 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
-    List<Contest> contests = ViewBag.Contests;
-    Contest? contest = Model.ContestId == null ? null : contests.Where(x => x.Id == Model.ContestId).First();
+    List<Process> contests = ViewBag.Contests;
+    Process? contest = Model.ProcessId == null ? null : contests.Where(x => x.Id == Model.ProcessId).First();
 
     List<SelectListItem> vmContestItems = new List<SelectListItem>();
     foreach (var contestItem in contests)
@@ -19,7 +19,7 @@
         {         
             Value = contestItem.Id.ToString(),
             Text = contestItem.NoProcessus,
-            Selected = contestItem.Id == Model.ContestId
+            Selected = contestItem.Id == Model.ProcessId
         });
     }
 
@@ -42,7 +42,7 @@
                 @Html.Label("lblContests", localizer["ListOfProcesses"].Value, new { @for = "ContestId" }):
             </div>
             <div class="col-md-12">          
-                @Html.DropDownListFor(x => x.ContestId, vmContestItems, new { @class = "form-control" })
+                @Html.DropDownListFor(x => x.ProcessId, vmContestItems, new { @class = "form-control" })
             </div>
         }
     </div>
@@ -52,7 +52,7 @@
     await Html.RenderPartialAsync("LegendPartial");
     await Html.RenderPartialAsync("MembersWelcomePartial");
     await Html.RenderPartialAsync("RulesPartial");
-    if (Model.ContestId != null)
+    if (Model.ProcessId != null)
         await Html.RenderPartialAsync("CalendarPartial");
     await Html.RenderPartialAsync("ModalContainer");
 }

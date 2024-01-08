@@ -34,7 +34,7 @@ namespace Interview.UI.Data
 
         }
 
-        public DbSet<Interview.Entities.Contest> Contests { get; set; }
+        public DbSet<Interview.Entities.Process> Processes { get; set; }
         public DbSet<Interview.Entities.ContestGroup> ContestGroups { get; set; }
         public DbSet<Interview.Entities.EmailTemplate> EmailTemplates { get; set; }
         public DbSet<Interview.Entities.Equity> Equities { get; set; } 

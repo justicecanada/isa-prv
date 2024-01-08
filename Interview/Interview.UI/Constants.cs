@@ -10,7 +10,7 @@
         public const string DateTimeFormat = "yyyy-MM-dd h:mm";
 
         public const string AssemblyVersionKey = "ASSEMBLY_VERSION";
-        public const string ContestId = "CONTEST_ID";
+        public const string ProcessId = "PROCESS_ID";
 
     }
 

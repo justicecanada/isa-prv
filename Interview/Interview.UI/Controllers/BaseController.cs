@@ -99,17 +99,17 @@ namespace Interview.UI.Controllers
             return _justiceOptions.Value.MockLoggedInUserRole == roleType;
         }
 
-        protected async Task<List<Contest>> GetContestsForLoggedInUser()
+        protected async Task<List<Process>> GetContestsForLoggedInUser()
         {
 
-            List<Contest> result = null;
+            List<Process> result = null;
 
             if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
-                result = await _dal.GetAllContests();
+                result = await _dal.GetAllProcesses();
             else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                result = await _dal.GetContestsForGroupOwner((Guid)LoggedInMockUser.Id);
+                result = await _dal.GetProcessesForGroupOwner((Guid)LoggedInMockUser.Id);
             else
-                result = await _dal.GetContestsForRoleUser((Guid)LoggedInMockUser.Id);
+                result = await _dal.GetProcessesForRoleUser((Guid)LoggedInMockUser.Id);
             result.OrderByDescending(x => x.CreatedDate);
 
             return result;

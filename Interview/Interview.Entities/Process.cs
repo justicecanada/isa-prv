@@ -1,10 +1,10 @@
 ﻿namespace Interview.Entities
 {
     
-    public class Contest : EntityBase
+    public class Process : EntityBase
     {
 
-        public Contest()
+        public Process()
         {
             EmailTemplates = new List<EmailTemplate>();
             Interviews = new List<Interview>();

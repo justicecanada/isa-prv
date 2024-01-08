@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Interview.UI.Models
 {
     
-    public class VmContest : VmBase
+    public class VmProcess : VmBase
     {
 
         [Required]

@@ -14,7 +14,7 @@
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
 
-    List<Contest> contests = ViewBag.Contests;
+    List<Process> contests = ViewBag.Contests;
     List<SelectListItem> contestItems = new List<SelectListItem>();
     contestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
     foreach (var contest in contests)

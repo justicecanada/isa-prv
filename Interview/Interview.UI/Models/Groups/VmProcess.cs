@@ -3,10 +3,10 @@
 namespace Interview.UI.Models.Groups
 {
     
-    public class VmContest : VmBase
+    public class VmProcess : VmBase
     {
 
-        public VmContest()
+        public VmProcess()
         {
             ContestGroups = new List<VmContestGroup>();
             Groups = new List<Group>();

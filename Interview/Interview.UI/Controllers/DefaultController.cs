@@ -51,20 +51,20 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
-            List<Contest> contests = await GetContestsForLoggedInUser();
-            Guid? contestId = null;
+            List<Process> processes = await GetContestsForLoggedInUser();
+            Guid? processId = null;
 
-            // Look to Session for ContestId
-            if (_state.ContestId != null)
-                contestId = _state.ContestId;
-            // Look to first item in list if _state.ContestId isn't set by user
-            else if (contests.Any())
-                contestId = contests.First().Id;
+            // Look to Session for ProcessId
+            if (_state.ProcessId != null)
+                processId = _state.ProcessId;
+            // Look to first item in list if _state.ProcessId isn't set by user
+            else if (processes.Any())
+                processId = processes.First().Id;
 
-            await SetIndexViewBag(contests, contestId);
+            await SetIndexViewBag(processes, processId);
             RegisterIndexClientResources();
-            _state.ContestId = contestId;
-            result.ContestId = contestId;
+            _state.ProcessId = processId;
+            result.ProcessId = processId;
             
             return View(result);
 
@@ -72,26 +72,26 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SwitchContest(Guid contestId)
+        public async Task<IActionResult> SwitchContest(Guid processId)
         {
 
-            _state.ContestId = contestId;
+            _state.ProcessId = processId;
 
             return RedirectToAction("Index");
 
         }
 
-		private async Task SetIndexViewBag(List<Contest> contests, Guid? contestId)
+		private async Task SetIndexViewBag(List<Process> contests, Guid? processId)
         {
 
             ViewBag.Contests = contests;
-            ViewBag.ContestId = contestId;
+            ViewBag.ContestId = processId;
 
-            if (contestId != null)
+            if (processId != null)
             {
 
-                Contest contest = contests.Where(x => x.Id == contestId).First();
-				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByContestId((Guid)contestId);
+                Process contest = contests.Where(x => x.Id == processId).First();
+				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId((Guid)processId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
 				ViewBag.ContestStartDate = contest.StartDate;
@@ -125,7 +125,7 @@ namespace Interview.UI.Controllers
             Interview.Entities.Interview interview = null;
 
             if (id == null)
-                result = new VmInterview() { ContestId = (Guid)_state.ContestId };
+                result = new VmInterview() { ProcessId = (Guid)_state.ProcessId };
             else
             {
                 interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
@@ -156,7 +156,7 @@ namespace Interview.UI.Controllers
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
 
                 // Handle Interview
-                interview.ContestId = (Guid)_state.ContestId;
+                interview.ProcessId = (Guid)_state.ProcessId;
                 if (vmInterview.Id == null)
                 {
                     vmInterview.Id = await _dal.AddEntity<Interview.Entities.Interview>(interview);
@@ -207,7 +207,7 @@ namespace Interview.UI.Controllers
             if (interview != null)
             {
 
-                List<Schedule> schedules = await _dal.GetSchedulesByContestId(interview.ContestId);
+                List<Schedule> schedules = await _dal.GetSchedulesByProcessId(interview.ProcessId);
                 TimeSpan startTime = interview.StartDate.TimeOfDay;
                 TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
                 TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
@@ -226,12 +226,12 @@ namespace Interview.UI.Controllers
             }
 
             // Handle Interview Start and End Dates
-            Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
+            Process contest = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
 			ViewBag.ContestStartDate = contest.StartDate;
 			ViewBag.ContestEndDate = contest.EndDate;
 
 			// Handle Interview Users
-			List<RoleUser> roleUsers = await _dal.GetRoleUsersByContestId((Guid)_state.ContestId);
+			List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
 			if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
 			{
 				bool hasAccess = true;
@@ -239,7 +239,7 @@ namespace Interview.UI.Controllers
 				{
 					// Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
 					// get the list as a variable first. Moving on...
-					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ContestId, (Guid)LoggedInMockUser.Id);
+					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
 					hasAccess = groupOwners.Any();
 				}
 			}
@@ -292,7 +292,7 @@ namespace Interview.UI.Controllers
             if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
             {
 
-                Contest contest = await _dal.GetEntity<Contest>((Guid)_state.ContestId) as Contest;
+                Process contest = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
                 //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
                 DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
 

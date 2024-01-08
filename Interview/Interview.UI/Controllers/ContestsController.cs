@@ -52,12 +52,12 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteContest(Guid contestId)
+        public async Task<IActionResult> DeleteContest(Guid processId)
         {
 
-            await _dal.DeleteEntity<Contest>(contestId);
+            await _dal.DeleteEntity<Process>(processId);
 
-            _state.ContestId = null;
+            _state.ProcessId = null;
 
             return RedirectToAction("Index");
 
@@ -66,8 +66,7 @@ namespace Interview.UI.Controllers
         public async Task IndexSetViewBag()
         {
 
-            List<Contest> contests = await GetContestsForLoggedInUser();
-            Guid? contestId = null;
+            List<Process> contests = await GetContestsForLoggedInUser();
             List<DepartmentOption> departments = _options.GetDepartmentOptions();
 
             ViewBag.Contests = contests;
@@ -80,69 +79,69 @@ namespace Interview.UI.Controllers
         #region Manage Methods
 
         [HttpGet]   
-        public async Task<IActionResult> Contest(Guid? contestId)
+        public async Task<IActionResult> Contest(Guid? processId)
         {
 
-            VmContest vmContest = null;
+            VmProcess vmProcess = null;
 
-            if (contestId == null)
+            if (processId == null)
             {
-                vmContest = new VmContest();
+                vmProcess = new VmProcess();
             }
             else
             {
-                var contest = await _dal.GetEntity<Contest>((Guid)contestId, true) as Contest;
-                vmContest = _mapper.Map<VmContest>(contest);
-                PopulateContestSchedulePropertiesFromSchedule(vmContest, contest.Schedules);
+                var process = await _dal.GetEntity<Process>((Guid)processId, true) as Process;
+                vmProcess = _mapper.Map<VmProcess>(process);
+                PopulateContestSchedulePropertiesFromSchedule(vmProcess, process.Schedules);
             }
 
             await ContestsSetViewBag();
             RegisterContestsClientResources();
 
-            return View(vmContest);
+            return View(vmProcess);
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ContestNext(VmContest vmContest)
+        public async Task<IActionResult> ContestNext(VmProcess vmProcess)
         {
 
-            HandleScheduleModelState(vmContest);     // This is temporary until the slider is on the view
+            HandleScheduleModelState(vmProcess);     // This is temporary until the slider is on the view
 
             if (ModelState.IsValid)
             {
-                var contest = _mapper.Map<Contest>(vmContest);
+                var contest = _mapper.Map<Process>(vmProcess);
 
                 contest.CreatedDate = DateTime.Now;
                 contest.InitUserId = LoggedInMockUser.Id;
-                contest.Schedules = GetSchedules(vmContest);
-                await _dal.AddEntity<Contest>(contest);
+                contest.Schedules = GetSchedules(vmProcess);
+                await _dal.AddEntity<Process>(contest);
 
-                return RedirectToAction("Index", "Emails", new { id = vmContest.Id });
+                return RedirectToAction("Index", "Emails", new { id = vmProcess.Id });
             }
             else
             {
                 await ContestsSetViewBag();
                 RegisterContestsClientResources();
 
-                return View("Contest", vmContest);
+                return View("Contest", vmProcess);
             }
 
         }
 
         [HttpPost]  
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ContestSave(VmContest vmContest)
+        public async Task<IActionResult> ContestSave(VmProcess vmProcess)
         {
 
-            HandleScheduleModelState(vmContest);     // This is temporary until the slider is on the view
+            HandleScheduleModelState(vmProcess);     // This is temporary until the slider is on the view
 
             if (ModelState.IsValid)
             {
-                Contest postedContext = _mapper.Map<Contest>(vmContest);
-                List<Schedule> postedSchedules = GetSchedules(vmContest);
-                Contest dbContest = await _dal.GetEntity<Contest>((Guid)vmContest.Id, true) as Contest;
+                Process postedProcess = _mapper.Map<Process>(vmProcess);
+                List<Schedule> postedSchedules = GetSchedules(vmProcess);
+                Process dbContest = await _dal.GetEntity<Process>((Guid)vmProcess.Id, true) as Process;
                 
                 // Resolve Schedules
                 ResolveSchedules(postedSchedules, dbContest.Schedules);
@@ -150,9 +149,9 @@ namespace Interview.UI.Controllers
                     await _dal.UpdateEntity(schedule);
 
                 // Save Contest
-                postedContext.CreatedDate = dbContest.CreatedDate;
-                postedContext.InitUserId = dbContest.InitUserId;
-                await _dal.UpdateEntity(postedContext);
+                postedProcess.CreatedDate = dbContest.CreatedDate;
+                postedProcess.InitUserId = dbContest.InitUserId;
+                await _dal.UpdateEntity(postedProcess);
 
                 return RedirectToAction("Index", "Default");
 
@@ -162,7 +161,7 @@ namespace Interview.UI.Controllers
                 await ContestsSetViewBag();
                 RegisterContestsClientResources();
 
-                return View("Contest", vmContest);
+                return View("Contest", vmProcess);
             }
 
         }
@@ -195,7 +194,7 @@ namespace Interview.UI.Controllers
         // in the view for the slider. So keeping the model simple / flat (Schedule.VmScheduleCandidateStart, Schedule.VmScheduleMembersStart, Schedule.VmScheduleMarkingStart)
         // and let the controller stick handle mapping these properties to proper Schedule objects.
 
-        private void HandleScheduleModelState(VmContest vmContest)
+        private void HandleScheduleModelState(VmProcess vmContest)
         {
 
             if (vmContest.VmScheduleCandidateStart > vmContest.VmScheduleMembersStart)
@@ -209,7 +208,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private List<Schedule> GetSchedules(VmContest vmContest)
+        private List<Schedule> GetSchedules(VmProcess vmContest)
         {
 
             List<Schedule> result = new List<Schedule>();
@@ -234,7 +233,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private void PopulateContestSchedulePropertiesFromSchedule(VmContest contest, List<Schedule> dbSchedules)
+        private void PopulateContestSchedulePropertiesFromSchedule(VmProcess contest, List<Schedule> dbSchedules)
         {
 
             contest.VmScheduleCandidateStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue;

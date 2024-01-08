@@ -148,15 +148,15 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> AddContest(VmGroup vmGroup)
         {
 
-            if (vmGroup.ContestIdToAdd != null)
+            if (vmGroup.ProcessIdToAdd != null)
             {
                 // Check to see if Contest has been added to the group
-                List<ContestGroup> contestGroups = await _dal.GetContestGroupByGroupIdAndContestId((Guid)vmGroup.Id, (Guid)vmGroup.ContestIdToAdd);
+                List<ContestGroup> contestGroups = await _dal.GetContestGroupByGroupIdAndProcessId((Guid)vmGroup.Id, (Guid)vmGroup.ProcessIdToAdd);
                 if (!contestGroups.Any())
                 {
                     ContestGroup contestGroup = new ContestGroup()
                     {
-                        ContestId = (Guid)vmGroup.ContestIdToAdd,
+                        ProcessId = (Guid)vmGroup.ProcessIdToAdd,
                         GroupId = (Guid)vmGroup.Id
                     };
                     await _dal.AddEntity<ContestGroup>(contestGroup);
@@ -189,7 +189,7 @@ namespace Interview.UI.Controllers
         private async Task IndexSetViewBag()
         {
 
-            List<Contest> contests = await _dal.GetAllContests();
+            List<Process> contests = await _dal.GetAllProcesses();
             ViewBag.Contests = contests;
 
             if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])

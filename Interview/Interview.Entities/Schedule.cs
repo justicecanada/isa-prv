@@ -10,7 +10,7 @@ namespace Interview.Entities
     public class Schedule : EntityBase
     {
 
-        public Guid ContestId { get; set; }
+        public Guid Processid { get; set; }
         //public Guid ScheduleTypeId { get; set; }
         public ScheduleTypes ScheduleType { get; set; }
         public int? StartValue { get; set; }

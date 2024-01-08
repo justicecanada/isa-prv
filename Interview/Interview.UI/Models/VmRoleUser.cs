@@ -12,7 +12,7 @@ namespace Interview.UI.Models
             Equities = new List<VmEquity>();
         }
 
-        public Guid ContestId { get; set; }
+        public Guid ProcessId { get; set; }
         public Guid UserId { get; set; }
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }

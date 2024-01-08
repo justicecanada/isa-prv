@@ -63,11 +63,11 @@
 
                 <div class="form-group">
                     <div class="col-md-12">
-                        @Html.LabelFor(x => x.ContestIdToAdd)
+                        @Html.LabelFor(x => x.ProcessIdToAdd)
                     </div>
                     <div class="row">
                         <div class="col-md-9">
-                            @Html.DropDownListFor(x => x.ContestIdToAdd, contestItems, new { @class = "form-control" })
+                            @Html.DropDownListFor(x => x.ProcessIdToAdd, contestItems, new { @class = "form-control" })
                         </div>
                         <div class="col-md-3">
                             <input type="submit" value="@localizer["AddContest"]" class="btn btn-primary" />
@@ -99,7 +99,7 @@
                 @foreach (var contestGroup in Model.ContestGroups)
                 {
                     <li>
-                        @contestGroup.Contest.GroupNiv
+                        @contestGroup.Process.GroupNiv
                         <a href="@Url.Action("RemoveContest", "Groups", new { contestGroupId = contestGroup.Id } )">
                             <span class="glyphicon glyphicon-trash text-danger"></span>
                             </a>
