@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Interview.UI.Services.Mock;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
-using Interview.UI.Services.Mock.Departments;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;

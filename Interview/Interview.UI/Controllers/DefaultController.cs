@@ -65,7 +65,6 @@ namespace Interview.UI.Controllers
                 processId = processes.First().Id;
 
             await SetIndexViewBag(processes, processId);
-            await SetIndexViewBag(contests, contestId);
             await SetupAuthViewBag();
             RegisterIndexClientResources();
             _state.ProcessId = processId;

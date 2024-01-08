@@ -29,10 +29,7 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public ProcessesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
-            IOptions options) 
-            : base(modelAccessor, justiceOptions, dal)
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
-            IOptions<SessionTimeout> sessionTimeoutOptions) 
+            IOptions<SessionTimeout> sessionTimeoutOptions, IOptions options) 
             : base(modelAccessor, justiceOptions, sessionTimeoutOptions, dal)
         {
             _mapper = mapper;
