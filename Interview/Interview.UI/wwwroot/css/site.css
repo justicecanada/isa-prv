@@ -121,3 +121,7 @@ label.required-fr::after {
 .bs-callout-info h4 {
     color: #5bc0de;
 }
+
+.ck-editor__editable {
+    max-height: 400px !important;
+}
