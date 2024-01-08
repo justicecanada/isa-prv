@@ -89,7 +89,7 @@ namespace Interview.UI.Controllers
                 Guid roleUserId;
                 RoleUser roleUser = new RoleUser()
                 {
-                    ContestId = (Guid)_state.ContestId,
+                    ProcessId = (Guid)_state.ProcessId,
                     LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
                     RoleType = (RoleTypes)vmIndex.RoleType,
                     UserId = (Guid)mockUser.Id,
@@ -132,12 +132,12 @@ namespace Interview.UI.Controllers
         private async Task IndexSetViewBag()
         {
 
-            // Contest
-            var contest = _state.ContestId == null ? new Contest() : await _dal.GetEntity<Contest>((Guid)_state.ContestId, true);
-            ViewBag.Contest = contest;
+            // Process
+            var process = _state.ProcessId == null ? new Process() : await _dal.GetEntity<Process>((Guid)_state.ProcessId, true);
+            ViewBag.Process = process;
 
             // RoleUsers
-            var roleUsers = _state.ContestId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByContestId((Guid)_state.ContestId);
+            var roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
             ViewBag.RoleUsers = roleUsers;
 
             // Show Equities

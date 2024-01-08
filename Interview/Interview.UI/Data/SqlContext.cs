@@ -34,8 +34,8 @@ namespace Interview.UI.Data
 
         }
 
-        public DbSet<Interview.Entities.Contest> Contests { get; set; }
-        public DbSet<Interview.Entities.ContestGroup> ContestGroups { get; set; }
+        public DbSet<Interview.Entities.Process> Processes { get; set; }
+        public DbSet<Interview.Entities.ProcessGroup> ProcessGroups { get; set; }
         public DbSet<Interview.Entities.EmailTemplate> EmailTemplates { get; set; }
         public DbSet<Interview.Entities.Equity> Equities { get; set; } 
         public DbSet<Interview.Entities.Group> Groups { get; set; }
@@ -48,7 +48,6 @@ namespace Interview.UI.Data
 
         // Mocked up data
         public DbSet<Interview.UI.Services.Mock.Identity.MockUser> MockUsers { get; set; }
-        public DbSet<Interview.UI.Services.Mock.Departments.MockDepartment> MockDepartments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

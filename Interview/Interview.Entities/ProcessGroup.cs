@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 namespace Interview.Entities
 {
     
-    public class ContestGroup : EntityBase
+    public class ProcessGroup : EntityBase
     {
 
         // Many to Many
         // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
 
-        public Guid ContestId { get; set; }
+        public Guid ProcessId { get; set; }
         public Guid GroupId { get; set; }
 
-        public Contest Contest { get; set; }
+        public Process Process { get; set; }
         public Group Group { get; set; }
 
     }

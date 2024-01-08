@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
 
-    $("#ContestId").on("change", function () {
+    $("#ProcessId").on("change", function () {
 
-        $("#formContest").submit();
+        $("#formProcess").submit();
 
     });
 

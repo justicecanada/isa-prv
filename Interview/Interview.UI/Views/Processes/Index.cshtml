@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = localizer["Title"].Value;
 
-    List<Contest> contests = ViewBag.Contests;
+    List<Process> processes = ViewBag.Processes;
 
 }
 
@@ -14,14 +14,14 @@
 
 <div class="row mrgn-bttm-md mrgn-tp-md">
     <div class="col-md-12">
-        @Html.ActionLink(localizer["AddContest"].Value, "Contest", "Contests", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(localizer["AddProcess"].Value, "Process", "Processes", null, new { @class = "btn btn-primary" })
     </div>
 </div>
 
 <div class="row">
-    @foreach (Contest contest in contests)
+    @foreach (Process process in processes)
     {
-        ViewBag.Contest = contest;
+        ViewBag.Process = process;
         await Html.RenderPartialAsync("SummaryTilePartial");
     }
 </div>

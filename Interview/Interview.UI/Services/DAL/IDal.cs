@@ -1,5 +1,4 @@
 ﻿using Interview.Entities;
-using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI.Services.DAL
@@ -20,35 +19,35 @@ namespace Interview.UI.Services.DAL
 
         #region Custom Line of Business Methods
 
-        Task<List<Contest>> GetAllContests();
+        Task<List<Process>> GetAllProcesses();
 
-        Task<List<Contest>> GetContestsForGroupOwner(Guid userId);
+        Task<List<Process>> GetProcessesForGroupOwner(Guid userId);
 
-        Task<List<Contest>> GetContestsForRoleUser(Guid userId);
+        Task<List<Process>> GetProcessesForRoleUser(Guid userId);
 
-        Task<List<Contest>> GetAllContestsWithUserRoles();
+        Task<List<Process>> GetAllProcessesWithUserRoles();
 
         Task<List<Group>> GetGroups(Guid? userId = null);
 
         Task<List<GroupOwner>> GetGroupOwnersByGroupIdAndUserId(Guid groupId, Guid userId);
 
-        Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid contestId, Guid userId);
+        Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid processId, Guid userId);
 
-        Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId);
+        Task<List<ProcessGroup>> GetProcessGroupByGroupIdAndProcessId(Guid groupId, Guid processId);
 
         Task<List<Equity>> GetAllEquities();
 
-        Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId);
+        Task<List<RoleUser>> GetRoleUsersByProcessId(Guid processId);
 
         Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
-        Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId);
+        Task<List<Interview.Entities.Interview>> GetInterViewsByProcessId(Guid processId);
 
         Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
 
-        Task<List<Schedule>> GetSchedulesByContestId(Guid contestId);
+        Task<List<Schedule>> GetSchedulesByProcessId(Guid processId);
 
-        Task<List<EmailTemplate>> GetEmailTemplatesByContestId(Guid contestId);
+        Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId);
         
         #endregion
 
@@ -65,12 +64,6 @@ namespace Interview.UI.Services.DAL
         Task<MockUser?> GetMockUserByName(string name);
 
         Task<Guid> AddMockUser(MockUser mockUser);
-
-        #endregion
-
-        #region Mock Departments Methods
-
-        Task<List<MockDepartment>> GetAllMockDepatments();
 
         #endregion
 

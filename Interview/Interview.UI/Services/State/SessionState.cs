@@ -13,21 +13,21 @@ namespace Interview.UI.Services.State
             _session = accessor.HttpContext.Session;
         }
 
-        public Guid? ContestId
+        public Guid? ProcessId
         {
             get
             {
-                if (_session.Keys.Contains(Constants.ContestId))
-                    return new Guid(_session.GetString(Constants.ContestId));
+                if (_session.Keys.Contains(Constants.ProcessId))
+                    return new Guid(_session.GetString(Constants.ProcessId));
                 else
                     return null;
             }
             set
             {
                 if (value == null)
-                    _session.Remove(Constants.ContestId);
+                    _session.Remove(Constants.ProcessId);
                 else
-                    _session.SetString(Constants.ContestId, value.ToString());
+                    _session.SetString(Constants.ProcessId, value.ToString());
             }
         }
 

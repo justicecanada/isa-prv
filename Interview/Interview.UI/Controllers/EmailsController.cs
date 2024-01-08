@@ -40,10 +40,10 @@ namespace Interview.UI.Controllers
 
             VmIndex result = new VmIndex();
 
-            if (_state.ContestId != null)
+            if (_state.ProcessId != null)
             {
                 
-                var emailTemplates = await _dal.GetEmailTemplatesByContestId((Guid)_state.ContestId);
+                var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
                 result.EmailTemplates = _mapper.Map<List<VmEmailTemplate>>(emailTemplates);
 
                 foreach (EmailTypes emailType in Enum.GetValues(typeof(EmailTypes)))
@@ -63,12 +63,12 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Save(VmIndex vmIndex)
         {
 
-            Guid contestId = (Guid)_state.ContestId;
+            Guid processId = (Guid)_state.ProcessId;
             List<EmailTemplate> emailTemplates = _mapper.Map<List<EmailTemplate>>(vmIndex.EmailTemplates);
 
             foreach (EmailTemplate emailTemplate in emailTemplates)
             {
-                emailTemplate.ContestId = contestId;
+                emailTemplate.ProcessId = processId;
                 if (emailTemplate.Id == Guid.Empty)
                     await _dal.AddEntity<EmailTemplate>(emailTemplate);
                 else

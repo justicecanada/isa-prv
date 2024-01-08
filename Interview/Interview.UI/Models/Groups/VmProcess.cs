@@ -3,12 +3,12 @@
 namespace Interview.UI.Models.Groups
 {
     
-    public class VmContest : VmBase
+    public class VmProcess : VmBase
     {
 
-        public VmContest()
+        public VmProcess()
         {
-            ContestGroups = new List<VmContestGroup>();
+            ProcessGroups = new List<VmProcessGroup>();
             Groups = new List<Group>();
         }
 
@@ -16,7 +16,7 @@ namespace Interview.UI.Models.Groups
 
         public Guid? EmployeeId { get; set; }
 
-        public List<VmContestGroup> ContestGroups { get; set; }
+        public List<VmProcessGroup> ProcessGroups { get; set; }
 
         public List<Group> Groups { get; set; }
 

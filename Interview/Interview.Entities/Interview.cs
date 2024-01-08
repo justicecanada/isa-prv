@@ -15,7 +15,7 @@ namespace Interview.Entities
             InterviewUsers = new List<InterviewUser>();
         }
 
-        public Guid ContestId { get; set;  }
+        public Guid ProcessId { get; set;  }
         public string? Room { get; set; }
         public string? Location { get; set; }
         public DateTimeOffset StartDate { get; set; }

@@ -1,7 +1,6 @@
 ﻿using Interview.Entities;
 using Interview.UI.Data;
 using Interview.UI.Models.Roles;
-using Interview.UI.Services.Mock.Departments;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
@@ -66,12 +65,12 @@ namespace Interview.UI.Services.DAL
                     _context.InterviewUsers.Add((InterviewUser)entity);
                     break;
 
-                case nameof(Contest):
-                    _context.Contests.Add((Contest)entity);
+                case nameof(Process):
+                    _context.Processes.Add((Process)entity);
                     break;
 
-                case nameof(ContestGroup):
-                    _context.ContestGroups.Add((ContestGroup)entity);
+                case nameof(ProcessGroup):
+                    _context.ProcessGroups.Add((ProcessGroup)entity);
                     break;
 
                 case nameof(Schedule):
@@ -111,21 +110,21 @@ namespace Interview.UI.Services.DAL
             switch (typeof(t).Name)
             {
 
-                case nameof(Contest):
+                case nameof(Process):
 
                     if (getChildObjects)
-                        result = await _context.Contests.Where(x => x.Id == id)
+                        result = await _context.Processes.Where(x => x.Id == id)
                             .Include(x => x.EmailTemplates)
                             .Include(x => x.Interviews)
                             .ThenInclude(x => x.InterviewUsers)
                             .Include(x => x.RoleUsers)
                             .Include(x => x.Schedules)
-                            .Include(x => x.ContestGroups)
+                            .Include(x => x.ProcessGroups)
                             .ThenInclude(x => x.Group)
                             .ThenInclude(x => x.GroupOwners)
                             .FirstOrDefaultAsync();
                     else
-                        result = await _context.Contests.FindAsync(id);
+                        result = await _context.Processes.FindAsync(id);
                     break;
 
                 case nameof(EmailTemplate):
@@ -228,14 +227,14 @@ namespace Interview.UI.Services.DAL
                     _context.InterviewUsers.Remove(interviewUser);
                     break;
 
-                case nameof(Contest):
-                    Contest? contest = await _context.Contests.FindAsync(id);
-                    _context.Contests.Remove(contest);
+                case nameof(Process):
+                    Process? process = await _context.Processes.FindAsync(id);
+                    _context.Processes.Remove(process);
                     break;
 
-                case nameof(ContestGroup):
-                    ContestGroup? contestGroup = await _context.ContestGroups.FindAsync(id);
-                    _context.ContestGroups.Remove(contestGroup);
+                case nameof(ProcessGroup):
+                    ProcessGroup? processGroup = await _context.ProcessGroups.FindAsync(id);
+                    _context.ProcessGroups.Remove(processGroup);
                     break;
 
                 case nameof(Schedule):
@@ -271,10 +270,10 @@ namespace Interview.UI.Services.DAL
 
         #region Public Interface Custom Line of Business Methods
 
-        public async Task<List<Contest>> GetAllContests()
+        public async Task<List<Process>> GetAllProcesses()
         {
 
-            var result = await _context.Contests.Where(x => !x.IsDeleted)
+            var result = await _context.Processes.Where(x => !x.IsDeleted)
                 .Include(x => x.RoleUsers)
                 .Include(x => x.Schedules)
                 .ToListAsync();
@@ -283,10 +282,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Contest>> GetContestsForGroupOwner(Guid userId)
+        public async Task<List<Process>> GetProcessesForGroupOwner(Guid userId)
         {
 
-            var result = await _context.Contests.Where(x => !x.IsDeleted &&
+            var result = await _context.Processes.Where(x => !x.IsDeleted &&
                 (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
                 || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
                 .Include(x => x.Schedules)
@@ -296,10 +295,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Contest>> GetContestsForRoleUser(Guid userId)
+        public async Task<List<Process>> GetProcessesForRoleUser(Guid userId)
         {
 
-            var result = await _context.Contests.Where(x => !x.IsDeleted &&
+            var result = await _context.Processes.Where(x => !x.IsDeleted &&
                 x.RoleUsers.Any(y => y.UserId.Equals(userId)))
                 .ToListAsync();
 
@@ -307,10 +306,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Contest>> GetAllContestsWithUserRoles()
+        public async Task<List<Process>> GetAllProcessesWithUserRoles()
         {
 
-            var result = await _context.Contests.Where(x => !x.IsDeleted)
+            var result = await _context.Processes.Where(x => !x.IsDeleted)
                 .Include(x => x.RoleUsers)
                 //.ThenInclude(x => x.Role)
                 .ToListAsync();
@@ -327,16 +326,16 @@ namespace Interview.UI.Services.DAL
             if (userId == null)
             { 
                 result = await _context.Groups
-                    .Include(x => x.ContestGroups)
-                    .ThenInclude(x => x.Contest).Where(x => !(bool)x.IsDeleted)
+                    .Include(x => x.ProcessGroups)
+                    .ThenInclude(x => x.Process).Where(x => !(bool)x.IsDeleted)
                     .Include(x => x.GroupOwners)
                     .ToListAsync();
             }
             else
             {
                 result = await _context.Groups
-                    .Include(x => x.ContestGroups)
-                    .ThenInclude(x => x.Contest).Where(x => !(bool)x.IsDeleted && x.GroupOwners.Any(y => y.UserId == userId))
+                    .Include(x => x.ProcessGroups)
+                    .ThenInclude(x => x.Process).Where(x => !(bool)x.IsDeleted && x.GroupOwners.Any(y => y.UserId == userId))
                     .Include(x => x.GroupOwners)
                     .ToListAsync();
             }
@@ -354,20 +353,20 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid contestId, Guid userId)
+        public async Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid processId, Guid userId)
         {
 
             List<GroupOwner> result = await _context.GroupsOwners.Where(x => (x.UserId == userId &&
-                x.Group.Contests.Any(x => x.Id == contestId))).ToListAsync();
+                x.Group.Processes.Any(x => x.Id == processId))).ToListAsync();
 
             return result;
 
         }
 
-        public async Task<List<ContestGroup>> GetContestGroupByGroupIdAndContestId(Guid groupId, Guid contestId)
+        public async Task<List<ProcessGroup>> GetProcessGroupByGroupIdAndProcessId(Guid groupId, Guid processId)
         {
 
-            List<ContestGroup> result = await _context.ContestGroups.Where(x => (x.GroupId == groupId && x.ContestId == contestId)).ToListAsync();
+            List<ProcessGroup> result = await _context.ProcessGroups.Where(x => (x.GroupId == groupId && x.ProcessId == processId)).ToListAsync();
 
             return result;
 
@@ -382,10 +381,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<RoleUser>> GetRoleUsersByContestId(Guid contestId)
+        public async Task<List<RoleUser>> GetRoleUsersByProcessId(Guid processId)
         {
 
-            var result = await _context.RoleUsers.Where(x => x.ContestId == contestId)
+            var result = await _context.RoleUsers.Where(x => x.ProcessId == processId)
                 .Include(x => x.RoleUserEquities)
                 .ThenInclude(x => x.Equity)
                 .ToListAsync();
@@ -403,10 +402,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Interview.Entities.Interview>> GetInterViewsByContestId(Guid contestId)
+        public async Task<List<Interview.Entities.Interview>> GetInterViewsByProcessId(Guid processId)
 		{
 
-            var result = await _context.Interviews.Where(x => (x.ContestId == contestId)).ToListAsync();
+            var result = await _context.Interviews.Where(x => (x.ProcessId == processId)).ToListAsync();
 
             return result;
 
@@ -421,19 +420,19 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<Schedule>> GetSchedulesByContestId(Guid contestId)
+        public async Task<List<Schedule>> GetSchedulesByProcessId(Guid processId)
         {
 
-            var result = await _context.Schedules.Where(x => x.ContestId == contestId).ToListAsync();
+            var result = await _context.Schedules.Where(x => x.Processid == processId).ToListAsync();
 
             return result;
 
         }
 
-        public async Task<List<EmailTemplate>> GetEmailTemplatesByContestId(Guid contestId)
+        public async Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId)
         {
 
-            var result = await _context.EmailTemplates.Where(x => x.ContestId == contestId).ToListAsync();
+            var result = await _context.EmailTemplates.Where(x => x.ProcessId == processId).ToListAsync();
 
             return result;
 
@@ -498,19 +497,6 @@ namespace Interview.UI.Services.DAL
             _context.MockUsers.Add(mockUser).State = EntityState.Added;
             await _context.SaveChangesAsync();
             result = (Guid)mockUser.Id;
-
-            return result;
-
-        }
-
-        #endregion
-
-        #region Mock Departments Methods
-
-        public async Task<List<MockDepartment>> GetAllMockDepatments()
-        {
-
-            List<MockDepartment> result = await _context.MockDepartments.ToListAsync();
 
             return result;
 
