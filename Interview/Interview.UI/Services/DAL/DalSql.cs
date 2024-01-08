@@ -69,8 +69,8 @@ namespace Interview.UI.Services.DAL
                     _context.Processes.Add((Process)entity);
                     break;
 
-                case nameof(ContestGroup):
-                    _context.ContestGroups.Add((ContestGroup)entity);
+                case nameof(ProcessGroup):
+                    _context.ProcessGroups.Add((ProcessGroup)entity);
                     break;
 
                 case nameof(Schedule):
@@ -119,7 +119,7 @@ namespace Interview.UI.Services.DAL
                             .ThenInclude(x => x.InterviewUsers)
                             .Include(x => x.RoleUsers)
                             .Include(x => x.Schedules)
-                            .Include(x => x.ContestGroups)
+                            .Include(x => x.ProcessGroups)
                             .ThenInclude(x => x.Group)
                             .ThenInclude(x => x.GroupOwners)
                             .FirstOrDefaultAsync();
@@ -228,13 +228,13 @@ namespace Interview.UI.Services.DAL
                     break;
 
                 case nameof(Process):
-                    Process? contest = await _context.Processes.FindAsync(id);
-                    _context.Processes.Remove(contest);
+                    Process? process = await _context.Processes.FindAsync(id);
+                    _context.Processes.Remove(process);
                     break;
 
-                case nameof(ContestGroup):
-                    ContestGroup? contestGroup = await _context.ContestGroups.FindAsync(id);
-                    _context.ContestGroups.Remove(contestGroup);
+                case nameof(ProcessGroup):
+                    ProcessGroup? processGroup = await _context.ProcessGroups.FindAsync(id);
+                    _context.ProcessGroups.Remove(processGroup);
                     break;
 
                 case nameof(Schedule):
@@ -326,7 +326,7 @@ namespace Interview.UI.Services.DAL
             if (userId == null)
             { 
                 result = await _context.Groups
-                    .Include(x => x.ContestGroups)
+                    .Include(x => x.ProcessGroups)
                     .ThenInclude(x => x.Process).Where(x => !(bool)x.IsDeleted)
                     .Include(x => x.GroupOwners)
                     .ToListAsync();
@@ -334,7 +334,7 @@ namespace Interview.UI.Services.DAL
             else
             {
                 result = await _context.Groups
-                    .Include(x => x.ContestGroups)
+                    .Include(x => x.ProcessGroups)
                     .ThenInclude(x => x.Process).Where(x => !(bool)x.IsDeleted && x.GroupOwners.Any(y => y.UserId == userId))
                     .Include(x => x.GroupOwners)
                     .ToListAsync();
@@ -363,10 +363,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<ContestGroup>> GetContestGroupByGroupIdAndProcessId(Guid groupId, Guid processId)
+        public async Task<List<ProcessGroup>> GetProcessGroupByGroupIdAndProcessId(Guid groupId, Guid processId)
         {
 
-            List<ContestGroup> result = await _context.ContestGroups.Where(x => (x.GroupId == groupId && x.ProcessId == processId)).ToListAsync();
+            List<ProcessGroup> result = await _context.ProcessGroups.Where(x => (x.GroupId == groupId && x.ProcessId == processId)).ToListAsync();
 
             return result;
 

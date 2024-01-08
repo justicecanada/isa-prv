@@ -5,13 +5,13 @@
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    Process contest = ViewBag.Contest;
+    Process process = ViewBag.Process;
     List<DepartmentOption> departments = ViewBag.Departments;
 
     string departmentName = "";
-    if (contest.DepartmentKey != null)
+    if (process.DepartmentKey != null)
     {
-        var mockDepartment = departments.Where(x => x.Key == contest.DepartmentKey).FirstOrDefault();
+        var mockDepartment = departments.Where(x => x.Key == process.DepartmentKey).FirstOrDefault();
         if (mockDepartment != null)
             departmentName = cultureName == Constants.EnglishCulture ? mockDepartment.NameEN : mockDepartment.NameFR;
     }
@@ -23,7 +23,7 @@
 
         <div class="panel-heading">
             <h3 class="panel-title">
-                @contest.NoProcessus
+                @process.NoProcessus
             </h3>
         </div>
 
@@ -33,18 +33,18 @@
                 @localizer["DepartmentId"]: <span class="h5">@departmentName</span>
             </div>
             <div>
-                @localizer["GroupNiv"]: <span class="h5">@contest.GroupNiv</span>
+                @localizer["GroupNiv"]: <span class="h5">@process.GroupNiv</span>
             </div>
             <div>
-                @localizer["StartDate"]: <span class="h5">@contest.StartDate.Value.ToString(Constants.DateFormat)</span>
+                @localizer["StartDate"]: <span class="h5">@process.StartDate.Value.ToString(Constants.DateFormat)</span>
             </div>
             <div>
-                @localizer["EndDate"]: <span class="h5">@contest.EndDate.Value.ToString(Constants.DateFormat)</span>
+                @localizer["EndDate"]: <span class="h5">@process.EndDate.Value.ToString(Constants.DateFormat)</span>
             </div>
 
             <div class="mrgn-tp-md">
-                @Html.ActionLink(localizer["ProcessManagement"].Value, "Contest", "Contests", new { contestId = contest.Id }, new { @class = "btn btn-default" })
-                @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { contestId = contest.Id }, new { @class = "btn btn-danger" })
+                @Html.ActionLink(localizer["ProcessManagement"].Value, "Contest", "Contests", new { processId = process.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink(localizer["Delete"].Value, "DeleteContest", "Contests", new { processId = process.Id }, new { @class = "btn btn-danger" })
             </div>
 
         </div>

@@ -16,7 +16,7 @@
     }).Select(x => x.ToLower()).ToList();
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-    Process contest = ViewBag.Contest;
+    Process process = ViewBag.Process;
 
     List<MockUser> mockExistingExternalUsers = ViewBag.MockExistingExternalUsers;
     List<SelectListItem> mockExistingExternalUsersItems = new List<SelectListItem>();
@@ -44,7 +44,7 @@
     await Html.RenderPartialAsync("TopMenuPartial");
 }
 
-<h2>@contest.NoProcessus</h2>
+<h2>@process.NoProcessus</h2>
 
 @{
     await Html.RenderPartialAsync("ValidationSummary");

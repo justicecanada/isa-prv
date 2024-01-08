@@ -132,9 +132,9 @@ namespace Interview.UI.Controllers
         private async Task IndexSetViewBag()
         {
 
-            // Contest
-            var contest = _state.ProcessId == null ? new Process() : await _dal.GetEntity<Process>((Guid)_state.ProcessId, true);
-            ViewBag.Contest = contest;
+            // Process
+            var process = _state.ProcessId == null ? new Process() : await _dal.GetEntity<Process>((Guid)_state.ProcessId, true);
+            ViewBag.Process = process;
 
             // RoleUsers
             var roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);

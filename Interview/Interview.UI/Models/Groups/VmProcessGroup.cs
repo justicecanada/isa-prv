@@ -3,7 +3,7 @@
 namespace Interview.UI.Models.Groups
 {
     
-    public class VmContestGroup : VmBase
+    public class VmProcessGroup : VmBase
     {
 
         public Guid ProcessId { get; set; }

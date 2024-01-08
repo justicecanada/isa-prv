@@ -10,7 +10,7 @@ namespace Interview.UI.Models.Groups
 
         public VmGroup()
         {
-            ContestGroups = new List<VmContestGroup>();
+            ProcessGroups = new List<VmProcessGroup>();
             Processes = new List<VmProcess>();
             GroupOwners = new List<VmGroupOwner>();
         }
@@ -31,7 +31,7 @@ namespace Interview.UI.Models.Groups
 
         public bool EditThisGroup { get; set; }
 
-        public List<VmContestGroup> ContestGroups { get; set; }
+        public List<VmProcessGroup> ProcessGroups { get; set; }
         public List<VmProcess> Processes { get; set; }
         public List<VmGroupOwner> GroupOwners { get; set; }
 

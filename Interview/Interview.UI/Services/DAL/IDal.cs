@@ -33,7 +33,7 @@ namespace Interview.UI.Services.DAL
 
         Task<List<GroupOwner>> GetGroupOwnersByContextIdAndUserId(Guid processId, Guid userId);
 
-        Task<List<ContestGroup>> GetContestGroupByGroupIdAndProcessId(Guid groupId, Guid processId);
+        Task<List<ProcessGroup>> GetProcessGroupByGroupIdAndProcessId(Guid groupId, Guid processId);
 
         Task<List<Equity>> GetAllEquities();
 

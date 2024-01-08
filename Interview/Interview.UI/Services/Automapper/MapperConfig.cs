@@ -51,8 +51,8 @@ namespace Interview.UI.Services.Automapper
             CreateMap<Process, Interview.UI.Models.Groups.VmProcess>();
             CreateMap<Interview.UI.Models.Groups.VmProcess, Process>();
 
-            CreateMap<ContestGroup, Interview.UI.Models.Groups.VmContestGroup>();
-            CreateMap<Interview.UI.Models.Groups.VmContestGroup, ContestGroup>();
+            CreateMap<ProcessGroup, Interview.UI.Models.Groups.VmProcessGroup>();
+            CreateMap<Interview.UI.Models.Groups.VmProcessGroup, ProcessGroup>();
 
             CreateMap<Group, Interview.UI.Models.Groups.VmGroup>();
             CreateMap<Interview.UI.Models.Groups.VmGroup, Group>();

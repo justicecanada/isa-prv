@@ -99,7 +99,7 @@ namespace Interview.UI.Controllers
             return _justiceOptions.Value.MockLoggedInUserRole == roleType;
         }
 
-        protected async Task<List<Process>> GetContestsForLoggedInUser()
+        protected async Task<List<Process>> GetProcessesForLoggedInUser()
         {
 
             List<Process> result = null;

@@ -66,10 +66,10 @@ namespace Interview.UI.Controllers
         public async Task IndexSetViewBag()
         {
 
-            List<Process> contests = await GetContestsForLoggedInUser();
+            List<Process> processes = await GetProcessesForLoggedInUser();
             List<DepartmentOption> departments = _options.GetDepartmentOptions();
 
-            ViewBag.Contests = contests;
+            ViewBag.Processes = processes;
             ViewBag.Departments = departments;
 
         }
@@ -92,11 +92,11 @@ namespace Interview.UI.Controllers
             {
                 var process = await _dal.GetEntity<Process>((Guid)processId, true) as Process;
                 vmProcess = _mapper.Map<VmProcess>(process);
-                PopulateContestSchedulePropertiesFromSchedule(vmProcess, process.Schedules);
+                PopulateProcessSchedulePropertiesFromSchedule(vmProcess, process.Schedules);
             }
 
-            await ContestsSetViewBag();
-            RegisterContestsClientResources();
+            await ProcesesSetViewBag();
+            RegisterProcessesClientResources();
 
             return View(vmProcess);
 
@@ -111,19 +111,19 @@ namespace Interview.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                var contest = _mapper.Map<Process>(vmProcess);
+                var process = _mapper.Map<Process>(vmProcess);
 
-                contest.CreatedDate = DateTime.Now;
-                contest.InitUserId = LoggedInMockUser.Id;
-                contest.Schedules = GetSchedules(vmProcess);
-                await _dal.AddEntity<Process>(contest);
+                process.CreatedDate = DateTime.Now;
+                process.InitUserId = LoggedInMockUser.Id;
+                process.Schedules = GetSchedules(vmProcess);
+                await _dal.AddEntity<Process>(process);
 
                 return RedirectToAction("Index", "Emails", new { id = vmProcess.Id });
             }
             else
             {
-                await ContestsSetViewBag();
-                RegisterContestsClientResources();
+                await ProcesesSetViewBag();
+                RegisterProcessesClientResources();
 
                 return View("Contest", vmProcess);
             }
@@ -141,16 +141,16 @@ namespace Interview.UI.Controllers
             {
                 Process postedProcess = _mapper.Map<Process>(vmProcess);
                 List<Schedule> postedSchedules = GetSchedules(vmProcess);
-                Process dbContest = await _dal.GetEntity<Process>((Guid)vmProcess.Id, true) as Process;
+                Process dbProcess = await _dal.GetEntity<Process>((Guid)vmProcess.Id, true) as Process;
                 
                 // Resolve Schedules
-                ResolveSchedules(postedSchedules, dbContest.Schedules);
-                foreach (Schedule schedule in dbContest.Schedules)
+                ResolveSchedules(postedSchedules, dbProcess.Schedules);
+                foreach (Schedule schedule in dbProcess.Schedules)
                     await _dal.UpdateEntity(schedule);
 
-                // Save Contest
-                postedProcess.CreatedDate = dbContest.CreatedDate;
-                postedProcess.InitUserId = dbContest.InitUserId;
+                // Save Process
+                postedProcess.CreatedDate = dbProcess.CreatedDate;
+                postedProcess.InitUserId = dbProcess.InitUserId;
                 await _dal.UpdateEntity(postedProcess);
 
                 return RedirectToAction("Index", "Default");
@@ -158,15 +158,15 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                await ContestsSetViewBag();
-                RegisterContestsClientResources();
+                await ProcesesSetViewBag();
+                RegisterProcessesClientResources();
 
                 return View("Contest", vmProcess);
             }
 
         }
 
-        private async Task ContestsSetViewBag()
+        private async Task ProcesesSetViewBag()
         {
 
             // Departments
@@ -175,7 +175,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private void RegisterContestsClientResources()
+        private void RegisterProcessesClientResources()
         {
 
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
@@ -188,34 +188,34 @@ namespace Interview.UI.Controllers
 
         #region Private Schedules Methods
 
-        // Typically Schedules would be rendered to the view as Contest.Schedules (List<Schedule), then a partial view would be created to represent each Schedule in the list.
+        // Typically Schedules would be rendered to the view as Process.Schedules (List<Schedule), then a partial view would be created to represent each Schedule in the list.
         // The Schedule.StartValue would be represented as a text box.
         // However, the Schedule concerns will be represented with a slider within the view. At this time I'm not sure how the model abstraction would be handled
         // in the view for the slider. So keeping the model simple / flat (Schedule.VmScheduleCandidateStart, Schedule.VmScheduleMembersStart, Schedule.VmScheduleMarkingStart)
         // and let the controller stick handle mapping these properties to proper Schedule objects.
 
-        private void HandleScheduleModelState(VmProcess vmContest)
+        private void HandleScheduleModelState(VmProcess vmProcess)
         {
 
-            if (vmContest.VmScheduleCandidateStart > vmContest.VmScheduleMembersStart)
+            if (vmProcess.VmScheduleCandidateStart > vmProcess.VmScheduleMembersStart)
                 ModelState.AddModelError("VmScheduleCandidateStart", "Schedule Candidate Start cannot be > Schedule Members Start");
 
-            if (vmContest.VmScheduleMembersStart > vmContest.VmScheduleMarkingStart)
+            if (vmProcess.VmScheduleMembersStart > vmProcess.VmScheduleMarkingStart)
                 ModelState.AddModelError("VmScheduleMembersStart", "Schedule Members Start cannot be > Schedule Marking Start");
 
-            if (vmContest.VmScheduleMarkingStart > vmContest.InterviewDuration)
+            if (vmProcess.VmScheduleMarkingStart > vmProcess.InterviewDuration)
                 ModelState.AddModelError("VmScheduleMarkingStart", "Schedule Marking Start cannot be > Interview Duration");
 
         }
 
-        private List<Schedule> GetSchedules(VmProcess vmContest)
+        private List<Schedule> GetSchedules(VmProcess vmProcess)
         {
 
             List<Schedule> result = new List<Schedule>();
 
-            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = vmContest.VmScheduleCandidateStart });
-            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Members, StartValue = vmContest.VmScheduleMembersStart });
-            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Marking, StartValue = vmContest.VmScheduleMarkingStart });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Candidate, StartValue = vmProcess.VmScheduleCandidateStart });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Members, StartValue = vmProcess.VmScheduleMembersStart });
+            result.Add(new Schedule() { ScheduleType = ScheduleTypes.Marking, StartValue = vmProcess.VmScheduleMarkingStart });
 
             return result;
 
@@ -233,12 +233,12 @@ namespace Interview.UI.Controllers
 
         }
 
-        private void PopulateContestSchedulePropertiesFromSchedule(VmProcess contest, List<Schedule> dbSchedules)
+        private void PopulateProcessSchedulePropertiesFromSchedule(VmProcess process, List<Schedule> dbSchedules)
         {
 
-            contest.VmScheduleCandidateStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue;
-            contest.VmScheduleMembersStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue;
-            contest.VmScheduleMarkingStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue;
+            process.VmScheduleCandidateStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue;
+            process.VmScheduleMembersStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue;
+            process.VmScheduleMarkingStart = dbSchedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue;
 
         }
 

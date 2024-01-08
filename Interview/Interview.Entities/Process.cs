@@ -10,7 +10,7 @@
             Interviews = new List<Interview>();
             RoleUsers = new List<RoleUser>();
             Schedules = new List<Schedule>();
-            ContestGroups = new List<ContestGroup>();
+            ProcessGroups = new List<ProcessGroup>();
             Groups = new List<Group>();
         }
 
@@ -39,7 +39,7 @@
         public List<Interview> Interviews { get; set; }
         public List<RoleUser> RoleUsers { get; set; }
         public List<Schedule> Schedules { get; set; }
-        public List<ContestGroup> ContestGroups { get; set;  }
+        public List<ProcessGroup> ProcessGroups { get; set;  }
         public List<Group> Groups { get; set; }
 
     }

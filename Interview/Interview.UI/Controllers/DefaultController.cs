@@ -4,7 +4,6 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
-//using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
@@ -51,7 +50,7 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
-            List<Process> processes = await GetContestsForLoggedInUser();
+            List<Process> processes = await GetProcessesForLoggedInUser();
             Guid? processId = null;
 
             // Look to Session for ProcessId
@@ -72,7 +71,7 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SwitchContest(Guid processId)
+        public async Task<IActionResult> SwitchProcess(Guid processId)
         {
 
             _state.ProcessId = processId;
@@ -81,21 +80,21 @@ namespace Interview.UI.Controllers
 
         }
 
-		private async Task SetIndexViewBag(List<Process> contests, Guid? processId)
+		private async Task SetIndexViewBag(List<Process> processes, Guid? processId)
         {
 
-            ViewBag.Contests = contests;
-            ViewBag.ContestId = processId;
+            ViewBag.Processes = processes;
+            ViewBag.ProcessId = processId;
 
             if (processId != null)
             {
 
-                Process contest = contests.Where(x => x.Id == processId).First();
+                Process process = processes.Where(x => x.Id == processId).First();
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId((Guid)processId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
-				ViewBag.ContestStartDate = contest.StartDate;
-				ViewBag.ContestEndDate = contest.EndDate;
+				ViewBag.ProccessStartDate = process.StartDate;
+				ViewBag.ProccessEndDate = process.EndDate;
 				ViewBag.VmInterviews = vmInterviews;
 
             }
@@ -226,9 +225,9 @@ namespace Interview.UI.Controllers
             }
 
             // Handle Interview Start and End Dates
-            Process contest = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
-			ViewBag.ContestStartDate = contest.StartDate;
-			ViewBag.ContestEndDate = contest.EndDate;
+            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+			ViewBag.ProccessStartDate = process.StartDate;
+			ViewBag.ProccessEndDate = process.EndDate;
 
 			// Handle Interview Users
 			List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
@@ -292,15 +291,15 @@ namespace Interview.UI.Controllers
             if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
             {
 
-                Process contest = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+                Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
                 //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
                 DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
 
-                if (vmInterview.VmStartTime < contest.MinTime || interviewEndTime.TimeOfDay > contest.MaxTime)
+                if (vmInterview.VmStartTime < process.MinTime || interviewEndTime.TimeOfDay > process.MaxTime)
                 {
                     ModelState.AddModelError("VmStartTime", _localizer["InterviewVmStartDateAndDuration"].Value
-                        .Replace("{min}", ((TimeSpan)contest.MinTime).ToString())
-                        .Replace("{max}", ((TimeSpan)contest.MaxTime).ToString()));
+                        .Replace("{min}", ((TimeSpan)process.MinTime).ToString())
+                        .Replace("{max}", ((TimeSpan)process.MaxTime).ToString()));
                 }
 
             }

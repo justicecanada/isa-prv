@@ -12,7 +12,7 @@ namespace Interview.Entities
 
         public Group()
         {
-            ContestGroups = new List<ContestGroup>();
+            ProcessGroups = new List<ProcessGroup>();
             Processes = new List<Process>();
             GroupOwners = new List<GroupOwner>();
         }
@@ -22,7 +22,7 @@ namespace Interview.Entities
         public string? NameEn { get; set; }
         public bool IsDeleted { get; set; }
  
-        public List<ContestGroup> ContestGroups { get; set; }
+        public List<ProcessGroup> ProcessGroups { get; set; }
         public List<Process> Processes { get; set; }
         public List<GroupOwner> GroupOwners { get; set; }   
 

@@ -150,16 +150,16 @@ namespace Interview.UI.Controllers
 
             if (vmGroup.ProcessIdToAdd != null)
             {
-                // Check to see if Contest has been added to the group
-                List<ContestGroup> contestGroups = await _dal.GetContestGroupByGroupIdAndProcessId((Guid)vmGroup.Id, (Guid)vmGroup.ProcessIdToAdd);
-                if (!contestGroups.Any())
+                // Check to see if Process has been added to the group
+                List<ProcessGroup> processGroups = await _dal.GetProcessGroupByGroupIdAndProcessId((Guid)vmGroup.Id, (Guid)vmGroup.ProcessIdToAdd);
+                if (!processGroups.Any())
                 {
-                    ContestGroup contestGroup = new ContestGroup()
+                    ProcessGroup processGroup = new ProcessGroup()
                     {
                         ProcessId = (Guid)vmGroup.ProcessIdToAdd,
                         GroupId = (Guid)vmGroup.Id
                     };
-                    await _dal.AddEntity<ContestGroup>(contestGroup);
+                    await _dal.AddEntity<ProcessGroup>(processGroup);
                 }
             }
 
@@ -168,10 +168,10 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RemoveContest(Guid contestGroupId)
+        public async Task<IActionResult> RemoveContest(Guid processGroupId)
         {
 
-            await _dal.DeleteEntity<ContestGroup>(contestGroupId);
+            await _dal.DeleteEntity<ProcessGroup>(processGroupId);
 
             return RedirectToAction("Index");
 
@@ -189,8 +189,8 @@ namespace Interview.UI.Controllers
         private async Task IndexSetViewBag()
         {
 
-            List<Process> contests = await _dal.GetAllProcesses();
-            ViewBag.Contests = contests;
+            List<Process> processes = await _dal.GetAllProcesses();
+            ViewBag.Processes = processes;
 
             if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
                 ViewBag.VmAddGroup = new VmAddGroup();

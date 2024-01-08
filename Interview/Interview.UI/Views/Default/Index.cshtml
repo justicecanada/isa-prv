@@ -9,21 +9,21 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
-    List<Process> contests = ViewBag.Contests;
-    Process? contest = Model.ProcessId == null ? null : contests.Where(x => x.Id == Model.ProcessId).First();
+    List<Process> processes = ViewBag.Processes;
+    Process? process = Model.ProcessId == null ? null : processes.Where(x => x.Id == Model.ProcessId).First();
 
-    List<SelectListItem> vmContestItems = new List<SelectListItem>();
-    foreach (var contestItem in contests)
+    List<SelectListItem> vmProcessItems = new List<SelectListItem>();
+    foreach (var processItem in processes)
     {
-        vmContestItems.Add(new SelectListItem()
+        vmProcessItems.Add(new SelectListItem()
         {         
-            Value = contestItem.Id.ToString(),
-            Text = contestItem.NoProcessus,
-            Selected = contestItem.Id == Model.ProcessId
+            Value = processItem.Id.ToString(),
+            Text = processItem.NoProcessus,
+            Selected = processItem.Id == Model.ProcessId
         });
     }
 
-    ViewBag.Contest = contest;
+    ViewBag.Process = process;
 
 }
 
@@ -35,14 +35,14 @@
 @*Only form control*@
 <div class="container">
     <div class="row well well-lg">
-        @using (Html.BeginForm("SwitchContest", "Default", null, FormMethod.Post, null, new { id = "formContest" }))
+        @using (Html.BeginForm("SwitchProcess", "Default", null, FormMethod.Post, null, new { id = "formContest" }))
         {
             @Html.AntiForgeryToken()            
             <div class="col-md-12">
-                @Html.Label("lblContests", localizer["ListOfProcesses"].Value, new { @for = "ContestId" }):
+                @Html.Label("lblProcesses", localizer["ListOfProcesses"].Value, new { @for = "ProcessId" }):
             </div>
             <div class="col-md-12">          
-                @Html.DropDownListFor(x => x.ProcessId, vmContestItems, new { @class = "form-control" })
+                @Html.DropDownListFor(x => x.ProcessId, vmProcessItems, new { @class = "form-control" })
             </div>
         }
     </div>

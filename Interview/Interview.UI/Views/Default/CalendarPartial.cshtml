@@ -4,8 +4,8 @@
 
 	List<VmInterview> VmInterviews = ViewBag.VmInterviews;
 	DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-	DateTime contestStartDate = ViewBag.ContestStartDate;
-	DateTime contestEndDate = ViewBag.ContestEndDate;
+	DateTime procesStartDate = ViewBag.ProccessStartDate;
+	DateTime processEndDate = ViewBag.ProccessEndDate;
 
 }
 
@@ -40,14 +40,14 @@
 		<li class="cal-disp-onshow">
 			<section>
 				<h4><a href="">Single-Day Event</a></h4>
-				<p><time datetime="@contestStartDate">StartDate</time></p>
+				<p><time datetime="@procesStartDate">StartDate</time></p>
 				<p>Event Description</p>
 			</section>
 		</li>
 		<li class="cal-disp-onshow">
 			<section>
 				<h4><a href="">Single-Day Event</a></h4>
-				<p><time datetime="@contestEndDate">EndDate</time></p>
+				<p><time datetime="@processEndDate">EndDate</time></p>
 				<p>Event Description</p>
 			</section>
 		</li>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Interview.Entities
 {
     
-    public class ContestGroup : EntityBase
+    public class ProcessGroup : EntityBase
     {
 
         // Many to Many

@@ -6,7 +6,7 @@
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
 
-    List<SelectListItem> contestItems = ViewBag.ContestItems;
+    List<SelectListItem> processItems = ViewBag.ProcessItems;
 
 }
 
@@ -67,10 +67,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-9">
-                            @Html.DropDownListFor(x => x.ProcessIdToAdd, contestItems, new { @class = "form-control" })
+                            @Html.DropDownListFor(x => x.ProcessIdToAdd, processItems, new { @class = "form-control" })
                         </div>
                         <div class="col-md-3">
-                            <input type="submit" value="@localizer["AddContest"]" class="btn btn-primary" />
+                            <input type="submit" value="@localizer["AddProcess"]" class="btn btn-primary" />
                         </div>
                     </div>
                 </div>
@@ -96,11 +96,11 @@
                 <h4 class="brdr-bttm">@localizer["ProcessList"]</h4>
             </div>
             <ul>
-                @foreach (var contestGroup in Model.ContestGroups)
+                @foreach (var processGroup in Model.ProcessGroups)
                 {
                     <li>
-                        @contestGroup.Process.GroupNiv
-                        <a href="@Url.Action("RemoveContest", "Groups", new { contestGroupId = contestGroup.Id } )">
+                        @processGroup.Process.GroupNiv
+                        <a href="@Url.Action("RemoveContest", "Groups", new { processGroupId = processGroup.Id } )">
                             <span class="glyphicon glyphicon-trash text-danger"></span>
                             </a>
                     </li>
