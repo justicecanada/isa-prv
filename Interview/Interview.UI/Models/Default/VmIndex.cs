@@ -4,7 +4,7 @@
     public class VmIndex
     {
 
-        public Guid? ContestId { get; set; }
+        public Guid? ProcessId { get; set; }
 
     }
 

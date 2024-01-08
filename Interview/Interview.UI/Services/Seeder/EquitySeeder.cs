@@ -2,10 +2,10 @@
 using Interview.UI.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Interview.UI.Services.Mock
+namespace Interview.UI.Services.Seeder
 {
-
-    public class MockSeeder
+    
+    public class EquitySeeder
     {
 
         #region Declarations
@@ -16,7 +16,7 @@ namespace Interview.UI.Services.Mock
 
         #region Constructors
 
-        public MockSeeder(SqlContext context)
+        public EquitySeeder(SqlContext context)
         {
             _context = context;
         }
@@ -44,8 +44,8 @@ namespace Interview.UI.Services.Mock
         #region Private Methods
 
         private List<Equity> GetExpectedEquities()
-        { 
-        
+        {
+
             List<Equity> result = new List<Equity>();
 
             result.Add(GetEquity("Woman", "Femme", "Woman", "", ""));

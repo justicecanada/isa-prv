@@ -10,7 +10,7 @@ namespace Interview.Entities
     public class EmailTemplate : EntityBase
     {
 
-        public Guid ContestId { get; set; }
+        public Guid ProcessId { get; set; }
         public EmailTypes EmailType { get; set; }
         public string? EmailSubject { get; set; }
         public string? EmailBody { get; set; }

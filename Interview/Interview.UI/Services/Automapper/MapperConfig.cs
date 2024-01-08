@@ -14,9 +14,9 @@ namespace Interview.UI.Services.Automapper
         public MapperConfig()
         {
 
-            CreateMap<Contest, VmContest>()
+            CreateMap<Process, VmProcess>()
                 .ForMember(d => d.InterviewDuration, opt => opt.ConvertUsing(new TimeSpanToIntConverter()));
-            CreateMap<VmContest, Contest>()
+            CreateMap<VmProcess, Process>()
                 .ForMember(d => d.InterviewDuration, opt => opt.ConvertUsing(new IntToTimeSpanConverter()));
 
             CreateMap<RoleUser, VmRoleUser>();
@@ -48,11 +48,11 @@ namespace Interview.UI.Services.Automapper
 
             #region ~/Groups
 
-            CreateMap<Contest, Interview.UI.Models.Groups.VmContest>();
-            CreateMap<Interview.UI.Models.Groups.VmContest, Contest>();
+            CreateMap<Process, Interview.UI.Models.Groups.VmProcess>();
+            CreateMap<Interview.UI.Models.Groups.VmProcess, Process>();
 
-            CreateMap<ContestGroup, Interview.UI.Models.Groups.VmContestGroup>();
-            CreateMap<Interview.UI.Models.Groups.VmContestGroup, ContestGroup>();
+            CreateMap<ProcessGroup, Interview.UI.Models.Groups.VmProcessGroup>();
+            CreateMap<Interview.UI.Models.Groups.VmProcessGroup, ProcessGroup>();
 
             CreateMap<Group, Interview.UI.Models.Groups.VmGroup>();
             CreateMap<Interview.UI.Models.Groups.VmGroup, Group>();

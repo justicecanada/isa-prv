@@ -25,6 +25,8 @@ using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web.UI;
+using Interview.UI.Services.Options;
+using Interview.UI.Services.Seeder;
 
 namespace Interview.UI
 {
@@ -82,11 +84,11 @@ namespace Interview.UI
             services.AddScoped<IState, SessionState>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
             services.Configure<SessionTimeout>(Configuration.GetSection("SessionTimeout"));
+            services.AddTransient<IOptions, JsonOptions>();
+            services.AddTransient<EquitySeeder>();
 
             // Mocked Services
-            services.AddTransient<MockSeeder>();
             services.AddTransient<MockIdentitySeeder>();
-            services.AddTransient<MockDepartmentSeeder>();
 
             // WET
             services.AddModelAccessor();

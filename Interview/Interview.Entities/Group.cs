@@ -12,18 +12,18 @@ namespace Interview.Entities
 
         public Group()
         {
-            ContestGroups = new List<ContestGroup>();
-            Contests = new List<Contest>();
+            ProcessGroups = new List<ProcessGroup>();
+            Processes = new List<Process>();
             GroupOwners = new List<GroupOwner>();
         }
 
-        public Guid ContestId { get; set; }
+        public Guid ProcessId { get; set; }
         public string? NameFr { get; set; }
         public string? NameEn { get; set; }
         public bool IsDeleted { get; set; }
  
-        public List<ContestGroup> ContestGroups { get; set; }
-        public List<Contest> Contests { get; set; }
+        public List<ProcessGroup> ProcessGroups { get; set; }
+        public List<Process> Processes { get; set; }
         public List<GroupOwner> GroupOwners { get; set; }   
 
     }

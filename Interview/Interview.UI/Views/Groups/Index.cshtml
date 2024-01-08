@@ -14,18 +14,18 @@
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
 
-    List<Contest> contests = ViewBag.Contests;
-    List<SelectListItem> contestItems = new List<SelectListItem>();
-    contestItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var contest in contests)
+    List<Process> processes = ViewBag.Processes;
+    List<SelectListItem> processItems = new List<SelectListItem>();
+    processItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var process in processes)
     {
-        contestItems.Add(new SelectListItem()
+        processItems.Add(new SelectListItem()
         {
-            Value = contest.Id.ToString(),
-            Text = contest.GroupNiv
+            Value = process.Id.ToString(),
+            Text = process.GroupNiv
         });
     }
-    ViewBag.ContestItems = contestItems;
+    ViewBag.ProcessItems = processItems;
 
 }
 

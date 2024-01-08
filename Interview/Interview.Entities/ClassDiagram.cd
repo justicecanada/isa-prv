@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Interview.Entities.Contest" Collapsed="true">
+  <Class Name="Interview.Entities.Process" Collapsed="true">
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABAAANAAEAAAgQAAAAggAAAoAGAAAIAAAlAIAUAABEE=</HashCode>
-      <FileName>Contest.cs</FileName>
+      <HashCode>ABAAANAAEACAAQAAAAAgAAAoAGAAAIAAAlAYAUAABEE=</HashCode>
+      <FileName>Process.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="EmailTemplates" />
       <Property Name="Interviews" />
-      <Property Name="Schedules" />
       <Property Name="RoleUsers" />
+      <Property Name="Schedules" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.EmailTemplate" Collapsed="true">
     <Position X="0.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QBAEAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAA=</HashCode>
+      <HashCode>QBAEAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAAA=</HashCode>
       <FileName>EmailTemplate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Interview" Collapsed="true">
     <Position X="2.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAABAEAAACAAAAABIgAAAAAAAAAAAAEAAAAEAAAAA=</HashCode>
+      <HashCode>ACAAABAEAAACAAAAABIgAAAAAAAAEAAAAAAAAEAAAAA=</HashCode>
       <FileName>Interview.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -33,14 +33,14 @@
   <Class Name="Interview.Entities.InterviewUser" Collapsed="true">
     <Position X="2.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>InterviewUser.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.RoleUser" Collapsed="true">
     <Position X="5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAQAAAAAAAAAAAgIABggAAAQEAAAAAIAAAA=</HashCode>
+      <HashCode>AAIAAAAAAAQAAAAAAAAAAAgIQBggEAAQAAAAAAIAAAA=</HashCode>
       <FileName>RoleUser.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -54,14 +54,14 @@
   <Class Name="Interview.Entities.Schedule" Collapsed="true">
     <Position X="9" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAIAAAAAEAAAAQAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAIAABAAAAAAAQAAAAA=</HashCode>
       <FileName>Schedule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Interview.Entities.Group" Collapsed="true">
     <Position X="7" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAEAAAAQBAEAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAACgAAAAAAAAAEAABAAAAAQAAEAE=</HashCode>
       <FileName>Group.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -75,17 +75,6 @@
       <FileName>GroupOwner.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Interview.Entities.ContestGroup" Collapsed="true">
-    <Position X="7" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAEAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
-      <FileName>ContestGroup.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Contest" />
-      <Property Name="Group" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Interview.Entities.RoleUserEquity" Collapsed="true">
     <Position X="5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
@@ -95,6 +84,17 @@
     <ShowAsAssociation>
       <Property Name="RoleUser" />
       <Property Name="Equity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Interview.Entities.ProcessGroup" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAEAAAAAAAAAgAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProcessGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Process" />
+      <Property Name="Group" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />

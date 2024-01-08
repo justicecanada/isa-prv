@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Interview.UI.Models
 {
     
-    public class VmContest : VmBase
+    public class VmProcess : VmBase
     {
 
         [Required]
@@ -84,7 +84,7 @@ namespace Interview.UI.Models
         public string? EmailServiceSentFrom { get; set; }
 
         [Display(Name = "DepartmentId")]
-        public Guid? DepartmentId { get; set; }
+        public string? DepartmentKey { get; set; }
 
         [Required]
         [Display(Name = "ScheduleCandidateStart")]

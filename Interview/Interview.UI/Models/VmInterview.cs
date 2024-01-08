@@ -14,7 +14,7 @@ namespace Interview.UI.Models
             VmInterviewerUserIds = new VmInterviewerUserIds();
         }
 
-        public Guid ContestId { get; set; }
+        public Guid ProcessId { get; set; }
 
         [Display(Name = "Room")]
 		[Required]

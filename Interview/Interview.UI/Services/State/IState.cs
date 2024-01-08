@@ -4,7 +4,7 @@
     public interface IState
     {
 
-        public Guid? ContestId { get; set;  }
+        public Guid? ProcessId { get; set;  }
 
     }
 

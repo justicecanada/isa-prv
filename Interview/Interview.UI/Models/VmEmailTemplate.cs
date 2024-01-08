@@ -7,7 +7,7 @@ namespace Interview.UI.Models
     public class VmEmailTemplate : VmBase
     {
 
-        public Guid ContestId { get; set; }
+        public Guid ProcessId { get; set; }
 
         [Display(Name = "EmailType")]
         public EmailTypes EmailType { get; set; }

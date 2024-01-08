@@ -1,8 +1,8 @@
-﻿@model VmContest
+﻿@model VmProcess
 @using Interview.Entities
 @using Interview.UI.Models
 @using Interview.UI.Helpers
-@using Interview.UI.Services.Mock.Departments
+@using Interview.UI.Models.Options
 @using Newtonsoft.Json
 @inject IViewLocalizer localizer
 
@@ -19,14 +19,14 @@
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     string h3 = Model.Id == null ? localizer["AddProcess"].Value : localizer["EditProcess"].Value;
 
-    List<MockDepartment> mockDepartments = ViewBag.MockDepartments;
-    List<SelectListItem> mockDepartmentItems = new List<SelectListItem>();
-    mockDepartmentItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var mockDepartment in mockDepartments)
+    List<DepartmentOption> departments = ViewBag.Departments;
+    List<SelectListItem> departmentItems = new List<SelectListItem>();
+    departmentItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var mockDepartment in departments)
     {
-        mockDepartmentItems.Add(new SelectListItem()
+        departmentItems.Add(new SelectListItem()
         {         
-            Value = mockDepartment.Id.ToString(),
+            Value = mockDepartment.Key,
             Text = cultureName == Constants.EnglishCulture ? mockDepartment.NameEN : mockDepartment.NameFR
         });
     }
@@ -44,7 +44,7 @@
 @if (Model.Id != null)
 {
     <div class="row">
-        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = Model.Id }, new { @class = "btn btn-secondary" })
+        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { processId = Model.Id }, new { @class = "btn btn-secondary" })
    </div>
 }
 
@@ -68,7 +68,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    @Html.EditorFor(x => x.DepartmentId, "Question", new { inputControl = @Html.DropDownList("DepartmentId", mockDepartmentItems, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.DepartmentKey, "Question", new { inputControl = @Html.DropDownList("DepartmentKey", departmentItems, new { @class = "form-control" }) })
                 </div>
             </div>
 
@@ -193,15 +193,15 @@
         
         @if (Model.Id == null)
         {
-            <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
+            <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ProcessNext", "Processes")
                formmethod="post" />
         }
         else
         {
-            <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ContestSave", "Contests")
+            <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ProcessSave", "Processes")
                formmethod="post" />
         }
-        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", null, new { @class = "btn btn-default" })
+        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Processes", null, new { @class = "btn btn-default" })
 
     </div>
 

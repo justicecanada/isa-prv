@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20231213142223_InterviewUserCorrection")]
-    partial class InterviewUserCorrection
+    [Migration("20240108155701_InterviewInitial")]
+    partial class InterviewInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Interview.UI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ContestGroup", b =>
-                {
-                    b.Property<Guid>("ContestsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GroupsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ContestsId", "GroupsId");
-
-                    b.HasIndex("GroupsId");
-
-                    b.ToTable("ContestGroup");
-                });
 
             modelBuilder.Entity("EquityRoleUser", b =>
                 {
@@ -55,105 +40,25 @@ namespace Interview.UI.Migrations
                     b.ToTable("EquityRoleUser");
                 });
 
-            modelBuilder.Entity("Interview.Entities.Contest", b =>
+            modelBuilder.Entity("GroupProcess", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("GroupsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CandidatesIntroEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CandidatesIntroFR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeadlineCandidate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeadlineInterviewer")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DepartmentId")
+                    b.Property<Guid>("ProcessesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmailServiceSentFrom")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("GroupsId", "ProcessesId");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.HasIndex("ProcessesId");
 
-                    b.Property<string>("GroupNiv")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("InitUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<TimeSpan?>("InterviewDuration")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("MaxTime")
-                        .HasColumnType("time");
-
-                    b.Property<string>("MembersIntroEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MembersIntroFR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan?>("MinTime")
-                        .HasColumnType("time");
-
-                    b.Property<string>("NoProcessus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Contests");
-                });
-
-            modelBuilder.Entity("Interview.Entities.ContestGroup", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContestId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("ContestGroups");
+                    b.ToTable("GroupProcess");
                 });
 
             modelBuilder.Entity("Interview.Entities.EmailTemplate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContestId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EmailBody")
@@ -168,9 +73,12 @@ namespace Interview.UI.Migrations
                     b.Property<int>("EmailType")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContestId");
+                    b.HasIndex("ProcessId");
 
                     b.ToTable("EmailTemplates");
                 });
@@ -208,9 +116,6 @@ namespace Interview.UI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ContestId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -219,6 +124,9 @@ namespace Interview.UI.Migrations
 
                     b.Property<string>("NameFr")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -259,19 +167,19 @@ namespace Interview.UI.Migrations
                     b.Property<string>("ContactNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ContestId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int?>("Duration")
                         .HasColumnType("int");
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Room")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("StartDate")
+                    b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("Status")
@@ -279,7 +187,7 @@ namespace Interview.UI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContestId");
+                    b.HasIndex("ProcessId");
 
                     b.ToTable("Interviews");
                 });
@@ -306,13 +214,102 @@ namespace Interview.UI.Migrations
                     b.ToTable("InterviewUsers");
                 });
 
-            modelBuilder.Entity("Interview.Entities.RoleUser", b =>
+            modelBuilder.Entity("Interview.Entities.Process", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ContestId")
+                    b.Property<string>("CandidatesIntroEN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CandidatesIntroFR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeadlineCandidate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeadlineInterviewer")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailServiceSentFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GroupNiv")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("InitUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeSpan?>("InterviewDuration")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<TimeSpan?>("MaxTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("MembersIntroEN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MembersIntroFR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("MinTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("NoProcessus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Processes");
+                });
+
+            modelBuilder.Entity("Interview.Entities.ProcessGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("ProcessGroups");
+                });
+
+            modelBuilder.Entity("Interview.Entities.RoleUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateInserted")
@@ -326,6 +323,9 @@ namespace Interview.UI.Migrations
 
                     b.Property<int?>("LanguageType")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RoleType")
                         .HasColumnType("int");
@@ -341,7 +341,7 @@ namespace Interview.UI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContestId");
+                    b.HasIndex("ProcessId");
 
                     b.ToTable("RoleUsers");
                 });
@@ -373,11 +373,11 @@ namespace Interview.UI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ContestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("Processid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ScheduleType")
                         .HasColumnType("int");
@@ -387,31 +387,9 @@ namespace Interview.UI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContestId");
+                    b.HasIndex("Processid");
 
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("Interview.UI.Services.Mock.Departments.MockDepartment", b =>
-                {
-                    b.Property<Guid?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Key")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NameEN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameFR")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MockDepartments");
                 });
 
             modelBuilder.Entity("Interview.UI.Services.Mock.Identity.MockUser", b =>
@@ -443,21 +421,6 @@ namespace Interview.UI.Migrations
                     b.ToTable("MockUsers");
                 });
 
-            modelBuilder.Entity("ContestGroup", b =>
-                {
-                    b.HasOne("Interview.Entities.Contest", null)
-                        .WithMany()
-                        .HasForeignKey("ContestsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Interview.Entities.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EquityRoleUser", b =>
                 {
                     b.HasOne("Interview.Entities.Equity", null)
@@ -473,30 +436,26 @@ namespace Interview.UI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Interview.Entities.ContestGroup", b =>
+            modelBuilder.Entity("GroupProcess", b =>
                 {
-                    b.HasOne("Interview.Entities.Contest", "Contest")
-                        .WithMany("ContestGroups")
-                        .HasForeignKey("ContestId")
+                    b.HasOne("Interview.Entities.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Interview.Entities.Group", "Group")
-                        .WithMany("ContestGroups")
-                        .HasForeignKey("GroupId")
+                    b.HasOne("Interview.Entities.Process", null)
+                        .WithMany()
+                        .HasForeignKey("ProcessesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Contest");
-
-                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Interview.Entities.EmailTemplate", b =>
                 {
-                    b.HasOne("Interview.Entities.Contest", null)
+                    b.HasOne("Interview.Entities.Process", null)
                         .WithMany("EmailTemplates")
-                        .HasForeignKey("ContestId")
+                        .HasForeignKey("ProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -514,9 +473,9 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.Interview", b =>
                 {
-                    b.HasOne("Interview.Entities.Contest", null)
+                    b.HasOne("Interview.Entities.Process", null)
                         .WithMany("Interviews")
-                        .HasForeignKey("ContestId")
+                        .HasForeignKey("ProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -530,11 +489,30 @@ namespace Interview.UI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Interview.Entities.ProcessGroup", b =>
+                {
+                    b.HasOne("Interview.Entities.Group", "Group")
+                        .WithMany("ProcessGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Interview.Entities.Process", "Process")
+                        .WithMany("ProcessGroups")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Process");
+                });
+
             modelBuilder.Entity("Interview.Entities.RoleUser", b =>
                 {
-                    b.HasOne("Interview.Entities.Contest", null)
+                    b.HasOne("Interview.Entities.Process", null)
                         .WithMany("RoleUsers")
-                        .HasForeignKey("ContestId")
+                        .HasForeignKey("ProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -560,24 +538,11 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.Schedule", b =>
                 {
-                    b.HasOne("Interview.Entities.Contest", null)
+                    b.HasOne("Interview.Entities.Process", null)
                         .WithMany("Schedules")
-                        .HasForeignKey("ContestId")
+                        .HasForeignKey("Processid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Interview.Entities.Contest", b =>
-                {
-                    b.Navigation("ContestGroups");
-
-                    b.Navigation("EmailTemplates");
-
-                    b.Navigation("Interviews");
-
-                    b.Navigation("RoleUsers");
-
-                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("Interview.Entities.Equity", b =>
@@ -587,14 +552,27 @@ namespace Interview.UI.Migrations
 
             modelBuilder.Entity("Interview.Entities.Group", b =>
                 {
-                    b.Navigation("ContestGroups");
-
                     b.Navigation("GroupOwners");
+
+                    b.Navigation("ProcessGroups");
                 });
 
             modelBuilder.Entity("Interview.Entities.Interview", b =>
                 {
                     b.Navigation("InterviewUsers");
+                });
+
+            modelBuilder.Entity("Interview.Entities.Process", b =>
+                {
+                    b.Navigation("EmailTemplates");
+
+                    b.Navigation("Interviews");
+
+                    b.Navigation("ProcessGroups");
+
+                    b.Navigation("RoleUsers");
+
+                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("Interview.Entities.RoleUser", b =>

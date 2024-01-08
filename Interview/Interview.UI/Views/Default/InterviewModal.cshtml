@@ -10,8 +10,8 @@
         "Location", "Room", "VmStartDate", "Duration", "ContactName", "ContactNumber"
     }).Select(x => x.ToLower()).ToList();
 
-    DateTime contestStartDate = ViewBag.ContestStartDate;
-    DateTime contestEndDate = ViewBag.ContestEndDate;
+    DateTime processStartDate = ViewBag.ProccessStartDate;
+    DateTime processEndDate = ViewBag.ProccessEndDate;
 
 }
 
@@ -39,7 +39,7 @@
                 @Html.EditorFor(x => x.Room, "Question", new { inputControl = Html.TextBoxFor(x => x.Room, new { @class = "form-control" }) })
 
                 @Html.EditorFor(x => x.VmStartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.VmStartDate, 
-                    new { date = Model.VmStartDate, min = contestStartDate, max = contestEndDate }) })
+                    new { date = Model.VmStartDate, min = processStartDate, max = processEndDate }) })
 
                 @Html.EditorFor(x => x.VmStartTime, "Question", new { inputControl = Html.TextBoxFor(x => x.VmStartTime, new { @class = "form-control" }) })
 
