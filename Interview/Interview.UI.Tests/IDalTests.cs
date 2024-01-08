@@ -56,9 +56,9 @@ namespace Interview.UI.Tests
         {
 
             Guid result;
-            Process contest = (Process)GetEntity<Process>();
+            Process process = (Process)GetEntity<Process>();
 
-            result = await _dal.AddEntity<Process>(contest);
+            result = await _dal.AddEntity<Process>(process);
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result != Guid.Empty);
@@ -71,10 +71,10 @@ namespace Interview.UI.Tests
 
             EntityBase result = null;
             Guid id;
-            Process contest = (Process)GetEntity<Process>();
+            Process process = (Process)GetEntity<Process>();
 
             // Add
-            id = await _dal.AddEntity<Process>(contest);
+            id = await _dal.AddEntity<Process>(process);
 
             // Get
             result = await _dal.GetEntity<Process>(id);
@@ -88,13 +88,13 @@ namespace Interview.UI.Tests
         {
 
             Process? result = null;
-            Process contest = (Process)GetEntity<Process>();
+            Process process = (Process)GetEntity<Process>();
             Interview.Entities.Interview interview;
             InterviewUser interviewUser;
             for (int x = 0; x < 4; x++)
             {
                 interview = (Interview.Entities.Interview)GetEntity<Interview.Entities.Interview>();
-                contest.Interviews.Add(interview);
+                process.Interviews.Add(interview);
                 for (int y = 0; y < x; y++)
                 {
                     interviewUser = (InterviewUser)GetEntity<InterviewUser>();
@@ -104,7 +104,7 @@ namespace Interview.UI.Tests
             Guid id;
 
             // Add
-            id = await _dal.AddEntity<Process>(contest);
+            id = await _dal.AddEntity<Process>(process);
 
             // Get
             result = await _dal.GetEntity<Process>(id, true) as Process;
@@ -119,21 +119,21 @@ namespace Interview.UI.Tests
         public async Task UpdateEntity()
         {
 
-            Process? contest = (Process)GetEntity<Process>();
+            Process? process = (Process)GetEntity<Process>();
             Guid id;
             string newValue = "New value";
 
             // Add
-            id = await _dal.AddEntity<Process>(contest);
+            id = await _dal.AddEntity<Process>(process);
 
             // Update
-            contest.ContactName = newValue;
-            await _dal.UpdateEntity(contest);
+            process.ContactName = newValue;
+            await _dal.UpdateEntity(process);
 
             // Get
-            contest = await _dal.GetEntity<Process>(id) as Process;
-            Assert.IsTrue(contest != null);
-            Assert.IsTrue(contest.ContactName == newValue);
+            process = await _dal.GetEntity<Process>(id) as Process;
+            Assert.IsTrue(process != null);
+            Assert.IsTrue(process.ContactName == newValue);
 
         }
 
@@ -141,18 +141,18 @@ namespace Interview.UI.Tests
         public async Task DeleteEntity()
         {
 
-            Process? contest = (Process)GetEntity<Process>();
+            Process? process = (Process)GetEntity<Process>();
             Guid id;
 
             // Add
-            id = await _dal.AddEntity<Process>(contest);
+            id = await _dal.AddEntity<Process>(process);
 
             // Delete
             await _dal.DeleteEntity<Process>(id);
 
             // Get
-            contest = await _dal.GetEntity<Process>(id) as Process;
-            Assert.IsTrue(contest == null);
+            process = await _dal.GetEntity<Process>(id) as Process;
+            Assert.IsTrue(process == null);
 
         }
 
@@ -160,19 +160,19 @@ namespace Interview.UI.Tests
         public async Task DeleteEntityWithEntity()
         {
 
-            Process? contest = (Process)GetEntity<Process>();
+            Process? process = (Process)GetEntity<Process>();
             Guid id;
 
             // Add
-            id = await _dal.AddEntity<Process>(contest);
+            id = await _dal.AddEntity<Process>(process);
 
             // Delete
-            contest.Id = id;
-            await _dal.DeleteEntity(contest);
+            process.Id = id;
+            await _dal.DeleteEntity(process);
 
             // Get
-            contest = await _dal.GetEntity<Process>(id) as Process;
-            Assert.IsTrue(contest == null);
+            process = await _dal.GetEntity<Process>(id) as Process;
+            Assert.IsTrue(process == null);
 
         }
 
@@ -184,14 +184,14 @@ namespace Interview.UI.Tests
         public async Task AddManyToMany()
         {
 
-            Process contest = (Process)GetEntity<Process>();
-            contest.Id = await _dal.AddEntity<Process>(contest);
+            Process process = (Process)GetEntity<Process>();
+            process.Id = await _dal.AddEntity<Process>(process);
 
             RoleUser roleUser = (RoleUser)GetEntity<RoleUser>();
-            roleUser.ProcessId = contest.Id;
+            roleUser.ProcessId = process.Id;
             roleUser.Id = await _dal.AddEntity<RoleUser>(roleUser);
             RoleUser roleUser2 = (RoleUser)GetEntity<RoleUser>();
-            roleUser2.ProcessId = contest.Id;
+            roleUser2.ProcessId = process.Id;
             roleUser2.Id = await _dal.AddEntity<RoleUser>(roleUser2);
 
             Equity equity1 = (Equity)GetEntity<Equity>();
@@ -208,7 +208,7 @@ namespace Interview.UI.Tests
             RoleUserEquity roleUserEquity4 = new RoleUserEquity() { RoleUserId = roleUser2.Id, EquityId = equity2.Id };
             await _dal.AddEntity<RoleUserEquity>(roleUserEquity4);
 
-            List<RoleUser> getRoleUsers = await _dal.GetRoleUsersByProcessId(contest.Id);
+            List<RoleUser> getRoleUsers = await _dal.GetRoleUsersByProcessId(process.Id);
             foreach (var getRoleUser in getRoleUsers)
                 Assert.IsTrue(getRoleUser.RoleUserEquities.Count == 2);
 
