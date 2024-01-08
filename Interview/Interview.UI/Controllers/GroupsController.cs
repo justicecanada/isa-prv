@@ -145,7 +145,7 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContest(VmGroup vmGroup)
+        public async Task<IActionResult> AddProcess(VmGroup vmGroup)
         {
 
             if (vmGroup.ProcessIdToAdd != null)
@@ -168,7 +168,7 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RemoveContest(Guid processGroupId)
+        public async Task<IActionResult> RemoveProcess(Guid processGroupId)
         {
 
             await _dal.DeleteEntity<ProcessGroup>(processGroupId);

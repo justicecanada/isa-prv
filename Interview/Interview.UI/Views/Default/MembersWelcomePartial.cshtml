@@ -4,12 +4,12 @@
 
 @{
 
-    Process contest = ViewBag.Contest;
+    Process process = ViewBag.Process;
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
 
-    bool showWelcome = contest != null
-        && ((cultureName == Constants.EnglishCulture && !string.IsNullOrEmpty(contest.MembersIntroEN)
-        || (cultureName == Constants.FrenchCulture && !string.IsNullOrEmpty(contest.MembersIntroEN))));
+    bool showWelcome = process != null
+        && ((cultureName == Constants.EnglishCulture && !string.IsNullOrEmpty(process.MembersIntroEN)
+        || (cultureName == Constants.FrenchCulture && !string.IsNullOrEmpty(process.MembersIntroEN))));
 
 }
 
@@ -20,11 +20,11 @@
         <div>
             @if (cultureName == Constants.EnglishCulture)
             {
-                @Html.Raw(contest.MembersIntroEN)
+                @Html.Raw(process.MembersIntroEN)
             }
             else if (cultureName == Constants.FrenchCulture)
             {
-                @Html.Raw(contest.MembersIntroFR)
+                @Html.Raw(process.MembersIntroFR)
             }
         </div>
     </section>

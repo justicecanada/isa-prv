@@ -15,7 +15,7 @@ using Interview.UI.Models.Options;
 
 namespace Interview.UI.Controllers
 {
-    public class ContestsController : BaseController
+    public class ProcessesController : BaseController
     {
 
         #region Declarations
@@ -28,7 +28,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ContestsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+        public ProcessesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
             IOptions options) 
             : base(modelAccessor, justiceOptions, dal)
         {
@@ -52,7 +52,7 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteContest(Guid processId)
+        public async Task<IActionResult> DeleteProcess(Guid processId)
         {
 
             await _dal.DeleteEntity<Process>(processId);
@@ -79,7 +79,7 @@ namespace Interview.UI.Controllers
         #region Manage Methods
 
         [HttpGet]   
-        public async Task<IActionResult> Contest(Guid? processId)
+        public async Task<IActionResult> Process(Guid? processId)
         {
 
             VmProcess vmProcess = null;
@@ -104,7 +104,7 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ContestNext(VmProcess vmProcess)
+        public async Task<IActionResult> ProcessNext(VmProcess vmProcess)
         {
 
             HandleScheduleModelState(vmProcess);     // This is temporary until the slider is on the view
@@ -125,14 +125,14 @@ namespace Interview.UI.Controllers
                 await ProcesesSetViewBag();
                 RegisterProcessesClientResources();
 
-                return View("Contest", vmProcess);
+                return View("Process", vmProcess);
             }
 
         }
 
         [HttpPost]  
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ContestSave(VmProcess vmProcess)
+        public async Task<IActionResult> ProcessSave(VmProcess vmProcess)
         {
 
             HandleScheduleModelState(vmProcess);     // This is temporary until the slider is on the view
@@ -161,7 +161,7 @@ namespace Interview.UI.Controllers
                 await ProcesesSetViewBag();
                 RegisterProcessesClientResources();
 
-                return View("Contest", vmProcess);
+                return View("Process", vmProcess);
             }
 
         }

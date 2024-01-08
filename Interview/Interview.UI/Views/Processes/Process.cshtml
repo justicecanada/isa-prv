@@ -44,7 +44,7 @@
 @if (Model.Id != null)
 {
     <div class="row">
-        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { contestId = Model.Id }, new { @class = "btn btn-secondary" })
+        @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", new { processId = Model.Id }, new { @class = "btn btn-secondary" })
    </div>
 }
 
@@ -193,15 +193,15 @@
         
         @if (Model.Id == null)
         {
-            <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ContestNext", "Contests")
+            <input type="submit" value="@localizer["Next"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ProcessNext", "Processes")
                formmethod="post" />
         }
         else
         {
-            <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ContestSave", "Contests")
+            <input type="submit" value="@localizer["Save"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("ProcessSave", "Processes")
                formmethod="post" />
         }
-        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Contests", null, new { @class = "btn btn-default" })
+        @Html.ActionLink(localizer["Cancel"].Value, "Index", "Processes", null, new { @class = "btn btn-default" })
 
     </div>
 

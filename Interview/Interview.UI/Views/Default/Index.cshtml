@@ -35,7 +35,7 @@
 @*Only form control*@
 <div class="container">
     <div class="row well well-lg">
-        @using (Html.BeginForm("SwitchProcess", "Default", null, FormMethod.Post, null, new { id = "formContest" }))
+        @using (Html.BeginForm("SwitchProcess", "Default", null, FormMethod.Post, null, new { id = "formProcess" }))
         {
             @Html.AntiForgeryToken()            
             <div class="col-md-12">
