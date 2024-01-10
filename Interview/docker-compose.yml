@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   interview.ui:
-    image: interviewdevcontainerregistry.azurecr.io/interviewui:ConnStrings2
+    image: interviewdevcontainerregistry.azurecr.io/interviewui
     build:
       context: .
       dockerfile: Interview.UI/Dockerfile
