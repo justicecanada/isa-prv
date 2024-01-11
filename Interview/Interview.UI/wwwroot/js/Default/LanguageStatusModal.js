@@ -30,7 +30,7 @@
 
         this.Form = $("#langForm")[0];
 
-        $(this.SubmitButtonSelector).on("click", interview.Post);
+        $(this.SubmitButtonSelector).on("click", lang.Post);
 
         $(this.CancelButtonSelector).on("click", function (e) {
             e.preventDefault();
@@ -67,6 +67,39 @@
 
     Close: function () {
         $(lang.ModalSelector).empty();
+    },
+
+    Post: function (e) {
+
+        e.preventDefault();
+        var formData = $(lang.Form).serialize();
+
+        $.ajax({
+            type: "POST",
+            url: lang.Uri,
+            data: formData,
+            success: lang.PostSuccess,
+            fail: lang.PostFail
+        });
+
+    },
+
+    PostSuccess: function (data) {
+
+        if (data.result) {
+            $.magnificPopup.close();
+            //table.UpdateTable(data.item);
+            //interview.HookupMagnificPopup();
+        }
+        else {
+            $(lang.ModalSelector).html($(data));
+            lang.HookupModalHandlers();
+        }
+
+    },
+
+    PostFail: function (e) {
+        $.magnificPopup.close();
     },
 
 }

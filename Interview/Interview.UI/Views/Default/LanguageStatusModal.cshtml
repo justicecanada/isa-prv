@@ -32,9 +32,9 @@
 
     <form id="langForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
 
-        @{
-            await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
-        }
+        @{ await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" }); }
+
+        @Html.AntiForgeryToken()
 
         <div class="mrgn-tp-md">
             @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownListFor(x => x.LanguageType, languageItems, new { @class = "form-control" }) })
