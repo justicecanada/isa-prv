@@ -28,22 +28,21 @@
 
 <div class="modal-body">
 
+    @localizer["Message"]
+
     <form id="langForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
 
         @{
             await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
         }
 
-        @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownListFor(x => x.LanguageType, languageItems, new { @class = "form-control" }) })
-
+        <div class="mrgn-tp-md">
+            @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownListFor(x => x.LanguageType, languageItems, new { @class = "form-control" }) })
+        </div>
 
          <div class="modal-footer">
-            @*<button id="btnInterviewClose" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Close"]</button>
-            <input id="btnInterviewSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" formaction="/Default/InterviewModal" />
-            @if (Model.Id != null)
-            {
-                @Html.ActionLink(localizer["Delete"].Value, "InterviewDelete", "Default", new { Id = Model.Id }, new { @class = "btn btn-danger" })
-            }*@
+            <button id="btnInterviewClose" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Cancel"]</button>
+            <input id="btnInterviewSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" />
         </div>
 
     </form>

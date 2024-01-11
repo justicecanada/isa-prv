@@ -2,35 +2,40 @@
 
     Uri: "/Default/LanguageStatusModal",
     ModalSelector: "#modalContainer",
+    SubmitButtonSelector: "#btnLanguageSave",
+    CancelButtonSelector: "#btnLanguageCancel",
+    Form: null,
 
     Init: function () {
 
-        debugger;
-        //this.HookupMagnificPopup();
-        $.magnificPopup.open({
+        this.HookupMagnificPopup();
 
-            items: {
-                src: lang.ModalSelector
-            },
-            type: 'inline',
-            callbacks: {
-                elementParse: lang.ElementParse,
-                close: lang.Close,
-            }
-        });
+        if (showLanguageStatusModal) { 
+            $.magnificPopup.open({
+
+                items: {
+                    src: lang.ModalSelector
+                },
+                type: 'inline',
+                callbacks: {
+                    elementParse: lang.ElementParse,
+                    close: lang.Close,
+                }
+            });
+        }
 
     },
 
     HookupModalHandlers: function () {
 
-        //this.Form = $("#interviewForm")[0];
+        this.Form = $("#langForm")[0];
 
-        //$(this.SubmitButtonSelector).on("click", interview.Post);
+        $(this.SubmitButtonSelector).on("click", interview.Post);
 
-        //$(this.CancelButtonSelector).on("click", function (e) {
-        //    e.preventDefault();
-        //    $.magnificPopup.instance.close();
-        //});
+        $(this.CancelButtonSelector).on("click", function (e) {
+            e.preventDefault();
+            $.magnificPopup.instance.close();
+        });
 
     },
 

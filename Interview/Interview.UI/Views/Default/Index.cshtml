@@ -60,8 +60,6 @@
         if (Model.ProcessId != null)
         {
             await Html.RenderPartialAsync("CalendarPartial");
-            //if (showLanguageStatusModal)
-            //    await Html.RenderPartialAsync("LanguageStatusModal");
         }
 
     }
@@ -71,3 +69,7 @@
     }
     await Html.RenderPartialAsync("ModalContainer");
 }
+
+<script type="text/javascript">
+    var showLanguageStatusModal = @showLanguageStatusModal.ToString().ToLower();
+</script>
