@@ -52,6 +52,7 @@ namespace Interview.UI.Controllers
             VmIndex result = new VmIndex();
             List<Process> processes = await GetProcessesForLoggedInUser();
             Guid? processId = null;
+            RoleUser roleUser = null;
 
             // Look to Session for ProcessId
             if (_state.ProcessId != null)
@@ -60,11 +61,12 @@ namespace Interview.UI.Controllers
             else if (processes.Any())
                 processId = processes.First().Id;
 
-            await SetIndexViewBag(processes, processId);
+            roleUser = await GetAndHandleRoleUser(processId);
+            await SetIndexViewBag(processes, processId, roleUser);
             RegisterIndexClientResources();
             _state.ProcessId = processId;
             result.ProcessId = processId;
-            
+
             return View(result);
 
         }
@@ -80,11 +82,13 @@ namespace Interview.UI.Controllers
 
         }
 
-		private async Task SetIndexViewBag(List<Process> processes, Guid? processId)
+		private async Task SetIndexViewBag(List<Process> processes, Guid? processId, RoleUser? roleUser)
         {
 
             ViewBag.Processes = processes;
             ViewBag.ProcessId = processId;
+            //ViewBag.UserHasAccess = roleUser != null;
+            ViewBag.UserHasAccess = false;
 
             if (processId != null)
             {
@@ -109,6 +113,48 @@ namespace Interview.UI.Controllers
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/Index.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
+
+        }
+
+        private async Task<RoleUser> GetAndHandleRoleUser(Guid? processId)
+        {
+
+            RoleUser result = null;
+
+            if (processId != null)
+            {
+                result = await _dal.GetRoleUserByProcessIdAndUserId((Guid)processId, (Guid)LoggedInMockUser.Id);
+
+                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System) ||
+                    IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                {
+                    bool hasAccess = true;
+
+                    if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                    {
+                        List<GroupOwner> groupOwners = await _dal.GetGroupOwnersByProcessIdAndUserId((Guid)processId, (Guid)LoggedInMockUser.Id);
+                        hasAccess = groupOwners.Count > 0;
+                    }
+
+                    if (hasAccess)
+                    {
+                        result = new RoleUser()
+                        {
+                            ProcessId = (Guid)processId,
+                            RoleType = RoleTypes.Admin,
+                            UserId = (Guid)LoggedInMockUser.Id,
+                            LanguageType = LanguageTypes.Bilingual,
+                            HasAcceptedPrivacyStatement = true,
+                        };
+                        await _dal.AddEntity<RoleUser>(result);
+                    }
+
+                    
+
+                }
+            }
+
+            return result;
 
         }
 
