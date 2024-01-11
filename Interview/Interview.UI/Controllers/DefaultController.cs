@@ -87,8 +87,7 @@ namespace Interview.UI.Controllers
 
             ViewBag.Processes = processes;
             ViewBag.ProcessId = processId;
-            //ViewBag.UserHasAccess = roleUser != null;
-            ViewBag.UserHasAccess = false;
+            ViewBag.UserHasAccess = roleUser != null;
 
             if (processId != null)
             {
