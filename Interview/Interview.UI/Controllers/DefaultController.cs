@@ -61,8 +61,11 @@ namespace Interview.UI.Controllers
             else if (processes.Any())
                 processId = processes.First().Id;
 
+            // Handle RoleUser and set various view bag properties
             roleUser = await GetAndHandleRoleUser(processId);
             await SetIndexViewBag(processes, processId, roleUser);
+            SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
+
             RegisterIndexClientResources();
             _state.ProcessId = processId;
             result.ProcessId = processId;
@@ -348,6 +351,25 @@ namespace Interview.UI.Controllers
                 }
 
             }
+
+        }
+
+        #endregion
+
+        #region Language Status Modal
+
+        private void SetLanguageStatusViewbagAndRegisterClientResources(RoleUser roleUser)
+        {
+
+            bool showLanguageStatusModal = false;
+
+            //if (roleUser == null && roleUser.LanguageType == null)
+            //{
+                showLanguageStatusModal = true;
+                WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/LanguageStatusModal.js?v={BuildId}\"></script>");
+            //}
+
+            ViewBag.ShowLanguageStatusModal = showLanguageStatusModal;
 
         }
 

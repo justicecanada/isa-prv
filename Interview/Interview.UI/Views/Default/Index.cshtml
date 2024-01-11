@@ -12,6 +12,7 @@
     List<Process> processes = ViewBag.Processes;
     Process? process = Model.ProcessId == null ? null : processes.Where(x => x.Id == Model.ProcessId).First();
     bool userHasAccess = ViewBag.UserHasAccess;
+    bool showLanguageStatusModal = ViewBag.ShowLanguageStatusModal;
 
     List<SelectListItem> vmProcessItems = new List<SelectListItem>();
     foreach (var processItem in processes)
@@ -49,14 +50,20 @@
     </div>
 </div>
 
-@{    
+@{
     if (userHasAccess)
     {
         await Html.RenderPartialAsync("LegendPartial");
         await Html.RenderPartialAsync("MembersWelcomePartial");
         await Html.RenderPartialAsync("RulesPartial");
+
         if (Model.ProcessId != null)
+        {
             await Html.RenderPartialAsync("CalendarPartial");
+            if (showLanguageStatusModal)
+                await Html.RenderPartialAsync("LanguageStatusModal");
+        }
+
     }
     else
     {
