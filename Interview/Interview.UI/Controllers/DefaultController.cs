@@ -358,6 +358,25 @@ namespace Interview.UI.Controllers
 
         #region Language Status Modal
 
+        [HttpGet]
+        public PartialViewResult LanguageStatusModal()
+        {
+
+            VmLanguageStatusModal result = new VmLanguageStatusModal();
+
+            return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> LanguageStatusModal(VmLanguageStatusModal vmLanguageStatusModal)
+        {
+
+            return null;
+
+        }
+
         private void SetLanguageStatusViewbagAndRegisterClientResources(RoleUser roleUser)
         {
 
