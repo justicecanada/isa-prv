@@ -13,6 +13,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
-            List<Process> processes = await GetProcessesForLoggedInUser();
+            List<Entities.Process> processes = await GetProcessesForLoggedInUser();
             Guid? processId = null;
             RoleUser roleUser = null;
 
@@ -85,7 +86,7 @@ namespace Interview.UI.Controllers
 
         }
 
-		private async Task SetIndexViewBag(List<Process> processes, Guid? processId, RoleUser? roleUser)
+		private async Task SetIndexViewBag(List<Entities.Process> processes, Guid? processId, RoleUser? roleUser)
         {
 
             ViewBag.Processes = processes;
@@ -95,7 +96,7 @@ namespace Interview.UI.Controllers
             if (processId != null)
             {
 
-                Process process = processes.Where(x => x.Id == processId).First();
+                Entities.Process process = processes.Where(x => x.Id == processId).First();
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId((Guid)processId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
@@ -273,7 +274,7 @@ namespace Interview.UI.Controllers
             }
 
             // Handle Interview Start and End Dates
-            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+            Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
 			ViewBag.ProccessStartDate = process.StartDate;
 			ViewBag.ProccessEndDate = process.EndDate;
 
@@ -339,7 +340,7 @@ namespace Interview.UI.Controllers
             if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
             {
 
-                Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+                Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
                 //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
                 DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
 
@@ -373,7 +374,22 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> LanguageStatusModal(VmLanguageStatusModal vmLanguageStatusModal)
         {
 
-            return null;
+            if (ModelState.IsValid)
+            {
+                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+
+                roleUser.LanguageType = vmLanguageStatusModal.LanguageType;
+                await _dal.UpdateEntity(roleUser);
+
+                return new JsonResult(new { result = true, item = vmLanguageStatusModal })
+                {
+                    StatusCode = 200
+                };
+            }
+            else
+            {
+                return PartialView(vmLanguageStatusModal);
+            }
 
         }
 
