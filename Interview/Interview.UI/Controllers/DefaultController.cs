@@ -398,11 +398,11 @@ namespace Interview.UI.Controllers
 
             bool showLanguageStatusModal = false;
 
-            //if (roleUser == null && roleUser.LanguageType == null)
-            //{
+            if (roleUser == null && roleUser.LanguageType == null)
+            {
                 showLanguageStatusModal = true;
                 WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/LanguageStatusModal.js?v={BuildId}\"></script>");
-            //}
+            }
 
             ViewBag.ShowLanguageStatusModal = showLanguageStatusModal;
 
