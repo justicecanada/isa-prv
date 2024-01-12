@@ -13,6 +13,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
@@ -50,8 +51,9 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
-            List<Process> processes = await GetProcessesForLoggedInUser();
+            List<Entities.Process> processes = await GetProcessesForLoggedInUser();
             Guid? processId = null;
+            RoleUser roleUser = null;
 
             // Look to Session for ProcessId
             if (_state.ProcessId != null)
@@ -60,11 +62,15 @@ namespace Interview.UI.Controllers
             else if (processes.Any())
                 processId = processes.First().Id;
 
-            await SetIndexViewBag(processes, processId);
+            // Handle RoleUser and set various view bag properties
+            roleUser = await GetAndHandleRoleUser(processId);
+            await SetIndexViewBag(processes, processId, roleUser);
+            SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
+
             RegisterIndexClientResources();
             _state.ProcessId = processId;
             result.ProcessId = processId;
-            
+
             return View(result);
 
         }
@@ -80,16 +86,17 @@ namespace Interview.UI.Controllers
 
         }
 
-		private async Task SetIndexViewBag(List<Process> processes, Guid? processId)
+		private async Task SetIndexViewBag(List<Entities.Process> processes, Guid? processId, RoleUser? roleUser)
         {
 
             ViewBag.Processes = processes;
             ViewBag.ProcessId = processId;
+            ViewBag.UserHasAccess = roleUser != null;
 
             if (processId != null)
             {
 
-                Process process = processes.Where(x => x.Id == processId).First();
+                Entities.Process process = processes.Where(x => x.Id == processId).First();
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId((Guid)processId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
 
@@ -109,6 +116,48 @@ namespace Interview.UI.Controllers
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/Index.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
+
+        }
+
+        private async Task<RoleUser> GetAndHandleRoleUser(Guid? processId)
+        {
+
+            RoleUser result = null;
+
+            if (processId != null)
+            {
+                result = await _dal.GetRoleUserByProcessIdAndUserId((Guid)processId, (Guid)LoggedInMockUser.Id);
+
+                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System) ||
+                    IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                {
+                    bool hasAccess = true;
+
+                    if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                    {
+                        List<GroupOwner> groupOwners = await _dal.GetGroupOwnersByProcessIdAndUserId((Guid)processId, (Guid)LoggedInMockUser.Id);
+                        hasAccess = groupOwners.Count > 0;
+                    }
+
+                    if (hasAccess)
+                    {
+                        result = new RoleUser()
+                        {
+                            ProcessId = (Guid)processId,
+                            RoleType = RoleTypes.Admin,
+                            UserId = (Guid)LoggedInMockUser.Id,
+                            LanguageType = LanguageTypes.Bilingual,
+                            HasAcceptedPrivacyStatement = true,
+                        };
+                        await _dal.AddEntity<RoleUser>(result);
+                    }
+
+                    
+
+                }
+            }
+
+            return result;
 
         }
 
@@ -225,7 +274,7 @@ namespace Interview.UI.Controllers
             }
 
             // Handle Interview Start and End Dates
-            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+            Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
 			ViewBag.ProccessStartDate = process.StartDate;
 			ViewBag.ProccessEndDate = process.EndDate;
 
@@ -291,7 +340,7 @@ namespace Interview.UI.Controllers
             if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
             {
 
-                Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+                Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
                 //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
                 DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
 
@@ -303,6 +352,59 @@ namespace Interview.UI.Controllers
                 }
 
             }
+
+        }
+
+        #endregion
+
+        #region Language Status Modal
+
+        [HttpGet]
+        public PartialViewResult LanguageStatusModal()
+        {
+
+            VmLanguageStatusModal result = new VmLanguageStatusModal();
+
+            return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> LanguageStatusModal(VmLanguageStatusModal vmLanguageStatusModal)
+        {
+
+            if (ModelState.IsValid)
+            {
+                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+
+                roleUser.LanguageType = vmLanguageStatusModal.LanguageType;
+                await _dal.UpdateEntity(roleUser);
+
+                return new JsonResult(new { result = true, item = vmLanguageStatusModal })
+                {
+                    StatusCode = 200
+                };
+            }
+            else
+            {
+                return PartialView(vmLanguageStatusModal);
+            }
+
+        }
+
+        private void SetLanguageStatusViewbagAndRegisterClientResources(RoleUser roleUser)
+        {
+
+            bool showLanguageStatusModal = false;
+
+            //if (roleUser == null && roleUser.LanguageType == null)
+            //{
+                showLanguageStatusModal = true;
+                WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/LanguageStatusModal.js?v={BuildId}\"></script>");
+            //}
+
+            ViewBag.ShowLanguageStatusModal = showLanguageStatusModal;
 
         }
 

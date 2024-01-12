@@ -438,11 +438,30 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        #endregion
+        public async Task<RoleUser> GetRoleUserByProcessIdAndUserId(Guid processId, Guid userId)
+        {
 
-        #region Mock Identity Methods
+            RoleUser result = await _context.RoleUsers.Where(x => (x.ProcessId == processId && x.UserId == userId)).FirstOrDefaultAsync();
 
-        public async Task<List<MockUser>> LookupInteralMockUser(string query)
+            return result;
+
+        }
+
+        public async Task<List<GroupOwner>> GetGroupOwnersByProcessIdAndUserId(Guid processId, Guid userId)
+        {
+
+            List<GroupOwner> result = await _context.GroupsOwners.Where(x => (x.Group.Processes.Any(y => y.Id == processId) &&
+                x.UserId == userId)).ToListAsync();
+
+            return result;
+
+        }
+
+		#endregion
+
+		#region Mock Identity Methods
+
+		public async Task<List<MockUser>> LookupInteralMockUser(string query)
         {
 
             List<MockUser> result = await _context.MockUsers.Where(x => ((x.FirstName.ToLower().StartsWith(query.ToLower()) || x.LastName.ToLower().StartsWith(query.ToLower()))

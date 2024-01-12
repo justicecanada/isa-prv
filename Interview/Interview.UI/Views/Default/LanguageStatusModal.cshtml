@@ -1,0 +1,50 @@
+﻿@model VmLanguageStatusModal
+@using Interview.UI.Models.Default
+@using Interview.Entities
+@inject IViewLocalizer localizer
+
+@{
+
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "LanguageType"
+    }).Select(x => x.ToLower()).ToList();
+
+    List<SelectListItem> languageItems = new List<SelectListItem>();
+    languageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (LanguageTypes languageType in Enum.GetValues(typeof(LanguageTypes)))
+        languageItems.Add(new SelectListItem()
+        {
+            Value = languageType.ToString(),
+            Text = languageType.ToString(),
+            Selected = languageType == Model.LanguageType
+        });
+
+}
+
+<header class="modal-header">
+    <h2 class="modal-title">@localizer["ModalTitle"]</h2>
+</header>
+
+<div class="modal-body">
+
+    @localizer["Message"]
+
+    <form id="langForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
+
+        @{ await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" }); }
+
+        @Html.AntiForgeryToken()
+
+        <div class="mrgn-tp-md">
+            @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownListFor(x => x.LanguageType, languageItems, new { @class = "form-control" }) })
+        </div>
+
+         <div class="modal-footer">
+            <button id="btnLanguageCancel" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Cancel"]</button>
+            <input id="btnLanguageSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" />
+        </div>
+
+    </form>
+
+</div>

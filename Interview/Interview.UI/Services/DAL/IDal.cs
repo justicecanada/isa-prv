@@ -48,6 +48,10 @@ namespace Interview.UI.Services.DAL
         Task<List<Schedule>> GetSchedulesByProcessId(Guid processId);
 
         Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId);
+
+        Task<RoleUser> GetRoleUserByProcessIdAndUserId(Guid processId, Guid userId);
+
+        Task<List<GroupOwner>> GetGroupOwnersByProcessIdAndUserId(Guid processId, Guid userId);
         
         #endregion
 
