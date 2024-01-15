@@ -428,7 +428,22 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> PrivacyStatementModal(VmPrivacyStatementModal vmPrivacyStatementModal)
         {
 
-            return null;
+            if (ModelState.IsValid)
+            {
+                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+
+                roleUser.HasAcceptedPrivacyStatement = vmPrivacyStatementModal.HasAcceptedPrivacyStatement;
+                await _dal.UpdateEntity(roleUser);
+
+                return new JsonResult(new { result = true, item = vmPrivacyStatementModal })
+                {
+                    StatusCode = 200
+                };
+            }
+            else
+            {
+                return PartialView(vmPrivacyStatementModal);
+            }
 
         }
 
@@ -437,12 +452,12 @@ namespace Interview.UI.Controllers
 
             bool showPrivacyStatementModal = false;
 
-            //if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
-            //    || roleUser.RoleType == RoleTypes.Lead))
-            //{
+            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
+                || roleUser.RoleType == RoleTypes.Lead))
+            {
                 showPrivacyStatementModal = true;
                 WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");
-            //}
+            }
 
             ViewBag.ShowPrivacyStatementModal = showPrivacyStatementModal;
 
