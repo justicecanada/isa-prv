@@ -1,0 +1,37 @@
+﻿
+@using Interview.UI.Models.Default
+@inject IViewLocalizer localizer
+
+@{
+
+
+}
+
+<header class="modal-header">
+    <h2 class="modal-title">@localizer["ModalTitle"]</h2>
+</header>
+
+<div class="modal-body">
+
+    @localizer["Message"]
+
+    <form id="langForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
+
+        @{
+            await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
+        }
+
+        @Html.AntiForgeryToken()
+
+        @*<div class="mrgn-tp-md">
+            @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownListFor(x => x.LanguageType, languageItems, new { @class = "form-control" }) })
+        </div>*@
+
+        <div class="modal-footer">
+            <button id="btnPrivacyCancel" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Cancel"]</button>
+            <input id="btnPrivacySave" type="submit" value="@localizer["Save"]" class="btn btn-primary" />
+        </div>
+
+    </form>
+
+</div>

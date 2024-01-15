@@ -66,6 +66,7 @@ namespace Interview.UI.Controllers
             roleUser = await GetAndHandleRoleUser(processId);
             await SetIndexViewBag(processes, processId, roleUser);
             SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
+            SetPrivacyStatementViewbagAndRegisterClientResources(roleUser);
 
             RegisterIndexClientResources();
             _state.ProcessId = processId;
@@ -405,6 +406,45 @@ namespace Interview.UI.Controllers
             }
 
             ViewBag.ShowLanguageStatusModal = showLanguageStatusModal;
+
+        }
+
+        #endregion
+
+        #region Privacy Statement Modal
+
+        [HttpGet]
+        public PartialViewResult PrivacyStatementModal()
+        {
+
+            VmPrivacyStatementModal result = new VmPrivacyStatementModal();
+
+            return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> PrivacyStatementModal(VmPrivacyStatementModal vmPrivacyStatementModal)
+        {
+
+            return null;
+
+        }
+
+        private void SetPrivacyStatementViewbagAndRegisterClientResources(RoleUser roleUser)
+        {
+
+            bool showPrivacyStatementModal = false;
+
+            //if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
+            //    || roleUser.RoleType == RoleTypes.Lead))
+            //{
+                showPrivacyStatementModal = true;
+                WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");
+            //}
+
+            ViewBag.ShowPrivacyStatementModal = showPrivacyStatementModal;
 
         }
 
