@@ -1,4 +1,4 @@
-﻿
+﻿@model VmPrivacyStatementModal
 @using Interview.UI.Models.Default
 @inject IViewLocalizer localizer
 
@@ -15,7 +15,7 @@
 
     @localizer["Message"]
 
-    <form id="langForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
+    <form id="privForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
 
         @{
             await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
@@ -23,9 +23,14 @@
 
         @Html.AntiForgeryToken()
 
-        @*<div class="mrgn-tp-md">
-            @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownListFor(x => x.LanguageType, languageItems, new { @class = "form-control" }) })
-        </div>*@
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(x => x.HasAcceptedPrivacyStatement)
+                    @Html.LabelFor(x => x.HasAcceptedPrivacyStatement)
+                </div>
+            </div>
+        </div>
 
         <div class="modal-footer">
             <button id="btnPrivacyCancel" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Cancel"]</button>
