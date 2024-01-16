@@ -147,6 +147,9 @@
   <data name="InterviewDuration" xml:space="preserve">
     <value>Length of the interview (minutes)</value>
   </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Please enter a valid email address.</value>
+  </data>
   <data name="MaxTime" xml:space="preserve">
     <value>End of the day time (HH:MM:SS)</value>
   </data>

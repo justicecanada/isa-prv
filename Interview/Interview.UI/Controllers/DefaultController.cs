@@ -414,10 +414,12 @@ namespace Interview.UI.Controllers
         #region Privacy Statement Modal
 
         [HttpGet]
-        public PartialViewResult PrivacyStatementModal()
+        public async Task<PartialViewResult> PrivacyStatementModal()
         {
 
             VmPrivacyStatementModal result = new VmPrivacyStatementModal();
+
+            await SetPrivacyStatementModalViewBag();
 
             return PartialView(result);
 
@@ -442,8 +444,20 @@ namespace Interview.UI.Controllers
             }
             else
             {
+                await SetPrivacyStatementModalViewBag();
                 return PartialView(vmPrivacyStatementModal);
             }
+
+        }
+
+        private async Task SetPrivacyStatementModalViewBag()
+        {
+
+            Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
+            RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+
+            ViewBag.MessageKey = roleUser.RoleType == RoleTypes.Candidate ? "PrivacyStatementCandidate" : "PrivacyStatementBoardMember";
+            ViewBag.EmailSentFrom = process.EmailServiceSentFrom;
 
         }
 
@@ -452,12 +466,12 @@ namespace Interview.UI.Controllers
 
             bool showPrivacyStatementModal = false;
 
-            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
-                || roleUser.RoleType == RoleTypes.Lead))
-            {
+            //if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
+            //    || roleUser.RoleType == RoleTypes.Lead))
+            //{
                 showPrivacyStatementModal = true;
                 WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");
-            }
+            //}
 
             ViewBag.ShowPrivacyStatementModal = showPrivacyStatementModal;
 

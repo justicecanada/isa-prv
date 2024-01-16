@@ -4,6 +4,7 @@
 
 @{
 
+    string message = string.Format(localizer[ViewBag.MessageKey].Value, ViewBag.EmailSentFrom);
 
 }
 
@@ -13,7 +14,7 @@
 
 <div class="modal-body">
 
-    @localizer["Message"]
+    @Html.Raw(message)
 
     <form id="privForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
 

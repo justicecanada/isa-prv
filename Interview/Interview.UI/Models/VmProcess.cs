@@ -81,6 +81,8 @@ namespace Interview.UI.Models
         public string? CandidatesIntroFR { get; set; }
 
         [Display(Name = "EmailServiceSentFrom")]
+        [EmailAddress(ErrorMessage = "InvalidEmail")]
+        [Required]
         public string? EmailServiceSentFrom { get; set; }
 
         [Display(Name = "DepartmentId")]

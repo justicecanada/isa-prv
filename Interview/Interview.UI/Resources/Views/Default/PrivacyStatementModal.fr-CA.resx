@@ -120,11 +120,68 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
-  <data name="Message" xml:space="preserve">
-    <value>Message</value>
-  </data>
   <data name="ModalTitle" xml:space="preserve">
     <value>Privacy Statement (fr)</value>
+  </data>
+  <data name="PrivacyStatementBoardMember" xml:space="preserve">
+    <value>&lt;p&gt;Le ministère de la Justice du Canada est assujetti à la Loi sur la protection des renseignements
+personnels du gouvernement fédéral et s'engage à assurer la confidentialité et la protection de
+vos renseignements personnels. Vos renseignements personnels sont recueillis en vertu de la Loi
+sur l'emploi dans la fonction publique, de la Loi sur l'équité en matière d'emploi et de la Loi
+canadienne sur les droits de la personne (article 16).&lt;/p&gt;
+&lt;p&gt;Comment vos informations personnelles seront utilisées :&lt;/p&gt;
+&lt;p&gt;Les renseignements relatifs à l'auto-déclaration d'équité en matière d'emploi que vous fournissez,
+soit dans le cadre de la campagne d'auto-déclaration du ministère de la Justice, soit en informant
+les RH dans le cadre du présent processus de dotation, ne seront mis à la disposition des
+employés autorisés qu'en fonction du besoin de savoir, afin de mener à bien le processus de
+dotation. Pour plus d'information, veuillez consulter le fichier de renseignements personnels de
+l'équité en matière d'emploi - POE 918.&lt;/p&gt;
+&lt;p&gt;Vos droits en matière de protection de la vie privée :&lt;/p&gt;
+&lt;p&gt;La collecte, l'utilisation et la divulgation de renseignements personnels par le ministère de la
+Justice du Canada sont conformes à la Loi sur la protection des renseignements personnels du
+gouvernement fédéral. Cette loi vous donne le droit d'accéder à vos renseignements personnels
+détenus par le ministère de la Justice du Canada et de demander la modification de
+renseignements personnels inexacts. Pour exercer ces droits ou si vous avez besoin
+d'éclaircissements sur le présent avis de confidentialité, veuillez communiquer avec notre Bureau
+de l'accès à l'information et de la protection des renseignements personnels à l'adresse ATIPAIP@justice.gc.ca et mentionner le fichier de renseignements personnels de dotation - POE 902.&lt;/p&gt;
+&lt;p&gt;Veuillez noter que vous avez le droit de déposer une plainte auprès du Commissariat à la
+protection de la vie privée du Canada concernant notre traitement de vos renseignements
+personnels. Pour plus d'informations, veuillez consulter le site Web du Commissariat à la
+protection de la vie privée à l'adresse www.Priv.gc.ca .&lt;/p&gt;
+&lt;p&gt;Si vous avez des questions ou des préoccupations concernant ce qui est énoncé ci-dessus, veuillez
+contacter &lt;a href="{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="PrivacyStatementCandidate" xml:space="preserve">
+    <value>&lt;p&gt;Le ministère de la Justice du Canada est assujetti à la Loi sur la protection des renseignements
+personnels du gouvernement fédéral et s'engage à assurer la confidentialité et la protection de
+vos renseignements personnels. Vos renseignements personnels sont recueillis en vertu de la Loi
+sur l'emploi dans la fonction publique, de la Loi sur l'équité en matière d'emploi et de la LoiPage 2 of 4
+canadienne sur les droits de la personne (article 16).&lt;/p&gt;
+&lt;p&gt;La manière dont vos informations personnelles seront utilisées et sont conformes au
+consentement fourni lors de la candidature par le biais d'emplois GC :&lt;/p&gt;
+&lt;p&gt;Les informations personnelles que vous fournissez dans le cadre de ce processus de dotation ne
+seront mises à la disposition des employés autorisés qu'en cas de nécessité, afin de mener à bien
+le processus de dotation.&lt;/p&gt;
+&lt;p&gt;Les renseignements d'auto-déclaration d'équité en matière d'emploi que vous fournissez, soit par
+le biais de la campagne d'auto-déclaration du ministère de la Justice, soit en informant les RH
+dans le cadre de ce processus de dotation, ne seront mis à la disposition des employés autorisés
+qu'en fonction du besoin de savoir, afin de mener à bien le processus de dotation. Pour plus
+d'information, veuillez consulter le fichier de renseignements personnels de l'équité en matière
+d'emploi - POE 918.&lt;/p&gt;
+&lt;p&gt;Vos droits en matière de protection de la vie privée :&lt;/p&gt;
+&lt;p&gt;La collecte, l'utilisation et la divulgation de renseignements personnels par le ministère de la
+Justice du Canada sont conformes à la Loi sur la protection des renseignements personnels du
+gouvernement fédéral. Cette loi vous donne le droit d'accéder à vos renseignements personnels
+détenus par le ministère de la Justice du Canada et de demander la modification de
+renseignements personnels inexacts. Pour exercer ces droits ou si vous avez besoin
+d'éclaircissements sur le présent avis de confidentialité, veuillez communiquer avec notre Bureau
+de l'accès à l'information et de la protection des renseignements personnels à l'adresse ATIPAIP@justice.gc.ca et mentionner le fichier de renseignements personnels de dotation - POE 902.&lt;/p&gt;
+&lt;p&gt;Veuillez noter que vous avez le droit de déposer une plainte auprès du Commissariat à la
+protection de la vie privée du Canada concernant notre traitement de vos renseignements
+personnels. Pour plus d'informations, veuillez consulter le site Web du Commissariat à la
+protection de la vie privée à l'adresse www.Priv.gc.ca.&lt;/p&gt;
+&lt;p&gt;Si vous avez des questions ou des préoccupations concernant ce qui est indiqué ci-dessus,
+veuillez contacter &lt;a href="{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Sauvegarder</value>

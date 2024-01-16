@@ -13,7 +13,7 @@
     ViewBag.FieldOrder = new List<string>(new string[]
     {
         "NoProcessus", "GroupNiv", "StartDate", "EndDate", "MinTime", "MaxTime", "DeadlineInterviewer", "DeadlineCandidate", "ContactName",
-        "ContactNumber", "InterviewDuration", "MembersIntroEN", "MembersIntroFR", "CandidatesIntroEN", "CandidatesIntroFR"
+        "ContactNumber", "InterviewDuration", "MembersIntroEN", "MembersIntroFR", "CandidatesIntroEN", "CandidatesIntroFR", "EmailServiceSentFrom"
     }).Select(x => x.ToLower()).ToList();
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
@@ -114,6 +114,14 @@
                 </div>
                 <div class="col-md-6">
                     @Html.EditorFor(x => x.ContactNumber, "Question", new { inputControl = Html.TextBoxFor(x => x.ContactNumber, new { @class = "form-control" }) })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.EditorFor(x => x.EmailServiceSentFrom, "Question", new { inputControl = Html.TextBoxFor(x => x.EmailServiceSentFrom, new { @class = "form-control" }) })
+                </div>
+                <div class="col-md-6">
                 </div>
             </div>
 

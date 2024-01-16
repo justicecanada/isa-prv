@@ -120,11 +120,57 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Message" xml:space="preserve">
-    <value>Message</value>
-  </data>
   <data name="ModalTitle" xml:space="preserve">
     <value>Privacy Statement</value>
+  </data>
+  <data name="PrivacyStatementBoardMember" xml:space="preserve">
+    <value>&lt;p&gt;The Department of Justice Canada is subject to the federal Privacy Act and is committed to the
+privacy and protection of your personal information. Your personal information is collected under
+the authority of the Public Service Employment Act, the Employment Equity Act, and the Canadian
+Human Rights Act (section 16).&lt;/p&gt;
+&lt;p&gt;How your personal information will be used:&lt;/p&gt;
+&lt;p&gt;Employment Equity self-declaration information you provide, through either the Department of
+Justice’s Self-Declaration Campaign or by informing HR in this staffing process, will only be made
+available on a need-to-know basis to authorized employees in order to conduct the staffing
+process. For more information please see the Employment Equity Personal Information bank –
+PSE 918.&lt;/p&gt;
+&lt;p&gt;Your Privacy Rights:&lt;/p&gt;
+&lt;p&gt;The collection, use and disclosure of personal information by the Department of Justice Canada isPage 3 of 4
+in accordance with the Federal Privacy Act. This Act gives you the right to access your personal
+information held by the Department of Justice Canada and to request changes to incorrect
+personal information. To exercise these rights or if you require clarification about this Privacy
+Notice, please contact our Access to Information and Privacy Office at ATIP-AIP@justice.gc.ca
+and reference the Staffing Personal Information Bank - PSE 902.&lt;/p&gt;
+&lt;p&gt;Please note that you have a right to file a complaint to the Office of the Privacy Commissioner of
+Canada regarding our handling of your personal information. For more information, please visit the
+Privacy Commissioner’s website at www.Priv.gc.ca.&lt;/p&gt;
+&lt;p&gt;If you have any questions or concerns in regards to what is stated above, please contact &lt;a href="{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="PrivacyStatementCandidate" xml:space="preserve">
+    <value>&lt;p&gt;The Department of Justice Canada is subject to the federal Privacy Act and is committed to the
+privacy and protection of your personal information. Your personal information is collected under
+the authority of the Public Service Employment Act, the Employment Equity Act, and the Canadian
+Human Rights Act (section 16).&lt;/p&gt;
+&lt;p&gt;How your personal information will be used and is consistent with the consent provided when
+applying through GC Jobs:&lt;/p&gt;
+&lt;p&gt;The personal information you provide in this staffing process, will only be made available on a
+need-to-know basis to authorized employees in order to conduct the staffing process.&lt;/p&gt;
+&lt;p&gt;Employment Equity self-declaration information you provide, through either the Department of
+Justice’s Self-Declaration Campaign or by informing HR in this staffing process, will only be made
+available on a need-to-know basis to authorized employees in order to conduct the staffing
+process. For more information please see the Employment Equity Personal Information bank –
+PSE 918.&lt;/p&gt;
+&lt;p&gt;Your Privacy Rights:&lt;/p&gt;
+&lt;p&gt;The collection, use and disclosure of personal information by the Department of Justice Canada is
+in accordance with the Federal Privacy Act. This Act gives you the right to access your personal
+information held by the Department of Justice Canada and to request changes to incorrect
+personal information. To exercise these rights or if you require clarification about this Privacy
+Notice, please contact our Access to Information and Privacy Office at ATIP-AIP@justice.gc.ca
+and reference the Staffing Personal Information Bank - PSE 902.&lt;/p&gt;
+&lt;p&gt;Please note that you have a right to file a complaint to the Office of the Privacy Commissioner of
+Canada regarding our handling of your personal information. For more information, please visit the
+Privacy Commissioner’s website at www.Priv.gc.ca.&lt;/p&gt;
+&lt;p&gt;If you have any questions or concerns in regards to what is stated above, please contact &lt;a href="{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
