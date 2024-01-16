@@ -117,67 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CandidatesIntroEN" xml:space="preserve">
-    <value>English Version</value>
-  </data>
-  <data name="CandidatesIntroFR" xml:space="preserve">
-    <value>French Version</value>
-  </data>
-  <data name="ContactName" xml:space="preserve">
-    <value>Contact name for interviews</value>
-  </data>
-  <data name="ContactNumber" xml:space="preserve">
-    <value>Contact telephone number</value>
-  </data>
-  <data name="DeadlineCandidate" xml:space="preserve">
-    <value>Deadline a candidate can select their interview spot</value>
-  </data>
-  <data name="DeadlineInterviewer" xml:space="preserve">
-    <value>Deadline an interviewer can submit their availability</value>
-  </data>
-  <data name="EmailServiceSentFrom" xml:space="preserve">
-    <value>Main email related to the process</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Interview End Date</value>
-  </data>
-  <data name="GroupNiv" xml:space="preserve">
-    <value>Group and Level</value>
-  </data>
-  <data name="InterviewDuration" xml:space="preserve">
-    <value>Length of the interview (minutes)</value>
-  </data>
-  <data name="InvalidEmail" xml:space="preserve">
-    <value>Please enter a valid email address.</value>
-  </data>
-  <data name="MaxTime" xml:space="preserve">
-    <value>End of the day time (HH:MM:SS)</value>
-  </data>
-  <data name="MembersIntroEN" xml:space="preserve">
-    <value>English Version</value>
-  </data>
-  <data name="MembersIntroFR" xml:space="preserve">
-    <value>French Version</value>
-  </data>
-  <data name="MinTime" xml:space="preserve">
-    <value>Start time of the day (HH:MM:SS)</value>
-  </data>
-  <data name="MinTimeAfterMaxTime" xml:space="preserve">
-    <value>Min Time cannot be after Max Time</value>
-  </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="NoProcessus" xml:space="preserve">
-    <value>Selection Process</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Start Date of Interviews</value>
-  </data>
-  <data name="StartDateAfterEndDate" xml:space="preserve">
-    <value>Start Date cannot be after End Date</value>
+  <data name="HasAcceptedPrivacyStatement" xml:space="preserve">
+    <value>I Accept (fr)</value>
   </data>
 </root>

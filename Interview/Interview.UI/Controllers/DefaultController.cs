@@ -66,6 +66,7 @@ namespace Interview.UI.Controllers
             roleUser = await GetAndHandleRoleUser(processId);
             await SetIndexViewBag(processes, processId, roleUser);
             SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
+            SetPrivacyStatementViewbagAndRegisterClientResources(roleUser);
 
             RegisterIndexClientResources();
             _state.ProcessId = processId;
@@ -405,6 +406,74 @@ namespace Interview.UI.Controllers
             }
 
             ViewBag.ShowLanguageStatusModal = showLanguageStatusModal;
+
+        }
+
+        #endregion
+
+        #region Privacy Statement Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> PrivacyStatementModal()
+        {
+
+            VmPrivacyStatementModal result = new VmPrivacyStatementModal();
+
+            await SetPrivacyStatementModalViewBag();
+
+            return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> PrivacyStatementModal(VmPrivacyStatementModal vmPrivacyStatementModal)
+        {
+
+            if (ModelState.IsValid)
+            {
+                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+
+                roleUser.HasAcceptedPrivacyStatement = vmPrivacyStatementModal.HasAcceptedPrivacyStatement;
+                await _dal.UpdateEntity(roleUser);
+
+                return new JsonResult(new { result = true, item = vmPrivacyStatementModal })
+                {
+                    StatusCode = 200
+                };
+            }
+            else
+            {
+                await SetPrivacyStatementModalViewBag();
+                return PartialView(vmPrivacyStatementModal);
+            }
+
+        }
+
+        private async Task SetPrivacyStatementModalViewBag()
+        {
+
+            Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
+            RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+
+            ViewBag.MessageKey = roleUser.RoleType == RoleTypes.Candidate ? "PrivacyStatementCandidate" : "PrivacyStatementBoardMember";
+            ViewBag.EmailSentFrom = process.EmailServiceSentFrom;
+
+        }
+
+        private void SetPrivacyStatementViewbagAndRegisterClientResources(RoleUser roleUser)
+        {
+
+            bool showPrivacyStatementModal = false;
+
+            //if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
+            //    || roleUser.RoleType == RoleTypes.Lead))
+            //{
+                showPrivacyStatementModal = true;
+                WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");
+            //}
+
+            ViewBag.ShowPrivacyStatementModal = showPrivacyStatementModal;
 
         }
 

@@ -13,6 +13,7 @@
     Process? process = Model.ProcessId == null ? null : processes.Where(x => x.Id == Model.ProcessId).First();
     bool userHasAccess = ViewBag.UserHasAccess;
     bool showLanguageStatusModal = ViewBag.ShowLanguageStatusModal;
+    bool showPrivacyStatementModal = ViewBag.ShowPrivacyStatementModal;
 
     List<SelectListItem> vmProcessItems = new List<SelectListItem>();
     foreach (var processItem in processes)
@@ -72,4 +73,5 @@
 
 <script type="text/javascript">
     var showLanguageStatusModal = @showLanguageStatusModal.ToString().ToLower();
+    var showPrivacyStatementModal = @showPrivacyStatementModal.ToString().ToLower();
 </script>

@@ -1,0 +1,43 @@
+﻿@model VmPrivacyStatementModal
+@using Interview.UI.Models.Default
+@inject IViewLocalizer localizer
+
+@{
+
+    string message = string.Format(localizer[ViewBag.MessageKey].Value, ViewBag.EmailSentFrom);
+
+}
+
+<header class="modal-header">
+    <h2 class="modal-title">@localizer["ModalTitle"]</h2>
+</header>
+
+<div class="modal-body">
+
+    @Html.Raw(message)
+
+    <form id="privForm" action="@Url.Action("LanguageStatusModal", "Default")" method="post">
+
+        @{
+            await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
+        }
+
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(x => x.HasAcceptedPrivacyStatement)
+                    @Html.LabelFor(x => x.HasAcceptedPrivacyStatement)
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnPrivacyCancel" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Cancel"]</button>
+            <input id="btnPrivacySave" type="submit" value="@localizer["Save"]" class="btn btn-primary" />
+        </div>
+
+    </form>
+
+</div>
