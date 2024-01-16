@@ -466,12 +466,12 @@ namespace Interview.UI.Controllers
 
             bool showPrivacyStatementModal = false;
 
-            //if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
-            //    || roleUser.RoleType == RoleTypes.Lead))
-            //{
+            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
+                || roleUser.RoleType == RoleTypes.Lead))
+            {
                 showPrivacyStatementModal = true;
                 WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");
-            //}
+            }
 
             ViewBag.ShowPrivacyStatementModal = showPrivacyStatementModal;
 
