@@ -46,7 +46,7 @@ namespace Interview.UI
 
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionString")));
+                options.UseSqlServer(Configuration["sql-connection-string"]));
 
             services.AddAutoMapper(typeof(MapperConfig));
 
