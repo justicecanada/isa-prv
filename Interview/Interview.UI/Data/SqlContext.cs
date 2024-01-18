@@ -9,17 +9,10 @@ namespace Interview.UI.Data
 
         private readonly string _connectionString;
 
-        public SqlContext(DbContextOptions<SqlContext> options, IWebHostEnvironment hostEnvironment) : base(options)
+        public SqlContext(DbContextOptions<SqlContext> options, IConfiguration config) : base(options)
         {
 
-            string environmentName = hostEnvironment.EnvironmentName;
-            IConfiguration config = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{environmentName}.json")
-                .Build();
-
-            _connectionString = config.GetConnectionString("SQLConnectionString");
+            _connectionString = config["sql-connection-string"];
 
             //Database.EnsureDeletedAsync().Wait();
             //Database.EnsureCreatedAsync().Wait();
