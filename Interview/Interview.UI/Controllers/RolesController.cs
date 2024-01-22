@@ -209,6 +209,26 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region LegendPartial Methods
+
+        [HttpGet]
+        public async Task<IActionResult> EmailAlreadySent()
+        {
+
+            return null;
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EmailAllExternalCandidates()
+        {
+
+            return null;
+
+        }
+
+        #endregion
+
         #region TablePartial Methods
 
         [HttpGet]
@@ -271,6 +291,14 @@ namespace Interview.UI.Controllers
             await _dal.DeleteEntity<RoleUser>(roleUserId);
 
             return RedirectToAction("Index");
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EmailExternalUser(Guid roleUserId)
+        {
+
+            return null;
 
         }
 

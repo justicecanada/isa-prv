@@ -21,7 +21,7 @@
             <span class="glyphicon glyphicon-send text-danger"></span> @localizer["EmailNotSent"]
         </div>
         <div class="col-md-6">
-            Placeholder for Sending External Emails To Candidates who haven't had them sent
+            @Html.ActionLink(localizer["AlreadySentButton"].Value, "EmailAlreadySent", "Roles", null, new { @class = "btn btn-default" })
         </div>
     </div>
     <div class="row">
@@ -29,7 +29,7 @@
             <span class="glyphicon glyphicon-send text-success"></span> @localizer["EmailAlreadySent"]
         </div>
         <div class="col-md-6">
-            Placeholder for Sending External Emails
+            @Html.ActionLink(localizer["EmailedAllExternalCandidatesButton"].Value, "EmailAllExternalCandidates", "Roles", null, new { @class = "btn btn-default" })
         </div>
     </div>
 

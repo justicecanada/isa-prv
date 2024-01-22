@@ -132,6 +132,9 @@
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="External" xml:space="preserve">
+    <value>(External)</value>
+  </data>
   <data name="French" xml:space="preserve">
     <value>French</value>
   </data>
