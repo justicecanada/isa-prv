@@ -54,8 +54,9 @@
         </a>
         @if ((bool)roleUser.IsExternal)
         {
+            string imageClass = roleUser.DateExternalEmailSent.HasValue ? "text-success" : "text-danger";
             <a href="@Url.Action("EmailExternalUser", "Roles", new { roleUserId = roleUser.Id } )">
-                <span class="glyphicon glyphicon-send text-success"></span>
+                <span class="glyphicon glyphicon-send @imageClass"></span>
             </a>
         }
     </td>
