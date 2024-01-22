@@ -33,7 +33,13 @@
     <td>
         <a href="#">@userName</a>
     </td>
-    <td>@roleName</td>
+    <td>
+        @roleName
+        @if ((bool)roleUser.IsExternal)
+        {
+            <span class="text-muted small">@localizer["External"]</span>
+        }
+    </td>
     <td>@language</td>
     @if (showEquities)
     {
