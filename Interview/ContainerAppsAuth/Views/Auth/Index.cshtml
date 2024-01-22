@@ -1,0 +1,56 @@
+﻿@inject IWebHostEnvironment hostEnvironment
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    bool isDev = hostEnvironment.EnvironmentName.ToLower() == "development";
+
+}
+
+<div>
+
+    @{
+        await Html.RenderPartialAsync("MenuLinks");
+    }
+
+    @if (!isDev)
+    {
+        @if (ViewBag.IsAuthenticated)
+        {
+            <div class="card mb-3 mt-3">
+                <div class="card-header">
+                    Azure logout
+                </div>
+                <div class="card-body">
+                    <a href="/.auth/logout?post_login_redirect_uri=/Auth/Index">Log out with the Microsoft Identity Platform</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card mb-3 mt-3">
+                <div class="card-header">
+                    Azure login
+                </div>
+                <div class="card-body">
+                    <a href="/.auth/login/aad?post_login_redirect_uri=/Auth/Index">Log in with the Microsoft Identity Platform</a>
+                </div>
+            </div>
+        }
+    }
+
+    <h1>Index</h1>
+
+    <h2>
+        User.Identity.IsAuthenticated = @ViewBag.IsAuthenticated
+    </h2>
+
+    <pre>
+        User.Identity = @Html.Raw(ViewBag.UserIdentity)
+    </pre>
+
+    <pre>
+        X-MS-CLIENT-PRINCIPAL header values = @Html.Raw(ViewBag.SerializedHeaders)
+    </pre>
+
+</div>
