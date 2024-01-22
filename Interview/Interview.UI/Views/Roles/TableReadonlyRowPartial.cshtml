@@ -46,8 +46,11 @@
         <a href="@Url.Action("DeleteRoleUser", "Roles", new { roleUserId = roleUser.Id } )">
             <span class="glyphicon glyphicon-trash text-danger"></span>
         </a>
-
-        @*<span class="glyphicon glyphicon-send text-success"></span>*@
-
+        @if ((bool)roleUser.IsExternal)
+        {
+            <a href="@Url.Action("EmailExternalUser", "Roles", new { roleUserId = roleUser.Id } )">
+                <span class="glyphicon glyphicon-send text-success"></span>
+            </a>
+        }
     </td>
 </tr>

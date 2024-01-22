@@ -274,6 +274,14 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EmailExternalUser(Guid roleUserId)
+        {
+
+            return null;
+
+        }
+
         #endregion
 
     }

@@ -140,20 +140,20 @@ namespace Interview.UI.Controllers
                         hasAccess = groupOwners.Count > 0;
                     }
 
-                    if (hasAccess)
-                    {
-                        result = new RoleUser()
-                        {
-                            ProcessId = (Guid)processId,
-                            RoleType = RoleTypes.Admin,
-                            UserId = (Guid)LoggedInMockUser.Id,
-                            LanguageType = LanguageTypes.Bilingual,
-                            HasAcceptedPrivacyStatement = true,
-                        };
-                        await _dal.AddEntity<RoleUser>(result);
-                    }
+                    // TODO: Come back to this...
 
-                    
+                    //if (hasAccess)
+                    //{
+                    //    result = new RoleUser()
+                    //    {
+                    //        ProcessId = (Guid)processId,
+                    //        RoleType = RoleTypes.Admin,
+                    //        UserId = (Guid)LoggedInMockUser.Id,
+                    //        LanguageType = LanguageTypes.Bilingual,
+                    //        HasAcceptedPrivacyStatement = true,
+                    //    };
+                    //    await _dal.AddEntity<RoleUser>(result);
+                    //}
 
                 }
             }
