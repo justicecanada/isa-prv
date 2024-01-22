@@ -209,6 +209,26 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region LegendPartial Methods
+
+        [HttpGet]
+        public async Task<IActionResult> EmailAlreadySent()
+        {
+
+            return null;
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EmailAllExternalCandidates()
+        {
+
+            return null;
+
+        }
+
+        #endregion
+
         #region TablePartial Methods
 
         [HttpGet]
