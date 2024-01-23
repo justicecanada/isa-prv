@@ -85,20 +85,16 @@ namespace Interview.UI
         private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
         {
 
-            //IServiceProvider serviceProvider = services.BuildServiceProvider();
-            //IWebHostEnvironment env = serviceProvider.GetService<IWebHostEnvironment>();  
+            if (Configuration["ASPNETCORE_ENVIRONMEN"] != null && Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
+            {
 
-            ////if (Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
-            //if (env.IsDevelopment())
-            //{
-
-            //}
-            //else
-            //{
+            }
+            else
+            {
                 builder.Services.AddAuthentication(EasyAuthAuthenticationBuilderExtensions.EASYAUTHSCHEMENAME)
                     .AddAzureContainerAppsEasyAuth();
                 builder.Services.AddAuthorization();
-            //}
+            }
 
         }
 
