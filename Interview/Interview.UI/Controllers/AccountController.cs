@@ -25,6 +25,11 @@ namespace Interview.UI.Controllers
             : base(modelAccessor, justiceOptions, dal)
         {
 
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
         }
 
         #endregion

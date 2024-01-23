@@ -195,6 +195,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\EasyAuthHeaders.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\js\Default\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -24,6 +24,7 @@ using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
 using Interview.UI.Auth.ContainerApp;
+using Interview.UI.Auth.Localhost;
 
 namespace Interview.UI
 {
@@ -85,9 +86,11 @@ namespace Interview.UI
         private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
         {
 
-            if (Configuration["ASPNETCORE_ENVIRONMEN"] != null && Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
+            if (Configuration["ASPNETCORE_ENVIRONMENT"] != null && Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
             {
-
+                builder.Services.AddAuthentication(LocalhostAuthenticationBuilderExtensions.LOCALHOSTAUTHSCHEMENAME)
+                    .AddLocalhostAuth();
+                builder.Services.AddAuthorization();
             }
             else
             {
