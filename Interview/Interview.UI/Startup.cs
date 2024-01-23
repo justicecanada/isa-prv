@@ -22,6 +22,7 @@ using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
+using Interview.UI.Auth.ContainerApp;
 
 namespace Interview.UI
 {
@@ -40,6 +41,7 @@ namespace Interview.UI
         {
 
             IMvcBuilder builder = services.AddMvc();
+            ConfigureAuthServices(services, builder);
             ConfigureLocalizationServices(services, builder);
 
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -76,6 +78,22 @@ namespace Interview.UI
             // WET
             services.AddModelAccessor();
             services.ConfigureGoCTemplateRequestLocalization(); // >= v2.3.0
+
+        }
+
+        private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
+        {
+
+            if (Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
+            {
+
+            }
+            else
+            {
+                builder.Services.AddAuthentication(EasyAuthAuthenticationBuilderExtensions.EASYAUTHSCHEMENAME)
+                    .AddAzureContainerAppsEasyAuth();
+                builder.Services.AddAuthorization();
+            }
 
         }
 
@@ -120,7 +138,8 @@ namespace Interview.UI
 
             app.UseRequestLocalization(); // >= v2.3.0
             app.UseRouting();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSession();
 
             app.UseEndpoints(endpoints =>

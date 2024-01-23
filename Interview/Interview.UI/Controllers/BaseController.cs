@@ -1,4 +1,5 @@
 ﻿using GoC.WebTemplate.Components.Core.Services;
+using GoC.WebTemplate.Components.Entities;
 using GoC.WebTemplate.CoreMVC.Controllers;
 using Interview.Entities;
 using Interview.UI.Models.AppSettings;
@@ -32,8 +33,12 @@ namespace Interview.UI.Controllers
 
             _justiceOptions = justiceOptions;
             _dal = dal;
-            
+
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
+
+            // Top menu
+            WebTemplateModel.MenuLinks = new List<MenuLink>();
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Account", Href = "Account" });
 
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={BuildId}\" />");
