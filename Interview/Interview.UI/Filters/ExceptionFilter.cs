@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 
 namespace Interview.UI.Filters
 {
@@ -21,7 +22,10 @@ namespace Interview.UI.Filters
             bool isAjaxRequest = GetIsAjaxRequest(context.HttpContext.Request);
             string exceptionId = Guid.NewGuid().ToString().Substring(0, 8);
 
-            _logger.LogError($"- From PocExceptionFiltger {exception.Message}", exception);
+            var msgObj = new { message = exception.Message, exceptionId = exceptionId, stacktrace = exception.StackTrace };
+            var msg = JsonConvert.SerializeObject(msgObj);
+
+            _logger.LogError(exception, msg);
 
             if (isAjaxRequest)
             {
