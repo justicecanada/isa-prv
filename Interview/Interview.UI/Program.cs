@@ -6,10 +6,12 @@ namespace Interview.UI
         public static async Task Main(string[] args)
         {
 
+            IHost host = null;
+
             try
             {
 
-                IHost host = CreateHostBuilder(args).Build();
+                host = CreateHostBuilder(args).Build();
 
                 await SeedMockedData(host);
                 await SeedMockUsers(host);
@@ -18,7 +20,8 @@ namespace Interview.UI
             }
             catch (Exception ex)
             {
-                throw ex;
+                ILogger logger = host.Services.GetService<ILogger<Program>>();
+                logger.LogCritical(ex, "In Program.cs");
             }
 
         }
