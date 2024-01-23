@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Data.SqlTypes;
 using System.Globalization;
@@ -40,7 +41,7 @@ namespace Interview.UI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            IMvcBuilder builder = services.AddMvc();
+            var builder = services.AddMvc();
             ConfigureAuthServices(services, builder);
             ConfigureLocalizationServices(services, builder);
 
@@ -84,16 +85,20 @@ namespace Interview.UI
         private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
         {
 
-            if (Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
-            {
+            //IServiceProvider serviceProvider = services.BuildServiceProvider();
+            //IWebHostEnvironment env = serviceProvider.GetService<IWebHostEnvironment>();  
 
-            }
-            else
-            {
+            ////if (Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
+            //if (env.IsDevelopment())
+            //{
+
+            //}
+            //else
+            //{
                 builder.Services.AddAuthentication(EasyAuthAuthenticationBuilderExtensions.EASYAUTHSCHEMENAME)
                     .AddAzureContainerAppsEasyAuth();
                 builder.Services.AddAuthorization();
-            }
+            //}
 
         }
 
