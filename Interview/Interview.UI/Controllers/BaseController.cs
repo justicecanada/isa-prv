@@ -47,12 +47,10 @@ namespace Interview.UI.Controllers
 
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={BuildId}\" />");
-            //WebTemplateModel.HTMLHeaderElements.Add("<link href=\"/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css\" rel=\"stylesheet\" />");
             WebTemplateModel.HTMLHeaderElements.Add("<script src=\"/lib/jquery/dist/jquery.min.js\"></script>");
 
             // js
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/site.js?v={BuildId} defer \"></script>");
-            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js\"></script>");
 
             // Identifier
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
