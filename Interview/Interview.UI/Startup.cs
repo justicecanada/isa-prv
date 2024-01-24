@@ -74,6 +74,7 @@ namespace Interview.UI
             services.AddScoped<IState, SessionState>();
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.AddScoped<IToken, TokenManager>();
+            services.AddScoped<IGraph, GraphManager>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();
