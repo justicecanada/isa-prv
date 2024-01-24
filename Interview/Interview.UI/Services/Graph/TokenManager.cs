@@ -75,7 +75,7 @@ namespace Interview.UI.Services.Graph
                 Content = content
             };
 
-            LogCredentials();
+            //LogCredentials();
 
             HttpResponseMessage response = _client.SendAsync(request).Result;
 
