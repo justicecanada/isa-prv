@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
@@ -11,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Interview.UI.Controllers
 {
-    
+
     public class AccountController : BaseController
     {
 
@@ -41,6 +42,7 @@ namespace Interview.UI.Controllers
 
         #region Public Index Methods
 
+        [HttpGet]
         public IActionResult Index()
         {
 
@@ -54,6 +56,21 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region Public Details Methods
+
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+
+            TokenResponse tokenResponse = await _tokenManager.GetTokenWithBody();
+            ViewBag.TokenResponse = JsonConvert.SerializeObject(tokenResponse, Formatting.Indented);
+
+            return View();
+
+        }
+
+        #endregion
+
     }
-    
+
 }

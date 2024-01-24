@@ -12,12 +12,11 @@ namespace Interview.UI.Services.Graph
 
         private readonly HttpClient _client;
         private readonly string _host = "https://login.microsoftonline.com";
-        private readonly string _uri = "/44c0b27b-bb8b-4284-829c-8ad96d3b40e5/oauth2/v2.0/token";
-        private readonly string _clientId = "44a90db8-4fca-4c3f-be35-3f228f145ab0";
+        private readonly string _uri;
+        private readonly string _clientId;
         private readonly string _grantType = "client_credentials";
         private readonly string _scope = "https://graph.microsoft.com/.default";
         private readonly string _clientSecret;
-        private readonly IOptions<TokenOptions> _tokenOptions;
 
         #endregion
 
@@ -29,9 +28,10 @@ namespace Interview.UI.Services.Graph
             _client = client;
             _client.BaseAddress = new Uri(_host);
 
+            _uri = tokenOptions.Value.Uri;
+            _clientId = tokenOptions.Value.ClientId;
             // User Secrets: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&source=recommendations&tabs=windows
-            _clientSecret = config["microsoft-provider-authentication-secret"];
-            _tokenOptions = tokenOptions;
+            _clientSecret = config["app-registration-client-secret"];
 
         }
 
