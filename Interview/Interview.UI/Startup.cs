@@ -25,6 +25,7 @@ using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
 using Interview.UI.Auth.ContainerApp;
 using Interview.UI.Auth.Localhost;
+using Interview.UI.Services.Graph;
 
 namespace Interview.UI
 {
@@ -69,8 +70,11 @@ namespace Interview.UI
             })
                 .AddRazorRuntimeCompilation();
 
+            services.AddHttpClient();
             services.AddScoped<IState, SessionState>();
-            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
+            services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
+            services.AddScoped<IToken, TokenManager>();
+            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();
 

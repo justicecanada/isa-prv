@@ -2,6 +2,7 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -16,14 +17,18 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
+        private readonly IToken _tokenManager;
 
         #endregion
 
         #region Constructors
 
-        public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions)
+        public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
+            IToken tokenManager)
             : base(modelAccessor, justiceOptions, dal)
         {
+
+            _tokenManager = tokenManager;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
