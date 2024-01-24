@@ -26,12 +26,11 @@
         });
     }
 
-    ViewBag.Process = process;
+    ViewBag.Process = process; 
 
 }
 
 @{
-    await Html.RenderPartialAsync("TopMenuPartial");
     await Html.RenderPartialAsync("ManageButtonsPartial");
 }
 

@@ -6,6 +6,7 @@ using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
@@ -38,7 +39,11 @@ namespace Interview.UI.Controllers
 
             // Top menu
             WebTemplateModel.MenuLinks = new List<MenuLink>();
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Account", Href = "Account" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Home", Href = "/Default/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "ProcessList", Href = "/Processes/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "GroupList", Href = "/Groups/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Dashboard", Href = "/Dashboard/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Account", Href = "/Account/Index" });
 
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={BuildId}\" />");
