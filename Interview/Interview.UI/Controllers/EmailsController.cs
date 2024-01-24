@@ -8,6 +8,7 @@ using Interview.UI.Services.DAL;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Localization;
 
 namespace Interview.UI.Controllers
 {
@@ -23,8 +24,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state) 
-            : base(modelAccessor, justiceOptions, dal)
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state, 
+            IStringLocalizer<BaseController> baseLocalizer) 
+            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
