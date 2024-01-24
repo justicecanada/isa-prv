@@ -1,11 +1,7 @@
-﻿$(document).ready(function () {
-    searchInternalUser.Init();
-});
+﻿var searchInternalUser = {
 
-var searchInternalUser = {
-
-    SearchUri: "/GraphUsersHttp/SearchInteralUsers",
-    GetDetailsUri: "/GraphUsersHttp/GetUserDetails",
+    SearchUri: "/Account/SearchInteralUsers",
+    GetDetailsUri: "/Account/GetUserDetails",
     InputSelector: "#InternalName",
     UserDetailsContainer: $("#userDetailsContainer")[0],
     UserDetails: $("#userDetails")[0],
@@ -57,3 +53,10 @@ var searchInternalUser = {
     }, 
 
 }
+
+if (wb.isReady)
+    searchInternalUser.Init();
+else
+    $(document).on("wb-ready.wb", function (event) {
+        searchInternalUser.Init();
+    });

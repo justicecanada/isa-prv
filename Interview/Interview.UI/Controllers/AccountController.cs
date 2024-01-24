@@ -88,12 +88,52 @@ namespace Interview.UI.Controllers
 
         #region Public Search Users Methods
 
+        [HttpGet]
         public async Task<IActionResult> SearchUsers()
         {
 
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Sccount/SearchUsers.js?v={BuildId} \"></script>");
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
 
             return View();
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> SearchInteralUsers(string query)
+        {
+
+            SearchUsersResponse result = null;
+            TokenResponse tokenResponse = await _tokenManager.GetTokenWithBody();
+
+            result = await _graphManager.SearchInternalUsers(query, tokenResponse.access_token);
+
+            return new JsonResult(new { result = true, results = result.value })
+            {
+                StatusCode = 200
+            };
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetUserDetails(string userPrincipalName)
+        {
+
+            string result = null;
+            EntraUser entraUser = null;
+            TokenResponse tokenResponse = await _tokenManager.GetTokenWithBody();
+
+            entraUser = await _graphManager.GetUserInfo(userPrincipalName, tokenResponse.access_token);
+            result = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
+
+            return new JsonResult(new { result = true, results = result })
+            {
+                StatusCode = 200
+            };
 
         }
 
