@@ -1,6 +1,7 @@
 ﻿using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Interview.UI.Services.Graph
 {
@@ -17,12 +18,13 @@ namespace Interview.UI.Services.Graph
         private readonly string _grantType = "client_credentials";
         private readonly string _scope = "https://graph.microsoft.com/.default";
         private readonly string _clientSecret;
+        private readonly ILogger<TokenManager> _logger;
 
         #endregion
 
         #region Constructors
 
-        public TokenManager(HttpClient client, IConfiguration config, IOptions<TokenOptions> tokenOptions)
+        public TokenManager(HttpClient client, IConfiguration config, IOptions<TokenOptions> tokenOptions, ILogger<TokenManager> logger)
         {
 
             _client = client;
@@ -32,6 +34,8 @@ namespace Interview.UI.Services.Graph
             _clientId = tokenOptions.Value.ClientId;
             // User Secrets: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&source=recommendations&tabs=windows
             _clientSecret = config["app-registration-client-secret"];
+
+            _logger = logger;
 
         }
 
@@ -70,11 +74,34 @@ namespace Interview.UI.Services.Graph
             {
                 Content = content
             };
+
+            LogCredentials();
+
             HttpResponseMessage response = _client.SendAsync(request).Result;
 
             result = await response.Content.ReadFromJsonAsync<TokenResponse>();
 
             return result;
+
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void LogCredentials()
+        {
+
+            var creds = new
+            {
+                client_id = _clientId,
+                client_secret = _clientSecret,
+                grant_type = _grantType,
+                scope = _scope
+            };
+            var credsJson = JsonConvert.SerializeObject(creds);
+
+            _logger.LogInformation($"GetTokenWithBody creds = {credsJson}");
 
         }
 
