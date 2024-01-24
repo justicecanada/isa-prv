@@ -28,21 +28,6 @@ namespace ContainerAppsAuth.Services
 
         }
 
-        //public GraphManager()
-        //{
-
-        //    // https://stackoverflow.com/questions/40014047/add-client-certificate-to-net-core-httpclient
-
-        //    HttpClientHandler handler = new HttpClientHandler();
-        //    handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-        //    handler.SslProtocols = SslProtocols.Tls12;
-        //    handler.ClientCertificates.Add(new X509Certificate2("certificate.crt"));
-
-        //    _client = new HttpClient(handler);
-        //    _client.BaseAddress = new Uri(_host);
-
-        //}
-
         #endregion
 
         #region Public Methods

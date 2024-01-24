@@ -1,6 +1,8 @@
 ﻿using ContainerAppsAuth.Models;
 using Newtonsoft.Json;
 using System.Net;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ContainerAppsAuth.Services
 {
@@ -24,7 +26,7 @@ namespace ContainerAppsAuth.Services
 
         public TokenManager(HttpClient client, IConfiguration config)
         {
-            
+
             _client = client;
             _client.BaseAddress = new Uri(_host);
 
@@ -32,6 +34,21 @@ namespace ContainerAppsAuth.Services
             _clientSecret = config["microsoft-provider-authentication-secret"];
 
         }
+
+        //public TokenManager()
+        //{
+
+        //    // https://stackoverflow.com/questions/40014047/add-client-certificate-to-net-core-httpclient
+
+        //    HttpClientHandler handler = new HttpClientHandler();
+        //    handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+        //    handler.SslProtocols = SslProtocols.Tls12;
+        //    handler.ClientCertificates.Add(new X509Certificate2("certificate.crt"));
+
+        //    _client = new HttpClient(handler);
+        //    _client.BaseAddress = new Uri(_host);
+
+        //}
 
         #endregion
 
