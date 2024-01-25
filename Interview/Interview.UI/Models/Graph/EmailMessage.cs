@@ -8,7 +8,6 @@
         public EmailBody body { get; set; }
         public List<EmailRecipent> toRecipients { get; set; }
         public List<EmailRecipent> ccRecipients { get; set; }
-        public bool saveToSentItems { get; set; }
 
     }
 

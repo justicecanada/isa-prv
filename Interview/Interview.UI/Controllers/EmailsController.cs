@@ -131,9 +131,9 @@ namespace Interview.UI.Controllers
                             content = vmSendEmail.Body
                         },
                         toRecipients = GetEmailRecipients(vmSendEmail.ToRecipients),
-                        ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),
-                        saveToSentItems = vmSendEmail.SaveToSentItems
-                    }
+                        ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),                       
+                    },
+                    saveToSentItems = vmSendEmail.SaveToSentItems.ToString().ToLower()
                 };
                 TokenResponse tokenResponse = await _tokenManager.GetToken();
                 HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token);                
