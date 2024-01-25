@@ -59,7 +59,6 @@ namespace Interview.UI.Services.Graph
             {
                 Headers =
                 {
-                    //{ "Content-Type", "application/json" },
                     { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
                 }
             };

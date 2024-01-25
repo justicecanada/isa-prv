@@ -124,7 +124,7 @@ namespace Interview.UI.Services.Graph
             TokenResponse result = null;
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
               { "client_id", _tokenOptions.Value.ClientId },
-              { "client_secret", _config["app-registration-client-secret"] },
+              { "client_secret", _config["microsoft-provider-authentication-secret"] },
               { "grant_type", _grantType },
               { "scope", _scope },
             });

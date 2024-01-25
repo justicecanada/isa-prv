@@ -75,6 +75,7 @@ namespace Interview.UI
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.AddScoped<IToken, TokenManager>();
             services.AddScoped<IUsers, UserManager>();
+            services.AddScoped<IEmails, EmailManager>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();

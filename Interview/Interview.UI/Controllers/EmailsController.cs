@@ -12,6 +12,7 @@ using Microsoft.Extensions.Localization;
 using Interview.UI.Models.Graph;
 using Newtonsoft.Json;
 using System.Net.Mail;
+using Interview.UI.Services.Graph;
 
 namespace Interview.UI.Controllers
 {
@@ -22,18 +23,21 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
-        private object emailAddress;
+        private readonly IToken _tokenManager;
+        private readonly IEmails _emailsManager;
 
         #endregion
 
         #region Constructors
 
         public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state, 
-            IStringLocalizer<BaseController> baseLocalizer) 
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
+            _tokenManager = tokenManager;
+            _emailsManager = emailsManager;
         }
 
         #endregion
@@ -110,7 +114,7 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SendEmail(VmSendEmail vmSendEmail)
+        public async Task<IActionResult> SendEmail(VmSendEmail vmSendEmail)
         {
 
             if (ModelState.IsValid)
@@ -128,8 +132,11 @@ namespace Interview.UI.Controllers
                     ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),
                     saveToSentItems = vmSendEmail.SaveToSentItems
                 };
+                TokenResponse tokenResponse = await _tokenManager.GetToken();
+                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(message, tokenResponse.access_token);                
 
                 TempData["EmailMessage"] = JsonConvert.SerializeObject(message, Formatting.Indented);
+                TempData["ResponseMessage"] = JsonConvert.SerializeObject(responseMessage, Formatting.Indented);
 
                 return RedirectToAction("EmailSent");
 
@@ -153,7 +160,7 @@ namespace Interview.UI.Controllers
         {
 
             List<EmailRecipent> result = new List<EmailRecipent>();
-            string[] addresses = recipients.Split(',');
+            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
 
             foreach (string address in addresses)
             {
