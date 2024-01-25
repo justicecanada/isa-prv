@@ -9,6 +9,9 @@ using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Localization;
+using Interview.UI.Models.Graph;
+using Newtonsoft.Json;
+using System.Net.Mail;
 
 namespace Interview.UI.Controllers
 {
@@ -19,6 +22,7 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private object emailAddress;
 
         #endregion
 
@@ -87,6 +91,78 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/JusRichTextBoxFor.js?v={BuildId}\"></script>");
+
+        }
+
+        #endregion
+
+        #region Public Send Email Methods
+
+        [HttpGet]
+        public IActionResult SendEmail()
+        {
+
+            VmSendEmail result = new VmSendEmail();
+
+            return View(result); 
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SendEmail(VmSendEmail vmSendEmail)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                EmailMessage message = new EmailMessage()
+                {
+                    subject = vmSendEmail.Subject,
+                    body = new EmailBody()
+                    {
+                        contentType = "Text",
+                        content = vmSendEmail.Body
+                    },
+                    toRecipients = GetEmailRecipients(vmSendEmail.ToRecipients),
+                    ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),
+                    saveToSentItems = vmSendEmail.SaveToSentItems
+                };
+
+                TempData["EmailMessage"] = JsonConvert.SerializeObject(message, Formatting.Indented);
+
+                return RedirectToAction("EmailSent");
+
+            }
+            else
+            {
+                return View(vmSendEmail);
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult EmailSent()
+        {
+
+            return View();
+
+        }
+
+        private List<EmailRecipent> GetEmailRecipients(string recipients)
+        {
+
+            List<EmailRecipent> result = new List<EmailRecipent>();
+            string[] addresses = recipients.Split(',');
+
+            foreach (string address in addresses)
+            {
+                EmailRecipent recipent = new EmailRecipent();
+                recipent.emailAddress.address = address;
+                result.Add(recipent);
+            }
+
+            return result;
 
         }
 
