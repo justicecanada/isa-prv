@@ -6,7 +6,7 @@ namespace Interview.UI.Services.Graph
     public interface IToken
     {
 
-        Task<TokenResponse> GetTokenWithBody();
+        Task<TokenResponse> GetToken();
 
     }
 

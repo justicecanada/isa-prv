@@ -58,7 +58,7 @@ namespace Interview.UI.Services.Graph
 
         #region Public Methods
 
-        public async Task<TokenResponse> GetTokenWithBody()
+        public async Task<TokenResponse> GetToken()
         {
 
             // https://learn.microsoft.com/en-us/graph/auth-v2-service?tabs=http#token-request

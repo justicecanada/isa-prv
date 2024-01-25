@@ -72,7 +72,7 @@ namespace Interview.UI.Controllers
             //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
 
             // Get Token
-            TokenResponse tokenResponse = await _tokenManager.GetTokenWithBody();
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
             ViewBag.TokenResponse = JsonConvert.SerializeObject(tokenResponse, Formatting.Indented);
 
             // Get User
@@ -108,7 +108,7 @@ namespace Interview.UI.Controllers
         {
 
             SearchUsersResponse result = null;
-            TokenResponse tokenResponse = await _tokenManager.GetTokenWithBody();
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             result = await _graphManager.SearchInternalUsers(query, tokenResponse.access_token);
 
@@ -125,7 +125,7 @@ namespace Interview.UI.Controllers
 
             string result = null;
             EntraUser entraUser = null;
-            TokenResponse tokenResponse = await _tokenManager.GetTokenWithBody();
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             entraUser = await _graphManager.GetUserInfo(userPrincipalName, tokenResponse.access_token);
             result = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
