@@ -61,6 +61,25 @@ namespace Interview.UI.Services.Graph
         public async Task<TokenResponse> GetToken()
         {
 
+            TokenResponse result = await RefreshToken();
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region Private Caching Token Methods
+
+
+
+        #endregion
+
+        #region Private Get Token Methods
+
+        private async Task<TokenResponse> RefreshToken()
+        {
+
             // https://learn.microsoft.com/en-us/graph/auth-v2-service?tabs=http#token-request
 
             TokenResponse result = null;
@@ -84,10 +103,6 @@ namespace Interview.UI.Services.Graph
             return result;
 
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void LogCredentials()
         {
