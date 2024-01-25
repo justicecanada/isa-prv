@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   interview.ui:
-    image: interviewdevcontainerregistry.azurecr.io/interviewui
+    image: interviewdevcontainerregistry.azurecr.io/auth
     build:
       context: .
       dockerfile: Interview.UI/Dockerfile

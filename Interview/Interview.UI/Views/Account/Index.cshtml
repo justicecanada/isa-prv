@@ -1,0 +1,25 @@
+﻿<h1>Index</h1>
+
+@Html.ActionLink("My Account Details", "Details")
+@Html.ActionLink("Search Users", "SearchUsers")
+
+<div class="card mb-3 mt-3">
+    <div class="card-header">
+        Azure login
+    </div>
+    <div class="card-body">
+        <a href="/.auth/login/aad?post_login_redirect_uri=/Account/Index">Log in with the Microsoft Identity Platform</a>
+    </div>
+</div>
+
+<h2>
+    User.Identity.IsAuthenticated = @ViewBag.IsAuthenticated
+</h2>
+
+<pre>
+    User.Identity = @Html.Raw(ViewBag.UserIdentity)
+</pre>
+
+<pre>
+    X-MS-CLIENT-PRINCIPAL header values = @Html.Raw(ViewBag.SerializedHeaders)
+</pre>

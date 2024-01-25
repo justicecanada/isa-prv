@@ -1,10 +1,13 @@
 ﻿using GoC.WebTemplate.Components.Core.Services;
+using GoC.WebTemplate.Components.Entities;
 using GoC.WebTemplate.CoreMVC.Controllers;
 using Interview.Entities;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
@@ -20,6 +23,7 @@ namespace Interview.UI.Controllers
         private string _assemblyVersion;
         private string _buildId;
         private readonly IOptions<JusticeOptions> _justiceOptions;
+        private readonly IStringLocalizer<BaseController> _localizer;
         protected readonly DalSql _dal;
         private MockUser _loggedInMockUser;
 
@@ -27,22 +31,29 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, DalSql dal) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
         {
 
             _justiceOptions = justiceOptions;
             _dal = dal;
-            
+            _localizer = localizer;
+
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
+
+            // Top menu
+            WebTemplateModel.MenuLinks = new List<MenuLink>();
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Account"].Value, Href = "/Account/Index" });
 
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={BuildId}\" />");
-            //WebTemplateModel.HTMLHeaderElements.Add("<link href=\"/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css\" rel=\"stylesheet\" />");
             WebTemplateModel.HTMLHeaderElements.Add("<script src=\"/lib/jquery/dist/jquery.min.js\"></script>");
 
             // js
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/site.js?v={BuildId} defer \"></script>");
-            //WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js\"></script>");
 
             // Identifier
             WebTemplateModel.VersionIdentifier = AssemblyVersion;

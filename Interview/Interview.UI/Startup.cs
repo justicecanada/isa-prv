@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Data.SqlTypes;
 using System.Globalization;
@@ -22,6 +23,9 @@ using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
+using Interview.UI.Auth.ContainerApp;
+using Interview.UI.Auth.Localhost;
+using Interview.UI.Services.Graph;
 
 namespace Interview.UI
 {
@@ -39,10 +43,12 @@ namespace Interview.UI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            IMvcBuilder builder = services.AddMvc();
+            var builder = services.AddMvc();
+            ConfigureAuthServices(services, builder);
             ConfigureLocalizationServices(services, builder);
 
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+            services.AddMemoryCache();
 
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
@@ -65,8 +71,12 @@ namespace Interview.UI
             })
                 .AddRazorRuntimeCompilation();
 
+            services.AddHttpClient();
             services.AddScoped<IState, SessionState>();
-            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));
+            services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
+            services.AddScoped<IToken, TokenManager>();
+            services.AddScoped<IGraph, GraphManager>();
+            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();
 
@@ -76,6 +86,24 @@ namespace Interview.UI
             // WET
             services.AddModelAccessor();
             services.ConfigureGoCTemplateRequestLocalization(); // >= v2.3.0
+
+        }
+
+        private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
+        {
+
+            if (Configuration["ASPNETCORE_ENVIRONMENT"] != null && Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
+            {
+                builder.Services.AddAuthentication(LocalhostAuthenticationBuilderExtensions.LOCALHOSTAUTHSCHEMENAME)
+                    .AddLocalhostAuth();
+                builder.Services.AddAuthorization();
+            }
+            else
+            {
+                builder.Services.AddAuthentication(EasyAuthAuthenticationBuilderExtensions.EASYAUTHSCHEMENAME)
+                    .AddAzureContainerAppsEasyAuth();
+                builder.Services.AddAuthorization();
+            }
 
         }
 
@@ -120,7 +148,8 @@ namespace Interview.UI
 
             app.UseRequestLocalization(); // >= v2.3.0
             app.UseRouting();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSession();
 
             app.UseEndpoints(endpoints =>

@@ -7,6 +7,7 @@ using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 namespace Interview.UI.Controllers
@@ -27,8 +28,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state) 
-            : base(modelAccessor, justiceOptions, dal)
+        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state
+            , IStringLocalizer<BaseController> baseLocalizer) 
+            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
