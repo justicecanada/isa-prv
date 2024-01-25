@@ -48,6 +48,7 @@ namespace Interview.UI
             ConfigureLocalizationServices(services, builder);
 
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+            services.AddMemoryCache();
 
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
