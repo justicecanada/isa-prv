@@ -48,7 +48,6 @@ namespace Interview.UI
             ConfigureLocalizationServices(services, builder);
 
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-            services.AddMemoryCache();
 
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
@@ -75,7 +74,7 @@ namespace Interview.UI
             services.AddScoped<IState, SessionState>();
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.AddScoped<IToken, TokenManager>();
-            services.AddScoped<IGraph, GraphManager>();
+            services.AddScoped<IUsers, UserManager>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();

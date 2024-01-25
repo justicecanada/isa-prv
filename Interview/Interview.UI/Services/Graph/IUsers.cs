@@ -3,7 +3,7 @@
 namespace Interview.UI.Services.Graph
 {
     
-    public interface IGraph
+    public interface IUsers
     {
 
         Task<EntraUser> GetUserInfo(string userPrincipalName, string token);
