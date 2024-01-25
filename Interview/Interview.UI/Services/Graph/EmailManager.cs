@@ -36,6 +36,8 @@ namespace Interview.UI.Services.Graph
         public async Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token)
         {
 
+            // https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0&tabs=http#example-1-send-a-new-email-using-json-format
+
             HttpResponseMessage result = null;
             var serializedEnvelope = JsonConvert.SerializeObject(emailEnvelope);
             var content = new StringContent(serializedEnvelope, Encoding.UTF8, "application/json");
