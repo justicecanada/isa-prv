@@ -1,0 +1,30 @@
+﻿@model VmSendEmail
+@using Interview.UI.Models.Graph
+
+@{
+
+
+}
+
+<h1>Send Emails</h1>
+
+<form>
+
+    @Html.AntiForgeryToken()
+
+    @Html.EditorFor(x => x.Subject, "Question", new { inputControl = Html.TextBoxFor(x => x.Subject, new { @class = "form-control" }) })
+
+    @Html.EditorFor(x => x.Body, "Question", new { inputControl = Html.TextBoxFor(x => x.Body, new { @class = "form-control" }) })
+
+    <div>Comma delimited list (no validation on anything)</div>
+    @Html.EditorFor(x => x.ToRecipients, "Question", new { inputControl = Html.TextBoxFor(x => x.ToRecipients, new { @class = "form-control" }) })
+
+    <div>Comma delimited list (no validation on anything)</div>
+    @Html.EditorFor(x => x.CcRecipients, "Question", new { inputControl = Html.TextBoxFor(x => x.CcRecipients, new { @class = "form-control" }) })
+
+    @Html.EditorFor(x => x.SaveToSentItems, "Question", new { inputControl = Html.CheckBoxFor(x => x.SaveToSentItems, new { @class = "form-control" }) })
+
+    <input type="submit" value="Send" id="btnSend" class="btn btn-primary mr-2" formaction=@Url.Action("SendEmail", "Emails")
+           formmethod="post" />
+
+</form>

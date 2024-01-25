@@ -4,7 +4,7 @@ using System.Net;
 namespace Interview.UI.Services.Graph
 {
     
-    public class GraphManager : IGraph
+    public class UserManager : IUsers
     {
 
         #region Declarations
@@ -16,7 +16,7 @@ namespace Interview.UI.Services.Graph
 
         #region Constructors
 
-        public GraphManager(HttpClient client)
+        public UserManager(HttpClient client)
         {
 
             _client = client;
@@ -59,7 +59,6 @@ namespace Interview.UI.Services.Graph
             {
                 Headers =
                 {
-                    //{ "Content-Type", "application/json" },
                     { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
                 }
             };

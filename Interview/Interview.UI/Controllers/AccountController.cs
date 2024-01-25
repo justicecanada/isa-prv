@@ -19,14 +19,14 @@ namespace Interview.UI.Controllers
         #region Declarations
 
         private readonly IToken _tokenManager;
-        private readonly IGraph _graphManager;
+        private readonly IUsers _graphManager;
 
         #endregion
 
         #region Constructors
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
-            IToken tokenManager, IGraph graphManager, IStringLocalizer<BaseController> baseLocalizer)
+            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer)
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
 

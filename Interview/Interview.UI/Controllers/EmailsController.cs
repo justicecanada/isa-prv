@@ -9,6 +9,10 @@ using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Localization;
+using Interview.UI.Models.Graph;
+using Newtonsoft.Json;
+using System.Net.Mail;
+using Interview.UI.Services.Graph;
 
 namespace Interview.UI.Controllers
 {
@@ -19,17 +23,21 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IToken _tokenManager;
+        private readonly IEmails _emailsManager;
 
         #endregion
 
         #region Constructors
 
         public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state, 
-            IStringLocalizer<BaseController> baseLocalizer) 
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
+            _tokenManager = tokenManager;
+            _emailsManager = emailsManager;
         }
 
         #endregion
@@ -87,6 +95,84 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/JusRichTextBoxFor.js?v={BuildId}\"></script>");
+
+        }
+
+        #endregion
+
+        #region Public Send Email Methods
+
+        [HttpGet]
+        public IActionResult SendEmail()
+        {
+
+            VmSendEmail result = new VmSendEmail();
+
+            return View(result); 
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendEmail(VmSendEmail vmSendEmail)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                EmailEnvelope emailEnvelope = new EmailEnvelope()
+                {
+                    message = new EmailMessage()
+                    {
+                        subject = vmSendEmail.Subject,
+                        body = new EmailBody()
+                        {
+                            contentType = "Text",
+                            content = vmSendEmail.Body
+                        },
+                        toRecipients = GetEmailRecipients(vmSendEmail.ToRecipients),
+                        ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),                       
+                    },
+                    saveToSentItems = vmSendEmail.SaveToSentItems.ToString().ToLower()
+                };
+                TokenResponse tokenResponse = await _tokenManager.GetToken();
+                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token);                
+
+                TempData["EmailEnvelope"] = JsonConvert.SerializeObject(emailEnvelope, Formatting.Indented);
+                TempData["ResponseMessage"] = JsonConvert.SerializeObject(responseMessage, Formatting.Indented);
+
+                return RedirectToAction("EmailSent");
+
+            }
+            else
+            {
+                return View(vmSendEmail);
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult EmailSent()
+        {
+
+            return View();
+
+        }
+
+        private List<EmailRecipent> GetEmailRecipients(string recipients)
+        {
+
+            List<EmailRecipent> result = new List<EmailRecipent>();
+            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
+
+            foreach (string address in addresses)
+            {
+                EmailRecipent recipent = new EmailRecipent();
+                recipent.emailAddress.address = address;
+                result.Add(recipent);
+            }
+
+            return result;
 
         }
 
