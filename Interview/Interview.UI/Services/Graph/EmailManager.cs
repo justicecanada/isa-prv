@@ -31,12 +31,12 @@ namespace Interview.UI.Services.Graph
 
         #region Public Interface Methods
 
-        public async Task<HttpResponseMessage> SendEmailAsync(EmailMessage emailMessage, string token)
+        public async Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token)
         {
 
             HttpResponseMessage result = null;
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
-              { "message", JsonConvert.SerializeObject(emailMessage) }
+              { "message", JsonConvert.SerializeObject(emailEnvelope) }
             });
             var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/me/sendMail"))
             {

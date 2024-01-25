@@ -120,22 +120,25 @@ namespace Interview.UI.Controllers
             if (ModelState.IsValid)
             {
 
-                EmailMessage message = new EmailMessage()
+                EmailEnvelope emailEnvelope = new EmailEnvelope()
                 {
-                    subject = vmSendEmail.Subject,
-                    body = new EmailBody()
+                    message = new EmailMessage()
                     {
-                        contentType = "Text",
-                        content = vmSendEmail.Body
-                    },
-                    toRecipients = GetEmailRecipients(vmSendEmail.ToRecipients),
-                    ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),
-                    saveToSentItems = vmSendEmail.SaveToSentItems
+                        subject = vmSendEmail.Subject,
+                        body = new EmailBody()
+                        {
+                            contentType = "Text",
+                            content = vmSendEmail.Body
+                        },
+                        toRecipients = GetEmailRecipients(vmSendEmail.ToRecipients),
+                        ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),
+                        saveToSentItems = vmSendEmail.SaveToSentItems
+                    }
                 };
                 TokenResponse tokenResponse = await _tokenManager.GetToken();
-                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(message, tokenResponse.access_token);                
+                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token);                
 
-                TempData["EmailMessage"] = JsonConvert.SerializeObject(message, Formatting.Indented);
+                TempData["EmailEnvelope"] = JsonConvert.SerializeObject(emailEnvelope, Formatting.Indented);
                 TempData["ResponseMessage"] = JsonConvert.SerializeObject(responseMessage, Formatting.Indented);
 
                 return RedirectToAction("EmailSent");
