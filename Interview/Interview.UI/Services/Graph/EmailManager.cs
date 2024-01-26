@@ -47,13 +47,11 @@ namespace Interview.UI.Services.Graph
             HttpResponseMessage result = null;
             var serializedEnvelope = JsonConvert.SerializeObject(emailEnvelope);
             var content = new StringContent(serializedEnvelope, Encoding.UTF8, "application/json");
-            //var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/me/sendMail"))
             var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/users/{userName}/sendMail"))
             {
                 Content = content,
                 Headers =
                 {
-                    //{ "Content-type",  "application/json" },              // Throws exception
                     { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
                 }
             };
