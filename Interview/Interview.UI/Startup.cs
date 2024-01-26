@@ -73,7 +73,7 @@ namespace Interview.UI
             services.AddHttpClient();
             services.AddScoped<IState, SessionState>();
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
-            services.AddScoped<IToken, TokenManager>();
+            services.AddScoped<IToken, TokenManagerWithCertificate>();
             services.AddScoped<IUsers, UserManager>();
             services.AddScoped<IEmails, EmailManager>();
             services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           

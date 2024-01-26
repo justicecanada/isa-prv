@@ -1,16 +1,16 @@
 ﻿using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
-using Interview.UI.Models.AppSettings;
-//using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Interview.UI.Services.Graph
 {
-
-    public class TokenManager : IToken
+    
+    public class TokenManagerWithCertificate : IToken
     {
 
         #region Declarations
@@ -18,44 +18,38 @@ namespace Interview.UI.Services.Graph
         private readonly HttpClient _client;
         private readonly IOptions<TokenOptions> _tokenOptions;
         private readonly IConfiguration _config;
-        private readonly ILogger<TokenManager> _logger;
+        private readonly ILogger<TokenManagerWithSecret> _logger;
         private readonly IMemoryCache _cache;
 
         private const string _host = "https://login.microsoftonline.com";
         private const string _grantType = "client_credentials";
         private const string _scope = "https://graph.microsoft.com/.default";
-        private const string _cacheKey = "TOKEN_CACHE_KEY";  
-        
+        private const string _cacheKey = "TOKEN_CACHE_KEY";
+
         #endregion
 
         #region Constructors
 
-        public TokenManager(HttpClient client, IConfiguration config, IOptions<TokenOptions> tokenOptions, ILogger<TokenManager> logger,
+        public TokenManagerWithCertificate(IConfiguration config, IOptions<TokenOptions> tokenOptions, ILogger<TokenManagerWithSecret> logger,
             IMemoryCache cache)
         {
 
-            _client = client;
             _config = config;
             _tokenOptions = tokenOptions;
             _logger = logger;
             _cache = cache;
 
+            // https://stackoverflow.com/questions/40014047/add-client-certificate-to-net-core-httpclient
+
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            handler.SslProtocols = SslProtocols.Tls12;
+            handler.ClientCertificates.Add(new X509Certificate2("certificate.crt"));
+
+            _client = new HttpClient(handler);
+            _client.BaseAddress = new Uri(_host);
+
         }
-
-        //public TokenManager()
-        //{
-
-        //    // https://stackoverflow.com/questions/40014047/add-client-certificate-to-net-core-httpclient
-
-        //    HttpClientHandler handler = new HttpClientHandler();
-        //    handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-        //    handler.SslProtocols = SslProtocols.Tls12;
-        //    handler.ClientCertificates.Add(new X509Certificate2("certificate.crt"));
-
-        //    _client = new HttpClient(handler);
-        //    _client.BaseAddress = new Uri(_host);
-
-        //}
 
         #endregion
 
@@ -124,7 +118,7 @@ namespace Interview.UI.Services.Graph
             TokenResponse result = null;
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
               { "client_id", _tokenOptions.Value.ClientId },
-              { "client_secret", _config["microsoft-provider-authentication-secret"] },
+              //{ "client_secret", _config["microsoft-provider-authentication-secret"] },
               { "grant_type", _grantType },
               { "scope", _scope },
             });
