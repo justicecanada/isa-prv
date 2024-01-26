@@ -1,4 +1,6 @@
-﻿using Interview.UI.Models.Graph;
+﻿using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
@@ -15,17 +17,21 @@ namespace Interview.UI.Services.Graph
         #region Declarations
 
         private readonly HttpClient _client;
-        private readonly string _host = "https://graph.microsoft.com";
+        private readonly IOptions<TokenOptions> _tokenOptions;
+
+        private const string _host = "https://graph.microsoft.com";
 
         #endregion
 
         #region Constructors
 
-        public EmailManager(HttpClient client)
+        public EmailManager(HttpClient client, IOptions<TokenOptions> tokenOptions)
         {
 
             _client = client;
             _client.BaseAddress = new Uri(_host);
+
+            _tokenOptions = tokenOptions;
 
         }
 
@@ -41,7 +47,8 @@ namespace Interview.UI.Services.Graph
             HttpResponseMessage result = null;
             var serializedEnvelope = JsonConvert.SerializeObject(emailEnvelope);
             var content = new StringContent(serializedEnvelope, Encoding.UTF8, "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/me/sendMail"))
+            //var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/me/sendMail"))
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/users/f52384d0-661d-49f1-b915-2dbf0e48ce8a/sendMail"))
             {
                 Content = content,
                 Headers =
