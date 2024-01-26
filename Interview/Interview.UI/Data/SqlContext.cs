@@ -1,5 +1,6 @@
 ﻿using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace Interview.UI.Data
 {
@@ -9,12 +10,13 @@ namespace Interview.UI.Data
 
         private readonly string _connectionString;
 
-        public SqlContext(DbContextOptions<SqlContext> options, IConfiguration config) : base(options)
+        public SqlContext(DbContextOptions<SqlContext> options, IConfiguration config, IWebHostEnvironment hostEnvironment) : base(options)
         {
 
             _connectionString = config["sql-connection-string"];
 
-            //Database.MigrateAsync().Wait();
+            //if (hostEnvironment.EnvironmentName.ToLower() != "development")
+            //    Database.Migrate();
 
         }
 
