@@ -20,6 +20,7 @@ namespace Interview.UI.Services.Graph
         private readonly IConfiguration _config;
         private readonly ILogger<TokenManagerWithSecret> _logger;
         private readonly IMemoryCache _cache;
+        private readonly X509Certificate2 _certificate;
 
         private const string _host = "https://login.microsoftonline.com";
         private const string _grantType = "client_credentials";
@@ -40,14 +41,15 @@ namespace Interview.UI.Services.Graph
             _cache = cache;
 
             // https://stackoverflow.com/questions/40014047/add-client-certificate-to-net-core-httpclient
+            //HttpClientHandler handler = new HttpClientHandler();
+            //handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            //handler.SslProtocols = SslProtocols.Tls12;
+            //handler.ClientCertificates.Add(new X509Certificate2("certificate.crt"));
 
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-            handler.SslProtocols = SslProtocols.Tls12;
-            handler.ClientCertificates.Add(new X509Certificate2("certificate.crt"));
 
-            _client = new HttpClient(handler);
-            _client.BaseAddress = new Uri(_host);
+            _certificate = new X509Certificate2("certificate.crt");
+
+            _client = new HttpClient();
 
         }
 
@@ -126,6 +128,7 @@ namespace Interview.UI.Services.Graph
             {
                 Content = content
             };
+            request.Headers.Add("X-ARR-ClientCert", _certificate.GetRawCertDataString());
 
             //LogCredentials();
 
