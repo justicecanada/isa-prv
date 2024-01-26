@@ -19,7 +19,7 @@ namespace Interview.UI.Controllers
         #region Declarations
 
         private readonly IToken _tokenManager;
-        private readonly IUsers _graphManager;
+        private readonly IUsers _usersManager;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace Interview.UI.Controllers
         {
 
             _tokenManager = tokenManager;
-            _graphManager = graphManager;
+            _usersManager = graphManager;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -77,7 +77,7 @@ namespace Interview.UI.Controllers
 
             // Get User
             string userPrincipalName = User.Identity.Name;
-            EntraUser entraUser = await _graphManager.GetUserInfo(userPrincipalName, tokenResponse.access_token);
+            EntraUser entraUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
             ViewBag.EntraUser = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
 
             return View();
@@ -110,7 +110,7 @@ namespace Interview.UI.Controllers
             SearchUsersResponse result = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
-            result = await _graphManager.SearchInternalUsers(query, tokenResponse.access_token);
+            result = await _usersManager.SearchInternalUsersAsync(query, tokenResponse.access_token);
 
             return new JsonResult(new { result = true, results = result.value })
             {
@@ -127,7 +127,7 @@ namespace Interview.UI.Controllers
             EntraUser entraUser = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
-            entraUser = await _graphManager.GetUserInfo(userPrincipalName, tokenResponse.access_token);
+            entraUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
             result = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
 
             return new JsonResult(new { result = true, results = result })

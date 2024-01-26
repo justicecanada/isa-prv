@@ -1,4 +1,6 @@
-﻿using Interview.UI.Models.Graph;
+﻿using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
@@ -15,17 +17,21 @@ namespace Interview.UI.Services.Graph
         #region Declarations
 
         private readonly HttpClient _client;
-        private readonly string _host = "https://graph.microsoft.com";
+        private readonly IOptions<TokenOptions> _tokenOptions;
+
+        private const string _host = "https://graph.microsoft.com";
 
         #endregion
 
         #region Constructors
 
-        public EmailManager(HttpClient client)
+        public EmailManager(HttpClient client, IOptions<TokenOptions> tokenOptions)
         {
 
             _client = client;
             _client.BaseAddress = new Uri(_host);
+
+            _tokenOptions = tokenOptions;
 
         }
 
@@ -33,13 +39,16 @@ namespace Interview.UI.Services.Graph
 
         #region Public Interface Methods
 
-        public async Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token)
+        public async Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token, string userName)
         {
+
+            // https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0&tabs=http#example-1-send-a-new-email-using-json-format
 
             HttpResponseMessage result = null;
             var serializedEnvelope = JsonConvert.SerializeObject(emailEnvelope);
             var content = new StringContent(serializedEnvelope, Encoding.UTF8, "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/me/sendMail"))
+            //var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/me/sendMail"))
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}/v1.0/users/{userName}/sendMail"))
             {
                 Content = content,
                 Headers =

@@ -21,6 +21,9 @@ namespace Interview.UI.Auth.ContainerApp
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+
+            // https://johnnyreilly.com/azure-container-apps-easy-auth-and-dotnet-authentication
+
             try
             {
                 var easyAuthProvider = Context.Request.Headers["X-MS-CLIENT-PRINCIPAL-IDP"].FirstOrDefault() ?? "aad";

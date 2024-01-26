@@ -6,7 +6,7 @@ namespace Interview.UI.Services.Graph
     public interface IEmails
     {
 
-        Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token);
+        Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token, string userName);
 
     }
 
