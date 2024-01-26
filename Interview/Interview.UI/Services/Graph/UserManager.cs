@@ -28,7 +28,7 @@ namespace Interview.UI.Services.Graph
 
         #region Public Methods
 
-        public async Task<EntraUser> GetUserInfo(string userPrincipalName, string token)
+        public async Task<EntraUser> GetUserInfoAsync(string userPrincipalName, string token)
         {
 
             EntraUser result = null;
@@ -48,7 +48,7 @@ namespace Interview.UI.Services.Graph
 
         }
 
-        public async Task<SearchUsersResponse> SearchInternalUsers(string query, string token)
+        public async Task<SearchUsersResponse> SearchInternalUsersAsync(string query, string token)
         {
 
             // https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=http#example-4-use-filter-and-top-to-get-one-user-with-a-display-name-that-starts-with-a-including-a-count-of-returned-objects

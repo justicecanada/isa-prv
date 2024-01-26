@@ -7,9 +7,13 @@
 <h1>Email Sent</h1>
 
 <pre>
-    <h2>Email Message =</h2> @Html.Raw(TempData["EmailEnvelope"])
+    <strong>Auth Token =</strong> @Html.Raw(TempData["Token"])
 </pre>
 
 <pre>
-    <h2>Send Message Response = </h2> @Html.Raw(TempData["ResponseMessage"])
+    <strong>Email Message =</strong> @Html.Raw(TempData["EmailEnvelope"])
+</pre>
+
+<pre>
+    <strong>Send Message Response = </strong> @Html.Raw(TempData["ResponseMessage"])
 </pre>

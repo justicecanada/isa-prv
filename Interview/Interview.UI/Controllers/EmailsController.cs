@@ -136,8 +136,9 @@ namespace Interview.UI.Controllers
                     saveToSentItems = vmSendEmail.SaveToSentItems.ToString().ToLower()
                 };
                 TokenResponse tokenResponse = await _tokenManager.GetToken();
-                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token);                
+                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);                
 
+                TempData["Token"] = JsonConvert.SerializeObject(tokenResponse, Formatting.Indented);
                 TempData["EmailEnvelope"] = JsonConvert.SerializeObject(emailEnvelope, Formatting.Indented);
                 TempData["ResponseMessage"] = JsonConvert.SerializeObject(responseMessage, Formatting.Indented);
 
