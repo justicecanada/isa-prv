@@ -14,8 +14,6 @@ namespace Interview.UI.Data
 
             _connectionString = config["sql-connection-string"];
 
-            //Database.EnsureDeletedAsync().Wait();
-            //Database.EnsureCreatedAsync().Wait();
             //Database.MigrateAsync().Wait();
 
         }
