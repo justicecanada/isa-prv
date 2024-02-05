@@ -44,22 +44,6 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Index Methods
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-
-            ViewBag.IsAuthenticated = User.Identity.IsAuthenticated;
-            ViewBag.UserIdentity = JsonConvert.SerializeObject(User.Identity, Formatting.Indented);
-            ViewBag.SerializedHeaders = JsonConvert.SerializeObject(Request.Headers.Where(x => x.Key.ToUpper().StartsWith("X-MS-CLIENT-PRINCIPAL")), Formatting.Indented);
-
-            return View();
-
-        }
-
-        #endregion
-
         #region Public Login Methods
 
         [HttpGet]
@@ -94,12 +78,10 @@ namespace Interview.UI.Controllers
 
             // Get Token
             TokenResponse tokenResponse = await _tokenManager.GetToken();
-            ViewBag.TokenResponse = JsonConvert.SerializeObject(tokenResponse, Formatting.Indented);
-
-            // Get User
             string userPrincipalName = User.Identity.Name;
             EntraUser entraUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            ViewBag.EntraUser = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
+
+            ViewBag.EntraUser = entraUser;
 
             return View();
 
