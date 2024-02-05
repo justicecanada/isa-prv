@@ -86,23 +86,16 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index(VmIndex vmIndex)
         {
 
+            // Handle Modelstate
+            // Ensure RoleUser hasn't been added to process
+            // If new External user, check to see if External user exists (by NewExternalEmail).
+
             if (ModelState.IsValid)
             {
 
                 // Handle RolesUser
-                EntraUser entraUser = await GetEntraUser((Guid)vmIndex.InternalId);
                 Guid roleUserId;
-                RoleUser roleUser = new RoleUser()
-                {
-                    ProcessId = (Guid)_state.ProcessId,
-                    LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
-                    RoleType = (RoleTypes)vmIndex.RoleType,
-                    UserId = (Guid)entraUser.id,
-                    UserFirstname = entraUser.givenName,
-                    UserLastname = entraUser.surname,
-                    IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
-                    DateInserted = DateTime.Now
-                };
+                RoleUser roleUser = await GetRoleUser(vmIndex);
                 roleUserId = await _dal.AddEntity<RoleUser>(roleUser);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
@@ -207,6 +200,47 @@ namespace Interview.UI.Controllers
                     break;
 
             }
+
+            return result;
+
+        }
+
+        private async Task<RoleUser> GetRoleUser(VmIndex vmIndex)
+        {
+
+            // finish this...
+
+            RoleUser result = new RoleUser()
+            {
+                ProcessId = (Guid)_state.ProcessId,
+                LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
+                RoleType = (RoleTypes)vmIndex.RoleType,
+                IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
+                DateInserted = DateTime.Now
+            };
+            Guid? id = null;
+            string userFirstName = null;
+            string userLastName = null;
+
+            if (vmIndex.UserType == UserTypes.Internal)
+            {
+                EntraUser entraUser = await GetEntraUser((Guid)vmIndex.InternalId);
+                id = entraUser.id;
+                userFirstName = entraUser.givenName;
+                userLastName = entraUser.surname;
+            }
+            else if (vmIndex.UserType == UserTypes.NewExternal)
+            {
+
+            }
+            else if (vmIndex.UserType == UserTypes.ExistingExternal)
+            {
+
+            }
+
+            result.UserId = (Guid)id;
+            result.UserFirstname = userFirstName;
+            result.UserLastname = userLastName;
 
             return result;
 
