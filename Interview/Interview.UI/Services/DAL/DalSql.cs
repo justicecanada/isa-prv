@@ -85,6 +85,10 @@ namespace Interview.UI.Services.DAL
                     _context.RoleUserEquities.Add((RoleUserEquity)entity);
                     break;
 
+                case nameof(InternalUser):
+                    _context.InternalUsers.Add((InternalUser)entity);
+                    break;
+
             }
 
             await _context.SaveChangesAsync();
@@ -186,6 +190,12 @@ namespace Interview.UI.Services.DAL
                     result = await _context.RoleUsers.FindAsync(id);
                     break;
 
+                case nameof(InternalUser):
+
+                    // No child object
+                    result = await _context.InternalUsers.FindAsync(id);
+                    break;
+
             }
 
             return result;
@@ -250,6 +260,11 @@ namespace Interview.UI.Services.DAL
                 case nameof(RoleUserEquity):
                     RoleUserEquity? roleUserEquity = await _context.RoleUserEquities.FindAsync(id);
                     _context.RoleUserEquities.Remove(roleUserEquity);
+                    break;
+
+                case nameof(InternalUser):
+                    InternalUser? internalUser = await _context.InternalUsers.FindAsync(id);
+                    _context.InternalUsers.Remove(internalUser);
                     break;
 
             }
