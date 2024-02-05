@@ -472,11 +472,20 @@ namespace Interview.UI.Services.DAL
 
         }
 
-		#endregion
+        public async Task<InternalUser> GetInternalUserByEntraName(string entraName)
+        {
 
-		#region Mock Identity Methods
+            InternalUser result = await _context.InternalUsers.Where(x => x.EntraUserName == entraName).FirstOrDefaultAsync();
 
-		public async Task<List<MockUser>> LookupInteralMockUser(string query)
+            return result;
+
+        }
+
+        #endregion
+
+        #region Mock Identity Methods
+
+        public async Task<List<MockUser>> LookupInteralMockUser(string query)
         {
 
             List<MockUser> result = await _context.MockUsers.Where(x => ((x.FirstName.ToLower().StartsWith(query.ToLower()) || x.LastName.ToLower().StartsWith(query.ToLower()))

@@ -10,8 +10,8 @@ namespace Interview.Entities
     public class InternalUser : EntityBase
     {
 
-        public Guid EntraUserId { get; set; }
-        public RoleTypes RoleType { get; set; }
+        public string EntraUserName { get; set; }
+        public RoleTypes? RoleType { get; set; }
 
     }
 

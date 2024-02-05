@@ -52,6 +52,8 @@ namespace Interview.UI.Services.DAL
         Task<RoleUser> GetRoleUserByProcessIdAndUserId(Guid processId, Guid userId);
 
         Task<List<GroupOwner>> GetGroupOwnersByProcessIdAndUserId(Guid processId, Guid userId);
+
+        Task<InternalUser> GetInternalUserByEntraName(string entraName);
         
         #endregion
 

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using GoC.WebTemplate.Components.Core.Services;
+using Interview.Entities;
+using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
@@ -21,19 +23,22 @@ namespace Interview.UI.Controllers
         private readonly IToken _tokenManager;
         private readonly IUsers _usersManager;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
-            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment)
+            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment, 
+            IMapper mapper)
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
 
             _tokenManager = tokenManager;
             _usersManager = graphManager;
             _hostEnvironment = hostEnvironment;
+            _mapper = mapper;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -69,6 +74,46 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Details()
         {
 
+            VmInternalUser result = null;
+            EntraUser entraUser = await SetDetailsViewBag();
+            InternalUser internalUser = await _dal.GetInternalUserByEntraName(entraUser.userPrincipalName);
+
+            result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
+
+            return View(result);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeRole(VmInternalUser vmInternalUser)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
+
+                internaluser.EntraUserName = User.Identity.Name;
+                if (vmInternalUser.Id == null)
+                    await _dal.AddEntity<InternalUser>(internaluser);
+                else
+                    await _dal.UpdateEntity(internaluser);
+
+                return RedirectToAction("Details");
+
+            }
+            else
+            {
+                await SetDetailsViewBag();
+                return View("Details", vmInternalUser);
+            }
+
+        }
+
+        private async Task<EntraUser> SetDetailsViewBag()
+        {
+
             // Need to add Authorization Bearer (token) request header:
             // https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#example-2-signed-in-user-request
             // Links regarding Container Apps Easy Auth and tokens:
@@ -77,13 +122,14 @@ namespace Interview.UI.Controllers
             //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
 
             // Get Token
+            EntraUser result = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
             string userPrincipalName = User.Identity.Name;
-            EntraUser entraUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
 
-            ViewBag.EntraUser = entraUser;
+            result = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
+            ViewBag.EntraUser = result;
 
-            return View();
+            return result;
 
         }
 

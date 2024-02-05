@@ -1,7 +1,14 @@
-﻿@using Interview.UI.Models.Graph
+﻿@model VmInternalUser
+@using Interview.Entities
+@using Interview.UI.Models.Graph
 @inject IViewLocalizer localizer
 
 @{
+
+    var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
+    rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    if (Model.RoleType != null)
+        rolesItems.Where(x => x.Value == ((int)Model.RoleType).ToString()).First().Selected = true;
 
     EntraUser user = ViewBag.EntraUser;
 
@@ -10,6 +17,29 @@
 @Html.ActionLink("Search Users", "SearchUsers")
 
 <h1>@localizer["Title"]</h1>
+
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            @localizer["ChangeRole"]
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form>
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(x => x.Id)
+
+            @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
+
+            <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ChangeRole", "Account")
+                   formmethod="post" />
+
+        </form>
+    </div>
+</section>
+
 
 <div class="row">
     <div class="col-md-3">
