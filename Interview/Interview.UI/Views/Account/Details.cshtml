@@ -1,16 +1,96 @@
-﻿
+﻿@using Interview.UI.Models.Graph
+@inject IViewLocalizer localizer
+
 @{
 
-
+    EntraUser user = ViewBag.EntraUser;
 
 }
 
-<h1>Details</h1>
+@Html.ActionLink("Search Users", "SearchUsers")
 
-<pre>
-    <h2>Token Response =</h2> @Html.Raw(ViewBag.TokenResponse)
-</pre>
+<h1>@localizer["Title"]</h1>
 
-<pre>
-    <h2>Entra User = </h2> @Html.Raw(ViewBag.EntraUser)
-</pre>
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["GivenName"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.givenName
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["SurName"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.surname
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["DisplayName"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.displayName
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["JobTitle"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.jobTitle
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["Mail"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.mail
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["MobilePhone"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.mobilePhone
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["OfficeLocation"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.officeLocation
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["PreferredLanguage"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @user.preferredLanguage
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <strong>@localizer["BusinessPhone"]:</strong>
+    </div>
+    <div class="col-md-9">
+        @{
+            string businessPhones = string.Join(",", user.businessPhones);
+        }
+        @businessPhones
+    </div>
+</div>

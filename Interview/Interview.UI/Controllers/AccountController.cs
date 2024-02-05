@@ -20,18 +20,20 @@ namespace Interview.UI.Controllers
 
         private readonly IToken _tokenManager;
         private readonly IUsers _usersManager;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         #endregion
 
         #region Constructors
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
-            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer)
+            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment)
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
 
             _tokenManager = tokenManager;
             _usersManager = graphManager;
+            _hostEnvironment = hostEnvironment;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -42,17 +44,20 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Index Methods
+        #region Public Login Methods
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Login()
         {
 
-            ViewBag.IsAuthenticated = User.Identity.IsAuthenticated;
-            ViewBag.UserIdentity = JsonConvert.SerializeObject(User.Identity, Formatting.Indented);
-            ViewBag.SerializedHeaders = JsonConvert.SerializeObject(Request.Headers.Where(x => x.Key.ToUpper().StartsWith("X-MS-CLIENT-PRINCIPAL")), Formatting.Indented);
+            IActionResult result = null;
 
-            return View();
+            if (_hostEnvironment.IsDevelopment())
+                result = new RedirectToActionResult("Index", "Default", null);
+            else
+                result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Default/Index");
+
+            return result;
 
         }
 
@@ -73,12 +78,10 @@ namespace Interview.UI.Controllers
 
             // Get Token
             TokenResponse tokenResponse = await _tokenManager.GetToken();
-            ViewBag.TokenResponse = JsonConvert.SerializeObject(tokenResponse, Formatting.Indented);
-
-            // Get User
             string userPrincipalName = User.Identity.Name;
             EntraUser entraUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            ViewBag.EntraUser = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
+
+            ViewBag.EntraUser = entraUser;
 
             return View();
 
