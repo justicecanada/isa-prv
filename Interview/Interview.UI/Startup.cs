@@ -44,14 +44,14 @@ namespace Interview.UI
         {
 
             var builder = services.AddMvc();
-            ConfigureAuthServices(services, builder);
+            
             ConfigureLocalizationServices(services, builder);
-
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration["sql-connection-string"]));
+            ConfigureAuthServices(services, builder);
 
             services.AddAutoMapper(typeof(MapperConfig));
 

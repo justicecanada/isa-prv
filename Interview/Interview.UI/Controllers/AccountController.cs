@@ -7,6 +7,7 @@ using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -71,6 +72,7 @@ namespace Interview.UI.Controllers
         #region Public Details Methods
 
         [HttpGet]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details()
         {
 

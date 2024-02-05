@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Interview.UI.Services.DAL;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Security.Claims;
@@ -57,6 +58,20 @@ namespace Interview.UI.Auth.Localhost
 
                 var principal = new ClaimsPrincipal();
                 principal.AddIdentity(new ClaimsIdentity(claimsAndRoles, clientPrincipal.AuthenticationType, clientPrincipal.NameType, ClaimTypes.Role));
+
+                // Inject Role from InternalUser
+                var dal = Context.RequestServices.GetService<DalSql>();
+                var perferredUserName = claims.Where(x => x.Type == "preferred_username").First().Value;
+                var internalUser = await dal.GetInternalUserByEntraName(perferredUserName);
+                if (internalUser != null)
+                {
+                    // https://stackoverflow.com/questions/53292286/is-there-a-way-to-add-claims-in-an-asp-net-core-middleware-after-authentication
+                    var claim = new Claim(ClaimTypes.Role, internalUser.RoleType.ToString(), "http://www.w3.org/2001/XMLSchema#string", "LOCAL AUTHORITY", "LOCAL AUTHORITY");
+                    var interviewClaims = new List<Claim>();
+                    interviewClaims.Add(claim);
+                    var appIdentity = new ClaimsIdentity(interviewClaims);
+                    principal.AddIdentity(appIdentity);
+                }
 
                 var ticket = new AuthenticationTicket(principal, easyAuthProvider.Value.First());
                 var success = AuthenticateResult.Success(ticket);
