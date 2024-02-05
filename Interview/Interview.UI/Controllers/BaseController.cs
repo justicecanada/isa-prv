@@ -3,6 +3,7 @@ using GoC.WebTemplate.Components.Entities;
 using GoC.WebTemplate.CoreMVC.Controllers;
 using Interview.Entities;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Mock.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -125,26 +126,6 @@ namespace Interview.UI.Controllers
             result.OrderByDescending(x => x.CreatedDate);
 
             return result;
-
-        }
-
-        #endregion
-
-        #region Public Action Methods
-
-        [HttpGet]
-        public async Task<JsonResult> LookupInteralUser(string query)
-        {
-
-            List<MockUser> result = null;
-
-            if (!string.IsNullOrEmpty(query))
-                result = await _dal.LookupInteralMockUser(query);
-
-            return new JsonResult(new { result = true, results = result })
-            {
-                StatusCode = 200
-            };
 
         }
 

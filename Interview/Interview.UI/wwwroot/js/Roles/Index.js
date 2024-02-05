@@ -28,7 +28,7 @@
 
 var searchInternalUser = {
 
-    Uri: "/Roles/LookupInteralUser",
+    Uri: "/Account/SearchInteralUsers",
     InputSelector: "#InternalName",
     Hidden: $("#InternalId")[0],
 
@@ -46,9 +46,9 @@ var searchInternalUser = {
 
                         response($.map(data.results, function (item) {
                             var object = new Object();
-                            object.ID = item.Id;
-                            object.label = item.LastName + ", " + item.FirstName;
-                            object.value = item.Name;
+                            object.ID = item.id;
+                            object.label = item.surname + ", " + item.givenName;
+                            object.value = item.surname + ", " + item.givenName;
                             return object
                         }));
 

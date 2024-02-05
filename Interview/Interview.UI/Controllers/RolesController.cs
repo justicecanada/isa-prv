@@ -4,9 +4,11 @@ using GoC.WebTemplate.Components.Entities;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
 //using Interview.UI.Models.Groups;
 using Interview.UI.Models.Roles;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Graph;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 
 namespace Interview.UI.Controllers
@@ -27,21 +30,23 @@ namespace Interview.UI.Controllers
         private readonly IMapper _mapper;
         private readonly IState _state;
         private readonly IStringLocalizer<RolesController> _localizer;
+        private readonly IToken _tokenManager;
+        private readonly IUsers _usersManager;
 
         #endregion
 
         #region Constructors
 
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
-            IOptions<JusticeOptions> justiceOptions, IStringLocalizer<BaseController> baseLocalizer) 
+            IOptions<JusticeOptions> justiceOptions, IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IUsers graphManager) 
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
             
             _mapper = mapper;
             _state = state;
             _localizer = localizer;
-
-            //IndexRegisterClientResources();
+            _tokenManager = tokenManager;
+            _usersManager = graphManager;
 
         }
 
@@ -81,21 +86,20 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index(VmIndex vmIndex)
         {
 
-            var mockUser = await GetMockUser(vmIndex);
-            
             if (ModelState.IsValid)
             {
 
                 // Handle RolesUser
+                EntraUser entraUser = await GetEntraUser((Guid)vmIndex.InternalId);
                 Guid roleUserId;
                 RoleUser roleUser = new RoleUser()
                 {
                     ProcessId = (Guid)_state.ProcessId,
                     LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
                     RoleType = (RoleTypes)vmIndex.RoleType,
-                    UserId = (Guid)mockUser.Id,
-                    UserFirstname = mockUser.FirstName,
-                    UserLastname = mockUser.LastName,
+                    UserId = (Guid)entraUser.id,
+                    UserFirstname = entraUser.givenName,
+                    UserLastname = entraUser.surname,
                     IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
                     DateInserted = DateTime.Now
                 };
@@ -203,6 +207,18 @@ namespace Interview.UI.Controllers
                     break;
 
             }
+
+            return result;
+
+        }
+
+        private async Task<EntraUser> GetEntraUser(Guid id)
+        {
+
+            EntraUser result = null;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+
+            result = await _usersManager.GetUserInfoAsync(id.ToString(), tokenResponse.access_token);
 
             return result;
 
