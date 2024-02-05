@@ -18,7 +18,7 @@ namespace Interview.UI.Models
         public string? UserLastname { get; set; }
         public bool? IsExternal { get; set; }
         public DateTime? DateExternalEmailSent { get; set; }
-        public VmRoleTypes RoleType { get; set; }
+        public VmRoleUserTypes RoleUserType { get; set; }
         public VmLanguageTypes? LanguageType { get; set; }
         public DateTime DateInserted { get; set; }
 

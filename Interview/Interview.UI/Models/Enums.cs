@@ -10,7 +10,7 @@ namespace Interview.UI.Models
         // ScheduleTypes
     // EmailTypes
 
-    public enum VmRoleTypes
+    public enum VmRoleUserTypes
     {
         [Display(Name = "HR")]
         HR = 1,

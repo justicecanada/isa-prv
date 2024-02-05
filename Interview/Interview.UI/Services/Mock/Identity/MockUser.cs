@@ -18,7 +18,7 @@ namespace Interview.UI.Services.Mock.Identity
 
         public UserTypes? UserType { get; set; }
 
-        public RoleTypes RoleType { get; set; }
+        public RoleUserTypes RoleUserType { get; set; }
 
     }
 

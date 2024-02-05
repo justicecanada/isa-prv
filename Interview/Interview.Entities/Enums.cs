@@ -21,7 +21,7 @@ namespace Interview.Entities
         NewExternal = 2
     }
 
-    public enum RoleTypes
+    public enum RoleUserTypes
     {
         HR = 1,
         Interviewer = 2,

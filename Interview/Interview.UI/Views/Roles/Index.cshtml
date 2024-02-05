@@ -30,7 +30,7 @@
         });
     }
 
-    var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
+    var rolesItems = Html.GetEnumSelectList<VmRoleUserTypes>().ToList();
     rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
 
     var userLanguageItems = Html.GetEnumSelectList<VmLanguageTypes>().ToList();
@@ -98,7 +98,7 @@
 
             <div class="col-md-4 brdr-rght">
 
-                @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
+                @Html.EditorFor(x => x.RoleUserType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
                 @Html.EditorFor(x => x.LanguageType, "Question", new { inputControl = @Html.DropDownList("LanguageType", userLanguageItems, new { @class = "form-control" }) })
 
             </div>

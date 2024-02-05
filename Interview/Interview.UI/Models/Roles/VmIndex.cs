@@ -41,7 +41,7 @@ namespace Interview.UI.Models.Roles
 
         [Display(Name = "RoleId")]
         [Required(ErrorMessage = "RequiredError")]
-        public VmRoleTypes? RoleType { get; set;  }
+        public VmRoleUserTypes? RoleUserType { get; set;  }
 
         [Display(Name = "UserLanguageId")]
         public VmLanguageTypes? LanguageType { get; set; }

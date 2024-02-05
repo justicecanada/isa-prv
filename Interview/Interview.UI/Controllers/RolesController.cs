@@ -214,7 +214,7 @@ namespace Interview.UI.Controllers
             {
                 ProcessId = (Guid)_state.ProcessId,
                 LanguageType = vmIndex.LanguageType == null ? null : (LanguageTypes)vmIndex.LanguageType,
-                RoleType = (RoleTypes)vmIndex.RoleType,
+                RoleUserType = (RoleUserTypes)vmIndex.RoleUserType,
                 IsExternal = (UserTypes)vmIndex.UserType != UserTypes.Internal,
                 DateInserted = DateTime.Now
             };
@@ -300,7 +300,7 @@ namespace Interview.UI.Controllers
             var dbRoleUser = await _dal.GetEntity<RoleUser>((Guid)vmRoleUser.Id) as RoleUser;
 
             // Handle RoleUser
-            dbRoleUser.RoleType = (RoleTypes)vmRoleUser.RoleType;
+            dbRoleUser.RoleUserType = (RoleUserTypes)vmRoleUser.RoleUserType;
             dbRoleUser.LanguageType = vmRoleUser.LanguageType == null ? null : (LanguageTypes)vmRoleUser.LanguageType;
             await _dal.UpdateEntity(dbRoleUser);
 
