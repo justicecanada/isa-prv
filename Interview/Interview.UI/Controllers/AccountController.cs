@@ -20,18 +20,20 @@ namespace Interview.UI.Controllers
 
         private readonly IToken _tokenManager;
         private readonly IUsers _usersManager;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         #endregion
 
         #region Constructors
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
-            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer)
+            IToken tokenManager, IUsers graphManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment)
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
 
             _tokenManager = tokenManager;
             _usersManager = graphManager;
+            _hostEnvironment = hostEnvironment;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -53,6 +55,25 @@ namespace Interview.UI.Controllers
             ViewBag.SerializedHeaders = JsonConvert.SerializeObject(Request.Headers.Where(x => x.Key.ToUpper().StartsWith("X-MS-CLIENT-PRINCIPAL")), Formatting.Indented);
 
             return View();
+
+        }
+
+        #endregion
+
+        #region Public Login Methods
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+
+            IActionResult result = null;
+
+            if (_hostEnvironment.IsDevelopment())
+                result = new RedirectToActionResult("Index", "Default", null);
+            else
+                result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Default/Index");
+
+            return result;
 
         }
 
