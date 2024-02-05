@@ -46,7 +46,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Account"].Value, Href = "/Account/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Account"].Value, Href = "/Account/Details" });
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Send Emails", Href = "/Emails/SendEmail" });
 
             // css
