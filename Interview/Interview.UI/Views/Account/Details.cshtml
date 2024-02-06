@@ -18,28 +18,30 @@
 
 <h1>@localizer["Title"]</h1>
 
-<section class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            @localizer["ChangeRole"]
-        </h3>
-    </div>
-    <div class="panel-body">
-        <form>
+@if (user.id != Guid.Empty)
+{
+    <section class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                @localizer["ChangeRole"]
+            </h3>
+        </div>
+        <div class="panel-body">
+            <form>
 
-            @Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
 
-            @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Id)
 
-            @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
+                @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
 
-            <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ChangeRole", "Account")
-                   formmethod="post" />
+                <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ChangeRole", "Account")
+                       formmethod="post" />
 
-        </form>
-    </div>
-</section>
-
+            </form>
+        </div>
+    </section>
+}
 
 <div class="row">
     <div class="col-md-3">
@@ -119,7 +121,7 @@
     </div>
     <div class="col-md-9">
         @{
-            string businessPhones = string.Join(",", user.businessPhones);
+            string businessPhones = user.businessPhones == null ? "" : string.Join(",", user.businessPhones);
         }
         @businessPhones
     </div>
