@@ -408,7 +408,7 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<RoleUser>> GetExternalRoleUserByEmail(string email)
+        public async Task<List<RoleUser>> GetExternalRoleUsersByEmail(string email)
         {
 
             List<RoleUser> result = await _context.RoleUsers.Where(x => ((bool)x.IsExternal && x.ExternalUserEmail.ToLower() == email.ToLower())).ToListAsync();
