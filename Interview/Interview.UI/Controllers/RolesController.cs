@@ -129,23 +129,22 @@ namespace Interview.UI.Controllers
         private async Task IndexHandleModelState(VmIndex vmIndex)
         {
 
-            List<RoleUser> roleUsers = null;
+            List<RoleUser> roleUsersForProcess = null;
             switch (vmIndex.UserType)
             {
                 case UserTypes.Internal:                        // Ensure RoleUser hasn't been added to process
-                    roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-                    if (roleUsers.Any(x => x.UserId == (Guid)vmIndex.InternalId))
+                    roleUsersForProcess = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+                    if (roleUsersForProcess.Any(x => x.UserId == (Guid)vmIndex.InternalId))
                         ModelState.AddModelError("InternalName", _localizer["UserAlreadyInRole"].Value);
                     break;
                 case UserTypes.ExistingExternal:                // Ensure RoleUser hasn't been added to process
-                    roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-                    if (roleUsers.Any(x => x.UserId == (Guid)vmIndex.ExistingExternalId))
+                    roleUsersForProcess = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+                    if (roleUsersForProcess.Any(x => x.UserId == (Guid)vmIndex.ExistingExternalId))
                         ModelState.AddModelError("ExistingExternalId", _localizer["UserAlreadyInRole"].Value);
                     break;
-
                 case UserTypes.NewExternal:                     // Ensure new External User doesn't exist
-                    roleUsers = await _dal.GetExternalRoleUsersByEmail(vmIndex.NewExternalEmail);
-                    if (roleUsers.Any())
+                    List<ExternalUser> externalUsers = await _dal.GetExternalUsersByEmail(vmIndex.NewExternalEmail);
+                    if (externalUsers.Any())
                         ModelState.AddModelError("NewExternalEmail", _localizer["ExternalUserAlreadyExists"].Value);
                     break;
             }
@@ -256,7 +255,16 @@ namespace Interview.UI.Controllers
             }
             else if (vmIndex.UserType == UserTypes.NewExternal)
             {
-
+                ExternalUser externalUser = new ExternalUser()
+                {
+                    GivenName = vmIndex.NewExternalFirstName,
+                    SurName = vmIndex.NewExternalLastName,
+                    Email = vmIndex.NewExternalEmail
+                };
+                id = await _dal.AddEntity<ExternalUser>(externalUser);
+                userFirstName = vmIndex.NewExternalFirstName;
+                userLastName = vmIndex.NewExternalLastName;
+                result.ExternalUserEmail = vmIndex.NewExternalEmail;
             }
             else if (vmIndex.UserType == UserTypes.ExistingExternal)
             {

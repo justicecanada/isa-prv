@@ -89,6 +89,10 @@ namespace Interview.UI.Services.DAL
                     _context.InternalUsers.Add((InternalUser)entity);
                     break;
 
+                case nameof(ExternalUser):
+                    _context.ExternalUsers.Add((ExternalUser)entity);
+                    break;
+
             }
 
             await _context.SaveChangesAsync();
@@ -196,6 +200,12 @@ namespace Interview.UI.Services.DAL
                     result = await _context.InternalUsers.FindAsync(id);
                     break;
 
+                case nameof(ExternalUser):
+
+                    // No child object
+                    result = await _context.ExternalUsers.FindAsync(id);
+                    break;
+
             }
 
             return result;
@@ -265,6 +275,11 @@ namespace Interview.UI.Services.DAL
                 case nameof(InternalUser):
                     InternalUser? internalUser = await _context.InternalUsers.FindAsync(id);
                     _context.InternalUsers.Remove(internalUser);
+                    break;
+
+                case nameof(ExternalUser):
+                    ExternalUser? externalUser = await _context.ExternalUsers.FindAsync(id);
+                    _context.ExternalUsers.Remove(externalUser);
                     break;
 
             }
@@ -408,15 +423,6 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<RoleUser>> GetExternalRoleUsersByEmail(string email)
-        {
-
-            List<RoleUser> result = await _context.RoleUsers.Where(x => ((bool)x.IsExternal && x.ExternalUserEmail.ToLower() == email.ToLower())).ToListAsync();
-
-            return result;
-
-        }
-
         public async Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId)
         {
 
@@ -485,6 +491,15 @@ namespace Interview.UI.Services.DAL
         {
 
             InternalUser result = await _context.InternalUsers.Where(x => x.EntraUserName == entraName).FirstOrDefaultAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<ExternalUser>> GetExternalUsersByEmail(string email)
+        {
+
+            List<ExternalUser> result = await _context.ExternalUsers.Where(x => x.Email.ToLower() == email.ToLower()).ToListAsync();
 
             return result;
 
