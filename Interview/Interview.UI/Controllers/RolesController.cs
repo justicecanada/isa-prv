@@ -86,10 +86,8 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Index(VmIndex vmIndex)
         {
 
-            // Handle Modelstate
-            // Ensure RoleUser hasn't been added to process
-            // If new External user, check to see if External user exists (by NewExternalEmail).
-            // If user isn't Admin
+            if (ModelState.IsValid) // Handles simple validation (just posted model)
+                await IndexHandleModelState(vmIndex); // Handles Complex validation (checks db)
 
             if (ModelState.IsValid)
             {
@@ -124,6 +122,32 @@ namespace Interview.UI.Controllers
 
                 return View(vmIndex);
 
+            }
+
+        }
+
+        private async Task IndexHandleModelState(VmIndex vmIndex)
+        {
+
+            List<RoleUser> roleUsers = null;
+            switch (vmIndex.UserType)
+            {
+                case UserTypes.Internal:                        // Ensure RoleUser hasn't been added to process
+                    roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+                    if (roleUsers.Any(x => x.UserId == (Guid)vmIndex.InternalId))
+                        ModelState.AddModelError("InternalName", _localizer["UserAlreadyInRole"].Value);
+                    break;
+                case UserTypes.ExistingExternal:                // Ensure RoleUser hasn't been added to process
+                    roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+                    if (roleUsers.Any(x => x.UserId == (Guid)vmIndex.ExistingExternalId))
+                        ModelState.AddModelError("ExistingExternalId", _localizer["UserAlreadyInRole"].Value);
+                    break;
+
+                case UserTypes.NewExternal:                     // Ensure new External User doesn't exist
+                    roleUsers = await _dal.GetExternalRoleUsersByEmail(vmIndex.NewExternalEmail);
+                    if (roleUsers.Any())
+                        ModelState.AddModelError("NewExternalEmail", _localizer["ExternalUserAlreadyExists"].Value);
+                    break;
             }
 
         }

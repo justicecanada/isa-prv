@@ -39,6 +39,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<RoleUser>> GetRoleUsersByProcessId(Guid processId);
 
+        Task<List<RoleUser>> GetExternalRoleUsersByEmail(string email);
+
         Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId);
 
         Task<List<Interview.Entities.Interview>> GetInterViewsByProcessId(Guid processId);

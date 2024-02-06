@@ -21,6 +21,7 @@ namespace Interview.Entities
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
         public bool? IsExternal { get; set; }
+        public string ExternalUserEmail { get; set; }
         public DateTime? DateExternalEmailSent { get; set; }
         public RoleUserTypes RoleUserType { get; set; }
         public LanguageTypes? LanguageType { get; set; }
