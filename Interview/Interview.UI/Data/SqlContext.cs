@@ -16,7 +16,7 @@ namespace Interview.UI.Data
             _connectionString = config["sql-connection-string"];
 
             //if (hostEnvironment.EnvironmentName.ToLower() != "development")
-            //    Database.Migrate();
+            //Database.EnsureCreatedAsync();
 
         }
 
@@ -24,6 +24,8 @@ namespace Interview.UI.Data
         {
 
             _connectionString = connectionString;
+
+            //Database.EnsureCreatedAsync();
 
         }
 

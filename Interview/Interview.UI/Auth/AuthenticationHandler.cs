@@ -1,6 +1,7 @@
 ﻿using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using System;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -79,16 +80,20 @@ namespace Interview.UI.Auth
                     ticket = await AddClaimsPrincipalFromEasyAuthHeaders();
                     if (ticket == null)
                         return AuthenticateResult.NoResult();
-                    //await AddClaimsPrincipalWithRolesFromInterviewDb();
+                    await AddClaimsPrincipalWithRolesFromInterviewDb();
                 }
 
                 var success = AuthenticateResult.Success(ticket);
-                
+
                 return success;
 
             }
             catch (Exception ex)
             {
+                var msgObj = new { message = ex.Message, stacktrace = ex.StackTrace };
+                var msg = JsonSerializer.Serialize(msgObj);
+                Logger.LogError(ex.Message, ex);
+
                 return AuthenticateResult.Fail(ex);
             }
 
