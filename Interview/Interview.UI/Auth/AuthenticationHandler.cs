@@ -43,9 +43,6 @@ namespace Interview.UI.Auth
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
 
-            //if (!_authenticateRequests)
-            //    return AuthenticateResult.NoResult();
-
             try
             {
 
