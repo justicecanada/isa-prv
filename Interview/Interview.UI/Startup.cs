@@ -23,8 +23,6 @@ using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
-using Interview.UI.Auth.ContainerApp;
-using Interview.UI.Auth.Localhost;
 using Interview.UI.Services.Graph;
 using Interview.UI.Auth;
 
@@ -52,7 +50,6 @@ namespace Interview.UI
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration["sql-connection-string"]));
-            //ConfigureAuthServices(services, builder);
 
             builder.Services.AddAuthentication(AuthenticationBuilderExtensions.AUTHSCHEMENAME)
                     .AddAuth();
@@ -91,24 +88,6 @@ namespace Interview.UI
             // WET
             services.AddModelAccessor();
             services.ConfigureGoCTemplateRequestLocalization(); // >= v2.3.0
-
-        }
-
-        private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
-        {
-
-            if (Configuration["ASPNETCORE_ENVIRONMENT"] != null && Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
-            {
-                builder.Services.AddAuthentication(LocalhostAuthenticationBuilderExtensions.LOCALHOSTAUTHSCHEMENAME)
-                    .AddLocalhostAuth();
-                builder.Services.AddAuthorization();
-            }
-            else
-            {
-                builder.Services.AddAuthentication(EasyAuthAuthenticationBuilderExtensions.EASYAUTHSCHEMENAME)
-                    .AddAzureContainerAppsEasyAuth();
-                builder.Services.AddAuthorization();
-            }
 
         }
 
