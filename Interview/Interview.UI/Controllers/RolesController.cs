@@ -61,7 +61,7 @@ namespace Interview.UI.Controllers
             VmIndex result = new VmIndex();
 
             // // Handle equities (this will be handled by the role the logged in user is in)
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
+            if (User.IsInRole(RoleTypes.Admin.ToString()))
             {
                 var equities = await _dal.GetAllEquities();
                 List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
@@ -89,6 +89,7 @@ namespace Interview.UI.Controllers
             // Handle Modelstate
             // Ensure RoleUser hasn't been added to process
             // If new External user, check to see if External user exists (by NewExternalEmail).
+            // If user isn't Admin
 
             if (ModelState.IsValid)
             {
@@ -99,7 +100,7 @@ namespace Interview.UI.Controllers
                 roleUserId = await _dal.AddEntity<RoleUser>(roleUser);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
-                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
+                if (User.IsInRole(RoleTypes.Admin.ToString()))
                 {                   
                     foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {
@@ -139,7 +140,7 @@ namespace Interview.UI.Controllers
             ViewBag.RoleUsers = roleUsers;
 
             // Show Equities
-            ViewBag.ShowEquities = IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin);
+            ViewBag.ShowEquities = User.IsInRole(RoleTypes.Admin.ToString());
 
             // MockUsers
             var mockExistingExternalUsers = await _dal.GetListExistingExternalMockUser();
