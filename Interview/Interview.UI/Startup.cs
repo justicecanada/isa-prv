@@ -26,6 +26,7 @@ using Interview.UI.Services.Seeder;
 using Interview.UI.Auth.ContainerApp;
 using Interview.UI.Auth.Localhost;
 using Interview.UI.Services.Graph;
+using Interview.UI.Auth;
 
 namespace Interview.UI
 {
@@ -51,7 +52,11 @@ namespace Interview.UI
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration["sql-connection-string"]));
-            ConfigureAuthServices(services, builder);
+            //ConfigureAuthServices(services, builder);
+
+            builder.Services.AddAuthentication(AuthenticationBuilderExtensions.AUTHSCHEMENAME)
+                    .AddAuth();
+            builder.Services.AddAuthorization();
 
             services.AddAutoMapper(typeof(MapperConfig));
 
