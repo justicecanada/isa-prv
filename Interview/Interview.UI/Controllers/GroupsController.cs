@@ -4,6 +4,7 @@ using Interview.Entities;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Graph;
 using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,8 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
+        private readonly IToken _tokenManager;
+        private readonly IUsers _usersManager;
         private readonly IMapper _mapper;
         private readonly IState _state;
 
@@ -28,12 +31,14 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state
-            , IStringLocalizer<BaseController> baseLocalizer) 
+        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state,
+            IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer) 
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
+            _tokenManager = tokenManager;
+            _usersManager = userManager;
         }
 
         #endregion
