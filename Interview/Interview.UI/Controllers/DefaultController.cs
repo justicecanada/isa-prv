@@ -5,7 +5,6 @@ using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
 using Interview.UI.Services.DAL;
-using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -33,9 +32,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state,
             IStringLocalizer<DefaultController> localizer, IStringLocalizer<BaseController> baseLocalizer) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+            : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
@@ -127,16 +126,16 @@ namespace Interview.UI.Controllers
 
             if (processId != null)
             {
-                result = await _dal.GetRoleUserByProcessIdAndUserId((Guid)processId, (Guid)LoggedInMockUser.Id);
+                result = await _dal.GetRoleUserByProcessIdAndUserId((Guid)processId, EntraId);
 
-                if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System) ||
-                    IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()) ||
+                    User.IsInRole(RoleTypes.Owner.ToString()))
                 {
                     bool hasAccess = true;
 
-                    if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+                    if (User.IsInRole(RoleTypes.Owner.ToString()))
                     {
-                        List<GroupOwner> groupOwners = await _dal.GetGroupOwnersByProcessIdAndUserId((Guid)processId, (Guid)LoggedInMockUser.Id);
+                        List<GroupOwner> groupOwners = await _dal.GetGroupOwnersByProcessIdAndUserId((Guid)processId, EntraId);
                         hasAccess = groupOwners.Count > 0;
                     }
 
@@ -148,7 +147,7 @@ namespace Interview.UI.Controllers
                     //    {
                     //        ProcessId = (Guid)processId,
                     //        RoleType = RoleTypes.Admin,
-                    //        UserId = (Guid)LoggedInMockUser.Id,
+                    //        UserId = EntraId,
                     //        LanguageType = LanguageTypes.Bilingual,
                     //        HasAcceptedPrivacyStatement = true,
                     //    };
@@ -180,9 +179,9 @@ namespace Interview.UI.Controllers
                 interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
                 result = _mapper.Map<VmInterview>(interview);
 
-                result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Candidate).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Interviewer).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleType == RoleTypes.Lead).FirstOrDefault()?.UserId;
+                result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
+                result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
+                result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
                 result.VmInterviewerUserIds.InterviewId = id;
             }
 
@@ -216,9 +215,9 @@ namespace Interview.UI.Controllers
 
                     // Handle Users
                     List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmInterview.Id);
-                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.CandidateUserId, dbInterviewUsers, RoleTypes.Candidate, (Guid)vmInterview.Id);
-                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleTypes.Interviewer, (Guid)vmInterview.Id);
-                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleTypes.Lead, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleUserTypes.Interviewer, (Guid)vmInterview.Id);
+                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmInterview.Id);
 
                 }
 
@@ -281,28 +280,28 @@ namespace Interview.UI.Controllers
 
 			// Handle Interview Users
 			List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-			if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+			if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.Owner.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
 			{
 				bool hasAccess = true;
-				if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
+				if (User.IsInRole(RoleTypes.Owner.ToString()))
 				{
 					// Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
 					// get the list as a variable first. Moving on...
-					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ProcessId, EntraId);
 					hasAccess = groupOwners.Any();
 				}
 			}
 
-			ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Candidate).ToList();
-			ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Interviewer).ToList();
-			ViewBag.LeadUsers = roleUsers.Where(x => x.RoleType == RoleTypes.Lead).ToList();
+			ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
+			ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList();
+			ViewBag.LeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList();
 
 		}
 
-        private async Task ResolveInterviewUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleTypes roleType, Guid interviewId)
+        private async Task ResolveInterviewUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleUserTypes roleUserType, Guid interviewId)
         {
 
-            InterviewUser dbInterviewUser = dbInterviewUsers.Where(x => x.RoleType == roleType).FirstOrDefault();
+            InterviewUser dbInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == roleUserType).FirstOrDefault();
 
             if (dbInterviewUser == null && postedUserId != null)
             {
@@ -310,7 +309,7 @@ namespace Interview.UI.Controllers
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
                     UserId = (Guid)postedUserId,
-                    RoleType = roleType,
+                    RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
                 await _dal.AddEntity<InterviewUser>(newInterviewUser);
@@ -321,7 +320,7 @@ namespace Interview.UI.Controllers
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
                     UserId = (Guid)postedUserId,
-                    RoleType = roleType,
+                    RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
                 await _dal.DeleteEntity(dbInterviewUser);
@@ -377,7 +376,7 @@ namespace Interview.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, EntraId);
 
                 roleUser.LanguageType = vmLanguageStatusModal.LanguageType;
                 await _dal.UpdateEntity(roleUser);
@@ -432,7 +431,7 @@ namespace Interview.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+                RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, EntraId);
 
                 roleUser.HasAcceptedPrivacyStatement = vmPrivacyStatementModal.HasAcceptedPrivacyStatement;
                 await _dal.UpdateEntity(roleUser);
@@ -447,16 +446,16 @@ namespace Interview.UI.Controllers
                 await SetPrivacyStatementModalViewBag();
                 return PartialView(vmPrivacyStatementModal);
             }
-
+            
         }
 
         private async Task SetPrivacyStatementModalViewBag()
         {
 
             Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
-            RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, (Guid)LoggedInMockUser.Id);
+            RoleUser roleUser = await _dal.GetRoleUserByProcessIdAndUserId((Guid)_state.ProcessId, EntraId);
 
-            ViewBag.MessageKey = roleUser.RoleType == RoleTypes.Candidate ? "PrivacyStatementCandidate" : "PrivacyStatementBoardMember";
+            ViewBag.MessageKey = roleUser.RoleUserType == RoleUserTypes.Candidate ? "PrivacyStatementCandidate" : "PrivacyStatementBoardMember";
             ViewBag.EmailSentFrom = process.EmailServiceSentFrom;
 
         }
@@ -466,8 +465,8 @@ namespace Interview.UI.Controllers
 
             bool showPrivacyStatementModal = false;
 
-            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleType == RoleTypes.Candidate || roleUser.RoleType == RoleTypes.Interviewer
-                || roleUser.RoleType == RoleTypes.Lead))
+            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleUserType == RoleUserTypes.Candidate || roleUser.RoleUserType == RoleUserTypes.Interviewer
+                || roleUser.RoleUserType == RoleUserTypes.Lead))
             {
                 showPrivacyStatementModal = true;
                 WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");

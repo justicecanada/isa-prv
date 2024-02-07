@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interview.UI.Tests", "Inter
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0B5263D4-A10E-43EE-87EB-8315D0D66D51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContainerAppsAuth", "ContainerAppsAuth\ContainerAppsAuth.csproj", "{A8A19EB3-0E93-4EFC-8E79-D5B87C9DEC57}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5263D4-A10E-43EE-87EB-8315D0D66D51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8A19EB3-0E93-4EFC-8E79-D5B87C9DEC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8A19EB3-0E93-4EFC-8E79-D5B87C9DEC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8A19EB3-0E93-4EFC-8E79-D5B87C9DEC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8A19EB3-0E93-4EFC-8E79-D5B87C9DEC57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

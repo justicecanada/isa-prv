@@ -9,9 +9,9 @@
     RoleUser roleUser = ViewBag.RoleUser;
     string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
 
-    var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
+    var rolesItems = Html.GetEnumSelectList<VmRoleUserTypes>().ToList();
     rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    rolesItems.Where(x => x.Value == ((int)roleUser.RoleType).ToString()).First().Selected = true;
+    rolesItems.Where(x => x.Value == ((int)roleUser.RoleUserType).ToString()).First().Selected = true;
 
     var userLanguageItems = Html.GetEnumSelectList<VmLanguageTypes>().ToList();
     userLanguageItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));

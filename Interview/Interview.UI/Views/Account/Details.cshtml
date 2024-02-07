@@ -1,9 +1,16 @@
-﻿@using Interview.UI.Models.Graph
+﻿@model VmInternalUser
+@using Interview.Entities
+@using Interview.UI.Models.Graph
 @inject IViewLocalizer localizer
 
 @{
 
-    EntraUser user = ViewBag.EntraUser;
+    var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
+    rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    if (Model.RoleType != null)
+        rolesItems.Where(x => x.Value == ((int)Model.RoleType).ToString()).First().Selected = true;
+
+    GraphUser graphUser = ViewBag.GraphUser;
 
 }
 
@@ -11,12 +18,37 @@
 
 <h1>@localizer["Title"]</h1>
 
+@if (graphUser.id != Guid.Empty)
+{
+    <section class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                @localizer["ChangeRole"]
+            </h3>
+        </div>
+        <div class="panel-body">
+            <form>
+
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(x => x.Id)
+
+                @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
+
+                <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ChangeRole", "Account")
+                       formmethod="post" />
+
+            </form>
+        </div>
+    </section>
+}
+
 <div class="row">
     <div class="col-md-3">
         <strong>@localizer["GivenName"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.givenName
+        @graphUser.givenName
     </div>
 </div>
 
@@ -25,7 +57,7 @@
         <strong>@localizer["SurName"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.surname
+        @graphUser.surname
     </div>
 </div>
 
@@ -34,7 +66,7 @@
         <strong>@localizer["DisplayName"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.displayName
+        @graphUser.displayName
     </div>
 </div>
 
@@ -43,7 +75,7 @@
         <strong>@localizer["JobTitle"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.jobTitle
+        @graphUser.jobTitle
     </div>
 </div>
 
@@ -52,7 +84,7 @@
         <strong>@localizer["Mail"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.mail
+        @graphUser.mail
     </div>
 </div>
 
@@ -61,7 +93,7 @@
         <strong>@localizer["MobilePhone"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.mobilePhone
+        @graphUser.mobilePhone
     </div>
 </div>
 
@@ -70,7 +102,7 @@
         <strong>@localizer["OfficeLocation"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.officeLocation
+        @graphUser.officeLocation
     </div>
 </div>
 
@@ -79,7 +111,7 @@
         <strong>@localizer["PreferredLanguage"]:</strong>
     </div>
     <div class="col-md-9">
-        @user.preferredLanguage
+        @graphUser.preferredLanguage
     </div>
 </div>
 
@@ -89,7 +121,7 @@
     </div>
     <div class="col-md-9">
         @{
-            string businessPhones = string.Join(",", user.businessPhones);
+            string businessPhones = graphUser.businessPhones == null ? "" : string.Join(",", graphUser.businessPhones);
         }
         @businessPhones
     </div>

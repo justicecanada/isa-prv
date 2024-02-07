@@ -120,6 +120,9 @@
   <data name="BusinessPhone" xml:space="preserve">
     <value>Business Phone</value>
   </data>
+  <data name="ChangeRole" xml:space="preserve">
+    <value>Change Role</value>
+  </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Display Name</value>
   </data>
@@ -138,8 +141,14 @@
   <data name="OfficeLocation" xml:space="preserve">
     <value>Office Location</value>
   </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>== Please Select ==</value>
+  </data>
   <data name="PreferredLanguage" xml:space="preserve">
     <value>Preferred Language</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="SurName" xml:space="preserve">
     <value>Surname</value>

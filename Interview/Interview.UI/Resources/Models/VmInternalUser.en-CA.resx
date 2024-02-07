@@ -117,43 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BusinessPhone" xml:space="preserve">
-    <value>Business Phone (fr)</value>
-  </data>
-  <data name="ChangeRole" xml:space="preserve">
-    <value>Change Role (fr)</value>
-  </data>
-  <data name="DisplayName" xml:space="preserve">
-    <value>Display Name (fr)</value>
-  </data>
-  <data name="GivenName" xml:space="preserve">
-    <value>Given Name (fr)</value>
-  </data>
-  <data name="JobTitle" xml:space="preserve">
-    <value>Job Title (fr)</value>
-  </data>
-  <data name="Mail" xml:space="preserve">
-    <value>Email (fr)</value>
-  </data>
-  <data name="MobilePhone" xml:space="preserve">
-    <value>Mobile Phone (fr)</value>
-  </data>
-  <data name="OfficeLocation" xml:space="preserve">
-    <value>Office Location (fr)</value>
-  </data>
-  <data name="PleaseSelect" xml:space="preserve">
-    <value>== Veuillez sélectionner ==</value>
-  </data>
-  <data name="PreferredLanguage" xml:space="preserve">
-    <value>Preferred Language (fr)</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save (fr)</value>
-  </data>
-  <data name="SurName" xml:space="preserve">
-    <value>Surname (fr)</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Account Details (fr)</value>
+  <data name="RoleType" xml:space="preserve">
+    <value>Role</value>
   </data>
 </root>

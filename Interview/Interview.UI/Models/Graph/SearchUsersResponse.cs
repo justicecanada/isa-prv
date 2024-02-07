@@ -4,7 +4,7 @@
     public class SearchUsersResponse
     {
 
-        public List<EntraUser> value { get; set; }
+        public List<GraphUser> value { get; set; }
 
     }
 

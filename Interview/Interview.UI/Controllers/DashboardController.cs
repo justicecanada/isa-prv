@@ -20,9 +20,8 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DashboardController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions
-            , IStringLocalizer<BaseController> baseLocalizer) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+        public DashboardController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IStringLocalizer<BaseController> baseLocalizer) 
+            : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
         }

@@ -1,4 +1,4 @@
-﻿using Interview.UI.Services.Mock.Identity;
+﻿using Interview.UI.Models.Graph;
 
 namespace Interview.UI.Models.Groups
 {
@@ -12,7 +12,7 @@ namespace Interview.UI.Models.Groups
 
         public VmGroup Group { get; set; }
 
-        public MockUser MockUser { get; set; }
+        public GraphUser GraphUser { get; set; }
 
     }
 

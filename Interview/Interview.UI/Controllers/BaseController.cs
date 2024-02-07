@@ -3,8 +3,8 @@ using GoC.WebTemplate.Components.Entities;
 using GoC.WebTemplate.CoreMVC.Controllers;
 using Interview.Entities;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
-using Interview.UI.Services.Mock.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Localization;
@@ -22,19 +22,16 @@ namespace Interview.UI.Controllers
 
         private string _assemblyVersion;
         private string _buildId;
-        private readonly IOptions<JusticeOptions> _justiceOptions;
         private readonly IStringLocalizer<BaseController> _localizer;
         protected readonly DalSql _dal;
-        private MockUser _loggedInMockUser;
 
         #endregion
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
         {
 
-            _justiceOptions = justiceOptions;
             _dal = dal;
             _localizer = localizer;
 
@@ -63,7 +60,7 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Properties
+        #region Protected Properties
 
         protected string AssemblyVersion
         {
@@ -91,60 +88,32 @@ namespace Interview.UI.Controllers
             }
         }
 
-        #endregion
-
-        #region Protected MockUser Properties and Methods
-
-        protected MockUser LoggedInMockUser
+        protected Guid EntraId
         {
             get
             {
-                if (_loggedInMockUser == null)
-                    _loggedInMockUser = _dal.GetMockUserByName(_justiceOptions.Value.MockLoggedInUserName).GetAwaiter().GetResult();
-
-                return _loggedInMockUser;
+                return new Guid(User.Claims.FirstOrDefault(x => x.Type == Constants.EntraIdClaimKey).Value);
             }
         }
 
-        protected bool IsLoggedInMockUserInRole(MockLoggedInUserRoles roleType)
-        {
-            return _justiceOptions.Value.MockLoggedInUserRole == roleType;
-        }
+        #endregion
+
+        #region Protected Methods
 
         protected async Task<List<Process>> GetProcessesForLoggedInUser()
         {
 
             List<Process> result = null;
 
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+            if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
                 result = await _dal.GetAllProcesses();
-            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                result = await _dal.GetProcessesForGroupOwner((Guid)LoggedInMockUser.Id);
+            else if (User.IsInRole(RoleTypes.Owner.ToString()))
+                result = await _dal.GetProcessesForGroupOwner(EntraId);
             else
-                result = await _dal.GetProcessesForRoleUser((Guid)LoggedInMockUser.Id);
+                result = await _dal.GetProcessesForRoleUser(EntraId);
             result.OrderByDescending(x => x.CreatedDate);
 
             return result;
-
-        }
-
-        #endregion
-
-        #region Public Action Methods
-
-        [HttpGet]
-        public async Task<JsonResult> LookupInteralUser(string query)
-        {
-
-            List<MockUser> result = null;
-
-            if (!string.IsNullOrEmpty(query))
-                result = await _dal.LookupInteralMockUser(query);
-
-            return new JsonResult(new { result = true, results = result })
-            {
-                StatusCode = 200
-            };
 
         }
 

@@ -1,5 +1,4 @@
 ﻿using Interview.Entities;
-using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI.Services.DAL
 {
@@ -52,23 +51,13 @@ namespace Interview.UI.Services.DAL
         Task<RoleUser> GetRoleUserByProcessIdAndUserId(Guid processId, Guid userId);
 
         Task<List<GroupOwner>> GetGroupOwnersByProcessIdAndUserId(Guid processId, Guid userId);
+
+        Task<InternalUser> GetInternalUserByEntraId(Guid entraId);
+
+        Task<List<ExternalUser>> GetExternalUsersByEmail(string email);
+
+        Task<List<ExternalUser>> GetExternalUsers();
         
-        #endregion
-
-        #region Mock Identity Methods
-
-        Task<List<MockUser>> LookupInteralMockUser(string query);
-
-        Task<List<MockUser>> GetListExistingExternalMockUser();
-
-        Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType);
-
-        Task<MockUser?> GetMockUserById(Guid id);
-
-        Task<MockUser?> GetMockUserByName(string name);
-
-        Task<Guid> AddMockUser(MockUser mockUser);
-
         #endregion
 
     }

@@ -1,5 +1,4 @@
-﻿using Interview.UI.Services.Mock.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace Interview.UI.Data
@@ -16,7 +15,8 @@ namespace Interview.UI.Data
             _connectionString = config["sql-connection-string"];
 
             //if (hostEnvironment.EnvironmentName.ToLower() != "development")
-            //    Database.Migrate();
+            // Only use this...
+            //Database.Migrate();
 
         }
 
@@ -25,12 +25,15 @@ namespace Interview.UI.Data
 
             _connectionString = connectionString;
 
+            //Database.EnsureCreatedAsync();
+
         }
 
         public DbSet<Interview.Entities.Process> Processes { get; set; }
         public DbSet<Interview.Entities.ProcessGroup> ProcessGroups { get; set; }
         public DbSet<Interview.Entities.EmailTemplate> EmailTemplates { get; set; }
-        public DbSet<Interview.Entities.Equity> Equities { get; set; } 
+        public DbSet<Interview.Entities.Equity> Equities { get; set; }
+        public DbSet<Interview.Entities.ExternalUser> ExternalUsers { get; set; }
         public DbSet<Interview.Entities.Group> Groups { get; set; }
         public DbSet<Interview.Entities.GroupOwner> GroupsOwners { get; set; }
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }
@@ -38,9 +41,7 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.Schedule> Schedules { get; set; }
         public DbSet<Interview.Entities.RoleUser> RoleUsers { get; set; }
         public DbSet<Interview.Entities.RoleUserEquity> RoleUserEquities { get; set; }
-
-        // Mocked up data
-        public DbSet<Interview.UI.Services.Mock.Identity.MockUser> MockUsers { get; set; }
+        public DbSet<Interview.Entities.InternalUser> InternalUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

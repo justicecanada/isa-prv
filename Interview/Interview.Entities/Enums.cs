@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 namespace Interview.Entities
 {
 
+    public enum RoleTypes
+    {
+        Admin = 1,
+        Owner = 2,
+        System = 3
+    }
+
     public enum ScheduleTypes
     {
         Candidate = 1,
@@ -21,7 +28,7 @@ namespace Interview.Entities
         NewExternal = 2
     }
 
-    public enum RoleTypes
+    public enum RoleUserTypes
     {
         HR = 1,
         Interviewer = 2,

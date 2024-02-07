@@ -12,6 +12,16 @@ namespace Interview.UI.Models
 
     public enum VmRoleTypes
     {
+        [Display(Name = "Admin")]
+        Admin = 1,
+        [Display(Name = "Owner")]
+        Owner = 2,
+        [Display(Name = "System")]
+        System = 3
+    }
+
+    public enum VmRoleUserTypes
+    {
         [Display(Name = "HR")]
         HR = 1,
         [Display(Name = "Interviewer")]
