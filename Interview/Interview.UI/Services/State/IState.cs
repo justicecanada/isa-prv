@@ -6,8 +6,6 @@
 
         public Guid? ProcessId { get; set;  }
 
-        public Guid? EntraId { get; set; }
-
     }
 
 }

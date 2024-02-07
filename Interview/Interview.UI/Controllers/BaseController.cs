@@ -92,6 +92,14 @@ namespace Interview.UI.Controllers
             }
         }
 
+        protected Guid EntraId
+        {
+            get
+            {
+                return new Guid(User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value);
+            }
+        }
+
         #endregion
 
         #region Protected MockUser Properties and Methods

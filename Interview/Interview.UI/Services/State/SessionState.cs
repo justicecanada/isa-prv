@@ -31,24 +31,6 @@ namespace Interview.UI.Services.State
             }
         }
 
-        public Guid? EntraId
-        {
-            get
-            {
-                if (_session.Keys.Contains(Constants.EntraId))
-                    return new Guid(_session.GetString(Constants.EntraId));
-                else
-                    return null;
-            }
-            set
-            {
-                if (value == null)
-                    _session.Remove(Constants.EntraId);
-                else
-                    _session.SetString(Constants.EntraId, value.ToString());
-            }
-        }
-
     }
 
 }

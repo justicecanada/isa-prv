@@ -25,7 +25,6 @@ namespace Interview.UI.Controllers
         private readonly IUsers _usersManager;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IMapper _mapper;
-        private readonly IState _state;
 
         #endregion
 
@@ -33,7 +32,7 @@ namespace Interview.UI.Controllers
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
             IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
-            IMapper mapper, IState state)
+            IMapper mapper)
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
 
@@ -41,7 +40,6 @@ namespace Interview.UI.Controllers
             _usersManager = userManager;
             _hostEnvironment = hostEnvironment;
             _mapper = mapper;
-            _state = state;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -62,32 +60,12 @@ namespace Interview.UI.Controllers
 
             if (_hostEnvironment.IsDevelopment())
             {
-                EntraUser entraUser = await GetEntraUser();
-
-                _state.EntraId = entraUser.id;
-
                 result = new RedirectToActionResult("Index", "Default", null);
             }
             else
-                result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Account/LoggedIn");
+                result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Default/Index");
 
             return result;
-
-        }
-
-        #endregion
-
-        #region Public Loggedin
-
-        [HttpGet]
-        public async Task<IActionResult> LoggedIn()
-        {
-
-            EntraUser entraUser = await GetEntraUser();
-
-            _state.EntraId = entraUser.id;
-
-            return RedirectToAction("Index", "Default");
 
         }
 
@@ -102,7 +80,7 @@ namespace Interview.UI.Controllers
 
             VmInternalUser result = null;
             EntraUser entraUser = await GetEntraUser();
-            InternalUser internalUser = await _dal.GetInternalUserByEntraId((Guid)_state.EntraId);
+            InternalUser internalUser = await _dal.GetInternalUserByEntraId(EntraId);
 
             ViewBag.EntraUser = entraUser;
             result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
@@ -121,7 +99,7 @@ namespace Interview.UI.Controllers
 
                 InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
 
-                internaluser.EntraId = _state.EntraId;
+                internaluser.EntraId = EntraId;
                 if (vmInternalUser.Id == null)
                     await _dal.AddEntity<InternalUser>(internaluser);
                 else
