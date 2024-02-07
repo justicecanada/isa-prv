@@ -25,14 +25,15 @@ namespace Interview.UI.Controllers
         private readonly IUsers _usersManager;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IMapper _mapper;
+        private readonly IState _state;
 
         #endregion
 
         #region Constructors
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
-            IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment, 
-            IMapper mapper)
+            IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
+            IMapper mapper, IState state)
             : base(modelAccessor, justiceOptions, dal, baseLocalizer)
         {
 
@@ -40,6 +41,7 @@ namespace Interview.UI.Controllers
             _usersManager = userManager;
             _hostEnvironment = hostEnvironment;
             _mapper = mapper;
+            _state = state;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -53,17 +55,39 @@ namespace Interview.UI.Controllers
         #region Public Login Methods
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
 
             IActionResult result = null;
 
             if (_hostEnvironment.IsDevelopment())
+            {
+                EntraUser entraUser = await GetEntraUser();
+
+                _state.EntraId = entraUser.id;
+
                 result = new RedirectToActionResult("Index", "Default", null);
+            }
             else
                 result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Default/Index");
 
             return result;
+
+        }
+
+        #endregion
+
+        #region Public Loggedin
+
+        [HttpGet]
+        public async Task<IActionResult> LoggedIn()
+        {
+
+            EntraUser entraUser = await GetEntraUser();
+
+            _state.EntraId = entraUser.id;
+
+            return RedirectToAction("Index", "Default");
 
         }
 
@@ -77,9 +101,10 @@ namespace Interview.UI.Controllers
         {
 
             VmInternalUser result = null;
-            EntraUser entraUser = await SetDetailsViewBag();
-            InternalUser internalUser = await _dal.GetInternalUserByEntraName(entraUser.userPrincipalName);
+            EntraUser entraUser = await GetEntraUser();
+            InternalUser internalUser = await _dal.GetInternalUserByEntraId((Guid)_state.EntraId);
 
+            ViewBag.EntraUser = entraUser;
             result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
 
             return View(result);
@@ -96,7 +121,7 @@ namespace Interview.UI.Controllers
 
                 InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
 
-                internaluser.EntraUserName = User.Identity.Name;
+                internaluser.EntraId = _state.EntraId;
                 if (vmInternalUser.Id == null)
                     await _dal.AddEntity<InternalUser>(internaluser);
                 else
@@ -107,31 +132,12 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                await SetDetailsViewBag();
+                EntraUser entraUser = await GetEntraUser();
+
+                ViewBag.EntraUser = entraUser;
+
                 return View("Details", vmInternalUser);
             }
-
-        }
-
-        private async Task<EntraUser> SetDetailsViewBag()
-        {
-
-            // Need to add Authorization Bearer (token) request header:
-            // https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#example-2-signed-in-user-request
-            // Links regarding Container Apps Easy Auth and tokens:
-            //   1. https://johnnyreilly.com/azure-container-apps-easy-auth-and-dotnet-authentication
-            //   2. https://github.com/microsoft/azure-container-apps/issues/995#issuecomment-1820496130
-            //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
-
-            // Get Token
-            EntraUser result = null;
-            TokenResponse tokenResponse = await _tokenManager.GetToken();
-            string userPrincipalName = User.Identity.Name;
-
-            result = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            ViewBag.EntraUser = result;
-
-            return result;
 
         }
 
@@ -185,6 +191,32 @@ namespace Interview.UI.Controllers
             {
                 StatusCode = 200
             };
+
+        }
+
+        #endregion
+
+        #region Private Common Methods
+
+        private async Task<EntraUser> GetEntraUser()
+        {
+
+            // Need to add Authorization Bearer (token) request header:
+            // https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#example-2-signed-in-user-request
+            // Links regarding Container Apps Easy Auth and tokens:
+            //   1. https://johnnyreilly.com/azure-container-apps-easy-auth-and-dotnet-authentication
+            //   2. https://github.com/microsoft/azure-container-apps/issues/995#issuecomment-1820496130
+            //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
+
+            // Get Token
+            EntraUser result = null;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            string userPrincipalName = User.Identity.Name;
+
+            result = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
+            ViewBag.EntraUser = result;
+
+            return result;
 
         }
 

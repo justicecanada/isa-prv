@@ -11,6 +11,7 @@
 
         public const string AssemblyVersionKey = "ASSEMBLY_VERSION";
         public const string ProcessId = "PROCESS_ID";
+        public const string EntraId = "ENTRA_ID";
 
     }
 

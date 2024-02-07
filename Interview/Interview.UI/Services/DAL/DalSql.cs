@@ -487,10 +487,10 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<InternalUser> GetInternalUserByEntraName(string entraName)
+        public async Task<InternalUser> GetInternalUserByEntraId(Guid entraId)
         {
 
-            InternalUser result = await _context.InternalUsers.Where(x => x.EntraUserName == entraName).FirstOrDefaultAsync();
+            InternalUser result = await _context.InternalUsers.Where(x => x.EntraId == entraId).FirstOrDefaultAsync();
 
             return result;
 
