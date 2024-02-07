@@ -55,7 +55,7 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?$filter=startswith(displayname, '{query}')&$top=10"))
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10"))
             {
                 Headers =
                 {

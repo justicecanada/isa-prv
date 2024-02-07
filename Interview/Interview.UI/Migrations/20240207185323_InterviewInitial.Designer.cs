@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20240207165929_InterviewInitial")]
+    [Migration("20240207185323_InterviewInitial")]
     partial class InterviewInitial
     {
         /// <inheritdoc />
