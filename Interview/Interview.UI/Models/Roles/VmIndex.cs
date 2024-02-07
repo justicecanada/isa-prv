@@ -22,7 +22,7 @@ namespace Interview.UI.Models.Roles
 
         [Display(Name = "ExistingExternalName")]
         [RequiredIf("UserType", "UserType", UserTypes.ExistingExternal, ErrorMessage = "RequiredError")]        
-        public Guid? ExistingExternalId { get; set; }
+        public string? ExistingExternalEmail { get; set; }
 
         [Display(Name = "NewExternalFirstName")]
         [RequiredIf("UserType", "UserType", UserTypes.NewExternal, ErrorMessage = "RequiredError")]       

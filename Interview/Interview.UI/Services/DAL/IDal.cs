@@ -56,6 +56,8 @@ namespace Interview.UI.Services.DAL
         Task<InternalUser> GetInternalUserByEntraName(string entraName);
 
         Task<List<ExternalUser>> GetExternalUsersByEmail(string email);
+
+        Task<List<ExternalUser>> GetExternalUsers();
         
         #endregion
 

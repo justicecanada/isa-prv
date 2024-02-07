@@ -505,6 +505,15 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<ExternalUser>> GetExternalUsers()
+        {
+
+            List<ExternalUser> result = await _context.ExternalUsers.ToListAsync();
+
+            return result;
+
+        }
+
         #endregion
 
         #region Mock Identity Methods

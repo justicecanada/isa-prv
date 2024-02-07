@@ -5,11 +5,9 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
-//using Interview.UI.Models.Groups;
 using Interview.UI.Models.Roles;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
-using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -139,7 +137,7 @@ namespace Interview.UI.Controllers
                     break;
                 case UserTypes.ExistingExternal:                // Ensure RoleUser hasn't been added to process
                     roleUsersForProcess = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-                    if (roleUsersForProcess.Any(x => x.UserId == (Guid)vmIndex.ExistingExternalId))
+                    if (roleUsersForProcess.Any(x => x.ExternalUserEmail.ToLower() == vmIndex.ExistingExternalEmail.ToLower()))
                         ModelState.AddModelError("ExistingExternalId", _localizer["UserAlreadyInRole"].Value);
                     break;
                 case UserTypes.NewExternal:                     // Ensure new External User doesn't exist
@@ -162,12 +160,12 @@ namespace Interview.UI.Controllers
             var roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
             ViewBag.RoleUsers = roleUsers;
 
+            // Existing Users
+            var externalUsers = await _dal.GetExternalUsers();
+            ViewBag.ExternalUsers = externalUsers;
+
             // Show Equities
             ViewBag.ShowEquities = User.IsInRole(RoleTypes.Admin.ToString());
-
-            // MockUsers
-            var mockExistingExternalUsers = await _dal.GetListExistingExternalMockUser();
-            ViewBag.MockExistingExternalUsers = mockExistingExternalUsers;
 
         }
 
@@ -183,49 +181,6 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/Index.js?v={BuildId}'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/TablePartial.js?v={BuildId}'></script>");
-
-        }
-
-        private async Task<MockUser> GetMockUser(VmIndex vmIndex)
-        {
-
-            MockUser result = null;
-
-            switch (vmIndex.UserType)
-            {
-
-                case UserTypes.Internal:
-
-                    result = await _dal.GetMockUserByIdAndType((Guid)vmIndex.InternalId, UserTypes.Internal);
-                    if (result == null)
-                        ModelState.AddModelError("InternalName", _localizer["InternalUserDoesNotExist"]);
-
-                    break;
-
-                case UserTypes.ExistingExternal:
-
-                    result = await _dal.GetMockUserByIdAndType((Guid)vmIndex.ExistingExternalId, UserTypes.ExistingExternal);
-
-                    break;
-
-                case UserTypes.NewExternal:
-
-                    result = new MockUser()
-                    {
-                        UserName = vmIndex.NewExternalEmail,
-                        FirstName = vmIndex.NewExternalFirstName,
-                        LastName = vmIndex.NewExternalLastName,
-                        Email = vmIndex.NewExternalEmail,
-                        UserType = UserTypes.NewExternal
-                    };
-
-                    await _dal.AddMockUser(result);
-
-                    break;
-
-            }
-
-            return result;
 
         }
 
@@ -268,7 +223,12 @@ namespace Interview.UI.Controllers
             }
             else if (vmIndex.UserType == UserTypes.ExistingExternal)
             {
-
+                List<ExternalUser> externalUsers = await _dal.GetExternalUsersByEmail(vmIndex.ExistingExternalEmail);
+                ExternalUser externalUser = externalUsers.First();
+                id = externalUser.Id;
+                userFirstName = externalUser.GivenName;
+                userLastName = externalUser.SurName;
+                result.ExternalUserEmail = vmIndex.ExistingExternalEmail;
             }
 
             result.UserId = (Guid)id;
@@ -338,7 +298,7 @@ namespace Interview.UI.Controllers
             await _dal.UpdateEntity(dbRoleUser);
 
             // Handle Equities
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin))
+            if (User.IsInRole(RoleTypes.Admin.ToString()))
             {
                 var dbRoleUserEquities = await _dal.GetRoleUserEquitiesByRoleUserId((Guid)vmRoleUser.Id);
                 var postedEquities = vmRoleUser.Equities.Where(x => x.IsSelected).ToList();

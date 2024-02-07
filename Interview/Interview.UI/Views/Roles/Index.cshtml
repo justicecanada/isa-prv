@@ -18,15 +18,15 @@
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     Process process = ViewBag.Process;
 
-    List<MockUser> mockExistingExternalUsers = ViewBag.MockExistingExternalUsers;
-    List<SelectListItem> mockExistingExternalUsersItems = new List<SelectListItem>();
-    mockExistingExternalUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
-    foreach (var mockExistingUser in mockExistingExternalUsers)
+    List<ExternalUser> externalUsers = ViewBag.ExternalUsers;
+    List<SelectListItem> externalUsersItems = new List<SelectListItem>();
+    externalUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var externalUser in externalUsers)
     {
-        mockExistingExternalUsersItems.Add(new SelectListItem()
+        externalUsersItems.Add(new SelectListItem()
         {         
-            Value = mockExistingUser.Id.ToString(),
-            Text = $"{mockExistingUser.LastName}, {mockExistingUser.FirstName}"
+            Value = externalUser.Email,
+            Text = $"{externalUser.SurName}, {externalUser.GivenName}"
         });
     }
 
@@ -81,7 +81,7 @@
                     <label for="ExistingExternal" class="form-check-label">@localizer["ExistingExternal"]</label>
                 </div>
                 <div id="existingExternalDetails" class="row userTypeDetails mrgn-lft-md" style="display:@(Model.UserType == UserTypes.ExistingExternal ? "" : "none" )">
-                    @Html.EditorFor(x => x.ExistingExternalId, "Question", new { inputControl = @Html.DropDownList("ExistingExternalId", mockExistingExternalUsersItems, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.ExistingExternalEmail, "Question", new { inputControl = @Html.DropDownList("ExistingExternalEmail", externalUsersItems, new { @class = "form-control" }) })
                 </div>
 
                 <div class="row">
