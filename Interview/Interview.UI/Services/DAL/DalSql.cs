@@ -1,7 +1,6 @@
 ﻿using Interview.Entities;
 using Interview.UI.Data;
 using Interview.UI.Models.Roles;
-using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Group = Interview.Entities.Group;
@@ -509,70 +508,6 @@ namespace Interview.UI.Services.DAL
         {
 
             List<ExternalUser> result = await _context.ExternalUsers.ToListAsync();
-
-            return result;
-
-        }
-
-        #endregion
-
-        #region Mock Identity Methods
-
-        public async Task<List<MockUser>> LookupInteralMockUser(string query)
-        {
-
-            List<MockUser> result = await _context.MockUsers.Where(x => ((x.FirstName.ToLower().StartsWith(query.ToLower()) || x.LastName.ToLower().StartsWith(query.ToLower()))
-                    && x.UserType == UserTypes.Internal)).ToListAsync();
-
-            return result;
-
-        }
-
-        public async Task<List<MockUser>> GetListExistingExternalMockUser()
-        {
-
-            List<MockUser> result = await _context.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
-
-            return result;
-
-        }
-
-        public async Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType)
-        {
-
-            MockUser? result = await _context.MockUsers.Where(x => (x.Id == id &&
-                        x.UserType == userType)).FirstOrDefaultAsync();
-
-            return result;
-
-        }
-
-        public async Task<MockUser?> GetMockUserById(Guid id)
-        {
-
-            MockUser? result = await _context.MockUsers.Where(x => (x.Id == id)).FirstOrDefaultAsync();
-
-            return result;
-
-        }
-
-        public async Task<MockUser> GetMockUserByName(string name)
-        {
-            
-            MockUser result = await _context.MockUsers.Where(x => x.UserName == name).FirstAsync();
-
-            return result;
-
-        }
-
-        public async Task<Guid> AddMockUser(MockUser mockUser)
-        {
-
-            Guid result;
-
-            _context.MockUsers.Add(mockUser).State = EntityState.Added;
-            await _context.SaveChangesAsync();
-            result = (Guid)mockUser.Id;
 
             return result;
 

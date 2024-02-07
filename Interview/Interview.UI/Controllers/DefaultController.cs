@@ -32,9 +32,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state,
             IStringLocalizer<DefaultController> localizer, IStringLocalizer<BaseController> baseLocalizer) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+            : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;

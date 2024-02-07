@@ -30,10 +30,10 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public AccountController(IModelAccessor modelAccessor, DalSql dal, IOptions<JusticeOptions> justiceOptions,
-            IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
+        public AccountController(IModelAccessor modelAccessor, DalSql dal, IToken tokenManager, IUsers userManager, 
+            IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
             IMapper mapper)
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+            : base(modelAccessor, dal, baseLocalizer)
         {
 
             _tokenManager = tokenManager;

@@ -30,9 +30,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state, 
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, 
             IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+            : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;

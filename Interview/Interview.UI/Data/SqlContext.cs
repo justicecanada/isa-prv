@@ -1,5 +1,4 @@
-﻿using Interview.UI.Services.Mock.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace Interview.UI.Data
@@ -43,9 +42,6 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.RoleUser> RoleUsers { get; set; }
         public DbSet<Interview.Entities.RoleUserEquity> RoleUserEquities { get; set; }
         public DbSet<Interview.Entities.InternalUser> InternalUsers { get; set; }
-
-        // Mocked up data
-        public DbSet<Interview.UI.Services.Mock.Identity.MockUser> MockUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

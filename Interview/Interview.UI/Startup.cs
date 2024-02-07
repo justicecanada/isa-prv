@@ -18,8 +18,6 @@ using System.Globalization;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Interview.UI.Services.Mock;
-using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
@@ -77,13 +75,9 @@ namespace Interview.UI
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.AddScoped<IToken, TokenManager>();
             services.AddScoped<IUsers, UserManager>();
-            services.AddScoped<IEmails, EmailManager>();
-            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
+            services.AddScoped<IEmails, EmailManager>();        
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();
-
-            // Mocked Services
-            services.AddTransient<MockIdentitySeeder>();
 
             // WET
             services.AddModelAccessor();

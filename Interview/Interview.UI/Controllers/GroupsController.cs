@@ -31,9 +31,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, IState state,
-            IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+        public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IToken tokenManager, 
+            IUsers userManager, IStringLocalizer<BaseController> baseLocalizer) 
+            : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;

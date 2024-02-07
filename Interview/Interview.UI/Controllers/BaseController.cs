@@ -22,7 +22,6 @@ namespace Interview.UI.Controllers
 
         private string _assemblyVersion;
         private string _buildId;
-        private readonly IOptions<JusticeOptions> _justiceOptions;
         private readonly IStringLocalizer<BaseController> _localizer;
         protected readonly DalSql _dal;
 
@@ -30,10 +29,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor, IOptions<JusticeOptions> justiceOptions, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
         {
 
-            _justiceOptions = justiceOptions;
             _dal = dal;
             _localizer = localizer;
 

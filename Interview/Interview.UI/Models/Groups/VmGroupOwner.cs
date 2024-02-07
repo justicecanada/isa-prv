@@ -1,5 +1,4 @@
 ﻿using Interview.UI.Models.Graph;
-using Interview.UI.Services.Mock.Identity;
 
 namespace Interview.UI.Models.Groups
 {
