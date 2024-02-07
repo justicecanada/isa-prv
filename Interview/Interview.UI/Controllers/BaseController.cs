@@ -5,7 +5,6 @@ using Interview.Entities;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
-using Interview.UI.Services.Mock.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Localization;
@@ -26,7 +25,6 @@ namespace Interview.UI.Controllers
         private readonly IOptions<JusticeOptions> _justiceOptions;
         private readonly IStringLocalizer<BaseController> _localizer;
         protected readonly DalSql _dal;
-        private MockUser _loggedInMockUser;
 
         #endregion
 
@@ -64,7 +62,7 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Properties
+        #region Protected Properties
 
         protected string AssemblyVersion
         {
@@ -102,35 +100,19 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Protected MockUser Properties and Methods
-
-        protected MockUser LoggedInMockUser
-        {
-            get
-            {
-                if (_loggedInMockUser == null)
-                    _loggedInMockUser = _dal.GetMockUserByName(_justiceOptions.Value.MockLoggedInUserName).GetAwaiter().GetResult();
-
-                return _loggedInMockUser;
-            }
-        }
-
-        protected bool IsLoggedInMockUserInRole(MockLoggedInUserRoles roleType)
-        {
-            return _justiceOptions.Value.MockLoggedInUserRole == roleType;
-        }
+        #region Protected Methods
 
         protected async Task<List<Process>> GetProcessesForLoggedInUser()
         {
 
             List<Process> result = null;
 
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+            if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
                 result = await _dal.GetAllProcesses();
-            else if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Owner))
-                result = await _dal.GetProcessesForGroupOwner((Guid)LoggedInMockUser.Id);
+            else if (User.IsInRole(RoleTypes.Owner.ToString()))
+                result = await _dal.GetProcessesForGroupOwner(EntraId);
             else
-                result = await _dal.GetProcessesForRoleUser((Guid)LoggedInMockUser.Id);
+                result = await _dal.GetProcessesForRoleUser(EntraId);
             result.OrderByDescending(x => x.CreatedDate);
 
             return result;
