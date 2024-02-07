@@ -96,7 +96,7 @@ namespace Interview.UI.Controllers
         {
             get
             {
-                return new Guid(User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value);
+                return new Guid(User.Claims.FirstOrDefault(x => x.Type == Constants.EntraIdClaimKey).Value);
             }
         }
 

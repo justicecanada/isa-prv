@@ -173,7 +173,7 @@ namespace Interview.UI.Auth
 
             // Inject Role from InternalUser
             var dal = Context.RequestServices.GetService<DalSql>();
-            Guid entraId = new Guid(Context.User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value);
+            Guid entraId = new Guid(Context.User.Claims.FirstOrDefault(x => x.Type == Constants.EntraIdClaimKey).Value);
             var internalUser = await dal.GetInternalUserByEntraId(entraId);
             if (internalUser != null)
             {

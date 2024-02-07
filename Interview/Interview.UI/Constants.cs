@@ -11,7 +11,7 @@
 
         public const string AssemblyVersionKey = "ASSEMBLY_VERSION";
         public const string ProcessId = "PROCESS_ID";
-        public const string EntraId = "ENTRA_ID";
+        public const string EntraIdClaimKey = "http://schemas.microsoft.com/identity/claims/objectidentifier";
 
     }
 
