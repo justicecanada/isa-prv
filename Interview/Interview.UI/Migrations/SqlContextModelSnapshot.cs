@@ -433,35 +433,6 @@ namespace Interview.UI.Migrations
                     b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("Interview.UI.Services.Mock.Identity.MockUser", b =>
-                {
-                    b.Property<Guid?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleUserType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MockUsers");
-                });
-
             modelBuilder.Entity("EquityRoleUser", b =>
                 {
                     b.HasOne("Interview.Entities.Equity", null)

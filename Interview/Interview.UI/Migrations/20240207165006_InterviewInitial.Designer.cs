@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20240205181406_InternalUserNullableRoleType")]
-    partial class InternalUserNullableRoleType
+    [Migration("20240207165006_InterviewInitial")]
+    partial class InterviewInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,26 @@ namespace Interview.UI.Migrations
                     b.ToTable("Equities");
                 });
 
+            modelBuilder.Entity("Interview.Entities.ExternalUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GivenName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SurName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExternalUsers");
+                });
+
             modelBuilder.Entity("Interview.Entities.Group", b =>
                 {
                     b.Property<Guid>("Id")
@@ -161,7 +181,7 @@ namespace Interview.UI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EntraUserId")
+                    b.Property<Guid?>("EntraId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("RoleType")
@@ -335,6 +355,10 @@ namespace Interview.UI.Migrations
                     b.Property<DateTime>("DateInserted")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ExternalUserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("HasAcceptedPrivacyStatement")
                         .HasColumnType("bit");
 
@@ -410,35 +434,6 @@ namespace Interview.UI.Migrations
                     b.HasIndex("Processid");
 
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("Interview.UI.Services.Mock.Identity.MockUser", b =>
-                {
-                    b.Property<Guid?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleUserType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MockUsers");
                 });
 
             modelBuilder.Entity("EquityRoleUser", b =>

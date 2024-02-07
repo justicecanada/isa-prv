@@ -28,6 +28,20 @@ namespace Interview.UI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExternalUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GivenName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExternalUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -43,20 +57,16 @@ namespace Interview.UI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MockUsers",
+                name: "InternalUsers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserType = table.Column<int>(type: "int", nullable: true),
-                    RoleType = table.Column<int>(type: "int", nullable: false)
+                    EntraId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RoleType = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MockUsers", x => x.Id);
+                    table.PrimaryKey("PK_InternalUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,7 +226,9 @@ namespace Interview.UI.Migrations
                     UserFirstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserLastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsExternal = table.Column<bool>(type: "bit", nullable: true),
-                    RoleType = table.Column<int>(type: "int", nullable: false),
+                    ExternalUserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateExternalEmailSent = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RoleUserType = table.Column<int>(type: "int", nullable: false),
                     LanguageType = table.Column<int>(type: "int", nullable: true),
                     DateInserted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HasAcceptedPrivacyStatement = table.Column<bool>(type: "bit", nullable: false)
@@ -260,7 +272,7 @@ namespace Interview.UI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     InterviewId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleType = table.Column<int>(type: "int", nullable: false)
+                    RoleUserType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -393,16 +405,19 @@ namespace Interview.UI.Migrations
                 name: "EquityRoleUser");
 
             migrationBuilder.DropTable(
+                name: "ExternalUsers");
+
+            migrationBuilder.DropTable(
                 name: "GroupProcess");
 
             migrationBuilder.DropTable(
                 name: "GroupsOwners");
 
             migrationBuilder.DropTable(
-                name: "InterviewUsers");
+                name: "InternalUsers");
 
             migrationBuilder.DropTable(
-                name: "MockUsers");
+                name: "InterviewUsers");
 
             migrationBuilder.DropTable(
                 name: "ProcessGroups");
