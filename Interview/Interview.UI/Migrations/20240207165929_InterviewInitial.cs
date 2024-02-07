@@ -226,7 +226,7 @@ namespace Interview.UI.Migrations
                     UserFirstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserLastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsExternal = table.Column<bool>(type: "bit", nullable: true),
-                    ExternalUserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExternalUserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateExternalEmailSent = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RoleUserType = table.Column<int>(type: "int", nullable: false),
                     LanguageType = table.Column<int>(type: "int", nullable: true),

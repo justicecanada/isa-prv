@@ -353,7 +353,6 @@ namespace Interview.UI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ExternalUserEmail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasAcceptedPrivacyStatement")

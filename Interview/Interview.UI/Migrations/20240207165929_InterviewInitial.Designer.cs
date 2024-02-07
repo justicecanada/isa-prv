@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20240207165006_InterviewInitial")]
+    [Migration("20240207165929_InterviewInitial")]
     partial class InterviewInitial
     {
         /// <inheritdoc />
@@ -356,7 +356,6 @@ namespace Interview.UI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ExternalUserEmail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasAcceptedPrivacyStatement")
