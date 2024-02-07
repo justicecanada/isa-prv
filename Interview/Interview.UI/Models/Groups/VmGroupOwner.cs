@@ -12,7 +12,7 @@ namespace Interview.UI.Models.Groups
 
         public VmGroup Group { get; set; }
 
-        public EntraUser EntraUser { get; set; }
+        public GraphUser GraphUser { get; set; }
 
     }
 

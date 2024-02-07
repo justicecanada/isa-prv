@@ -1,7 +1,7 @@
 ﻿namespace Interview.UI.Models.Graph
 {
     
-    public class EntraUser
+    public class GraphUser
     {
 
         public Guid id { get; set; }

@@ -203,10 +203,10 @@ namespace Interview.UI.Controllers
 
             if (vmIndex.UserType == UserTypes.Internal)
             {
-                EntraUser entraUser = await GetEntraUser((Guid)vmIndex.InternalId);
-                id = entraUser.id;
-                userFirstName = entraUser.givenName;
-                userLastName = entraUser.surname;
+                GraphUser graphUser = await GetGraphUser((Guid)vmIndex.InternalId);
+                id = graphUser.id;
+                userFirstName = graphUser.givenName;
+                userLastName = graphUser.surname;
             }
             else if (vmIndex.UserType == UserTypes.NewExternal)
             {
@@ -239,10 +239,10 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task<EntraUser> GetEntraUser(Guid id)
+        private async Task<GraphUser> GetGraphUser(Guid id)
         {
 
-            EntraUser result = null;
+            GraphUser result = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             result = await _usersManager.GetUserInfoAsync(id.ToString(), tokenResponse.access_token);

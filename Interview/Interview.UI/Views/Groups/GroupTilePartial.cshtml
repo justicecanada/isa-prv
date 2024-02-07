@@ -84,7 +84,7 @@
                 @foreach (var groupOwner in Model.GroupOwners)
                 {
                     <li>
-                        @groupOwner.EntraUser.surname, @groupOwner.EntraUser.givenName
+                        @groupOwner.GraphUser.surname, @groupOwner.GraphUser.givenName
                         <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
                             <span class="glyphicon glyphicon-trash text-danger"></span>
                         </a>

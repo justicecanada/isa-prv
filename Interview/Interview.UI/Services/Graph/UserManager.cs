@@ -28,10 +28,10 @@ namespace Interview.UI.Services.Graph
 
         #region Public Methods
 
-        public async Task<EntraUser> GetUserInfoAsync(string userPrincipalName, string token)
+        public async Task<GraphUser> GetUserInfoAsync(string userPrincipalName, string token)
         {
 
-            EntraUser result = null;
+            GraphUser result = null;
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users/{userPrincipalName}"))
             {
                 Headers =
@@ -42,7 +42,7 @@ namespace Interview.UI.Services.Graph
             };
             HttpResponseMessage response = _client.SendAsync(request).Result;
 
-            result = await response.Content.ReadFromJsonAsync<EntraUser>();
+            result = await response.Content.ReadFromJsonAsync<GraphUser>();
 
             return result;
 

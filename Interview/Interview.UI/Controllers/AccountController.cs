@@ -79,10 +79,10 @@ namespace Interview.UI.Controllers
         {
 
             VmInternalUser result = null;
-            EntraUser entraUser = await GetEntraUser();
+            GraphUser graphUser = await GetGraphUser();
             InternalUser internalUser = await _dal.GetInternalUserByEntraId(EntraId);
 
-            ViewBag.EntraUser = entraUser;
+            ViewBag.GraphUser = graphUser;
             result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
 
             return View(result);
@@ -110,9 +110,9 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                EntraUser entraUser = await GetEntraUser();
+                GraphUser graphUser = await GetGraphUser();
 
-                ViewBag.EntraUser = entraUser;
+                ViewBag.GraphUser = graphUser;
 
                 return View("Details", vmInternalUser);
             }
@@ -159,11 +159,11 @@ namespace Interview.UI.Controllers
         {
 
             string result = null;
-            EntraUser entraUser = null;
+            GraphUser graphUser = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
-            entraUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            result = JsonConvert.SerializeObject(entraUser, Formatting.Indented);
+            graphUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
+            result = JsonConvert.SerializeObject(graphUser, Formatting.Indented);
 
             return new JsonResult(new { result = true, results = result })
             {
@@ -176,7 +176,7 @@ namespace Interview.UI.Controllers
 
         #region Private Common Methods
 
-        private async Task<EntraUser> GetEntraUser()
+        private async Task<GraphUser> GetGraphUser()
         {
 
             // Need to add Authorization Bearer (token) request header:
@@ -187,12 +187,11 @@ namespace Interview.UI.Controllers
             //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
 
             // Get Token
-            EntraUser result = null;
+            GraphUser result = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
             string userPrincipalName = User.Identity.Name;
 
             result = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            ViewBag.EntraUser = result;
 
             return result;
 

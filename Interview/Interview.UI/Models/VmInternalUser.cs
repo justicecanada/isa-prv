@@ -6,7 +6,7 @@ namespace Interview.UI.Models
     public class VmInternalUser : VmBase
     {
 
-        public string? EntraUserName { get; set; }
+        public string? GraphUserName { get; set; }
 
         [Required]
         [Display(Name = "RoleType")]

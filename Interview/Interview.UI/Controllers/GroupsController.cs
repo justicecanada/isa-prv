@@ -58,7 +58,7 @@ namespace Interview.UI.Controllers
             else
                 groups = await _dal.GetGroups(EntraId);
             vmIndex.Groups = _mapper.Map<List<VmGroup>>(groups);
-            await PopulateGroupOwnersWithEntraUser(vmIndex.Groups);
+            await PopulateGroupOwnersWithGraphUser(vmIndex.Groups);
 
             // Handle Add group
             if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
@@ -184,14 +184,14 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task PopulateGroupOwnersWithEntraUser(List<VmGroup> vmGroups)
+        private async Task PopulateGroupOwnersWithGraphUser(List<VmGroup> vmGroups)
         {
 
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             foreach (VmGroup vmGroup in vmGroups)
                 foreach (VmGroupOwner vmGroupOwner in vmGroup.GroupOwners)
-                    vmGroupOwner.EntraUser = await _usersManager.GetUserInfoAsync(vmGroupOwner.UserId.ToString(), tokenResponse.access_token);
+                    vmGroupOwner.GraphUser = await _usersManager.GetUserInfoAsync(vmGroupOwner.UserId.ToString(), tokenResponse.access_token);
 
         }
 
