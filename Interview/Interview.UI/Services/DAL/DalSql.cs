@@ -1,7 +1,6 @@
 ﻿using Interview.Entities;
 using Interview.UI.Data;
 using Interview.UI.Models.Roles;
-using Interview.UI.Services.Mock.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Group = Interview.Entities.Group;
@@ -83,6 +82,14 @@ namespace Interview.UI.Services.DAL
 
                 case nameof(RoleUserEquity):
                     _context.RoleUserEquities.Add((RoleUserEquity)entity);
+                    break;
+
+                case nameof(InternalUser):
+                    _context.InternalUsers.Add((InternalUser)entity);
+                    break;
+
+                case nameof(ExternalUser):
+                    _context.ExternalUsers.Add((ExternalUser)entity);
                     break;
 
             }
@@ -186,6 +193,18 @@ namespace Interview.UI.Services.DAL
                     result = await _context.RoleUsers.FindAsync(id);
                     break;
 
+                case nameof(InternalUser):
+
+                    // No child object
+                    result = await _context.InternalUsers.FindAsync(id);
+                    break;
+
+                case nameof(ExternalUser):
+
+                    // No child object
+                    result = await _context.ExternalUsers.FindAsync(id);
+                    break;
+
             }
 
             return result;
@@ -250,6 +269,16 @@ namespace Interview.UI.Services.DAL
                 case nameof(RoleUserEquity):
                     RoleUserEquity? roleUserEquity = await _context.RoleUserEquities.FindAsync(id);
                     _context.RoleUserEquities.Remove(roleUserEquity);
+                    break;
+
+                case nameof(InternalUser):
+                    InternalUser? internalUser = await _context.InternalUsers.FindAsync(id);
+                    _context.InternalUsers.Remove(internalUser);
+                    break;
+
+                case nameof(ExternalUser):
+                    ExternalUser? externalUser = await _context.ExternalUsers.FindAsync(id);
+                    _context.ExternalUsers.Remove(externalUser);
                     break;
 
             }
@@ -457,65 +486,28 @@ namespace Interview.UI.Services.DAL
 
         }
 
-		#endregion
-
-		#region Mock Identity Methods
-
-		public async Task<List<MockUser>> LookupInteralMockUser(string query)
+        public async Task<InternalUser> GetInternalUserByEntraId(Guid entraId)
         {
 
-            List<MockUser> result = await _context.MockUsers.Where(x => ((x.FirstName.ToLower().StartsWith(query.ToLower()) || x.LastName.ToLower().StartsWith(query.ToLower()))
-                    && x.UserType == UserTypes.Internal)).ToListAsync();
+            InternalUser result = await _context.InternalUsers.Where(x => x.EntraId == entraId).FirstOrDefaultAsync();
 
             return result;
 
         }
 
-        public async Task<List<MockUser>> GetListExistingExternalMockUser()
+        public async Task<List<ExternalUser>> GetExternalUsersByEmail(string email)
         {
 
-            List<MockUser> result = await _context.MockUsers.Where(x => x.UserType == UserTypes.ExistingExternal).ToListAsync();
+            List<ExternalUser> result = await _context.ExternalUsers.Where(x => x.Email.ToLower() == email.ToLower()).ToListAsync();
 
             return result;
 
         }
 
-        public async Task<MockUser?> GetMockUserByIdAndType(Guid id, UserTypes userType)
+        public async Task<List<ExternalUser>> GetExternalUsers()
         {
 
-            MockUser? result = await _context.MockUsers.Where(x => (x.Id == id &&
-                        x.UserType == userType)).FirstOrDefaultAsync();
-
-            return result;
-
-        }
-
-        public async Task<MockUser?> GetMockUserById(Guid id)
-        {
-
-            MockUser? result = await _context.MockUsers.Where(x => (x.Id == id)).FirstOrDefaultAsync();
-
-            return result;
-
-        }
-
-        public async Task<MockUser> GetMockUserByName(string name)
-        {
-            
-            MockUser result = await _context.MockUsers.Where(x => x.UserName == name).FirstAsync();
-
-            return result;
-
-        }
-
-        public async Task<Guid> AddMockUser(MockUser mockUser)
-        {
-
-            Guid result;
-
-            _context.MockUsers.Add(mockUser).State = EntityState.Added;
-            await _context.SaveChangesAsync();
-            result = (Guid)mockUser.Id;
+            List<ExternalUser> result = await _context.ExternalUsers.ToListAsync();
 
             return result;
 

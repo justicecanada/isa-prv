@@ -18,14 +18,11 @@ using System.Globalization;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Interview.UI.Services.Mock;
-using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
-using Interview.UI.Auth.ContainerApp;
-using Interview.UI.Auth.Localhost;
 using Interview.UI.Services.Graph;
+using Interview.UI.Auth;
 
 namespace Interview.UI
 {
@@ -44,14 +41,17 @@ namespace Interview.UI
         {
 
             var builder = services.AddMvc();
-            ConfigureAuthServices(services, builder);
+            
             ConfigureLocalizationServices(services, builder);
-
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration["sql-connection-string"]));
+
+            builder.Services.AddAuthentication(AuthenticationBuilderExtensions.AUTHSCHEMENAME)
+                    .AddAuth();
+            builder.Services.AddAuthorization();
 
             services.AddAutoMapper(typeof(MapperConfig));
 
@@ -75,35 +75,13 @@ namespace Interview.UI
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.AddScoped<IToken, TokenManager>();
             services.AddScoped<IUsers, UserManager>();
-            services.AddScoped<IEmails, EmailManager>();
-            services.Configure<JusticeOptions>(Configuration.GetSection("JusticeOptions"));           
+            services.AddScoped<IEmails, EmailManager>();        
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();
-
-            // Mocked Services
-            services.AddTransient<MockIdentitySeeder>();
 
             // WET
             services.AddModelAccessor();
             services.ConfigureGoCTemplateRequestLocalization(); // >= v2.3.0
-
-        }
-
-        private void ConfigureAuthServices(IServiceCollection services, IMvcBuilder builder)
-        {
-
-            if (Configuration["ASPNETCORE_ENVIRONMENT"] != null && Configuration["ASPNETCORE_ENVIRONMENT"].ToLower() == "development")
-            {
-                builder.Services.AddAuthentication(LocalhostAuthenticationBuilderExtensions.LOCALHOSTAUTHSCHEMENAME)
-                    .AddLocalhostAuth();
-                builder.Services.AddAuthorization();
-            }
-            else
-            {
-                builder.Services.AddAuthentication(EasyAuthAuthenticationBuilderExtensions.EASYAUTHSCHEMENAME)
-                    .AddAzureContainerAppsEasyAuth();
-                builder.Services.AddAuthorization();
-            }
 
         }
 

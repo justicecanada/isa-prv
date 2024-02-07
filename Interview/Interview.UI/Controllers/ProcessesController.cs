@@ -9,7 +9,6 @@ using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.State;
 using Interview.UI.Models.AppSettings;
 using Microsoft.Extensions.Options;
-using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.Options;
 using Interview.UI.Models.Options;
 using Microsoft.Extensions.Localization;
@@ -29,9 +28,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public ProcessesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions<JusticeOptions> justiceOptions,
-            IOptions options, IStringLocalizer<BaseController> baseLocalizer) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+        public ProcessesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions options, 
+            IStringLocalizer<BaseController> baseLocalizer) 
+            : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
@@ -115,7 +114,7 @@ namespace Interview.UI.Controllers
                 var process = _mapper.Map<Process>(vmProcess);
 
                 process.CreatedDate = DateTime.Now;
-                process.InitUserId = LoggedInMockUser.Id;
+                process.InitUserId = EntraId;
                 process.Schedules = GetSchedules(vmProcess);
                 await _dal.AddEntity<Process>(process);
 

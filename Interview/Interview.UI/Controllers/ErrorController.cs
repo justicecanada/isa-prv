@@ -12,9 +12,8 @@ namespace Interview.UI.Controllers
     public class ErrorController : BaseController
     {
             
-        public ErrorController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IOptions<JusticeOptions> justiceOptions, 
-            IStringLocalizer<BaseController> baseLocalizer) 
-            : base(modelAccessor, justiceOptions, dal, baseLocalizer)
+        public ErrorController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IStringLocalizer<BaseController> baseLocalizer) 
+            : base(modelAccessor, dal, baseLocalizer)
         {
 
         }

@@ -8,7 +8,7 @@ namespace Interview.UI.Models
 
         public Guid InterviewId { get; set; }
         public Guid UserId { get; set; }
-        public RoleTypes RoleType { get; set; }
+        public RoleUserTypes RoleUserType { get; set; }
 
     }
 

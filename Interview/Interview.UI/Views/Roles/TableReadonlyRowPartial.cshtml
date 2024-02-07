@@ -8,7 +8,7 @@
     RoleUser roleUser = ViewBag.RoleUser;
 
     string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
-    string roleName = localizer[roleUser.RoleType.ToString()].Value;
+    string roleName = localizer[roleUser.RoleUserType.ToString()].Value;
     string language = roleUser.LanguageType == null ? null : localizer[roleUser.LanguageType.ToString()].Value;
     bool showEquities = ViewBag.ShowEquities;
     string equities = "";
