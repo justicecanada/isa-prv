@@ -173,7 +173,8 @@ namespace Interview.UI.Auth
 
             // Inject Role from InternalUser
             var dal = Context.RequestServices.GetService<DalSql>();
-            var internalUser = await dal.GetInternalUserByEntraId(Context.User.Identity.Name);
+            Guid entraId = new Guid(Context.User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value);
+            var internalUser = await dal.GetInternalUserByEntraId(entraId);
             if (internalUser != null)
             {
                 // https://stackoverflow.com/questions/53292286/is-there-a-way-to-add-claims-in-an-asp-net-core-middleware-after-authentication

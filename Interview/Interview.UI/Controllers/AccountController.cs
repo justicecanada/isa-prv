@@ -69,7 +69,7 @@ namespace Interview.UI.Controllers
                 result = new RedirectToActionResult("Index", "Default", null);
             }
             else
-                result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Default/Index");
+                result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Account/LoggedIn");
 
             return result;
 
