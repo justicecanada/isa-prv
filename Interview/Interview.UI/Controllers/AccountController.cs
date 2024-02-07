@@ -140,7 +140,7 @@ namespace Interview.UI.Controllers
 
         [HttpGet]
         public async Task<JsonResult> SearchInteralUsers(string query)
-       {
+        {
 
             SearchUsersResponse result = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();

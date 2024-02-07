@@ -2,10 +2,10 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models.AppSettings;
+using Interview.UI.Models.Graph;
 using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
-using Interview.UI.Services.Mock.Identity;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -53,12 +53,12 @@ namespace Interview.UI.Controllers
             List<Group> groups = null;
 
             // Hanld groups
-            if (IsLoggedInMockUserInRole(MockLoggedInUserRoles.Admin) || IsLoggedInMockUserInRole(MockLoggedInUserRoles.System))
+            if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
                 groups = await _dal.GetGroups(null);
             else
-                groups = await _dal.GetGroups(LoggedInMockUser.Id);
+                groups = await _dal.GetGroups(EntraId);
             vmIndex.Groups = _mapper.Map<List<VmGroup>>(groups);
-            await PopulateGroupOwnersWithMockUser(vmIndex.Groups);                    // Ugly
+            await PopulateGroupOwnersWithEntraUser(vmIndex.Groups);
 
             // Handle Add group
             if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
@@ -184,12 +184,14 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task PopulateGroupOwnersWithMockUser(List<VmGroup> vmGroups)
+        private async Task PopulateGroupOwnersWithEntraUser(List<VmGroup> vmGroups)
         {
+
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             foreach (VmGroup vmGroup in vmGroups)
                 foreach (VmGroupOwner vmGroupOwner in vmGroup.GroupOwners)
-                    vmGroupOwner.MockUser = await _dal.GetMockUserByIdAndType(vmGroupOwner.UserId, UserTypes.Internal);
+                    vmGroupOwner.EntraUser = await _usersManager.GetUserInfoAsync(vmGroupOwner.UserId.ToString(), tokenResponse.access_token);
 
         }
 
@@ -246,11 +248,11 @@ namespace Interview.UI.Controllers
                 };
                 group.GroupOwners.Add(new GroupOwner()
                 {
-                    UserId = (Guid)LoggedInMockUser.Id
+                    UserId = EntraId
                 });
                 groupId = await _dal.AddEntity<Group>(group);
 
-                AddRole(MockLoggedInUserRoles.Owner, (Guid)LoggedInMockUser.Id);
+                AddRole();
 
                 return RedirectToAction("Index");
 
@@ -264,10 +266,11 @@ namespace Interview.UI.Controllers
 
         }
 
-        private void AddRole(MockLoggedInUserRoles mockLoggedInUserRole, Guid loggedInUserId)
+        private void AddRole()
         {
 
-
+            // Not sure what this does. Look at:
+            // Entrevue.Groups.AddRole()
 
         }
 
