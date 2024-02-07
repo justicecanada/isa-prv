@@ -115,7 +115,7 @@ namespace Interview.UI.Controllers
                 var process = _mapper.Map<Process>(vmProcess);
 
                 process.CreatedDate = DateTime.Now;
-                process.InitUserId = LoggedInMockUser.Id;
+                process.InitUserId = EntraId;
                 process.Schedules = GetSchedules(vmProcess);
                 await _dal.AddEntity<Process>(process);
 
