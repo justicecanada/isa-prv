@@ -275,15 +275,26 @@ namespace Interview.UI.Controllers
 
             var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
             var emailTemplate = emailTemplates.FirstOrDefault();
+
+            if (emailTemplate == null)
+            {
+                Notify("There is no email template", "danger");
+                return RedirectToAction("Index");
+            }
+
             // Todo - notify if no email template
-            var usersettings = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
             var externalUsers = await _dal.GetExternalUsers();
             var tokenResponse = await _tokenManager.GetToken();
 
             foreach (var externalUser in externalUsers)
             {
                 await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
-                // Set RoleUserEquity.DateExternalEmailSent = DateTime.Now
+
+                var roleUser = roleUsers.FirstOrDefault(x => x.UserId == externalUser.Id);
+                roleUser.DateExternalEmailSent = DateTime.Now;
+                await _dal.UpdateEntity(roleUser);
+
             }
 
             Notify("Email has been sent", "success");
