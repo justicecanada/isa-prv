@@ -373,6 +373,12 @@ namespace Interview.UI.Controllers
         private async Task SendExternalEmail(EmailTemplate emailTemplate, ExternalUser externalUser, string accessToken)
         {
 
+            string body = emailTemplate.EmailBody
+                .Replace("{0}", externalUser.GivenName)
+                .Replace("{1}", externalUser.SurName)
+                .Replace("{8}", externalUser.Id.ToString().Substring(0, 5))
+                .Replace("{9}", "<strong>Get PathBase from somewhere - this is just a placeholder</strong>");
+
             EmailEnvelope emailEnvelope = new EmailEnvelope()
             {
                 message = new EmailMessage()
@@ -380,8 +386,8 @@ namespace Interview.UI.Controllers
                     subject = emailTemplate.EmailSubject,
                     body = new EmailBody()
                     {
-                        contentType = "Text",
-                        content = emailTemplate.EmailBody
+                        contentType = "HTML",
+                        content = body
                     },
                     toRecipients = GetEmailRecipients(externalUser.Email),
                     //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
