@@ -4,11 +4,13 @@ using GoC.WebTemplate.CoreMVC.Controllers;
 using Interview.Entities;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
+using Interview.UI.Models.Shared;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Interview.UI.Controllers
@@ -114,6 +116,19 @@ namespace Interview.UI.Controllers
             result.OrderByDescending(x => x.CreatedDate);
 
             return result;
+
+        }
+
+        protected void Notify(string message, string alertClass)
+        {
+
+            VmNotificationPartial vmNotificationPartial = new VmNotificationPartial()
+            {
+                Message = message,
+                AlertClass = alertClass,
+            };
+
+            TempData[Constants.NotificationPartialModel] = JsonConvert.SerializeObject(vmNotificationPartial);
 
         }
 
