@@ -13,7 +13,9 @@
 
 @if (vmNotificatinPartial != null)
 {
-    <div class="alert alert-@vmNotificatinPartial.AlertClass wb-dismissable mrgn-tp-3">
-        <p>@vmNotificatinPartial.Message</p>
+    <div class="mrgn-tp-md wb-dismissable">
+        <div class="alert alert-@vmNotificatinPartial.AlertClass">
+            <p>@vmNotificatinPartial.Message</p>
+        </div>
     </div>
 }

@@ -276,7 +276,7 @@ namespace Interview.UI.Controllers
 
             await SendExteralEmailsForExternaRolelUsers(emailTemplate, externalRoleUsers);
 
-            Notify("Email has been sent", "success");
+            Notify(_localizer["NotifyMultipleExternalEmailSuccess"].Value, "success");
 
             return RedirectToAction("Index");
 
@@ -300,7 +300,7 @@ namespace Interview.UI.Controllers
 
             await SendExteralEmailsForExternaRolelUsers(emailTemplate, externalRoleUsers);
 
-            Notify("Email has been sent", "success");
+            Notify(_localizer["NotifyMultipleExternalEmailSuccess"].Value, "success");
 
             return RedirectToAction("Index");
 

@@ -1,8 +1,13 @@
 ﻿
+@using Interview.Entities
+
 @inject IViewLocalizer localizer
 
 @{
 
+    List<RoleUser> roleUsers = ViewBag.RoleUsers;
+    bool disabledExistingButton = !roleUsers.Any(x => (bool)x.IsExternal && !x.DateExternalEmailSent.HasValue);
+    string disabledExistingButtonClasses = disabledExistingButton ? "btn btn-default disabled" : "btn btn-default";
 
 }
 
@@ -21,7 +26,8 @@
             <span class="glyphicon glyphicon-send text-danger"></span> @localizer["EmailNotSent"]
         </div>
         <div class="col-md-6">
-            @Html.ActionLink(localizer["EmailExternalExceptAlreadySent"].Value, "EmailExternalExceptAlreadySent", "Roles", null, new { @class = "btn btn-default" })
+            @Html.ActionLink(localizer["EmailExternalExceptAlreadySent"].Value, "EmailExternalExceptAlreadySent", "Roles", null,
+            new { @class = @disabledExistingButtonClasses })
         </div>
     </div>
     <div class="row">
