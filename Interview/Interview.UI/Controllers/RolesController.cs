@@ -377,9 +377,24 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailExternalUser(Guid roleUserId)
         {
 
-            // EmailTypes.CandidateExternal
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplate = emailTemplates.FirstOrDefault();
 
-            return null;
+            if (emailTemplate == null)
+            {
+                Notify("There is no email template", "danger");
+                return RedirectToAction("Index");
+            }
+
+            var roleuser = await _dal.GetEntity<RoleUser>(roleUserId) as RoleUser;
+            var roleusers = new List<RoleUser>();
+
+            roleusers.Add(roleuser);
+            await SendExteralEmailsForExternaRolelUsers(emailTemplate, roleusers);
+
+            Notify("Email has been sent", "success");
+
+            return RedirectToAction("Index");
 
         }
 
