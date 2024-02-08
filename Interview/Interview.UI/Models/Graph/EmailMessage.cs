@@ -4,6 +4,11 @@
     public class EmailMessage
     {
 
+        public EmailMessage()
+        {
+            ccRecipients = new List<EmailRecipent>();
+        }
+
         public string subject { get; set; }
         public EmailBody body { get; set; }
         public List<EmailRecipent> toRecipients { get; set; }

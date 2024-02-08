@@ -120,11 +120,11 @@
   <data name="AlreadySentButton" xml:space="preserve">
     <value>Sent an email to external candidates except those aready sent</value>
   </data>
-  <data name="EmailAlreadySent" xml:space="preserve">
-    <value>email already sent</value>
-  </data>
   <data name="EmailedAllExternalCandidatesButton" xml:space="preserve">
     <value>Emailed all external candidates</value>
+  </data>
+  <data name="EmailExternalExceptAlreadySent" xml:space="preserve">
+    <value>email already sent</value>
   </data>
   <data name="EmailNotSent" xml:space="preserve">
     <value>email not sent</value>

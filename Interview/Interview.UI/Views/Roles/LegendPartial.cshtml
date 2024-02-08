@@ -21,7 +21,7 @@
             <span class="glyphicon glyphicon-send text-danger"></span> @localizer["EmailNotSent"]
         </div>
         <div class="col-md-6">
-            @Html.ActionLink(localizer["AlreadySentButton"].Value, "EmailAlreadySent", "Roles", null, new { @class = "btn btn-default" })
+            @Html.ActionLink(localizer["EmailExternalExceptAlreadySent"].Value, "EmailExternalExceptAlreadySent", "Roles", null, new { @class = "btn btn-default" })
         </div>
     </div>
     <div class="row">

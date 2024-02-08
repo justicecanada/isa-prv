@@ -30,13 +30,14 @@ namespace Interview.UI.Controllers
         private readonly IStringLocalizer<RolesController> _localizer;
         private readonly IToken _tokenManager;
         private readonly IUsers _usersManager;
+        private readonly IEmails _emailsManager;
 
         #endregion
 
         #region Constructors
 
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
-            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IUsers graphManager) 
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IUsers graphManager, IEmails emailsManager) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             
@@ -45,6 +46,7 @@ namespace Interview.UI.Controllers
             _localizer = localizer;
             _tokenManager = tokenManager;
             _usersManager = graphManager;
+            _emailsManager = emailsManager;
 
         }
 
@@ -256,8 +258,11 @@ namespace Interview.UI.Controllers
         #region LegendPartial Methods
 
         [HttpGet]
-        public async Task<IActionResult> EmailAlreadySent()
+        public async Task<IActionResult> EmailExternalExceptAlreadySent()
         {
+
+            // Change this to 'ExceptAlreadySent
+            // EmailTypes.CandidateExternal;
 
             return null;
 
@@ -267,7 +272,20 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailAllExternalCandidates()
         {
 
-            return null;
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplate = emailTemplates.FirstOrDefault();
+            // Todo - notify if no email template
+            var usersettings = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            var externalUsers = await _dal.GetExternalUsers();
+            var tokenResponse = await _tokenManager.GetToken();
+
+            foreach (var externalUser in externalUsers)
+            {
+                await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
+                // Set RoleUserEquity.DateExternalEmailSent = DateTime.Now
+            }
+
+            return RedirectToAction("Index");
 
         }
 
@@ -342,7 +360,52 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailExternalUser(Guid roleUserId)
         {
 
+            // EmailTypes.CandidateExternal
+
             return null;
+
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task SendExternalEmail(EmailTemplate emailTemplate, ExternalUser externalUser, string accessToken)
+        {
+
+            EmailEnvelope emailEnvelope = new EmailEnvelope()
+            {
+                message = new EmailMessage()
+                {
+                    subject = emailTemplate.EmailSubject,
+                    body = new EmailBody()
+                    {
+                        contentType = "Text",
+                        content = emailTemplate.EmailBody
+                    },
+                    toRecipients = GetEmailRecipients(externalUser.Email),
+                    //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
+                },
+                saveToSentItems = "false"
+            };
+            HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, accessToken, User.Identity.Name);
+
+        }
+
+        private List<EmailRecipent> GetEmailRecipients(string recipients)
+        {
+
+            List<EmailRecipent> result = new List<EmailRecipent>();
+            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
+
+            foreach (string address in addresses)
+            {
+                EmailRecipent recipent = new EmailRecipent();
+                recipent.emailAddress.address = address;
+                result.Add(recipent);
+            }
+
+            return result;
 
         }
 

@@ -458,10 +458,16 @@ namespace Interview.UI.Services.DAL
 
         }
 
-        public async Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId)
+        public async Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId, EmailTypes? emailType = null)
         {
 
-            var result = await _context.EmailTemplates.Where(x => x.ProcessId == processId).ToListAsync();
+            //var result = await _context.EmailTemplates.Where(x => x.ProcessId == processId).ToListAsync();
+            List<EmailTemplate> result = null;
+
+            if (emailType == null)
+                result = await _context.EmailTemplates.Where(x => x.ProcessId == processId).ToListAsync();
+            else
+                result = await _context.EmailTemplates.Where(x => (x.ProcessId == processId && x.EmailType == emailType)).ToListAsync();
 
             return result;
 
