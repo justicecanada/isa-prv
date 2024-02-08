@@ -262,10 +262,36 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailExternalExceptAlreadySent()
         {
 
-            // Change this to 'ExceptAlreadySent
-            // EmailTypes.CandidateExternal;
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplate = emailTemplates.FirstOrDefault();
 
-            return null;
+            if (emailTemplate == null)
+            {
+                Notify("There is no email template", "danger");
+                return RedirectToAction("Index");
+            }
+
+            var tokenResponse = await _tokenManager.GetToken();
+            var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            var allExternalUsers = await _dal.GetExternalUsers();
+            var externalUsers = allExternalUsers.Where(x => roleUsers.Any(y => y.UserId == x.Id));
+
+            foreach (var externalUser in externalUsers)
+            {
+                var roleUser = roleUsers.FirstOrDefault(x => x.UserId == externalUser.Id);
+
+                if (roleUser.DateExternalEmailSent == null)
+                {
+                    await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
+                    roleUser.DateExternalEmailSent = DateTime.Now;
+                    await _dal.UpdateEntity(roleUser);
+                }
+
+            }
+
+            Notify("Email has been sent", "success");
+
+            return RedirectToAction("Index");
 
         }
 
@@ -282,11 +308,11 @@ namespace Interview.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Todo - notify if no email template
-            var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-            var externalUsers = await _dal.GetExternalUsers();
             var tokenResponse = await _tokenManager.GetToken();
-
+            var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            var allExternalUsers = await _dal.GetExternalUsers();
+            var externalUsers = allExternalUsers.Where(x => roleUsers.Any(y => y.UserId == x.Id));
+            
             foreach (var externalUser in externalUsers)
             {
                 await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
@@ -294,7 +320,6 @@ namespace Interview.UI.Controllers
                 var roleUser = roleUsers.FirstOrDefault(x => x.UserId == externalUser.Id);
                 roleUser.DateExternalEmailSent = DateTime.Now;
                 await _dal.UpdateEntity(roleUser);
-
             }
 
             Notify("Email has been sent", "success");
@@ -382,7 +407,7 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Private Methods
+        #region Private Email Methods
 
         private async Task SendExternalEmail(EmailTemplate emailTemplate, ExternalUser externalUser, string accessToken)
         {
