@@ -271,23 +271,10 @@ namespace Interview.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            var tokenResponse = await _tokenManager.GetToken();
             var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-            var allExternalUsers = await _dal.GetExternalUsers();
-            var externalUsers = allExternalUsers.Where(x => roleUsers.Any(y => y.UserId == x.Id));
+            var externalRoleUsers = roleUsers.Where(x => ((bool)x.IsExternal && x.DateExternalEmailSent == null)).ToList();
 
-            foreach (var externalUser in externalUsers)
-            {
-                var roleUser = roleUsers.FirstOrDefault(x => x.UserId == externalUser.Id);
-
-                if (roleUser.DateExternalEmailSent == null)
-                {
-                    await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
-                    roleUser.DateExternalEmailSent = DateTime.Now;
-                    await _dal.UpdateEntity(roleUser);
-                }
-
-            }
+            await SendExteralEmailsForExternaRolelUsers(emailTemplate, externalRoleUsers);
 
             Notify("Email has been sent", "success");
 
@@ -308,19 +295,10 @@ namespace Interview.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            var tokenResponse = await _tokenManager.GetToken();
             var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-            var allExternalUsers = await _dal.GetExternalUsers();
-            var externalUsers = allExternalUsers.Where(x => roleUsers.Any(y => y.UserId == x.Id));
-            
-            foreach (var externalUser in externalUsers)
-            {
-                await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
+            var externalRoleUsers = roleUsers.Where(x => (bool)x.IsExternal).ToList();
 
-                var roleUser = roleUsers.FirstOrDefault(x => x.UserId == externalUser.Id);
-                roleUser.DateExternalEmailSent = DateTime.Now;
-                await _dal.UpdateEntity(roleUser);
-            }
+            await SendExteralEmailsForExternaRolelUsers(emailTemplate, externalRoleUsers);
 
             Notify("Email has been sent", "success");
 
@@ -408,6 +386,23 @@ namespace Interview.UI.Controllers
         #endregion
 
         #region Private Email Methods
+
+        private async Task SendExteralEmailsForExternaRolelUsers(EmailTemplate emailTemplate, List<RoleUser> externalRoleUsers)
+        {
+
+            var tokenResponse = await _tokenManager.GetToken();
+
+            foreach (var externalRoleUser in externalRoleUsers)
+            {
+                var externalUser = await _dal.GetEntity<ExternalUser>(externalRoleUser.UserId) as ExternalUser;
+                
+                await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
+
+                externalRoleUser.DateExternalEmailSent = DateTime.Now;
+                await _dal.UpdateEntity(externalRoleUser);
+            }
+
+        }
 
         private async Task SendExternalEmail(EmailTemplate emailTemplate, ExternalUser externalUser, string accessToken)
         {
