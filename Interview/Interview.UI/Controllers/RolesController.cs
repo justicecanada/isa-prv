@@ -140,8 +140,8 @@ namespace Interview.UI.Controllers
                     break;
                 case UserTypes.ExistingExternal:                // Ensure RoleUser hasn't been added to process
                     roleUsersForProcess = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-                    if (roleUsersForProcess.Any(x => x.ExternalUserEmail.ToLower() == vmIndex.ExistingExternalEmail.ToLower()))
-                        ModelState.AddModelError("ExistingExternalId", _localizer["UserAlreadyInRole"].Value);
+                    if (roleUsersForProcess.Any(x => ((bool)x.IsExternal && x.ExternalUserEmail.ToLower() == vmIndex.ExistingExternalEmail.ToLower())))
+                        ModelState.AddModelError("ExistingExternalEmail", _localizer["UserAlreadyInRole"].Value);
                     break;
                 case UserTypes.NewExternal:                     // Ensure new External User doesn't exist
                     List<ExternalUser> externalUsers = await _dal.GetExternalUsersByEmail(vmIndex.NewExternalEmail);
