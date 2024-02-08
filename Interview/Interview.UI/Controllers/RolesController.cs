@@ -71,9 +71,9 @@ namespace Interview.UI.Controllers
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
-            if (TempData["RoleUserIdToUpdate"] != null)
+            if (TempData[Constants.RoleUserIdToUpdate] != null)
             {
-                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.RoleUsers).Where(x => x.Id == (Guid)TempData["RoleUserIdToUpdate"]).First();
+                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.RoleUsers).Where(x => x.Id == (Guid)TempData[Constants.RoleUserIdToUpdate]).First();
                 result.RoleUserToEdit = (VmRoleUser)_mapper.Map(roleUserToEdit, typeof(RoleUser), typeof(VmRoleUser));
             }
 
@@ -297,7 +297,7 @@ namespace Interview.UI.Controllers
         public IActionResult UpdateRoleUser(Guid roleUserId)
         {
 
-            TempData["RoleUserIdToUpdate"] = roleUserId;
+            TempData[Constants.RoleUserIdToUpdate] = roleUserId;
 
             return RedirectToAction("Index");
 
