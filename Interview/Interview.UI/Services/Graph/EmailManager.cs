@@ -62,6 +62,23 @@ namespace Interview.UI.Services.Graph
 
         }
 
+        public List<EmailRecipent> GetEmailRecipients(string recipients)
+        {
+
+            List<EmailRecipent> result = new List<EmailRecipent>();
+            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
+
+            foreach (string address in addresses)
+            {
+                EmailRecipent recipent = new EmailRecipent();
+                recipent.emailAddress.address = address;
+                result.Add(recipent);
+            }
+
+            return result;
+
+        }
+
         #endregion
 
     }

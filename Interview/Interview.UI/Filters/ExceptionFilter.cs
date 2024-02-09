@@ -9,10 +9,12 @@ namespace Interview.UI.Filters
     {
 
         private readonly ILogger<ExceptionFilter> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ExceptionFilter(ILogger<ExceptionFilter> logger)
+        public ExceptionFilter(ILogger<ExceptionFilter> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public void OnException(ExceptionContext context)
@@ -21,8 +23,9 @@ namespace Interview.UI.Filters
             Exception exception = context.Exception;
             bool isAjaxRequest = GetIsAjaxRequest(context.HttpContext.Request);
             string exceptionId = Guid.NewGuid().ToString().Substring(0, 8);
+            string userName = _httpContextAccessor.HttpContext.User.Identity.Name;
 
-            var msgObj = new { message = exception.Message, exceptionId = exceptionId, stacktrace = exception.StackTrace };
+            var msgObj = new { message = exception.Message, exceptionId = exceptionId, userName = userName, stacktrace = exception.StackTrace };
             var msg = JsonConvert.SerializeObject(msgObj);
 
             _logger.LogError(exception, msg);

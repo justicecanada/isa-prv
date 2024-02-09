@@ -8,6 +8,8 @@ namespace Interview.UI.Services.Graph
 
         Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token, string userName);
 
+        List<EmailRecipent> GetEmailRecipients(string recipients);
+
     }
 
 }

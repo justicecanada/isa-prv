@@ -120,6 +120,9 @@ namespace Interview.UI.Controllers
             if (ModelState.IsValid)
             {
 
+                List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(vmSendEmail.ToRecipients);
+                List<EmailRecipent> ccRecipients = _emailsManager.GetEmailRecipients(vmSendEmail.CcRecipients);
+
                 EmailEnvelope emailEnvelope = new EmailEnvelope()
                 {
                     message = new EmailMessage()
@@ -130,8 +133,8 @@ namespace Interview.UI.Controllers
                             contentType = "Text",
                             content = vmSendEmail.Body
                         },
-                        toRecipients = GetEmailRecipients(vmSendEmail.ToRecipients),
-                        ccRecipients = GetEmailRecipients(vmSendEmail.CcRecipients),                       
+                        toRecipients = toRecipients,
+                        ccRecipients = ccRecipients,                       
                     },
                     saveToSentItems = vmSendEmail.SaveToSentItems.ToString().ToLower()
                 };
@@ -157,23 +160,6 @@ namespace Interview.UI.Controllers
         {
 
             return View();
-
-        }
-
-        private List<EmailRecipent> GetEmailRecipients(string recipients)
-        {
-
-            List<EmailRecipent> result = new List<EmailRecipent>();
-            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
-
-            foreach (string address in addresses)
-            {
-                EmailRecipent recipent = new EmailRecipent();
-                recipent.emailAddress.address = address;
-                result.Add(recipent);
-            }
-
-            return result;
 
         }
 
