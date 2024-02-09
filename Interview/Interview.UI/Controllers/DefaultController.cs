@@ -228,9 +228,15 @@ namespace Interview.UI.Controllers
                     await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmInterview.Id);
 
                     // Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
-                    // Once Done, check to see if Candiate has changed (if not then user already got email)
                     if (vmInterview.VmInterviewerUserIds.CandidateUserId != null)
-                        await SendInterviewEmailToCandiate(vmInterview);
+                    {
+                        InterviewUser dbCandidateInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+
+                        // Check to see if Candidate user has changed
+                        if (dbCandidateInterviewUser == null || 
+                            (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmInterview.VmInterviewerUserIds.CandidateUserId))
+                            await SendInterviewEmailToCandiate(vmInterview);
+                    }
 
                 }
 
