@@ -427,6 +427,7 @@ namespace Interview.UI.Controllers
                 .Replace("{1}", externalUser.SurName)
                 .Replace("{8}", externalUser.Id.ToString().Substring(0, 5))
                 .Replace("{9}", "<strong>Get PathBase from somewhere - this is just a placeholder</strong>");
+            List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(externalUser.Email);
 
             EmailEnvelope emailEnvelope = new EmailEnvelope()
             {
@@ -438,29 +439,12 @@ namespace Interview.UI.Controllers
                         contentType = "HTML",
                         content = body
                     },
-                    toRecipients = GetEmailRecipients(externalUser.Email),
+                    toRecipients = toRecipients,
                     //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
                 },
                 saveToSentItems = "false"
             };
             HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, accessToken, User.Identity.Name);
-
-        }
-
-        private List<EmailRecipent> GetEmailRecipients(string recipients)
-        {
-
-            List<EmailRecipent> result = new List<EmailRecipent>();
-            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
-
-            foreach (string address in addresses)
-            {
-                EmailRecipent recipent = new EmailRecipent();
-                recipent.emailAddress.address = address;
-                result.Add(recipent);
-            }
-
-            return result;
 
         }
 

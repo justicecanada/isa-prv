@@ -174,6 +174,18 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region Raise Exception Methods
+
+        [HttpGet]
+        public IActionResult RaiseException()
+        {
+
+            throw new Exception("Wups!");
+
+        }
+
+        #endregion
+
         #region Private Common Methods
 
         private async Task<GraphUser> GetGraphUser()
