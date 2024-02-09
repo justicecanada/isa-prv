@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
+using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -16,6 +19,7 @@ using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using Process = Interview.Entities.Process;
 
 namespace Interview.UI.Controllers
 {
@@ -27,18 +31,22 @@ namespace Interview.UI.Controllers
         private readonly IMapper _mapper;
         private readonly IState _state;
         private readonly IStringLocalizer<DefaultController> _localizer;
+        private readonly IToken _tokenManager;
+        private readonly IEmails _emailsManager;
 
         #endregion
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state,
-            IStringLocalizer<DefaultController> localizer, IStringLocalizer<BaseController> baseLocalizer) 
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<DefaultController> localizer, 
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
             _localizer = localizer;
+            _tokenManager = tokenManager;
+            _emailsManager = emailsManager;
         }
 
         #endregion
@@ -219,6 +227,11 @@ namespace Interview.UI.Controllers
                     await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleUserTypes.Interviewer, (Guid)vmInterview.Id);
                     await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmInterview.Id);
 
+                    // Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
+                    // Once Done, check to see if Candiate has changed (if not then user already got email)
+                    if (vmInterview.VmInterviewerUserIds.CandidateUserId != null)
+                        await SendInterviewEmailToCandiate(vmInterview);
+
                 }
 
                 return new JsonResult(new { result = true, item = vmInterview })
@@ -352,6 +365,91 @@ namespace Interview.UI.Controllers
                 }
 
             }
+
+        }
+
+        private async Task SendInterviewEmailToCandiate(VmInterview vmInterview)
+        {
+
+            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
+            EmailTemplate emailTemplate = await GetEmailTemplateForInterviewEmailToCandiate(); 
+            List<Schedule> schedules = await _dal.GetSchedulesByProcessId((Guid)_state.ProcessId);
+            RoleUser externalRoleUser = await _dal.GetEntity<RoleUser>((Guid)vmInterview.VmInterviewerUserIds.CandidateUserId) as RoleUser;
+            ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)externalRoleUser.UserId) as ExternalUser;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+
+            if (emailTemplate != null && schedules != null)
+            {
+
+                string noProcess = process.NoProcessus;
+                string groupNiv = process.GroupNiv;
+                string startDate = vmInterview.VmStartDate.ToLongDateString();
+                string startTime = vmInterview.VmStartDate.ToLongTimeString();
+                string startOral = "Figure this out";
+                string location = $"{vmInterview.Location} {vmInterview.Room}";
+                string contactName = string.IsNullOrEmpty(vmInterview.ContactName) ? process.ContactName : vmInterview.ContactName;
+                string contactNumber = string.IsNullOrEmpty(vmInterview.ContactNumber) ? process.ContactNumber : vmInterview.ContactNumber;
+
+                string body = emailTemplate.EmailBody
+                    .Replace("{0}", noProcess)
+                    .Replace("{1}", groupNiv)
+                    .Replace("{2}", startDate)
+                    .Replace("{3}", startTime)
+                    .Replace("{4}", startOral)
+                    .Replace("{5}", location)
+                    .Replace("{6}", contactName)
+                    .Replace("{7}", contactNumber);
+
+                EmailEnvelope emailEnvelope = new EmailEnvelope()
+                {
+                    message = new EmailMessage()
+                    {
+                        subject = emailTemplate.EmailSubject,
+                        body = new EmailBody()
+                        {
+                            contentType = "HTML",
+                            content = body
+                        },
+                        toRecipients = GetEmailRecipients(externalUser.Email),
+                        //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
+                    },
+                    saveToSentItems = "false"
+                };
+                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+
+            }
+
+        }
+
+        private async Task<EmailTemplate> GetEmailTemplateForInterviewEmailToCandiate()
+        {
+
+            EmailTemplate result = null;
+            List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
+
+            if (User.IsInRole(RoleTypes.Admin.ToString()))
+                result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
+            else
+                result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
+
+            return result;
+        
+        }
+
+        private List<EmailRecipent> GetEmailRecipients(string recipients)
+        {
+
+            List<EmailRecipent> result = new List<EmailRecipent>();
+            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
+
+            foreach (string address in addresses)
+            {
+                EmailRecipent recipent = new EmailRecipent();
+                recipent.emailAddress.address = address;
+                result.Add(recipent);
+            }
+
+            return result;
 
         }
 
