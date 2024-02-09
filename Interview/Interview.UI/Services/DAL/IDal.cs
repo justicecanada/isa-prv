@@ -46,7 +46,7 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Schedule>> GetSchedulesByProcessId(Guid processId);
 
-        Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId);
+        Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId, EmailTypes? emailType = null);
 
         Task<RoleUser> GetRoleUserByProcessIdAndUserId(Guid processId, Guid userId);
 

@@ -12,6 +12,8 @@
         public const string AssemblyVersionKey = "ASSEMBLY_VERSION";
         public const string ProcessId = "PROCESS_ID";
         public const string EntraIdClaimKey = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+        public const string RoleUserIdToUpdate = "RoleUserIdToUpdate";
+        public const string NotificationPartialModel = "NotificationPartialModel";
 
     }
 

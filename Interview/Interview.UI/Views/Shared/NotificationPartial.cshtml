@@ -1,0 +1,21 @@
+﻿@using Interview.UI.Models.Shared
+@using Newtonsoft.Json;
+
+@{
+
+    VmNotificationPartial vmNotificatinPartial = null;
+    string serialized = TempData[Constants.NotificationPartialModel] == null ? null : TempData[Constants.NotificationPartialModel].ToString();
+
+    if (!string.IsNullOrEmpty(serialized))
+        vmNotificatinPartial = JsonConvert.DeserializeObject<VmNotificationPartial>(serialized);
+
+}
+
+@if (vmNotificatinPartial != null)
+{
+    <div class="mrgn-tp-md wb-dismissable">
+        <div class="alert alert-@vmNotificatinPartial.AlertClass">
+            <p>@vmNotificatinPartial.Message</p>
+        </div>
+    </div>
+}

@@ -123,6 +123,9 @@
   <data name="InternalUserDoesNotExist" xml:space="preserve">
     <value>That Internal User does not exist. (fr)</value>
   </data>
+  <data name="NotifyMultipleExternalEmailSuccess" xml:space="preserve">
+    <value>Les courriels pour les candidats externes ont été envoyés.</value>
+  </data>
   <data name="UserAlreadyInRole" xml:space="preserve">
     <value>This User is already in the Role. (fr)</value>
   </data>

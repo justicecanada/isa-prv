@@ -6,6 +6,7 @@ using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
 using Interview.UI.Models.Roles;
+using Interview.UI.Models.Shared;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
@@ -30,13 +31,14 @@ namespace Interview.UI.Controllers
         private readonly IStringLocalizer<RolesController> _localizer;
         private readonly IToken _tokenManager;
         private readonly IUsers _usersManager;
+        private readonly IEmails _emailsManager;
 
         #endregion
 
         #region Constructors
 
         public RolesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<RolesController> localizer, 
-            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IUsers graphManager) 
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IUsers graphManager, IEmails emailsManager) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             
@@ -45,6 +47,7 @@ namespace Interview.UI.Controllers
             _localizer = localizer;
             _tokenManager = tokenManager;
             _usersManager = graphManager;
+            _emailsManager = emailsManager;
 
         }
 
@@ -69,9 +72,9 @@ namespace Interview.UI.Controllers
             await IndexSetViewBag();
             IndexRegisterClientResources();
 
-            if (TempData["RoleUserIdToUpdate"] != null)
+            if (TempData[Constants.RoleUserIdToUpdate] != null)
             {
-                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.RoleUsers).Where(x => x.Id == (Guid)TempData["RoleUserIdToUpdate"]).First();
+                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.RoleUsers).Where(x => x.Id == (Guid)TempData[Constants.RoleUserIdToUpdate]).First();
                 result.RoleUserToEdit = (VmRoleUser)_mapper.Map(roleUserToEdit, typeof(RoleUser), typeof(VmRoleUser));
             }
 
@@ -137,8 +140,8 @@ namespace Interview.UI.Controllers
                     break;
                 case UserTypes.ExistingExternal:                // Ensure RoleUser hasn't been added to process
                     roleUsersForProcess = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-                    if (roleUsersForProcess.Any(x => x.ExternalUserEmail.ToLower() == vmIndex.ExistingExternalEmail.ToLower()))
-                        ModelState.AddModelError("ExistingExternalId", _localizer["UserAlreadyInRole"].Value);
+                    if (roleUsersForProcess.Any(x => ((bool)x.IsExternal && x.ExternalUserEmail.ToLower() == vmIndex.ExistingExternalEmail.ToLower())))
+                        ModelState.AddModelError("ExistingExternalEmail", _localizer["UserAlreadyInRole"].Value);
                     break;
                 case UserTypes.NewExternal:                     // Ensure new External User doesn't exist
                     List<ExternalUser> externalUsers = await _dal.GetExternalUsersByEmail(vmIndex.NewExternalEmail);
@@ -256,10 +259,26 @@ namespace Interview.UI.Controllers
         #region LegendPartial Methods
 
         [HttpGet]
-        public async Task<IActionResult> EmailAlreadySent()
+        public async Task<IActionResult> EmailExternalExceptAlreadySent()
         {
 
-            return null;
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplate = emailTemplates.FirstOrDefault();
+
+            if (emailTemplate == null)
+            {
+                Notify("There is no email template", "danger");
+                return RedirectToAction("Index");
+            }
+
+            var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            var externalRoleUsers = roleUsers.Where(x => ((bool)x.IsExternal && x.DateExternalEmailSent == null)).ToList();
+
+            await SendExteralEmailsForExternaRolelUsers(emailTemplate, externalRoleUsers);
+
+            Notify(_localizer["NotifyMultipleExternalEmailSuccess"].Value, "success");
+
+            return RedirectToAction("Index");
 
         }
 
@@ -267,7 +286,23 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailAllExternalCandidates()
         {
 
-            return null;
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplate = emailTemplates.FirstOrDefault();
+
+            if (emailTemplate == null)
+            {
+                Notify("There is no email template", "danger");
+                return RedirectToAction("Index");
+            }
+
+            var roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            var externalRoleUsers = roleUsers.Where(x => (bool)x.IsExternal).ToList();
+
+            await SendExteralEmailsForExternaRolelUsers(emailTemplate, externalRoleUsers);
+
+            Notify(_localizer["NotifyMultipleExternalEmailSuccess"].Value, "success");
+
+            return RedirectToAction("Index");
 
         }
 
@@ -279,7 +314,7 @@ namespace Interview.UI.Controllers
         public IActionResult UpdateRoleUser(Guid roleUserId)
         {
 
-            TempData["RoleUserIdToUpdate"] = roleUserId;
+            TempData[Constants.RoleUserIdToUpdate] = roleUserId;
 
             return RedirectToAction("Index");
 
@@ -342,7 +377,90 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailExternalUser(Guid roleUserId)
         {
 
-            return null;
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplate = emailTemplates.FirstOrDefault();
+
+            if (emailTemplate == null)
+            {
+                Notify("There is no email template", "danger");
+                return RedirectToAction("Index");
+            }
+
+            var roleuser = await _dal.GetEntity<RoleUser>(roleUserId) as RoleUser;
+            var roleusers = new List<RoleUser>();
+
+            roleusers.Add(roleuser);
+            await SendExteralEmailsForExternaRolelUsers(emailTemplate, roleusers);
+
+            Notify("Email has been sent", "success");
+
+            return RedirectToAction("Index");
+
+        }
+
+        #endregion
+
+        #region Private Email Methods
+
+        private async Task SendExteralEmailsForExternaRolelUsers(EmailTemplate emailTemplate, List<RoleUser> externalRoleUsers)
+        {
+
+            var tokenResponse = await _tokenManager.GetToken();
+
+            foreach (var externalRoleUser in externalRoleUsers)
+            {
+                var externalUser = await _dal.GetEntity<ExternalUser>(externalRoleUser.UserId) as ExternalUser;
+                
+                await SendExternalEmail(emailTemplate, externalUser, tokenResponse.access_token);
+
+                externalRoleUser.DateExternalEmailSent = DateTime.Now;
+                await _dal.UpdateEntity(externalRoleUser);
+            }
+
+        }
+
+        private async Task SendExternalEmail(EmailTemplate emailTemplate, ExternalUser externalUser, string accessToken)
+        {
+
+            string body = emailTemplate.EmailBody
+                .Replace("{0}", externalUser.GivenName)
+                .Replace("{1}", externalUser.SurName)
+                .Replace("{8}", externalUser.Id.ToString().Substring(0, 5))
+                .Replace("{9}", "<strong>Get PathBase from somewhere - this is just a placeholder</strong>");
+
+            EmailEnvelope emailEnvelope = new EmailEnvelope()
+            {
+                message = new EmailMessage()
+                {
+                    subject = emailTemplate.EmailSubject,
+                    body = new EmailBody()
+                    {
+                        contentType = "HTML",
+                        content = body
+                    },
+                    toRecipients = GetEmailRecipients(externalUser.Email),
+                    //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
+                },
+                saveToSentItems = "false"
+            };
+            HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, accessToken, User.Identity.Name);
+
+        }
+
+        private List<EmailRecipent> GetEmailRecipients(string recipients)
+        {
+
+            List<EmailRecipent> result = new List<EmailRecipent>();
+            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
+
+            foreach (string address in addresses)
+            {
+                EmailRecipent recipent = new EmailRecipent();
+                recipent.emailAddress.address = address;
+                result.Add(recipent);
+            }
+
+            return result;
 
         }
 
