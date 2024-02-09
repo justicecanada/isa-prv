@@ -395,6 +395,7 @@ namespace Interview.UI.Controllers
                 string location = $"{vmInterview.Location} {vmInterview.Room}";
                 string contactName = string.IsNullOrEmpty(vmInterview.ContactName) ? process.ContactName : vmInterview.ContactName;
                 string contactNumber = string.IsNullOrEmpty(vmInterview.ContactNumber) ? process.ContactNumber : vmInterview.ContactNumber;
+                List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(externalUser.Email);
 
                 string body = emailTemplate.EmailBody
                     .Replace("{0}", noProcess)
@@ -416,7 +417,7 @@ namespace Interview.UI.Controllers
                             contentType = "HTML",
                             content = body
                         },
-                        toRecipients = GetEmailRecipients(externalUser.Email),
+                        toRecipients = toRecipients,
                         //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
                     },
                     saveToSentItems = "false"
@@ -440,23 +441,6 @@ namespace Interview.UI.Controllers
 
             return result;
         
-        }
-
-        private List<EmailRecipent> GetEmailRecipients(string recipients)
-        {
-
-            List<EmailRecipent> result = new List<EmailRecipent>();
-            string[] addresses = string.IsNullOrEmpty(recipients) ? new string[0] : recipients.Split(',');
-
-            foreach (string address in addresses)
-            {
-                EmailRecipent recipent = new EmailRecipent();
-                recipent.emailAddress.address = address;
-                result.Add(recipent);
-            }
-
-            return result;
-
         }
 
         #endregion
