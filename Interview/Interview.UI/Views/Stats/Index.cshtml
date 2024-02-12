@@ -1,10 +1,63 @@
-﻿@using Interview.UI.Models
+﻿@model VmIndex
+@using Interview.UI.Models
+@using Interview.UI.Models.Stats
+@using Interview.Entities
 @inject IViewLocalizer localizer
 
 @{
 
     ViewBag.Title = localizer["Title"].Value;
 
+    List<Process> processes = ViewBag.Processes;
+    Guid processId = ViewBag.ProcessId;
+
+    List<SelectListItem> vmProcessItems = new List<SelectListItem>();
+    vmProcessItems.Add(new SelectListItem() { Value = null, Text = localizer["AllProcesses"].Value });
+    foreach (var processItem in processes)
+    {
+        vmProcessItems.Add(new SelectListItem()
+                {
+                    Value = processItem.Id.ToString(),
+                    Text = processItem.NoProcessus,
+                    Selected = processItem.Id == Model.ProcessId
+                });
+    }
+
 }
 
 <h1>@localizer["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-3">
+
+        <section class="panel panel-primary">
+          <header class="panel-heading">
+           <h5 class="panel-title">@localizer["FilterOptions"]</h5>
+          </header>
+          <div class="panel-body">
+            @using (Html.BeginForm("SwitchProcess", "Stats", null, FormMethod.Post, null, new { id = "formProcess" }))
+            {
+                
+                @Html.AntiForgeryToken()
+                <div class="col-md-12">
+                    @Html.Label("lblProcesses", localizer["ListOfProcesses"].Value, new { @for = "ProcessId" }):
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(x => x.ProcessId, vmProcessItems, new { @class = "form-control" })
+                </div>
+
+                <input type="submit" value="@localizer["ApplyFilter"]" class="btn btn-primary mrgn-tp-md" >
+
+            }
+          </div>
+        </section>
+
+    </div>
+
+    <div class="col-md-9">
+
+
+
+    </div>
+
+</div>
