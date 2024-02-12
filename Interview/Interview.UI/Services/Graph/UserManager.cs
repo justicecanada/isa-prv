@@ -55,7 +55,10 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10"))
+            //var justiceFilter = "(user.accountEnabled -eq true) and (user.dirSyncEnabled -eq true) and (user.userType -eq \"member\") and (user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\") and (user.mail -notContains \"/\")";
+            var justiceFilter = "userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10 & {justiceFilter}"))
             {
                 Headers =
                 {
