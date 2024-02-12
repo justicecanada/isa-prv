@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GoC.WebTemplate.Components.Core.Services;
+using Interview.Entities;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Stats;
 using Interview.UI.Services.DAL;
@@ -43,7 +44,7 @@ namespace Interview.UI.Controllers
             Guid processId = processIdToFilter == null ? (Guid)_state.ProcessId : new Guid(processIdToFilter);
 
             result.ProcessId = processId;
-            await SetIndexViewBag();
+            await SetIndexViewBag(processId);
 
             return View(result);
 
@@ -58,13 +59,21 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexViewBag()
+        private async Task SetIndexViewBag(Guid processId)
         {
 
+            // Processes
             List<Entities.Process> processes = await GetProcessesForLoggedInUser();
             ViewBag.Processes = processes;
-
             ViewBag.ProcessId = (Guid)_state.ProcessId;
+
+            // Interviews
+            List<Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
+            ViewBag.Interviews = interviews;
+
+            // Role User Equities
+            List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId(processId);
+            ViewBag.RoleUsers = roleUsers;
 
         }
 

@@ -40,7 +40,7 @@ namespace Interview.UI.Models
 		[Required]
 		public int? Duration { get; set; }
 
-        public int? Status { get; set; }
+        public InterviewStates? Status { get; set; }
 
         [Display(Name = "ContactName")]
         [MaxLength(128, ErrorMessage = "MaxLength")]
