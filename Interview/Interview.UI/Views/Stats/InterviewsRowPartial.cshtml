@@ -1,13 +1,46 @@
 ﻿
 @using Interview.Entities
+@inject IViewLocalizer localizer
 
 @{
 
     List<Interview> interviews = ViewBag.Interviews;
 
     int timeslots = interviews.Count();
-    //int completedInterviews = interviews.Where(x => x.Status == )
+    int completedInterviews = interviews.Where(x => (x.Status == InterviewStates.Reserve && x.StartDate.Date < DateTime.Now)).Count();
+    int remainingIterviews = timeslots - completedInterviews;
+    int interviewDays = interviews.GroupBy(x => new { x.StartDate.Day }).Count();
 
 }
 
-<h3>InterviewsRowPartial</h3>
+<class="row">
+
+    <div class="col-md-3">
+        @{
+            await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData) 
+                { { "InterviewTileLabel", localizer["TimeSlots"].Value }, { "InterviewTileNumber", timeslots } });
+        }
+    </div>
+
+    <div class="col-md-3">
+        @{
+            await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData)
+        { { "InterviewTileLabel", localizer["InterviewsCompleted"].Value }, { "InterviewTileNumber", completedInterviews } });
+        }
+    </div>
+
+    <div class="col-md-3">
+        @{
+            await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData)
+        { { "InterviewTileLabel", localizer["InterviewsRemaining"].Value }, { "InterviewTileNumber", remainingIterviews } });
+        }
+    </div>
+
+    <div class="col-md-3">
+        @{
+            await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData)
+        { { "InterviewTileLabel", localizer["InterviewDays"].Value }, { "InterviewTileNumber", interviewDays } });
+        }
+    </div>
+
+</class>
