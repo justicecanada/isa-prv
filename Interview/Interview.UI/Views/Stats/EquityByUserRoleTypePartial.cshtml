@@ -41,5 +41,9 @@
         {
             <div>@Html.Raw(GetEquityLine(equity, filteredRoleUsers, cultureName))</div>
         }
+        <hr />
+        <div>
+            @localizer["Total"] @filteredRoleUsers.Count
+        </div>
     </div>
 </section>
