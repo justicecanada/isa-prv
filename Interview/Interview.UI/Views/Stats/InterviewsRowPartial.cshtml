@@ -25,21 +25,21 @@
     <div class="col-md-3">
         @{
             await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData)
-        { { "InterviewTileLabel", localizer["InterviewsCompleted"].Value }, { "InterviewTileNumber", completedInterviews } });
+                { { "InterviewTileLabel", localizer["InterviewsCompleted"].Value }, { "InterviewTileNumber", completedInterviews } });
         }
     </div>
 
     <div class="col-md-3">
         @{
             await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData)
-        { { "InterviewTileLabel", localizer["InterviewsRemaining"].Value }, { "InterviewTileNumber", remainingIterviews } });
+                { { "InterviewTileLabel", localizer["InterviewsRemaining"].Value }, { "InterviewTileNumber", remainingIterviews } });
         }
     </div>
 
     <div class="col-md-3">
         @{
             await Html.RenderPartialAsync("InterviewRowTilePartial", new ViewDataDictionary(ViewData)
-        { { "InterviewTileLabel", localizer["InterviewDays"].Value }, { "InterviewTileNumber", interviewDays } });
+                { { "InterviewTileLabel", localizer["InterviewDays"].Value }, { "InterviewTileNumber", interviewDays } });
         }
     </div>
 

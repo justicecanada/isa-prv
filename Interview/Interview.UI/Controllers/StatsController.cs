@@ -75,6 +75,10 @@ namespace Interview.UI.Controllers
             List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId(processId);
             ViewBag.RoleUsers = roleUsers;
 
+            // Equities
+            List<Equity> equities = await _dal.GetAllEquities();
+            ViewBag.Equities = equities;
+
         }
 
         #endregion

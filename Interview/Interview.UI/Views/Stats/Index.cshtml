@@ -32,7 +32,7 @@
 
         <section class="panel panel-primary">
           <header class="panel-heading">
-           <h5 class="panel-title">@localizer["FilterOptions"]</h5>
+               <h5 class="panel-title">@localizer["FilterOptions"]</h5>
           </header>
           <div class="panel-body">
             @using (Html.BeginForm("SwitchProcess", "Stats", null, FormMethod.Post, null, new { id = "formProcess" }))
@@ -59,6 +59,20 @@
         @{
             await Html.RenderPartialAsync("InterviewsRowPartial"); 
         }
+        <div class="row">
+            <div class="col-md-6">
+                @{
+                    await Html.RenderPartialAsync("EquityByUserRoleTypePartial", new ViewDataDictionary(ViewData) 
+                        { { "RoleUserType", RoleUserTypes.Candidate } });
+                }
+            </div>
+            <div class="col-md-6">
+                @{
+                    await Html.RenderPartialAsync("EquityByUserRoleTypePartial", new ViewDataDictionary(ViewData)
+                        { { "RoleUserType", RoleUserTypes.Interviewer } });
+                }
+            </div>
+        </divc>
 
     </div>
 
