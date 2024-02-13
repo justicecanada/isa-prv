@@ -20,8 +20,11 @@
     {
 
         string result = null;
+        int countForEquity = filteredRoleUsers.SelectMany(x => x.RoleUserEquities).Where(x => x.EquityId == equity.Id).Count();
+        string description = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR;
+        double percentage = filteredRoleUsers.Count == 0 ? 0 : Math.Round(((double)countForEquity / (double)filteredRoleUsers.Count) * 100, 2);
 
-
+        result = $"{countForEquity}/{filteredRoleUsers.Count} {description} (<strong>{percentage}%</strong>)";
 
         return result;
 
@@ -36,7 +39,7 @@
     <div class="panel-body">
         @foreach (Equity equity in equities)
         {
-            <div>@GetEquityLine(equity, filteredRoleUsers, cultureName)</div>
+            <div>@Html.Raw(GetEquityLine(equity, filteredRoleUsers, cultureName))</div>
         }
     </div>
 </section>
