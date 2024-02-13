@@ -21,13 +21,15 @@
         string result = null;
 
         List<RoleUserEquity> roleUserEquities = roleUsers.SelectMany(x => x.RoleUserEquities).ToList();
+        List<InterviewUser> filteredInterviewUsers = interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead))).ToList();
         int count = interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead) &&
             roleUserEquities.Where(a => a.RoleUserId == y.UserId && a.EquityId == equity.Id).Count() > 0)).Count();
         string descriptionPrefix = localizer["TimeSlotWithBoardMember"].Value;
         string description = cultureName == Constants.EnglishCulture ? $"{descriptionPrefix} {equity.NameEN}" : $"{descriptionPrefix} {equity.NameFR}";
-        //double percentage = filteredRoleUsers.Count == 0 ? 0 : Math.Round(((double)countForEquity / (double)filteredRoleUsers.Count) * 100, 2);
+        double percentage = filteredInterviewUsers.Count == 0 ? 0 : Math.Round(((double)count / (double)filteredInterviewUsers.Count) * 100, 2);
 
-        result = $" {description} ";
+        // result = $"{countForEquity}/{filteredRoleUsers.Count} {description} (<strong>{percentage}%</strong>)";
+        result = $"{count} / {filteredInterviewUsers.Count} {description} (<strong>{percentage}%</strong>)";
 
         return result;
 
