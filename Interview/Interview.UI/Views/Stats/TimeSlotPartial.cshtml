@@ -10,25 +10,24 @@
     List<Equity> equities = ViewBag.Equities;
     List<RoleUser> roleUsers = ViewBag.RoleUsers;
     List<Interview> interviews = ViewBag.Interviews;
+    List<InterviewUser> filteredInterviewUsers = interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead))).ToList();
 
 }
 
 @functions {
 
-    private string GetEquityLine(Equity equity, List<Interview> interviews, List<RoleUser> roleUsers, string cultureName)
+    private string GetEquityLine(Equity equity, List<Interview> interviews, List<InterviewUser> filteredInterviewUsers, List<RoleUser> roleUsers, string cultureName)
     {
 
         string result = null;
 
         List<RoleUserEquity> roleUserEquities = roleUsers.SelectMany(x => x.RoleUserEquities).ToList();
-        List<InterviewUser> filteredInterviewUsers = interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead))).ToList();
         int count = interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead) &&
             roleUserEquities.Where(a => a.RoleUserId == y.UserId && a.EquityId == equity.Id).Count() > 0)).Count();
         string descriptionPrefix = localizer["TimeSlotWithBoardMember"].Value;
         string description = cultureName == Constants.EnglishCulture ? $"{descriptionPrefix} {equity.NameEN}" : $"{descriptionPrefix} {equity.NameFR}";
         double percentage = filteredInterviewUsers.Count == 0 ? 0 : Math.Round(((double)count / (double)filteredInterviewUsers.Count) * 100, 2);
 
-        // result = $"{countForEquity}/{filteredRoleUsers.Count} {description} (<strong>{percentage}%</strong>)";
         result = $"{count} / {filteredInterviewUsers.Count} {description} (<strong>{percentage}%</strong>)";
 
         return result;
@@ -44,11 +43,11 @@
     <div class="panel-body">
         @foreach (Equity equity in equities)
         {
-            <div>@Html.Raw(GetEquityLine(equity, interviews, roleUsers, cultureName))</div>
+            <div>@Html.Raw(GetEquityLine(equity, interviews, filteredInterviewUsers, roleUsers, cultureName))</div>
         }
         <hr />
         <div>
-            @localizer["Total"]
+            @localizer["Total"] @filteredInterviewUsers.Count
         </div>
     </div>
 </section>
