@@ -434,7 +434,9 @@ namespace Interview.UI.Services.DAL
         public async Task<List<Interview.Entities.Interview>> GetInterViewsByProcessId(Guid processId)
 		{
 
-            var result = await _context.Interviews.Where(x => (x.ProcessId == processId)).ToListAsync();
+            var result = await _context.Interviews.Where(x => (x.ProcessId == processId))
+                .Include(x => x.InterviewUsers)
+                .ToListAsync();
 
             return result;
 
