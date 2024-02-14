@@ -81,7 +81,7 @@ namespace Interview.UI.Tests.Services.Stats
 
             }
             interviewDays = GetInterviewDays(processes);
-            
+
             result = _statsManager.GetInterviewStats(processes);
 
             Assert.IsTrue(result.TotalInterviews == (completed + remaining) * numberProcesses);
@@ -112,7 +112,7 @@ namespace Interview.UI.Tests.Services.Stats
             foreach (Process thisProcess in processes) {
 
                 // Add Role Users to Processes
-                for (int i = 0; i < numberCandidates; i++) { 
+                for (int i = 0; i < numberCandidates; i++) {
                     thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
                 }
                 for (int i = 0; i < numberNonCandates; i++)
@@ -160,7 +160,7 @@ namespace Interview.UI.Tests.Services.Stats
                 process = (Process)GetEntity<Process>(true);
                 processes.Add(process);
             }
-       
+
             foreach (Process thisProcess in processes)
             {
 
@@ -303,10 +303,10 @@ namespace Interview.UI.Tests.Services.Stats
 
         #endregion
 
-        #region Public GetInterviewEquityStats Test Methods
+        #region Public GetInterviewerAndLeadEquityStatsForInterview Test Methods
 
         [TestMethod]
-        public void GetInterviewEquityStats_SingleProcess()
+        public void GetInterviewerAndLeadEquityStatsForInterview_SingleProcess()
         {
 
             List<VmEquityStat> result = null;
@@ -320,7 +320,7 @@ namespace Interview.UI.Tests.Services.Stats
             int numberInterviewUsers = 3;
             int completed = 10;
             int remaining = 20;
-            
+
             processes.Add(process);
             foreach (Process thisProcess in processes)
             {
@@ -360,14 +360,14 @@ namespace Interview.UI.Tests.Services.Stats
 
             }
 
-            result = _statsManager.GetInterviewEquityStats(processes, equities, Constants.EnglishCulture);
+            result = _statsManager.GetInterviewerAndLeadEquityStatsForInterviews(processes, equities, Constants.EnglishCulture);
 
             Assert.IsTrue(result.Count == equities.Count);
 
         }
 
         [TestMethod]
-        public void GetInterviewEquityStats_MultipleProcesses()
+        public void GetInterviewerAndLeadEquityStatsForInterview_MultipleProcesses()
         {
 
             List<VmEquityStat> result = null;
@@ -427,7 +427,139 @@ namespace Interview.UI.Tests.Services.Stats
 
             }
 
-            result = _statsManager.GetInterviewEquityStats(processes, equities, Constants.EnglishCulture);
+            result = _statsManager.GetInterviewerAndLeadEquityStatsForInterviews(processes, equities, Constants.EnglishCulture);
+
+            Assert.IsTrue(result.Count == equities.Count);
+
+        }
+
+        #endregion
+
+        #region Public GetCandidateEquityStatsEquityStatsForInterview Test Methods
+
+        [TestMethod]
+        public void GetCandidateEquityStatsEquityStatsForInterview_SingleProcess()
+        {
+
+            List<VmEquityStat> result = null;
+            List<Process> processes = new List<Process>();
+            var process = (Process)GetEntity<Process>(true);
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            processes.Add(process);
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetCandidateEquityStatsEquityStatsForInterviews(processes, equities, Constants.EnglishCulture);
+
+            Assert.IsTrue(result.Count == equities.Count);
+
+        }
+
+        [TestMethod]
+        public void GetCandidateEquityStatsEquityStatsForInterview_MultipleProcesses()
+        {
+
+            List<VmEquityStat> result = null;
+            List<Process> processes = new List<Process>();
+            Process process = null;
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberProcesses = 3;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            for (int i = 0; i < numberProcesses; i++)
+            {
+                process = (Process)GetEntity<Process>(true);
+                processes.Add(process);
+            }
+
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetCandidateEquityStatsEquityStatsForInterviews(processes, equities, Constants.EnglishCulture);
 
             Assert.IsTrue(result.Count == equities.Count);
 
