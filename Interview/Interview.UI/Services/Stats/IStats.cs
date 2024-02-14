@@ -13,6 +13,8 @@ namespace Interview.UI.Services.Stats
 
         List<VmEquityStat> GetBoartdMemberEquityStats(List<Process> processes, List<Equity> equities, string cultureName);
 
+        List<VmEquityStat> GetInterviewEquityStats(List<Process> processes, List<Equity> equities, string cultureName);
+
     }
 
 }
