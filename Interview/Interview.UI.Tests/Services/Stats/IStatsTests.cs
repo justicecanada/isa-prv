@@ -93,6 +93,56 @@ namespace Interview.UI.Tests.Services.Stats
 
         #endregion
 
+        #region Public GetCandiateEquityStats Test Methods
+
+        [TestMethod]
+        public void GetCandiateEquityStats_SingleProcess()
+        {
+
+            List<VmEquityStat> result = null;
+            List<Process> processes = new List<Process>();
+            var process = (Process)GetEntity<Process>(true);
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+
+            processes.Add(process);
+            foreach (Process thisProcess in processes) {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++) { 
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetCandiateEquityStats(processes, equities, Constants.EnglishCulture);
+
+            Assert.IsTrue(result.Count == equities.Count);
+            Assert.IsTrue(Math.Round(((double)result.Sum(x => x.Percentage)), 0) == 100);
+
+        }
+
+        #endregion
+
         #region Private Entity Methods
 
         private List<Entities.Interview> GetInterviews(Guid processId, int completed, int remaining)
@@ -119,6 +169,89 @@ namespace Interview.UI.Tests.Services.Stats
                 interview.StartDate = DateTime.Now.AddDays(GetRandomNumber(30));
                 result.Add(interview);
             }
+
+            return result;
+
+        }
+
+        private List<Equity> GetEquities()
+        {
+
+            List<Equity> result = new List<Equity>();
+
+            result.Add(GetEquity(Guid.NewGuid(), "Woman", "Femme", "Woman", "", ""));
+            result.Add(GetEquity(Guid.NewGuid(), "Indigenous", "Personne autochtone", "Indigenous Person", "", ""));
+            result.Add(GetEquity(Guid.NewGuid(), "Disability", "Personne en situation de handicap", "Person with a Disability", "", ""));
+            result.Add(GetEquity(Guid.NewGuid(), "Racialized", "Membre d’un groupe racialisé", "Member of a Racialized group", "", ""));
+            result.Add(GetEquity(Guid.NewGuid(), "SOGIE", "Orientation sexuelle, identité et expression du genre (OSIEG)", "Sexual Orientation, Gender Identity and Expression (SOGIE)", "", ""));
+
+            return result;
+
+        }
+
+        private Equity GetEquity(Guid id, string name, string nameFR, string nameEN, string viewFR, string viewEN)
+        {
+
+            return new Equity()
+            {
+                Id = id,
+                Name = name,
+                NameFR = nameFR,
+                NameEN = nameEN,
+                ViewFR = viewFR,
+                ViewEN = viewEN
+            };
+
+        }
+
+        private RoleUser GetRoleUser(Guid processId, RoleUserTypes roleUserType)
+        {
+
+            RoleUser result = (RoleUser)GetEntity<RoleUser>(true);
+
+            result.ProcessId = processId;
+            result.RoleUserType = roleUserType;
+
+            return result;
+
+        }
+
+        private RoleUserTypes GetNonCandiateRoleUserType()
+        {
+
+            RoleUserTypes result;
+            Array values = Enum.GetValues(typeof(RoleUserTypes));  
+            Random random = new Random();
+
+            result = (RoleUserTypes)values.GetValue(random.Next(values.Length));
+
+            if (result == RoleUserTypes.Candidate)
+                result = GetNonCandiateRoleUserType();
+
+            return result;
+
+        }
+
+        private Equity GetRandomEquity(List<Equity> equities)
+        {
+
+            Equity result = null;
+            Random random = new Random();
+
+            result = equities[random.Next(equities.Count -1)];
+
+            return result;
+
+        }
+
+        private RoleUserEquity GetRoleUserEquity(Guid roleUserId, Guid equityId)
+        {
+
+            RoleUserEquity result = new RoleUserEquity()
+            {
+                RoleUserId = roleUserId,
+                EquityId = equityId
+            };
 
             return result;
 

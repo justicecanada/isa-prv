@@ -9,6 +9,8 @@ namespace Interview.UI.Services.Stats
 
         VmInterviewStats GetInterviewStats(List<Process> processes);
 
+        List<VmEquityStat> GetCandiateEquityStats(List<Process> processes, List<Equity> equities, string cultureName);
+
     }
 
 }
