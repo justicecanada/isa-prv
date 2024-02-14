@@ -56,27 +56,26 @@
 
     <div class="col-md-9">
 
-        @*@{
+        @{
             await Html.RenderPartialAsync("InterviewsRowPartial"); 
         }
         <div class="row">
             <div class="col-md-6">
                 @{
-                    await Html.RenderPartialAsync("EquityByUserRoleTypePartial", new ViewDataDictionary(ViewData) 
-                        { { "RoleUserType", RoleUserTypes.Candidate } });
+                    await Html.RenderPartialAsync("CandidateEquityStatsePartial");
                 }
             </div>
             <div class="col-md-6">
-                @{
+                @*@{
                     await Html.RenderPartialAsync("EquityByUserRoleTypePartial", new ViewDataDictionary(ViewData)
                         { { "RoleUserType", RoleUserTypes.Interviewer } });
-                }
+                }*@
             </div>
         </div>
         @{
-            await Html.RenderPartialAsync("TimeSlotPartial");
-            await Html.RenderPartialAsync("EeCandiateTimeSlotPartial");
-        }*@
+            //await Html.RenderPartialAsync("TimeSlotPartial");
+            //await Html.RenderPartialAsync("EeCandiateTimeSlotPartial");
+        }
 
     </div>
 

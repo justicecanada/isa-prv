@@ -85,31 +85,13 @@ namespace Interview.UI.Controllers
             ViewBag.Equities = equities;
 
             // Stats
-
+            string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            VmInterviewStats vmInterviewStats = _statsManager.GetInterviewStats(processesForStats);
+            ViewBag.InterviewStats = vmInterviewStats;
+            List<VmEquityStat> candidateEquityStats = _statsManager.GetCandiateEquityStats(processesForStats, equities, cultureName);
+            ViewBag.CandidateEquityStats = candidateEquityStats;
 
         }
-
-        //private async Task SetIndexViewBag(Guid processId)
-        //{
-
-        //    // Processes
-        //    List<Entities.Process> processes = await GetProcessesForLoggedInUser();
-        //    ViewBag.Processes = processes;
-        //    ViewBag.ProcessId = (Guid)_state.ProcessId;
-
-        //    // Interviews
-        //    List<Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
-        //    ViewBag.Interviews = interviews;
-
-        //    // Role User Equities
-        //    List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId(processId);
-        //    ViewBag.RoleUsers = roleUsers;
-
-        //    // Equities
-        //    List<Equity> equities = await _dal.GetAllEquities();
-        //    ViewBag.Equities = equities;
-
-        //}
 
         #endregion
 
