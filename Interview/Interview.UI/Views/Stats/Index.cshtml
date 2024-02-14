@@ -8,11 +8,11 @@
 
     ViewBag.Title = localizer["Title"].Value;
 
-    List<Process> processes = ViewBag.Processes;
-    Guid processId = ViewBag.ProcessId;
+    List<Process> processes = ViewBag.ProcessesForDropdown;
+    Guid? processId = ViewBag.ProcessId;
 
     List<SelectListItem> vmProcessItems = new List<SelectListItem>();
-    vmProcessItems.Add(new SelectListItem() { Value = null, Text = localizer["AllProcesses"].Value });
+    vmProcessItems.Add(new SelectListItem() { Value = "", Text = localizer["AllProcesses"].Value, Selected = Model.ProcessId == null });
     foreach (var processItem in processes)
     {
         vmProcessItems.Add(new SelectListItem()
@@ -56,7 +56,7 @@
 
     <div class="col-md-9">
 
-        @{
+        @*@{
             await Html.RenderPartialAsync("InterviewsRowPartial"); 
         }
         <div class="row">
@@ -76,7 +76,7 @@
         @{
             await Html.RenderPartialAsync("TimeSlotPartial");
             await Html.RenderPartialAsync("EeCandiateTimeSlotPartial");
-        }
+        }*@
 
     </div>
 

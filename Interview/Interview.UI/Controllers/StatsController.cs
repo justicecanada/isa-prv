@@ -5,6 +5,7 @@ using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Stats;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.State;
+using Interview.UI.Services.Stats;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -19,17 +20,19 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IStats _statsManager;
 
         #endregion
 
         #region Constructors
 
         public StatsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IStringLocalizer<BaseController> baseLocalizer, 
-            IState state) 
+            IState state, IStats statsManager) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
+            _statsManager = statsManager;
         }
 
         #endregion
@@ -41,7 +44,7 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
-            Guid processId = processIdToFilter == null ? (Guid)_state.ProcessId : new Guid(processIdToFilter);
+            Guid? processId = processIdToFilter == null ? null : new Guid(processIdToFilter);
 
             result.ProcessId = processId;
             await SetIndexViewBag(processId);
@@ -59,27 +62,54 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexViewBag(Guid processId)
+        private async Task SetIndexViewBag(Guid? processId)
         {
 
             // Processes
-            List<Entities.Process> processes = await GetProcessesForLoggedInUser();
-            ViewBag.Processes = processes;
-            ViewBag.ProcessId = (Guid)_state.ProcessId;
+            List<Entities.Process> processesForDropdown = await GetProcessesForLoggedInUser();
+            List<Entities.Process> processesForStats = null;
 
-            // Interviews
-            List<Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
-            ViewBag.Interviews = interviews;
+            ViewBag.ProcessesForDropdown = processesForDropdown;
+            ViewBag.ProcessId = processId;
 
-            // Role User Equities
-            List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId(processId);
-            ViewBag.RoleUsers = roleUsers;
+            if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
+                processesForStats = await _dal.GetAllProcessesForStats(processId);
+            else if (User.IsInRole(RoleTypes.Owner.ToString()))
+                processesForStats = await _dal.GetProcessesForGroupOwnerForStats(EntraId, processId);
+            else
+                processesForStats = await _dal.GetProcessesForRoleUserForStats(EntraId, processId);
+            processesForStats.OrderByDescending(x => x.CreatedDate);
 
             // Equities
             List<Equity> equities = await _dal.GetAllEquities();
             ViewBag.Equities = equities;
 
+            // Stats
+
+
         }
+
+        //private async Task SetIndexViewBag(Guid processId)
+        //{
+
+        //    // Processes
+        //    List<Entities.Process> processes = await GetProcessesForLoggedInUser();
+        //    ViewBag.Processes = processes;
+        //    ViewBag.ProcessId = (Guid)_state.ProcessId;
+
+        //    // Interviews
+        //    List<Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
+        //    ViewBag.Interviews = interviews;
+
+        //    // Role User Equities
+        //    List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId(processId);
+        //    ViewBag.RoleUsers = roleUsers;
+
+        //    // Equities
+        //    List<Equity> equities = await _dal.GetAllEquities();
+        //    ViewBag.Equities = equities;
+
+        //}
 
         #endregion
 
