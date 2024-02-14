@@ -1,0 +1,42 @@
+﻿@using Interview.Entities
+@using Interview.UI.Models.Stats
+@inject IViewLocalizer localizer
+
+
+@{
+
+    List<VmEquityStat> equityStats = ViewBag.CandidateEquityStatsEquityStatsForInterviews;
+    int total = equityStats.Sum(x => x.Count);
+
+}
+
+@functions {
+
+    private string GetEquityLine(VmEquityStat equityStat)
+    {
+
+        string result = null;
+
+        result = $"{equityStat.Count}/{equityStat.Total} {equityStat.Description} (<strong>{equityStat.Percentage}%</strong>)";
+
+        return result;
+
+    }
+
+}
+
+<section class="panel panel-default">
+    <header class="panel-heading">
+        <h5 class="panel-title">@localizer["Heading"]</h5>
+    </header>
+    <div class="panel-body">
+        @foreach (VmEquityStat equityStat in equityStats)
+        {
+            <div>@Html.Raw(GetEquityLine(equityStat))</div>
+        }
+        <hr />
+        <div>
+            @localizer["Total"] @total
+        </div>
+    </div>
+</section>
