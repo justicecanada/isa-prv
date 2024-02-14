@@ -92,6 +92,8 @@ namespace Interview.UI.Controllers
             ViewBag.CandidateEquityStats = candidateEquityStats;
             List<VmEquityStat> borardMemberEquityStats = _statsManager.GetBoartdMemberEquityStats(processesForStats, equities, cultureName);
             ViewBag.BoardMemberEquityStats = borardMemberEquityStats;
+            List<VmEquityStat> interviewerAndLeadEquityStatsForInterviews = _statsManager.GetInterviewerAndLeadEquityStatsForInterviews(processesForStats, equities, cultureName);
+            ViewBag.InterviewerAndLeadEquityStatsForInterviews = interviewerAndLeadEquityStatsForInterviews;
 
         }
 

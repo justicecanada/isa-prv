@@ -5,19 +5,19 @@
 
 @{
 
-    List<VmEquityStat> candidateEquityStats = ViewBag.CandidateEquityStats;
-    int total = candidateEquityStats.Sum(x => x.Count);
+    List<VmEquityStat> equityStats = ViewBag.CandidateEquityStats;
+    int total = equityStats.Sum(x => x.Count);
 
 }
 
 @functions {
 
-    private string GetEquityLine(VmEquityStat candidateEquityStat)
+    private string GetEquityLine(VmEquityStat equityStat)
     {
 
         string result = null;
 
-        result = $"{candidateEquityStat.Count}/{candidateEquityStat.Total} {candidateEquityStat.Description} (<strong>{candidateEquityStat.Percentage}%</strong>)";
+        result = $"{equityStat.Count}/{equityStat.Total} {equityStat.Description} (<strong>{equityStat.Percentage}%</strong>)";
 
         return result;
 
@@ -30,9 +30,9 @@
         <h5 class="panel-title">@localizer["Heading"]</h5>
     </header>
     <div class="panel-body">
-        @foreach (VmEquityStat candidateEquityStat in candidateEquityStats)
+        @foreach (VmEquityStat equityStat in equityStats)
         {
-            <div>@Html.Raw(GetEquityLine(candidateEquityStat))</div>
+            <div>@Html.Raw(GetEquityLine(equityStat))</div>
         }
         <hr />
         <div>

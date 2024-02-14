@@ -4,7 +4,7 @@
 
 @{
 
-    List<VmEquityStat> equityStats = ViewBag.BoardMemberEquityStats;
+    List<VmEquityStat> equityStats = ViewBag.InterviewerAndLeadEquityStatsForInterviews;
     int total = equityStats.Sum(x => x.Count);
 
 }
@@ -16,7 +16,7 @@
 
         string result = null;
 
-        result = $"{equityStat.Count}/{equityStat.Total} {equityStat.Description} (<strong>{equityStat.Percentage}%</strong>)";
+        result = $"{equityStat.Count}/{equityStat.Total} {localizer["TimeSlotWithboardMember"].Value} {equityStat.Description} (<strong>{equityStat.Percentage}%</strong>)";
 
         return result;
 
