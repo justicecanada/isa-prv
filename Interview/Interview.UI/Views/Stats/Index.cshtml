@@ -66,10 +66,9 @@
                 }
             </div>
             <div class="col-md-6">
-                @*@{
-                    await Html.RenderPartialAsync("EquityByUserRoleTypePartial", new ViewDataDictionary(ViewData)
-                        { { "RoleUserType", RoleUserTypes.Interviewer } });
-                }*@
+                @{
+                    await Html.RenderPartialAsync("BoardMemberEquityStatsPartial");
+                }
             </div>
         </div>
         @{
