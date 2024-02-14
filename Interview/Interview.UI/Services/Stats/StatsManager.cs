@@ -59,6 +59,30 @@ namespace Interview.UI.Services.Stats
 
         }
 
+        public List<VmEquityStat> GetBoartdMemberEquityStats(List<Process> processes, List<Equity> equities, string cultureName)
+        {
+
+            List<VmEquityStat> result = new List<VmEquityStat>();
+            List<RoleUser> filteredRoleUsers = processes.SelectMany(x => x.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer || x.RoleUserType == RoleUserTypes.Lead)).ToList();
+            int totalUserRolesForCandidate = filteredRoleUsers.Sum(x => x.RoleUserEquities.Count);
+            int countForEquity;
+
+            foreach (Equity equity in equities)
+            {
+                countForEquity = filteredRoleUsers.SelectMany(x => x.RoleUserEquities).Where(x => x.EquityId == equity.Id).Count();
+                result.Add(new VmEquityStat()
+                {
+                    Description = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                    Total = totalUserRolesForCandidate,
+                    Count = countForEquity,
+                    Percentage = countForEquity == 0 ? 0 : Math.Round(((double)countForEquity / (double)totalUserRolesForCandidate) * 100, 2)
+                });
+            }
+
+            return result;
+
+        }
+
         #endregion
 
     }

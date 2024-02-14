@@ -141,6 +141,166 @@ namespace Interview.UI.Tests.Services.Stats
 
         }
 
+        [TestMethod]
+        public void GetCandiateEquityStats_MultipleProcesses()
+        {
+
+            List<VmEquityStat> result = null;
+            List<Process> processes = new List<Process>();
+            Process process = null;
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberProcesses = 3;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+
+            for (int i = 0; i < numberProcesses; i++)
+            {
+                process = (Process)GetEntity<Process>(true);
+                processes.Add(process);
+            }
+       
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetCandiateEquityStats(processes, equities, Constants.EnglishCulture);
+
+            Assert.IsTrue(result.Count == equities.Count);
+            Assert.IsTrue(Math.Round(((double)result.Sum(x => x.Percentage)), 0) == 100);
+
+        }
+
+        #endregion
+
+        #region Public GetBoartdMemberEquityStats Test Methods
+
+        [TestMethod]
+        public void GetBoartdMemberEquityStats_SingleProcess()
+        {
+
+            List<VmEquityStat> result = null;
+            List<Process> processes = new List<Process>();
+            var process = (Process)GetEntity<Process>(true);
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+
+            processes.Add(process);
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetBoartdMemberEquityStats(processes, equities, Constants.EnglishCulture);
+
+            Assert.IsTrue(result.Count == equities.Count);
+            Assert.IsTrue(Math.Round(((double)result.Sum(x => x.Percentage)), 0) == 100);
+
+        }
+
+        [TestMethod]
+        public void GetBoartdMemberEquityStats_MultipleProcesses()
+        {
+
+            List<VmEquityStat> result = null;
+            List<Process> processes = new List<Process>();
+            Process process = null;
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberProcesses = 3;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+
+            for (int i = 0; i < numberProcesses; i++)
+            {
+                process = (Process)GetEntity<Process>(true);
+                processes.Add(process);
+            }
+
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetBoartdMemberEquityStats(processes, equities, Constants.EnglishCulture);
+
+            Assert.IsTrue(result.Count == equities.Count);
+            Assert.IsTrue(Math.Round(((double)result.Sum(x => x.Percentage)), 0) == 100);
+
+        }
+
         #endregion
 
         #region Private Entity Methods
