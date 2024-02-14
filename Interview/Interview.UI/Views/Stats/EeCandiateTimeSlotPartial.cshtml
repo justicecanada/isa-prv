@@ -40,6 +40,7 @@
         <h5 class="panel-title">@heading</h5>
     </header>
     <div class="panel-body">
+        @{ await Html.RenderPartialAsync("EeCandiatePartial"); }
         @foreach (Equity equity in equities)
         {
             <div>@Html.Raw(GetEquityLine(equity, interviews, filteredInterviewUsers, roleUsers, cultureName))</div>
