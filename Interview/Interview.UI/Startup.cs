@@ -23,6 +23,7 @@ using Interview.UI.Services.Options;
 using Interview.UI.Services.Seeder;
 using Interview.UI.Services.Graph;
 using Interview.UI.Auth;
+using Interview.UI.Services.Stats;
 
 namespace Interview.UI
 {
@@ -75,7 +76,8 @@ namespace Interview.UI
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.AddScoped<IToken, TokenManagerWithCertificate>();
             services.AddScoped<IUsers, UserManager>();
-            services.AddScoped<IEmails, EmailManager>();        
+            services.AddScoped<IEmails, EmailManager>();
+            services.AddScoped<IStats, StatsManager>();
             services.AddTransient<IOptions, JsonOptions>();
             services.AddTransient<EquitySeeder>();
 
