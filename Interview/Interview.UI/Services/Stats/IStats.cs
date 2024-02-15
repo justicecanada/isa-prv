@@ -7,7 +7,7 @@ namespace Interview.UI.Services.Stats
     public interface IStats
     {
 
-        VmInterviewStats GetInterviewStats(List<Process> processes);
+        VmInterviewCounts GetInterviewCounts(List<Process> processes);
 
         List<VmEquityStat> GetCandiateEquityStats(List<Process> processes, List<Equity> equities, string cultureName);
 
@@ -18,6 +18,10 @@ namespace Interview.UI.Services.Stats
         List<VmEquityStat> GetCandidateEquityStatsEquityStatsForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
 
         List<VmEeCandidate> GetEeCandidatesForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
+
+        List<VmInterviewCounts> GetInterviewStatsWeeklyView(List<Process> processes);
+
+        List<VmInterviewCounts> GetInterviewStatsMonthlyView(List<Process> processes);
 
     }
 

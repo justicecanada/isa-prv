@@ -21,10 +21,10 @@ namespace Interview.UI.Services.Stats
 
         #region Public Inteface Methods
 
-        public VmInterviewStats GetInterviewStats(List<Process> processes)
+        public VmInterviewCounts GetInterviewCounts(List<Process> processes)
         {
 
-            VmInterviewStats result = new VmInterviewStats();
+            VmInterviewCounts result = new VmInterviewCounts();
 
             result.TotalInterviews = processes.Sum(x => x.Interviews.Count);
             result.CompletedInterviews = processes.SelectMany(x => x.Interviews.Where(x => x.Status == InterviewStates.Reserve && 
@@ -187,7 +187,29 @@ namespace Interview.UI.Services.Stats
 
             return result;
 
-        }   
+        }
+
+        public List<VmInterviewCounts> GetInterviewStatsWeeklyView(List<Process> processes)
+        {
+
+            List<VmInterviewCounts> result = new List<VmInterviewCounts>();
+
+
+
+            return result;
+
+        }
+
+        public List<VmInterviewCounts> GetInterviewStatsMonthlyView(List<Process> processes)
+        {
+
+            List<VmInterviewCounts> result = new List<VmInterviewCounts>();
+
+
+
+            return result;
+
+        }
 
         #endregion
 

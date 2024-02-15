@@ -94,8 +94,8 @@ namespace Interview.UI.Controllers
 
             // Stats
             string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-            VmInterviewStats vmInterviewStats = _statsManager.GetInterviewStats(processResults);
-            ViewBag.InterviewStats = vmInterviewStats;
+            VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
+            ViewBag.InterviewCounts = vmInterviewCounts;
 
         }
 

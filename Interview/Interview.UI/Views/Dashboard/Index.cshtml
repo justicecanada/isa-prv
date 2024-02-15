@@ -75,3 +75,34 @@
 @{
     await Html.RenderPartialAsync("InterviewsRowPartial");
 }
+
+<div class="table-responsive">
+    <table id="roleInterviews" class="table table-striped" data-toggle="table" data-pagination="true">
+        <thead>
+            <tr>
+                <th>@localizer["Dates"]</th>
+                <th>@localizer["NumberSlots"]</th>
+                <th>@localizer["Progress"]</th>
+                <th>@localizer["CandidateManagement"]</th>
+                <th>@localizer["VirtualVsInPerson"]</th>
+                <th>@localizer["TimeDaysInterview"]</th>
+                <th>@localizer["NumberEddCandidates"]</th>
+                <th>@localizer["NumberBoardMembers"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (RoleUser roleUser in roleUsers)
+            {
+                ViewBag.RoleUser = roleUser;
+                if (roleUser.Id == roleUserIdToUpdate)
+                {
+                    await Html.RenderPartialAsync("TableEditableRowPartial");
+                }
+                else
+                {
+                    await Html.RenderPartialAsync("TableReadonlyRowPartial");
+                }
+            }*@
+        </tbody>
+    </table>
+</div>

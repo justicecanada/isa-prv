@@ -41,7 +41,7 @@ namespace Interview.UI.Tests.Services.Stats
         public void GetInterviewStats_SingleProcess()
         {
 
-            VmInterviewStats result = null;
+            VmInterviewCounts result = null;
             List<Process> processes = new List<Process>();
             var process = (Process)GetEntity<Process>(true);
             int completed = 10;
@@ -51,7 +51,7 @@ namespace Interview.UI.Tests.Services.Stats
             processes.Add(process);
             process.Interviews = GetInterviews(process.Id, completed, remaining);
             interviewDays = GetInterviewDays(processes);
-            result = _statsManager.GetInterviewStats(processes);
+            result = _statsManager.GetInterviewCounts(processes);
 
             Assert.IsTrue(result.TotalInterviews == completed + remaining);
             Assert.IsTrue(result.CompletedInterviews == completed);
@@ -64,7 +64,7 @@ namespace Interview.UI.Tests.Services.Stats
         public void GetInterviewStats_MultipleProcesses()
         {
 
-            VmInterviewStats result = null;
+            VmInterviewCounts result = null;
             List<Process> processes = new List<Process>();
             var process = (Process)GetEntity<Process>(true);
             int numberProcesses = 3;
@@ -82,7 +82,7 @@ namespace Interview.UI.Tests.Services.Stats
             }
             interviewDays = GetInterviewDays(processes);
 
-            result = _statsManager.GetInterviewStats(processes);
+            result = _statsManager.GetInterviewCounts(processes);
 
             Assert.IsTrue(result.TotalInterviews == (completed + remaining) * numberProcesses);
             Assert.IsTrue(result.CompletedInterviews == completed * numberProcesses);
@@ -625,6 +625,42 @@ namespace Interview.UI.Tests.Services.Stats
             }
 
             result = _statsManager.GetEeCandidatesForInterviews(processes, equities, Constants.EnglishCulture);
+
+
+        }
+
+        #endregion
+
+        #region Public GetInterviewStats Test Methods
+
+        [TestMethod]
+        public void GetInterviewStatsWeeklyView_SingleProcess()
+        {
+
+            List<VmInterviewCounts>
+
+        }
+
+        [TestMethod]
+        public void GetInterviewStatsWeeklyView_MultipleProcesses()
+        {
+
+
+
+        }
+
+        [TestMethod]
+        public void GetInterviewStatsMonthlyView_SingleProcess()
+        {
+
+
+
+        }
+
+        [TestMethod]
+        public void GetInterviewStatsMonthlyView_MultipleProcesses()
+        {
+
 
 
         }
