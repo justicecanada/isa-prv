@@ -11,6 +11,7 @@ namespace Interview.Entities
     {
 
         public Guid GroupId { get; set; }
+        // This is an Internal (EntraID) Id
         public Guid UserId { get; set; }
         public bool? HasAccessEE { get; set; }
 

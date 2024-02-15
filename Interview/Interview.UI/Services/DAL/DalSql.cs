@@ -335,6 +335,96 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Process>> GetAllProcessesForStats(Guid? processId)
+        {
+
+            List<Process> result = null;
+
+            if (processId == null)
+            {
+                result = await _context.Processes.Where(x => !x.IsDeleted)
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities)
+                    .ToListAsync();
+            }
+            else
+            {
+                result = await _context.Processes.Where(x => (x.Id == (Guid)processId && !x.IsDeleted))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities)
+                    .ToListAsync();
+            }
+
+            return result;
+
+        }
+
+        public async Task<List<Process>> GetProcessesForGroupOwnerForStats(Guid userId, Guid? processId)
+        {
+
+            List<Process> result = null;
+
+            if (processId == null)
+            {
+                result = await _context.Processes.Where(x => !x.IsDeleted &&
+                    (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
+                    || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities)
+                    .ToListAsync();
+            }
+            else
+            {
+                result = await _context.Processes.Where(x => x.Id == (Guid)processId && !x.IsDeleted &&
+                    (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
+                    || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities)
+                    .ToListAsync();
+            }
+
+            return result;
+
+        }
+
+        public async Task<List<Process>> GetProcessesForRoleUserForStats(Guid userId, Guid? processId)
+        {
+
+            List<Process> result = null;
+
+            if (processId == null)
+            {
+                result = await _context.Processes.Where(x => !x.IsDeleted &&
+                    x.RoleUsers.Any(y => y.UserId.Equals(userId)))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities)
+                    .ToListAsync();
+            }
+            else
+            {
+                result = await _context.Processes.Where(x => x.Id == (Guid)processId && !x.IsDeleted &&
+                    x.RoleUsers.Any(y => y.UserId.Equals(userId)))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities)
+                    .ToListAsync();
+            }
+
+            return result;
+
+        }
+
         public async Task<List<Process>> GetAllProcessesWithUserRoles()
         {
 
@@ -434,7 +524,9 @@ namespace Interview.UI.Services.DAL
         public async Task<List<Interview.Entities.Interview>> GetInterViewsByProcessId(Guid processId)
 		{
 
-            var result = await _context.Interviews.Where(x => (x.ProcessId == processId)).ToListAsync();
+            var result = await _context.Interviews.Where(x => (x.ProcessId == processId))
+                .Include(x => x.InterviewUsers)
+                .ToListAsync();
 
             return result;
 

@@ -20,7 +20,7 @@ namespace Interview.Entities
         public string? Location { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public int? Duration { get; set; }
-        public int? Status { get; set; }
+        public InterviewStates? Status { get; set; }
         public string? ContactName { get; set; }
         public string? ContactNumber { get; set; }
 

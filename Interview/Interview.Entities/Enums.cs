@@ -53,4 +53,11 @@ namespace Interview.Entities
         CandidateExternal = 4
     }
 
+    public enum InterviewStates
+    {
+        Available = 1,
+        Waiting = 2,
+        Reserve = 3
+    }
+
 }

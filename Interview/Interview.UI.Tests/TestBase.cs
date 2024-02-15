@@ -10,7 +10,7 @@ namespace Interview.UI.Tests
     public class TestBase
     {
 
-        protected object GetEntity<t>()
+        protected object GetEntity<t>(bool generateId = false)
         {
 
             object result = Activator.CreateInstance<t>();
@@ -28,6 +28,10 @@ namespace Interview.UI.Tests
                     property.SetValue(result, DateTimeOffset.Now);
                 else if (property.PropertyType.FullName.ToLower().Contains("system.datetime"))
                     property.SetValue(result, DateTime.Now);
+
+                if (property.Name.ToLower() == "id" && generateId)
+                    property.SetValue(result, Guid.NewGuid());
+
             }
 
             return result;
@@ -51,6 +55,18 @@ namespace Interview.UI.Tests
                 result = Convert.ToDouble(string.Format("{0}.{1}", random.Next(0, 1000), random.Next(0, 100)));
             else
                 throw new NotImplementedException("Exception in GetRandomNumber: type not handled");
+
+            return result;
+
+        }
+
+        protected int GetRandomNumber(int range)
+        {
+
+            int result = 0;
+            Random random = new Random();
+
+            result = random.Next(0, range);
 
             return result;
 

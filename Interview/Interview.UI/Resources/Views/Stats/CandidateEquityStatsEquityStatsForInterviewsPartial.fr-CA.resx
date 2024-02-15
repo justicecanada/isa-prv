@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AllProcesses" xml:space="preserve">
-    <value>Tous les processus</value>
-  </data>
-  <data name="ApplyFilter" xml:space="preserve">
-    <value>Appliquer</value>
-  </data>
-  <data name="Clear" xml:space="preserve">
-    <value>Effacer</value>
-  </data>
-  <data name="FilterOptions" xml:space="preserve">
-    <value>Options de filtrage</value>
-  </data>
-  <data name="ListOfProcesses" xml:space="preserve">
-    <value>Processus</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Statistiques</value>
+  <data name="Heading" xml:space="preserve">
+    <value>Candidats EE avec plage horaire EE</value>
   </data>
 </root>

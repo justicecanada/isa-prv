@@ -24,6 +24,12 @@ namespace Interview.UI.Services.DAL
 
         Task<List<Process>> GetProcessesForRoleUser(Guid userId);
 
+        Task<List<Process>> GetAllProcessesForStats(Guid? processId);
+
+        Task<List<Process>> GetProcessesForGroupOwnerForStats(Guid userId, Guid? processId);
+
+        Task<List<Process>> GetProcessesForRoleUserForStats(Guid userId, Guid? processId);
+
         Task<List<Process>> GetAllProcessesWithUserRoles();
 
         Task<List<Group>> GetGroups(Guid? userId = null);

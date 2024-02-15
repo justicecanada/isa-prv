@@ -1,0 +1,32 @@
+﻿
+@using Interview.UI.Models.Stats
+
+@{
+
+    List<VmEeCandidate> eeCandidatesForInterviews = ViewBag.EeCandidatesForInterviews;
+
+}
+
+@functions{
+
+    private string GetCandidateLine(VmEeCandidate eeCandidate)
+    {
+        
+        string result = null;
+
+
+        result = $"{eeCandidate.GivenName} {eeCandidate.Surname} ({eeCandidate.EquitiesDescription}) [{eeCandidate.InterviewDate.ToString(Constants.DateFormat)}]: {eeCandidate.IsInEeInterview.ToString()}";
+
+        return result;
+
+
+    }
+
+}
+
+@foreach (VmEeCandidate eeCandidate in eeCandidatesForInterviews)
+{
+    <div class="row col-md-12">
+        @Html.Raw(GetCandidateLine(eeCandidate))
+    </div>
+}

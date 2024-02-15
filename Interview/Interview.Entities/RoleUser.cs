@@ -17,6 +17,7 @@ namespace Interview.Entities
         }
 
         public Guid ProcessId { get; set; }
+        // InternalUser or ExternalUser.Id
         public Guid UserId { get; set; }
         public string? UserFirstname { get; set; }
         public string? UserLastname { get; set; }
