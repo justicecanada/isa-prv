@@ -32,10 +32,10 @@
     <div class="panel-body">
         @foreach (VmEquityStat equityStat in equityStats)
         {
-            <div>@Html.Raw(GetEquityLine(equityStat))</div>
+            <div class="row col-md-12">@Html.Raw(GetEquityLine(equityStat))</div>
         }
         <hr />
-        <div>
+        <div class="row col-md-12">
             @localizer["Total"] @total
         </div>
     </div>

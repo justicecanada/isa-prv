@@ -29,9 +29,13 @@
         <h5 class="panel-title">@localizer["Heading"]</h5>
     </header>
     <div class="panel-body">
+        @{
+            await Html.RenderPartialAsync("EeCandidatesForInterviewsPartial");
+        }
+        <hr />
         @foreach (VmEquityStat equityStat in equityStats)
         {
-            <div>@Html.Raw(GetEquityLine(equityStat))</div>
+            <div class="row col-md-12">@Html.Raw(GetEquityLine(equityStat))</div>
         }
         <hr />
     </div>

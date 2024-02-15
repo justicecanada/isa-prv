@@ -174,7 +174,7 @@ namespace Interview.UI.Services.Stats
                         {
                             GivenName = roleUser.UserFirstname,
                             Surname = roleUser.UserLastname,
-                            Equities = roleUser.Equities,
+                            EquitiesDescription = sb.ToString(),
                             InterviewDate = interview.StartDate,
                             IsInEeInterview = isInEeInterview
                         };

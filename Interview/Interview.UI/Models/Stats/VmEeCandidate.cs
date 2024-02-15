@@ -10,7 +10,7 @@ namespace Interview.UI.Models.Stats
 
         public string Surname { get; set; }
 
-        public List<Equity> Equities { get; set; }
+        public string EquitiesDescription { get; set; }
 
         public DateTimeOffset InterviewDate { get; set; }
 
