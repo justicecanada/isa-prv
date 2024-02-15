@@ -146,6 +146,7 @@ namespace Interview.UI.Services.Stats
             Entities.Interview interview = null;
             Equity equity = null;
             StringBuilder sb = new StringBuilder();
+            bool isInEeInterview = false;
 
             foreach (RoleUser roleUser in filteredRoleUsers)
             {
@@ -157,6 +158,7 @@ namespace Interview.UI.Services.Stats
                 {
                     interview = interviews.Where(x => x.Id == interviewUser.InterviewId).First();
                     sb.Clear();
+                    isInEeInterview = false;
                     if (interview != null)
                     {
                         foreach (RoleUserEquity roleUserEquity in roleUser.RoleUserEquities)
@@ -165,6 +167,7 @@ namespace Interview.UI.Services.Stats
                             sb.Append(cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR);
                             if (roleUserEquity != roleUser.RoleUserEquities.Last())
                                 sb.Append(", ");
+                            isInEeInterview = true;
                         }
 
                         eeCandidate = new VmEeCandidate()
@@ -172,13 +175,13 @@ namespace Interview.UI.Services.Stats
                             GivenName = roleUser.UserFirstname,
                             Surname = roleUser.UserLastname,
                             Equities = roleUser.Equities,
-                            InterviewDate = interview.StartDate
+                            InterviewDate = interview.StartDate,
+                            IsInEeInterview = isInEeInterview
                         };
                         result.Add(eeCandidate);
 
                     }
                 }
-
 
             }
 

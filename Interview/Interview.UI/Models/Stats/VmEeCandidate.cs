@@ -14,7 +14,7 @@ namespace Interview.UI.Models.Stats
 
         public DateTimeOffset InterviewDate { get; set; }
 
-        public bool WeirdLogic { get; set; }
+        public bool IsInEeInterview { get; set; }
 
     }
 
