@@ -81,11 +81,11 @@ namespace Interview.UI.Controllers
             List<Entities.Process> processResults = null;
 
             if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
-                processResults = await _dal.GetAllProcessesForStats(vmFilter.ProcessId);
+                processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
             else if (User.IsInRole(RoleTypes.Owner.ToString()))
-                processResults = await _dal.GetProcessesForGroupOwnerForStats(EntraId, vmFilter.ProcessId);
+                processResults = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
             else
-                processResults = await _dal.GetProcessesForRoleUserForStats(EntraId, vmFilter.ProcessId);
+                processResults = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
             processResults.OrderByDescending(x => x.CreatedDate);
 
             // Equities

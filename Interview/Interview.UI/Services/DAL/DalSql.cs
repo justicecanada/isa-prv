@@ -425,6 +425,78 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Process>> GetAllProcessesForDashboard(Guid? processId, DateTime? startDate, DateTime? endDate)
+        {
+
+            List<Process> result = null;
+            IQueryable<Process> query = _context.Processes.Where(x => !x.IsDeleted)
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities);
+
+            if (processId != null)
+                query = query.Where(x => x.Id == processId);
+            if (startDate != null)
+                query = query.Where(x => x.Interviews.Any(x => x.StartDate >= startDate));
+            if (endDate!= null)
+                query = query.Where(x => x.Interviews.Any(x => x.StartDate <= endDate));
+
+            result = await query.ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Process>> GetProcessesForGroupOwnerForDashboard(Guid userId, Guid? processId, DateTime? startDate, DateTime? endDate)
+        {
+
+            List<Process> result = null;
+            IQueryable<Process> query = _context.Processes.Where(x => !x.IsDeleted &&
+                    (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
+                    || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities);
+
+            if (processId != null)
+                query = query.Where(x => x.Id == processId);
+            if (startDate != null)
+                query = query.Where(x => x.Interviews.Any(x => x.StartDate >= startDate));
+            if (endDate != null)
+                query = query.Where(x => x.Interviews.Any(x => x.StartDate <= endDate));
+
+            result = await query.ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<List<Process>> GetProcessesForRoleUserForDashboard(Guid userId, Guid? processId, DateTime? startDate, DateTime? endDate)
+        {
+
+            List<Process> result = null;
+            IQueryable<Process> query = _context.Processes.Where(x => !x.IsDeleted &&
+                    x.RoleUsers.Any(y => y.UserId.Equals(userId)))
+                    .Include(x => x.Interviews)
+                    .ThenInclude(x => x.InterviewUsers)
+                    .Include(x => x.RoleUsers)
+                    .ThenInclude(x => x.RoleUserEquities);
+
+            if (processId != null)
+                query = query.Where(x => x.Id == processId);
+            if (startDate != null)
+                query = query.Where(x => x.Interviews.Any(x => x.StartDate >= startDate));
+            if (endDate != null)
+                query = query.Where(x => x.Interviews.Any(x => x.StartDate <= endDate));
+
+            result = await query.ToListAsync();
+
+            return result;
+
+        }
+
         public async Task<List<Process>> GetAllProcessesWithUserRoles()
         {
 
