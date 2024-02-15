@@ -1,6 +1,7 @@
 ﻿using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.Stats;
+using System.Text;
 
 namespace Interview.UI.Services.Stats
 {
@@ -134,6 +135,56 @@ namespace Interview.UI.Services.Stats
             return result;
 
         }
+
+        public List<VmEeCandidate> GetEeCandidatesForInterviews(List<Process> processes, List<Equity> equities, string cultureName)
+        {
+
+            List<VmEeCandidate> result = new List<VmEeCandidate>();
+            VmEeCandidate eeCandidate = null;
+            List<RoleUser> filteredRoleUsers = processes.SelectMany(x => (x.RoleUsers.Where(x => x.RoleUserEquities.Count > 0 && x.RoleUserType == RoleUserTypes.Candidate))).ToList();
+            InterviewUser interviewUser = null;
+            Entities.Interview interview = null;
+            Equity equity = null;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (RoleUser roleUser in filteredRoleUsers)
+            {
+
+                List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();
+                interviewUser = interviews.SelectMany(x => x.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.UserId == roleUser.Id).ToList()).FirstOrDefault();
+
+                if (interviewUser != null)
+                {
+                    interview = interviews.Where(x => x.Id == interviewUser.InterviewId).First();
+                    sb.Clear();
+                    if (interview != null)
+                    {
+                        foreach (RoleUserEquity roleUserEquity in roleUser.RoleUserEquities)
+                        {
+                            equity = equities.Where(x => x.Id == roleUserEquity.EquityId).First();
+                            sb.Append(cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR);
+                            if (roleUserEquity != roleUser.RoleUserEquities.Last())
+                                sb.Append(", ");
+                        }
+
+                        eeCandidate = new VmEeCandidate()
+                        {
+                            GivenName = roleUser.UserFirstname,
+                            Surname = roleUser.UserLastname,
+                            Equities = roleUser.Equities,
+                            InterviewDate = interview.StartDate
+                        };
+                        result.Add(eeCandidate);
+
+                    }
+                }
+
+
+            }
+
+            return result;
+
+        }   
 
         #endregion
 

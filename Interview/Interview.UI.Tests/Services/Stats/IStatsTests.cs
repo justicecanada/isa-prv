@@ -567,6 +567,70 @@ namespace Interview.UI.Tests.Services.Stats
 
         #endregion
 
+        #region Public GetEeCandidatesForInterviews Test Methods
+
+        [TestMethod]
+        public void GetEeCandidatesForInterviews_SingleProcess()
+        {
+
+            List<VmEeCandidate> result = null;
+            List<Process> processes = new List<Process>();
+            var process = (Process)GetEntity<Process>(true);
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            processes.Add(process);
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetEeCandidatesForInterviews(processes, equities, Constants.EnglishCulture);
+
+
+        }
+
+        #endregion
+
         #region Private Entity Methods
 
         private List<Entities.Interview> GetInterviews(Guid processId, int completed, int remaining)

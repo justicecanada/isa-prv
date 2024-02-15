@@ -17,6 +17,8 @@ namespace Interview.UI.Services.Stats
 
         List<VmEquityStat> GetCandidateEquityStatsEquityStatsForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
 
+        List<VmEeCandidate> GetEeCandidatesForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
+
     }
 
 }
