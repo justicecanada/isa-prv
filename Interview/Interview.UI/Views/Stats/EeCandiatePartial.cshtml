@@ -1,0 +1,39 @@
+﻿
+@*@using Interview.Entities
+@inject IViewLocalizer localizer
+
+@{
+
+    List<Equity> equities = ViewBag.Equities;
+    List<RoleUser> roleUsers = ViewBag.RoleUsers;
+    List<RoleUserEquity> roleUserEquities = roleUsers.SelectMany(x => x.RoleUserEquities.Where(x => x.RoleUser.RoleUserType == RoleUserTypes.Candidate)).ToList();
+    List<Interview> interviews = ViewBag.Interviews;
+
+}
+
+@functions {
+
+    private string GetRoleUserLine(RoleUserEquity roleUserEquity, List<Interview> interviews)
+    {
+
+        string result = null;
+        Interview interview = interviews.SingleOrDefault(x => x.InterviewUsers.FirstOrDefault(y => y.RoleUserType == RoleUserTypes.Candidate && y.UserId == roleUserEquity.RoleUserId
+            && x.ProcessId == roleUserEquity.RoleUser.ProcessId) != null);
+        string equities = null;
+
+        if (interview != null)
+        {
+            equities = string.Join(", ", roleUserEquity.Equity.Name)
+
+        }
+
+        return result;
+
+    }
+
+}
+
+@foreach (RoleUserEquity roleUserEquity in roleUserEquities)
+{
+    <div>@Html.Raw(GetRoleUserLine(roleUserEquity.rol, interviews))</div>
+}*@

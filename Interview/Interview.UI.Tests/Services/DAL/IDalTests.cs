@@ -7,9 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Interview.UI.Tests
+namespace Interview.UI.Tests.Services.DAL
 {
-    
+
     [TestClass]
     public class IDalTests : TestBase
     {
@@ -89,11 +89,11 @@ namespace Interview.UI.Tests
 
             Process? result = null;
             Process process = (Process)GetEntity<Process>();
-            Interview.Entities.Interview interview;
+            Entities.Interview interview;
             InterviewUser interviewUser;
             for (int x = 0; x < 4; x++)
             {
-                interview = (Interview.Entities.Interview)GetEntity<Interview.Entities.Interview>();
+                interview = (Entities.Interview)GetEntity<Entities.Interview>();
                 process.Interviews.Add(interview);
                 for (int y = 0; y < x; y++)
                 {

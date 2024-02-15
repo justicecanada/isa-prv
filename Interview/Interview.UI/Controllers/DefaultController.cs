@@ -210,6 +210,7 @@ namespace Interview.UI.Controllers
             {
 
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
+                interview.Status = InterviewStates.Waiting;
 
                 // Handle Interview
                 interview.ProcessId = (Guid)_state.ProcessId;
