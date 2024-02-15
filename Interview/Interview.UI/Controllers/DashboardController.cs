@@ -44,8 +44,9 @@ namespace Interview.UI.Controllers
             VmFilter result = new VmFilter();
             Guid? processId = processIdToFilter == null ? null : new Guid(processIdToFilter);
 
+            result.ProcessId = processId;
             await SetIndexFilterViewBag(processId);
-            await SetIndexResultsViewBag(processId);
+            await SetIndexResultsViewBag(result);
 
             return View(result);
 
@@ -56,7 +57,10 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Filter(VmFilter vmFilter)
         {
 
-            return null;
+            await SetIndexFilterViewBag(vmFilter.ProcessId);
+            await SetIndexResultsViewBag(vmFilter);
+
+            return View("Index", vmFilter);
 
         }
 
@@ -71,17 +75,17 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetIndexResultsViewBag(Guid? processId)
+        private async Task SetIndexResultsViewBag(VmFilter vmFilter)
         {
 
             List<Entities.Process> processResults = null;
 
             if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
-                processResults = await _dal.GetAllProcessesForStats(processId);
+                processResults = await _dal.GetAllProcessesForStats(vmFilter.ProcessId);
             else if (User.IsInRole(RoleTypes.Owner.ToString()))
-                processResults = await _dal.GetProcessesForGroupOwnerForStats(EntraId, processId);
+                processResults = await _dal.GetProcessesForGroupOwnerForStats(EntraId, vmFilter.ProcessId);
             else
-                processResults = await _dal.GetProcessesForRoleUserForStats(EntraId, processId);
+                processResults = await _dal.GetProcessesForRoleUserForStats(EntraId, vmFilter.ProcessId);
             processResults.OrderByDescending(x => x.CreatedDate);
 
             // Equities

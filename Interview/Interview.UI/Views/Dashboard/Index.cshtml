@@ -51,7 +51,7 @@
                     @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.StartDate, new { date = Model.StartDate }) })
                 </div>
                 <div class="col-md-3">
-                    @Html.ActionLink(localizer["DontClickThisYet"].Value, "Index", "Processes", null, new { @class = "btn btn-default" })
+                    @Html.ActionLink(localizer["Clear"].Value, "Index", "Dashboard", null, new { @class = "btn btn-default" })
                     <input type="submit" value="@localizer["Apply"]" id="btnSave" class="btn btn-primary mr-2" formmethod="post" />
                 </div>
             </div>
