@@ -5,8 +5,7 @@
 
 @{
 
-    List<VmEquityStat> equityStats = ViewBag.CandidateEquityStatsEquityStatsForInterviews;
-    int total = equityStats.Sum(x => x.Count);
+    List<VmEquityStat> equityStats = ViewBag.CandidateEquityStatsEquityStatsForInterviews;;
 
 }
 
@@ -35,8 +34,5 @@
             <div>@Html.Raw(GetEquityLine(equityStat))</div>
         }
         <hr />
-        <div>
-            @localizer["Total"] @total
-        </div>
     </div>
 </section>
