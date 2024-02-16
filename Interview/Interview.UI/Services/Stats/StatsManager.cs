@@ -190,11 +190,11 @@ namespace Interview.UI.Services.Stats
 
         }
 
-        public List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes, List<Equity> equities, string cultureName)
+        public List<VmDashboardItem> GetDashboardItems(List<Process> processes, List<Equity> equities, string cultureName, VmPeriodOfTimeTypes periodOfTimeType)
         {
 
             List<VmDashboardItem> result = new List<VmDashboardItem>();
-            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();          
+            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();            
             VmDashboardItem dashboardItem;
             DateTime date;
             int numberSlots;
@@ -206,6 +206,17 @@ namespace Interview.UI.Services.Stats
             int numberInPersons;
             int numberDaysOfInterview;
             RoleUser roleUser;
+
+            if (periodOfTimeType == VmPeriodOfTimeTypes.Daily)
+            {
+                List<IGrouping<DateTimeOffset, Entities.Interview>> interviewGrouping = interviews.GroupBy(x => x.StartDate).ToList();
+                interviews = interviewGrouping.SelectMany(x => x.Select(x => x)).ToList();
+            }
+            else
+            {
+                var interviewGrouping = interviews.GroupBy(x => new { x.StartDate.Year, x.StartDate.Month }).ToList();
+                interviews = interviewGrouping.SelectMany(x => x.Select(x => x)).ToList();
+            }
 
             foreach (Entities.Interview interview in interviews)
             {
