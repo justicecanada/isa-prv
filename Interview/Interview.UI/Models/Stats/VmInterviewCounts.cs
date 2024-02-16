@@ -1,7 +1,7 @@
 ﻿namespace Interview.UI.Models.Stats
 {
     
-    public class VmInterviewStats
+    public class VmInterviewCounts
     {
 
         public int TotalInterviews { get; set; }

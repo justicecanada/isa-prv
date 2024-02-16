@@ -1,4 +1,6 @@
 ﻿using Interview.Entities;
+using Interview.UI.Models;
+using Interview.UI.Models.Dashboard;
 using Interview.UI.Models.Stats;
 
 namespace Interview.UI.Services.Stats
@@ -7,7 +9,7 @@ namespace Interview.UI.Services.Stats
     public interface IStats
     {
 
-        VmInterviewStats GetInterviewStats(List<Process> processes);
+        VmInterviewCounts GetInterviewCounts(List<Process> processes);
 
         List<VmEquityStat> GetCandiateEquityStats(List<Process> processes, List<Equity> equities, string cultureName);
 
@@ -18,6 +20,8 @@ namespace Interview.UI.Services.Stats
         List<VmEquityStat> GetCandidateEquityStatsEquityStatsForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
 
         List<VmEeCandidate> GetEeCandidatesForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
+
+        List<VmDashboardItem> GetDashboardItems(List<Process> processes, List<Equity> equities, string cultureName, VmPeriodOfTimeTypes periodOfTimeType);
 
     }
 

@@ -1,5 +1,6 @@
 ﻿using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.Dashboard;
 using Interview.UI.Models.Stats;
 using System.Text;
 
@@ -21,10 +22,10 @@ namespace Interview.UI.Services.Stats
 
         #region Public Inteface Methods
 
-        public VmInterviewStats GetInterviewStats(List<Process> processes)
+        public VmInterviewCounts GetInterviewCounts(List<Process> processes)
         {
 
-            VmInterviewStats result = new VmInterviewStats();
+            VmInterviewCounts result = new VmInterviewCounts();
 
             result.TotalInterviews = processes.Sum(x => x.Interviews.Count);
             result.CompletedInterviews = processes.SelectMany(x => x.Interviews.Where(x => x.Status == InterviewStates.Reserve && 
@@ -187,7 +188,125 @@ namespace Interview.UI.Services.Stats
 
             return result;
 
-        }   
+        }
+
+        public List<VmDashboardItem> GetDashboardItems(List<Process> processes, List<Equity> equities, string cultureName, VmPeriodOfTimeTypes periodOfTimeType)
+        {
+
+            List<VmDashboardItem> result = new List<VmDashboardItem>();
+            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();            
+            VmDashboardItem dashboardItem;
+            DateTime date;
+            int numberSlots;
+            int numberProgressCompleted;
+            int numberProgressRemaining;
+            int numberCanidateInSlots;
+            int numberCandidatesNotInSlots;
+            int numberVirtuals;
+            int numberInPersons;
+            int numberDaysOfInterview;
+            RoleUser roleUser;
+
+            if (periodOfTimeType == VmPeriodOfTimeTypes.Daily)
+            {
+                List<IGrouping<DateTimeOffset, Entities.Interview>> interviewGrouping = interviews.GroupBy(x => x.StartDate).ToList();
+                interviews = interviewGrouping.SelectMany(x => x.Select(x => x)).ToList();
+            }
+            else
+            {
+                var interviewGrouping = interviews.GroupBy(x => new { x.StartDate.Year, x.StartDate.Month }).ToList();
+                interviews = interviewGrouping.SelectMany(x => x.Select(x => x)).ToList();
+            }
+
+            foreach (Entities.Interview interview in interviews)
+            {
+
+                numberSlots = interviews.Count();
+                date = interviews.Min(x => x.StartDate.Date);
+                numberProgressCompleted = interviews.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberProgressRemaining = numberSlots - numberProgressCompleted;
+                numberCanidateInSlots = interviews.Where(x => x.Status == InterviewStates.Reserve).Count();
+                numberCandidatesNotInSlots = interviews.Where(x => x.Status == InterviewStates.Available).Count();
+                numberVirtuals = interviews.Where(x => string.IsNullOrEmpty(x.Room)).Count();
+                numberInPersons = numberSlots - numberVirtuals;
+                numberDaysOfInterview = interviews.DistinctBy(x => x.StartDate.Day).Count();
+
+                dashboardItem = new VmDashboardItem()
+                {
+                    ProcessId = interview.ProcessId,
+                    Date = date,
+                    Dates = date.ToLongDateString(),
+                    NumberSlots = numberSlots,
+                    NumberProgressCompleted = numberProgressCompleted,
+                    NumberProgressRemaining = numberProgressRemaining,
+                    NumberCandidateInSlots = numberCanidateInSlots,
+                    NumberCandidateNotInSlots = numberCandidatesNotInSlots,
+                    NumberVirtuals = numberVirtuals,
+                    NumberInPersons = numberInPersons,
+                    NumberDaysOfInterview = numberDaysOfInterview
+                };
+
+                foreach (InterviewUser interviewUser in interview.InterviewUsers)
+                {
+                    roleUser = processes.SelectMany(x => x.RoleUsers.Where(x => x.Id == interviewUser.UserId)).FirstOrDefault();
+                    if (roleUser != null)
+                    {
+                        if (roleUser.RoleUserType == RoleUserTypes.Candidate)
+                        {
+                            foreach (Equity equity in equities)
+                            {
+                                if (!dashboardItem.EeCandidates.ContainsKey(equity.Id))
+                                {
+                                    dashboardItem.EeCandidates.Add(equity.Id, new VmEeGroupItem()
+                                    {
+                                        EquityId = equity.Id,
+                                        Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                                        Count = 0
+                                    });
+                                }
+                                else
+                                    dashboardItem.EeCandidates[equity.Id].Count++;
+                            }
+                        }
+                        else
+                        {
+                            foreach (Equity equity in equities)
+                            {
+                                if (!dashboardItem.EeBoardMembers.ContainsKey(equity.Id))
+                                {
+                                    dashboardItem.EeBoardMembers.Add(equity.Id, new VmEeGroupItem()
+                                    {
+                                        EquityId = equity.Id,
+                                        Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                                        Count = 0
+                                    });
+                                }
+                                else
+                                    dashboardItem.EeBoardMembers[equity.Id].Count++;
+                            }
+                        }
+                    }
+
+                }
+
+                result.Add(dashboardItem);
+
+            }
+
+            return result;
+
+        }
+
+        public List<VmInterviewCounts> GetInterviewStatsMonthlyView(List<Process> processes)
+        {
+
+            List<VmInterviewCounts> result = new List<VmInterviewCounts>();
+
+
+
+            return result;
+
+        }
 
         #endregion
 

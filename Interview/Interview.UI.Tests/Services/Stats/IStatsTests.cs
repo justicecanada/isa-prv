@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Interview.Entities;
+using Interview.UI.Models.Dashboard;
+using Interview.UI.Models;
 
 namespace Interview.UI.Tests.Services.Stats
 {
@@ -41,7 +43,7 @@ namespace Interview.UI.Tests.Services.Stats
         public void GetInterviewStats_SingleProcess()
         {
 
-            VmInterviewStats result = null;
+            VmInterviewCounts result = null;
             List<Process> processes = new List<Process>();
             var process = (Process)GetEntity<Process>(true);
             int completed = 10;
@@ -51,7 +53,7 @@ namespace Interview.UI.Tests.Services.Stats
             processes.Add(process);
             process.Interviews = GetInterviews(process.Id, completed, remaining);
             interviewDays = GetInterviewDays(processes);
-            result = _statsManager.GetInterviewStats(processes);
+            result = _statsManager.GetInterviewCounts(processes);
 
             Assert.IsTrue(result.TotalInterviews == completed + remaining);
             Assert.IsTrue(result.CompletedInterviews == completed);
@@ -64,7 +66,7 @@ namespace Interview.UI.Tests.Services.Stats
         public void GetInterviewStats_MultipleProcesses()
         {
 
-            VmInterviewStats result = null;
+            VmInterviewCounts result = null;
             List<Process> processes = new List<Process>();
             var process = (Process)GetEntity<Process>(true);
             int numberProcesses = 3;
@@ -82,7 +84,7 @@ namespace Interview.UI.Tests.Services.Stats
             }
             interviewDays = GetInterviewDays(processes);
 
-            result = _statsManager.GetInterviewStats(processes);
+            result = _statsManager.GetInterviewCounts(processes);
 
             Assert.IsTrue(result.TotalInterviews == (completed + remaining) * numberProcesses);
             Assert.IsTrue(result.CompletedInterviews == completed * numberProcesses);
@@ -626,6 +628,258 @@ namespace Interview.UI.Tests.Services.Stats
 
             result = _statsManager.GetEeCandidatesForInterviews(processes, equities, Constants.EnglishCulture);
 
+
+        }
+
+        #endregion
+
+        #region Public GetInterviewStats Test Methods
+
+        [TestMethod]
+        public void GetInterviewStatsDailyView_SingleProcess()
+        {
+
+            List<VmDashboardItem> result = null;
+            List<Process> processes = new List<Process>();
+            var process = (Process)GetEntity<Process>(true);
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            processes.Add(process);
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetDashboardItems(processes, equities, Constants.EnglishCulture, VmPeriodOfTimeTypes.Daily);
+
+        }
+
+        [TestMethod]
+        public void GetInterviewStatsDailyView_MultipleProcesses()
+        {
+
+            List<VmDashboardItem> result = null;
+            List<Process> processes = new List<Process>();
+            Process process = null;
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberProcesses = 3;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            for (int i = 0; i < numberProcesses; i++)
+            {
+                process = (Process)GetEntity<Process>(true);
+                processes.Add(process);
+            }
+
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetDashboardItems(processes, equities, Constants.EnglishCulture, VmPeriodOfTimeTypes.Daily);
+
+        }
+
+        [TestMethod]
+        public void GetInterviewStatsMonthlyView_SingleProcess()
+        {
+
+            List<VmDashboardItem> result = null;
+            List<Process> processes = new List<Process>();
+            var process = (Process)GetEntity<Process>(true);
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            processes.Add(process);
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetDashboardItems(processes, equities, Constants.EnglishCulture, VmPeriodOfTimeTypes.Monthly);
+
+        }
+
+        [TestMethod]
+        public void GetInterviewStatsMonthlyView_MultipleProcesses()
+        {
+
+            List<VmDashboardItem> result = null;
+            List<Process> processes = new List<Process>();
+            Process process = null;
+            List<Equity> equities = GetEquities();
+            Equity equity = null;
+            int numberProcesses = 3;
+            int numberCandidates = 5;
+            int numberNonCandates = 10;
+            int numberEquitiesPerRoleUser = 3;
+            int numberInterviewUsers = 3;
+            int completed = 10;
+            int remaining = 20;
+
+            for (int i = 0; i < numberProcesses; i++)
+            {
+                process = (Process)GetEntity<Process>(true);
+                processes.Add(process);
+            }
+
+            foreach (Process thisProcess in processes)
+            {
+
+                // Add Role Users to Processes
+                for (int i = 0; i < numberCandidates; i++)
+                {
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, RoleUserTypes.Candidate));
+                }
+                for (int i = 0; i < numberNonCandates; i++)
+                {
+                    RoleUserTypes roleUserType = GetNonCandiateRoleUserType();
+                    Assert.IsTrue(roleUserType != RoleUserTypes.Candidate);
+                    thisProcess.RoleUsers.Add(GetRoleUser(thisProcess.Id, roleUserType));
+                }
+
+                // Add RoleUserEquities to RoleUsers
+                foreach (RoleUser roleUser in thisProcess.RoleUsers)
+                {
+                    for (int i = 0; i < numberEquitiesPerRoleUser; i++)
+                    {
+                        equity = GetRandomEquity(equities);
+                        roleUser.RoleUserEquities.Add(GetRoleUserEquity(roleUser.Id, equity.Id));
+                    }
+                }
+
+                // Add Interviews
+                thisProcess.Interviews = GetInterviews(process.Id, completed, remaining);
+                foreach (Entities.Interview interview in thisProcess.Interviews)
+                {
+                    for (int i = 0; i < numberInterviewUsers; i++)
+                    {
+                        RoleUser roleUser = GetRandomRoleUser(thisProcess.RoleUsers);
+                        interview.InterviewUsers.Add(GetInterviewUser(interview.Id, roleUser.Id));
+                    }
+                }
+
+            }
+
+            result = _statsManager.GetDashboardItems(processes, equities, Constants.EnglishCulture, VmPeriodOfTimeTypes.Monthly);
 
         }
 

@@ -46,4 +46,14 @@ namespace Interview.UI.Models
         Bilingual = 3
     }
 
+    public enum VmPeriodOfTimeTypes
+    {
+        [Display(Name = "Daily")]
+        Daily = 1,
+        [Display(Name = "Weekly")]
+        Weekly = 2,
+        [Display(Name = "Monthly")]
+        Monthly = 3
+    }
+
 }
