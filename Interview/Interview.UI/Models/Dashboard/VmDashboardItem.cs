@@ -6,11 +6,13 @@
 
         public VmDashboardItem()
         {
-            EeCandidates = new Dictionary<int, VmEeGroupItem>();
-            EeBoardMembers = new Dictionary<int, VmEeGroupItem>();
+            EeCandidates = new Dictionary<Guid, VmEeGroupItem>();
+            EeBoardMembers = new Dictionary<Guid, VmEeGroupItem>();
         }
 
         public Guid ProcessId { get; set; }
+
+        public DateTime Date { get; set; }
 
         public string Dates { get; set; }
 
@@ -30,9 +32,9 @@
 
         public int NumberDaysOfInterview { get; set; }
 
-        public Dictionary<int, VmEeGroupItem> EeCandidates { get; set; }
+        public Dictionary<Guid, VmEeGroupItem> EeCandidates { get; set; }
 
-        public Dictionary<int, VmEeGroupItem> EeBoardMembers { get; set; }
+        public Dictionary<Guid, VmEeGroupItem> EeBoardMembers { get; set; }
 
     }
 

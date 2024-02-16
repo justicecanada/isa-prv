@@ -190,14 +190,14 @@ namespace Interview.UI.Services.Stats
 
         }
 
-        public List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes)
+        public List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes, List<Equity> equities, string cultureName)
         {
 
             List<VmDashboardItem> result = new List<VmDashboardItem>();
-            VmDashboardItem interviewStat;
-            StringBuilder sb = new StringBuilder();
+            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();          
+            VmDashboardItem dashboardItem;
+            DateTime date;
             int numberSlots;
-            string interviewDates;
             int numberProgressCompleted;
             int numberProgressRemaining;
             int numberCanidateInSlots;
@@ -205,30 +205,26 @@ namespace Interview.UI.Services.Stats
             int numberVirtuals;
             int numberInPersons;
             int numberDaysOfInterview;
+            RoleUser roleUser;
 
-            foreach (Process process in processes)
+            foreach (Entities.Interview interview in interviews)
             {
 
-                numberSlots = process.Interviews.Count();
-                numberProgressCompleted = process.Interviews.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberSlots = interviews.Count();
+                date = interviews.Min(x => x.StartDate.Date);
+                numberProgressCompleted = interviews.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
                 numberProgressRemaining = numberSlots - numberProgressCompleted;
-                numberCanidateInSlots = process.Interviews.Where(x => x.Status == InterviewStates.Reserve).Count();
-                numberCandidatesNotInSlots = process.Interviews.Where(x => x.Status == InterviewStates.Available).Count();
-                numberVirtuals = process.Interviews.Where(x => string.IsNullOrEmpty(x.Room)).Count();
+                numberCanidateInSlots = interviews.Where(x => x.Status == InterviewStates.Reserve).Count();
+                numberCandidatesNotInSlots = interviews.Where(x => x.Status == InterviewStates.Available).Count();
+                numberVirtuals = interviews.Where(x => string.IsNullOrEmpty(x.Room)).Count();
                 numberInPersons = numberSlots - numberVirtuals;
-                numberDaysOfInterview = process.Interviews.DistinctBy(x => x.StartDate.Day).Count();
+                numberDaysOfInterview = interviews.DistinctBy(x => x.StartDate.Day).Count();
 
-                foreach (Entities.Interview interview in process.Interviews)
+                dashboardItem = new VmDashboardItem()
                 {
-                    sb.Append(interview.StartDate.Date.ToLongDateString());
-                    if (interview != process.Interviews.Last())
-                        sb.Append(", ");
-                }
-
-                interviewStat = new VmDashboardItem()
-                {
-                    ProcessId = process.Id,
-                    Dates = sb.ToString(),
+                    ProcessId = interview.ProcessId,
+                    Date = date,
+                    Dates = date.ToLongDateString(),
                     NumberSlots = numberSlots,
                     NumberProgressCompleted = numberProgressCompleted,
                     NumberProgressRemaining = numberProgressRemaining,
@@ -237,10 +233,52 @@ namespace Interview.UI.Services.Stats
                     NumberVirtuals = numberVirtuals,
                     NumberInPersons = numberInPersons,
                     NumberDaysOfInterview = numberDaysOfInterview
-                    //NumberCandiatesEeGroup = 
-                    //NumberBoardMemberEeGroup = 
                 };
-                result.Add(interviewStat);
+
+                foreach (InterviewUser interviewUser in interview.InterviewUsers)
+                {
+                    roleUser = processes.SelectMany(x => x.RoleUsers.Where(x => x.Id == interviewUser.UserId)).FirstOrDefault();
+                    if (roleUser != null)
+                    {
+                        if (roleUser.RoleUserType == RoleUserTypes.Candidate)
+                        {
+                            foreach (Equity equity in equities)
+                            {
+                                if (!dashboardItem.EeCandidates.ContainsKey(equity.Id))
+                                {
+                                    dashboardItem.EeCandidates.Add(equity.Id, new VmEeGroupItem()
+                                    {
+                                        EquityId = equity.Id,
+                                        Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                                        Count = 0
+                                    });
+                                }
+                                else
+                                    dashboardItem.EeCandidates[equity.Id].Count++;
+                            }
+                        }
+                        else
+                        {
+                            foreach (Equity equity in equities)
+                            {
+                                if (!dashboardItem.EeBoardMembers.ContainsKey(equity.Id))
+                                {
+                                    dashboardItem.EeBoardMembers.Add(equity.Id, new VmEeGroupItem()
+                                    {
+                                        EquityId = equity.Id,
+                                        Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                                        Count = 0
+                                    });
+                                }
+                                else
+                                    dashboardItem.EeBoardMembers[equity.Id].Count++;
+                            }
+                        }
+                    }
+
+                }
+
+                result.Add(dashboardItem);
 
             }
 

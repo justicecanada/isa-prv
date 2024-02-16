@@ -20,7 +20,7 @@ namespace Interview.UI.Services.Stats
 
         List<VmEeCandidate> GetEeCandidatesForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
 
-        List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes);
+        List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes, List<Equity> equities, string cultureName);
 
         //List<VmInterviewStat> GetInterviewStatsMonthlyView(List<Process> processes);
 

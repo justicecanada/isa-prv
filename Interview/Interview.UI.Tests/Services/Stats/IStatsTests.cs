@@ -689,7 +689,7 @@ namespace Interview.UI.Tests.Services.Stats
 
             }
 
-            result = _statsManager.GetProcessStatsDailyView(processes);
+            result = _statsManager.GetProcessStatsDailyView(processes, equities, Constants.EnglishCulture);
 
         }
 

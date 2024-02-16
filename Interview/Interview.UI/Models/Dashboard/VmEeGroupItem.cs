@@ -4,7 +4,7 @@
     public class VmEeGroupItem
     {
 
-        public int EquityId { get; set; }
+        public Guid EquityId { get; set; }
 
         public string Name { get; set; }
 
