@@ -10,6 +10,7 @@
 
     List<Process> processes = ViewBag.ProcessesForDropdown;
     Guid? processId = ViewBag.ProcessId;
+    List<VmDashboardItem> dashboardItems = ViewBag.DashboardItems;
 
     List<SelectListItem> vmProcessItems = new List<SelectListItem>();
     vmProcessItems.Add(new SelectListItem() { Value = "", Text = localizer["AllProcesses"].Value, Selected = Model.ProcessId == null });
@@ -91,18 +92,28 @@
             </tr>
         </thead>
         <tbody>
-            @*@foreach (RoleUser roleUser in roleUsers)
+            @foreach (VmDashboardItem dashboardItem in dashboardItems)
             {
-                ViewBag.RoleUser = roleUser;
-                if (roleUser.Id == roleUserIdToUpdate)
-                {
-                    await Html.RenderPartialAsync("TableEditableRowPartial");
-                }
-                else
-                {
-                    await Html.RenderPartialAsync("TableReadonlyRowPartial");
-                }
-            }*@
+                <tr>
+                    <td>@dashboardItem.Dates</td>
+                    <td>@dashboardItem.NumberSlots</td>
+                    <td>
+                        <div>@localizer["Completed"]: @dashboardItem.NumberProgressCompleted</div>
+                        <div>@localizer["Remaining"]: @dashboardItem.NumberProgressRemaining</div>
+                    </td>
+                    <td>
+                        <div>@localizer["InTimeSlot"]: @dashboardItem.NumberCandidateInSlots</div>
+                        <div>@localizer["NotInTimeSlot"]: @dashboardItem.NumberCandidateNotInSlots</div>
+                    </td>
+                    <td>
+                        <div>@localizer["Virtual"]: @dashboardItem.NumberVirtuals</div>
+                        <div>@localizer["InPerson"]: @dashboardItem.NumberInPersons</div>
+                    </td>
+                    <td>@dashboardItem.NumberDaysOfInterview</td>
+                    <td>@dashboardItem.EeCandidates.Count</td>
+                    <td>@dashboardItem.EeBoardMembers.Count</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

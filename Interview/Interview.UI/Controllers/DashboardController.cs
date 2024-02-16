@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
+using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Dashboard;
 using Interview.UI.Models.Stats;
@@ -79,6 +80,7 @@ namespace Interview.UI.Controllers
         {
 
             List<Entities.Process> processResults = null;
+            List<VmDashboardItem> dashboardItems = null;
 
             if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
                 processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
@@ -96,6 +98,11 @@ namespace Interview.UI.Controllers
             string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
             VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
             ViewBag.InterviewCounts = vmInterviewCounts;
+
+            // Dashboard Items
+            dashboardItems = _statsManager.GetDashboardItems(processResults, equities, cultureName, 
+                vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
+            ViewBag.DashboardItems = dashboardItems;
 
         }
 
