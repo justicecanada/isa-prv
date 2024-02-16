@@ -86,8 +86,8 @@ namespace Interview.UI.Controllers
 
             // Stats
             string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-            VmInterviewStats vmInterviewStats = _statsManager.GetInterviewStats(processesForStats);
-            ViewBag.InterviewStats = vmInterviewStats;
+            VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processesForStats);
+            ViewBag.InterviewCounts = vmInterviewCounts;
             List<VmEquityStat> candidateEquityStats = _statsManager.GetCandiateEquityStats(processesForStats, equities, cultureName);
             ViewBag.CandidateEquityStats = candidateEquityStats;
             List<VmEquityStat> borardMemberEquityStats = _statsManager.GetBoartdMemberEquityStats(processesForStats, equities, cultureName);
