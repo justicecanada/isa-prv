@@ -48,6 +48,7 @@ namespace Interview.UI.Controllers
             result.ProcessId = processId;
             await SetIndexFilterViewBag(processId);
             await SetIndexResultsViewBag(result);
+            RegisterIndexClientResources();
 
             return View(result);
 
@@ -60,6 +61,7 @@ namespace Interview.UI.Controllers
 
             await SetIndexFilterViewBag(vmFilter.ProcessId);
             await SetIndexResultsViewBag(vmFilter);
+            RegisterIndexClientResources();
 
             return View("Index", vmFilter);
 
@@ -103,6 +105,18 @@ namespace Interview.UI.Controllers
             dashboardItems = _statsManager.GetDashboardItems(processResults, equities, cultureName, 
                 vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
             ViewBag.DashboardItems = dashboardItems;
+
+        }
+
+        private void RegisterIndexClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-DataTables/datatables.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Dashboard/Index.js?v={BuildId}'></script>");
 
         }
 
