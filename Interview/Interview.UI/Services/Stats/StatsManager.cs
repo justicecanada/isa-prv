@@ -1,5 +1,6 @@
 ﻿using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.Dashboard;
 using Interview.UI.Models.Stats;
 using System.Text;
 
@@ -189,12 +190,59 @@ namespace Interview.UI.Services.Stats
 
         }
 
-        public List<VmInterviewCounts> GetInterviewStatsWeeklyView(List<Process> processes)
+        public List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes)
         {
 
-            List<VmInterviewCounts> result = new List<VmInterviewCounts>();
+            List<VmDashboardItem> result = new List<VmDashboardItem>();
+            VmDashboardItem interviewStat;
+            StringBuilder sb = new StringBuilder();
+            int numberSlots;
+            string interviewDates;
+            int numberProgressCompleted;
+            int numberProgressRemaining;
+            int numberCanidateInSlots;
+            int numberCandidatesNotInSlots;
+            int numberVirtuals;
+            int numberInPersons;
+            int numberDaysOfInterview;
 
+            foreach (Process process in processes)
+            {
 
+                numberSlots = process.Interviews.Count();
+                numberProgressCompleted = process.Interviews.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberProgressRemaining = numberSlots - numberProgressCompleted;
+                numberCanidateInSlots = process.Interviews.Where(x => x.Status == InterviewStates.Reserve).Count();
+                numberCandidatesNotInSlots = process.Interviews.Where(x => x.Status == InterviewStates.Available).Count();
+                numberVirtuals = process.Interviews.Where(x => string.IsNullOrEmpty(x.Room)).Count();
+                numberInPersons = numberSlots - numberVirtuals;
+                numberDaysOfInterview = process.Interviews.DistinctBy(x => x.StartDate.Day).Count();
+
+                foreach (Entities.Interview interview in process.Interviews)
+                {
+                    sb.Append(interview.StartDate.Date.ToLongDateString());
+                    if (interview != process.Interviews.Last())
+                        sb.Append(", ");
+                }
+
+                interviewStat = new VmDashboardItem()
+                {
+                    ProcessId = process.Id,
+                    Dates = sb.ToString(),
+                    NumberSlots = numberSlots,
+                    NumberProgressCompleted = numberProgressCompleted,
+                    NumberProgressRemaining = numberProgressRemaining,
+                    NumberCandidateInSlots = numberCanidateInSlots,
+                    NumberCandidateNotInSlots = numberCandidatesNotInSlots,
+                    NumberVirtuals = numberVirtuals,
+                    NumberInPersons = numberInPersons,
+                    NumberDaysOfInterview = numberDaysOfInterview
+                    //NumberCandiatesEeGroup = 
+                    //NumberBoardMemberEeGroup = 
+                };
+                result.Add(interviewStat);
+
+            }
 
             return result;
 

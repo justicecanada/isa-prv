@@ -1,4 +1,5 @@
 ﻿using Interview.Entities;
+using Interview.UI.Models.Dashboard;
 using Interview.UI.Models.Stats;
 
 namespace Interview.UI.Services.Stats
@@ -19,9 +20,9 @@ namespace Interview.UI.Services.Stats
 
         List<VmEeCandidate> GetEeCandidatesForInterviews(List<Process> processes, List<Equity> equities, string cultureName);
 
-        List<VmInterviewCounts> GetInterviewStatsWeeklyView(List<Process> processes);
+        List<VmDashboardItem> GetProcessStatsDailyView(List<Process> processes);
 
-        List<VmInterviewCounts> GetInterviewStatsMonthlyView(List<Process> processes);
+        //List<VmInterviewStat> GetInterviewStatsMonthlyView(List<Process> processes);
 
     }
 
