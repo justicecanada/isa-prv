@@ -5,7 +5,7 @@
 
 @{
 
-    VmInterviewStats interviewStats = ViewBag.InterviewStats;
+    VmInterviewCounts interviewCounts = ViewBag.InterviewCounts;
 
 }
 
@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewStats.TotalInterviews</strong>
+                    <strong>@interviewCounts.TotalInterviews</strong>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewStats.CompletedInterviews</strong>
+                    <strong>@interviewCounts.CompletedInterviews</strong>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
         </div>
         <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewStats.RemainingInterviews</strong>
+                    <strong>@interviewCounts.RemainingInterviews</strong>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewStats.InterviewDays</strong>
+                    <strong>@interviewCounts.InterviewDays</strong>
                 </div>
             </div>
         </div>

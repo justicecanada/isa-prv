@@ -1,175 +1,119 @@
-﻿@page
-@using Interview.UI.Models
+﻿@model VmFilter
+@using Interview.Entities
+@using Interview.UI.Models.Dashboard
+@using Interview.UI.Helpers
 @inject IViewLocalizer localizer
 
 @{
 
     ViewBag.Title = localizer["Title"].Value;
 
+    List<Process> processes = ViewBag.ProcessesForDropdown;
+    Guid? processId = ViewBag.ProcessId;
+    List<VmDashboardItem> dashboardItems = ViewBag.DashboardItems;
+
+    List<SelectListItem> vmProcessItems = new List<SelectListItem>();
+    vmProcessItems.Add(new SelectListItem() { Value = "", Text = localizer["AllProcesses"].Value, Selected = Model.ProcessId == null });
+    foreach (var processItem in processes)
+    {
+        vmProcessItems.Add(new SelectListItem()
+                {
+                    Value = processItem.Id.ToString(),
+                    Text = processItem.NoProcessus,
+                    Selected = processItem.Id == Model.ProcessId
+                });
+    }
+
+    var periodOfTimeItems = Html.GetEnumSelectList<VmPeriodOfTimeTypes>().ToList();
+    periodOfTimeItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+
 }
 
 <h1>@localizer["Title"]</h1>
-@*Dashboard Filter Section*@
-<div class="row mrgn-tp-md">
-	<div class="col-md-12">
 
-		<div id="ctl00_cphMainContent_ctl00">
-		</div>
+<section class="panel panel-primary">
+    <header class="panel-heading">
+        <h5 class="panel-title">@localizer["DahboardFilters"]</h5>
+    </header>
+    <div class="panel-body">
+        @using (Html.BeginForm("Filter", "Dashboard", null, FormMethod.Post, null, new { id = "formProcess" }))
+        {
 
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<span id="ctl00_cphMainContent_lblHeadingFilters" class="h3">@localizer["dashboardFilter"]</span>
-			</div>
-			<div id="ctl00_cphMainContent_pnlBody" class="panel-body" onkeypress="javascript:return WebForm_FireDefaultButton(event, &#39;ctl00_cphMainContent_btnApply&#39;)">
+            @Html.AntiForgeryToken()
 
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="ctl00_cphMainContent_ddlProcess"><span class="field-name">@localizer["lbl_process"]</span></label>
-							<select name="ctl00$cphMainContent$ddlProcess" id="ctl00_cphMainContent_ddlProcess" class="form-control">
-								<option selected="selected" value="0">@localizer["selectOpt_AllProcesses"]</option>
-								<option value="30">Test QA</option>
-								<option value="28">Test 2</option>
-								<option value="26">2021-JUS-IA-133312</option>
-								<option value="25">2021-JUS-IA-129616</option>
-								<option value="24">Career Counselling</option>
-								<option value="23">Career Counselling</option>
-								<option value="22">2020-JUS-IA-128473</option>
-								<option value="21">2020-JUS-IA-1960-128922</option>
-								<option value="20">2020-JUS-IA-6187-127217</option>
-								<option value="19">2020-JUS-IA-127577</option>
-								<option value="18">2020-JUS-IA-AS-123603</option>
-								<option value="17">2020-JUS-IA-20329-128346</option>
-								<option value="16">2020-JUS-IA-22836-125386</option>
-								<option value="13">Ombudsman</option>
-								<option value="12">2020-JUS-IA-JG-13767-126932</option>
-								<option value="11">2020-JUS-IA-125156</option>
-								<option value="10">LEP</option>
-								<option value="9">2018-JUS-IA-116704</option>
-								<option value="8">2019-JUS-IA-AAV-120056</option>
-								<option value="7">2019-JUS-IA-TEST</option>
-								<option value="6">2019-JUS-IA-AAV-1770-119634</option>
-								<option value="5">2019-JUS-IA-AS-119794</option>
-								<option value="4">2018-JUS-IA-AAV-23186-117078</option>
-								<option value="3">2018-JUS-IA-AS-117002</option>
-								<option value="1">2017-JUS-IA-AS-13431-110041</option>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.EditorFor(x => x.ProcessId, "Question", new { inputControl = @Html.DropDownList("ProcessId", vmProcessItems, new { @class = "form-control" }) })
+                </div>
+                <div class="col-md-2">
+                    @Html.EditorFor(x => x.PeriodOfTimeType, "Question", new { inputControl = @Html.DropDownList("PeriodOfTimeType", periodOfTimeItems, new { @class = "form-control" }) })
+                </div>
+                <div class="col-md-3">
+                    @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.StartDate, new { date = Model.StartDate }) })
+                </div>
+                <div class="col-md-3">
+                    @Html.ActionLink(localizer["Clear"].Value, "Index", "Dashboard", null, new { @class = "btn btn-default" })
+                    <input type="submit" value="@localizer["Apply"]" id="btnSave" class="btn btn-primary mr-2" formmethod="post" />
+                </div>
+            </div>
 
-							</select>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="ctl00_cphMainContent_ddlPeriods"><span class="field-name">@localizer["lbl_periodOfTime"]</span></label><select name="ctl00$cphMainContent$ddlPeriods" id="ctl00_cphMainContent_ddlPeriods" class="form-control">
-								<option selected="selected" value="1">@localizer["selectOpt_DailyView"]</option>
-								<option value="3">Monthly View</option>
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-3">
+                    @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.EndDate, new { date = Model.EndDate }) })
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
 
-							</select>
-						</div>
-						<input type="hidden" name="ctl00$cphMainContent$hfRole" id="ctl00_cphMainContent_hfRole" value="admin" />
-						<input type="hidden" name="ctl00$cphMainContent$hfDepId" id="ctl00_cphMainContent_hfDepId" value="100000" />
-						<input type="hidden" name="ctl00$cphMainContent$hfUserId" id="ctl00_cphMainContent_hfUserId" value="ec110ba3-2a03-4a89-8109-f0283e77679b" />
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="ctl00_cphMainContent_txtDateDebut"><span class="field-name">@localizer["lbl_startDate"]</span></label><input name="ctl00$cphMainContent$txtDateDebut" id="ctl00_cphMainContent_txtDateDebut" class="form-control full-width" type="date" data-rule-dateISO="true" />
-						</div>
-						<div class="form-group">
-							<label for="ctl00_cphMainContent_txtDateFin"><span class="field-name">@localizer["lbl_endDate"]</span></label><input name="ctl00$cphMainContent$txtDateFin" id="ctl00_cphMainContent_txtDateFin" class="form-control full-width" type="date" data-rule-dateISO="true" />
-						</div>
-					</div>
-					<div class="col-md-3">
-						<input type="submit" name="ctl00$cphMainContent$btnClear" value="Clear" id="ctl00_cphMainContent_btnClear" class="btn-default btn btnMarginTop" formnovalidate="formnovalidate" />
-						<input type="submit" name="ctl00$cphMainContent$btnApply" value="Apply" id="ctl00_cphMainContent_btnApply" class="btn-primary btn btnMarginTop" />
-					</div>
-				</div>
+        }
+    </div>
+</section>
 
-			</div>
-		</div>
+@{
+    await Html.RenderPartialAsync("InterviewsRowPartial");
+}
 
-	</div>
-</div>
-
-@*Dashboard Statistics Section*@
-<div class="row mrgn-tp-md">
-	<div class="col-md-3">
-		<div class="well well-sm text-center">
-			<div class="row">
-				<div class="col-md-12">
-					<span id="ctl00_cphMainContent_lblGlobalTimeSlotsTitle" class="h5">Time Slots</span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<span id="globalTimeSlots" class="h3">0</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="well well-sm text-center">
-			<div class="row">
-				<div class="col-md-12">
-					<span id="ctl00_cphMainContent_lblGlobalCompletedInterviewsTitle" class="h5">Interviews Completed</span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<span id="globalCompletedInterviews" class="h3">0</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="well well-sm text-center">
-			<div class="row">
-				<div class="col-md-12">
-					<span id="ctl00_cphMainContent_lblGlobalRemainingInterviewsTitle" class="h5">Interviews Remaining</span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<span id="globalRemainingInterviews" class="h3">0</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="well well-sm text-center">
-			<div class="row">
-				<div class="col-md-12">
-					<span id="ctl00_cphMainContent_lblGlobalTimeOfDaysTitle" class="h5">Interview Days</span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<span id="globalTimeOfDays" class="h3">0</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-@*Dashboard Detailed Table View*@
-<div class="row mrgn-tp-md">
-	<div class="col-md-12">
-		<div id="ctl00_cphMainContent_upDashboard">
-
-			<table id="tblDashboard" class="table wb-tables table-hover">
-				<thead>
-					<tr>
-						<th><span id="ctl00_cphMainContent_lblDatesTitle">Dates</span></th>
-						<th><span id="ctl00_cphMainContent_lblNbTimeSlotsTitle">Number of Time Slots</span></th>
-						<th><span id="ctl00_cphMainContent_lblInterviewProgressTitle">Interview Progress</span></th>
-						<th><span id="ctl00_cphMainContent_lblCandidateManagementTitle">Candidate Management</span></th>
-						<th><span id="ctl00_cphMainContent_lblVirtualVSInPersonTitle">Virtual Interviews VS In-Person Interviews</span></th>
-						<th><span id="ctl00_cphMainContent_lvlTimeOfDaysInterviewTitle">Time of days of Interview</span></th>
-						<th><span id="ctl00_cphMainContent_lblNbEECandidatesTitle">Number of Candidates for each EE group</span></th>
-						<th><span id="ctl00_cphMainContent_lblNbEEBoardMembersTitle">Number of Board Member for each EE group</span></th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-
-		</div>
-	</div>
+<div class="table-responsive">
+    <table id="roleInterviews" class="table table-striped" data-toggle="table" data-pagination="true">
+        <thead>
+            <tr>
+                <th>@localizer["Dates"]</th>
+                <th>@localizer["NumberSlots"]</th>
+                <th>@localizer["Progress"]</th>
+                <th>@localizer["CandidateManagement"]</th>
+                <th>@localizer["VirtualVsInPerson"]</th>
+                <th>@localizer["TimeDaysInterview"]</th>
+                <th>@localizer["NumberEddCandidates"]</th>
+                <th>@localizer["NumberBoardMembers"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (VmDashboardItem dashboardItem in dashboardItems)
+            {
+                <tr>
+                    <td>@dashboardItem.Dates</td>
+                    <td>@dashboardItem.NumberSlots</td>
+                    <td>
+                        <div>@localizer["Completed"]: @dashboardItem.NumberProgressCompleted</div>
+                        <div>@localizer["Remaining"]: @dashboardItem.NumberProgressRemaining</div>
+                    </td>
+                    <td>
+                        <div>@localizer["InTimeSlot"]: @dashboardItem.NumberCandidateInSlots</div>
+                        <div>@localizer["NotInTimeSlot"]: @dashboardItem.NumberCandidateNotInSlots</div>
+                    </td>
+                    <td>
+                        <div>@localizer["Virtual"]: @dashboardItem.NumberVirtuals</div>
+                        <div>@localizer["InPerson"]: @dashboardItem.NumberInPersons</div>
+                    </td>
+                    <td>@dashboardItem.NumberDaysOfInterview</td>
+                    <td>@dashboardItem.EeCandidates.Count</td>
+                    <td>@dashboardItem.EeBoardMembers.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

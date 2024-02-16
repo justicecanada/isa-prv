@@ -117,34 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btn_Apply" xml:space="preserve">
+  <data name="Apply" xml:space="preserve">
     <value>Appliquer</value>
   </data>
-  <data name="btn_clear" xml:space="preserve">
+  <data name="CandidateManagement" xml:space="preserve">
+    <value>Gestion des candidats</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
     <value>Effacer</value>
   </data>
-  <data name="DashboardFilters" xml:space="preserve">
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="DahboardFilters" xml:space="preserve">
     <value>Filtre du tableau de bord</value>
   </data>
-  <data name="lbl_endDate" xml:space="preserve">
-    <value>Date de fin</value>
+  <data name="Dates" xml:space="preserve">
+    <value>Dates</value>
   </data>
-  <data name="lbl_periodOfTime" xml:space="preserve">
-    <value>Période de temps</value>
+  <data name="InPerson" xml:space="preserve">
+    <value>In-Person</value>
   </data>
-  <data name="lbl_process" xml:space="preserve">
-    <value>Processus</value>
+  <data name="InTimeSlot" xml:space="preserve">
+    <value>In Time Slot</value>
   </data>
-  <data name="lbl_startDate" xml:space="preserve">
-    <value>Date de début</value>
+  <data name="NotInTimeSlot" xml:space="preserve">
+    <value>Not in Time Slot</value>
   </data>
-  <data name="selectOpt_AllProcesses" xml:space="preserve">
-    <value>Tous les processus</value>
+  <data name="NumberBoardMembers" xml:space="preserve">
+    <value>Nombre de membres du conseil pour chaque group EE</value>
   </data>
-  <data name="selectOpt_DailyView" xml:space="preserve">
-    <value>Vue quotidienne</value>
+  <data name="NumberEddCandidates" xml:space="preserve">
+    <value>Nombre de candidats pour chaque group EE</value>
+  </data>
+  <data name="NumberSlots" xml:space="preserve">
+    <value>Nombre de plage horaire</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progression des intervies</value>
+  </data>
+  <data name="Remaining" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="TimeDaysInterview" xml:space="preserve">
+    <value>Houres des jours des interview</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Tableau de bord</value>
+  </data>
+  <data name="Virtual" xml:space="preserve">
+    <value>Virtual</value>
+  </data>
+  <data name="VirtualVsInPerson" xml:space="preserve">
+    <value>Entrevues virtuelles VS entrevues en personne</value>
   </data>
 </root>
