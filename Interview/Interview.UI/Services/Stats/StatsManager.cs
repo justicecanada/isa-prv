@@ -241,7 +241,7 @@ namespace Interview.UI.Services.Stats
                 dashboardItem = new VmDashboardItem()
                 {
                     Date = date,
-                    Dates = date.ToLongDateString(),
+                    Dates = date.ToString("dd MMMM yyyy"),
                     NumberSlots = numberSlots,
                     NumberProgressCompleted = numberProgressCompleted,
                     NumberProgressRemaining = numberProgressRemaining,
@@ -295,7 +295,7 @@ namespace Interview.UI.Services.Stats
                 dashboardItem = new VmDashboardItem()
                 {
                     Date = date,
-                    Dates = date.ToLongDateString(),
+                    Dates = date.ToString("MMMM yyyy"),
                     NumberSlots = numberSlots,
                     NumberProgressCompleted = numberProgressCompleted,
                     NumberProgressRemaining = numberProgressRemaining,
@@ -336,7 +336,7 @@ namespace Interview.UI.Services.Stats
                                     {
                                         EquityId = equity.Id,
                                         Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
-                                        Count = 0
+                                        Count = 1
                                     });
                                 }
                                 else
@@ -353,7 +353,7 @@ namespace Interview.UI.Services.Stats
                                     {
                                         EquityId = equity.Id,
                                         Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
-                                        Count = 0
+                                        Count = 1
                                     });
                                 }
                                 else
