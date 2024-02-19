@@ -50,8 +50,8 @@ namespace Interview.UI.Models
     {
         [Display(Name = "Daily")]
         Daily = 1,
-        [Display(Name = "Weekly")]
-        Weekly = 2,
+        //[Display(Name = "Weekly")]
+        //Weekly = 2,
         [Display(Name = "Monthly")]
         Monthly = 3
     }
