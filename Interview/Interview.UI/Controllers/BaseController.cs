@@ -98,6 +98,19 @@ namespace Interview.UI.Controllers
             }
         }
 
+        protected string HostName
+        {
+            get
+            {
+                string result = null;
+
+                if (Request.Headers.ContainsKey("X-Forwarded-Host")) ;
+                result = Request.Headers["X-Forwarded-Host"];
+
+                return result;
+            }
+        }
+
         #endregion
 
         #region Protected Methods

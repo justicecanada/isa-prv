@@ -33,13 +33,14 @@ namespace Interview.UI.Controllers
         private readonly IStringLocalizer<DefaultController> _localizer;
         private readonly IToken _tokenManager;
         private readonly IEmails _emailsManager;
+        private readonly IUsers _usersManager;
 
         #endregion
 
         #region Constructors
 
-        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<DefaultController> localizer, 
-            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
+        public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<DefaultController> localizer,
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager, IUsers usersManager) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
@@ -47,6 +48,7 @@ namespace Interview.UI.Controllers
             _localizer = localizer;
             _tokenManager = tokenManager;
             _emailsManager = emailsManager;
+            _usersManager = usersManager;
         }
 
         #endregion
@@ -381,9 +383,23 @@ namespace Interview.UI.Controllers
             Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
             EmailTemplate emailTemplate = await GetEmailTemplateForInterviewEmailToCandiate(); 
             List<Schedule> schedules = await _dal.GetSchedulesByProcessId((Guid)_state.ProcessId);
-            RoleUser externalRoleUser = await _dal.GetEntity<RoleUser>((Guid)vmInterview.VmInterviewerUserIds.CandidateUserId) as RoleUser;
-            ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)externalRoleUser.UserId) as ExternalUser;
+            RoleUser roleUser = await _dal.GetEntity<RoleUser>((Guid)vmInterview.VmInterviewerUserIds.CandidateUserId) as RoleUser;
+            ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
+            string email;
+            string callbackUrl;
+
+            if ((bool)roleUser.IsExternal)
+            {
+                email = roleUser.ExternalUserEmail;
+                callbackUrl = GetCallbackUrl(process.Id, externalUser.Id);
+            }
+            else
+            {
+                GraphUser graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+                email = graphUser.mail;
+                callbackUrl = GetCallbackUrl(process.Id, null);
+            }
 
             if (emailTemplate != null && schedules != null)
             {
@@ -396,7 +412,7 @@ namespace Interview.UI.Controllers
                 string location = $"{vmInterview.Location} {vmInterview.Room}";
                 string contactName = string.IsNullOrEmpty(vmInterview.ContactName) ? process.ContactName : vmInterview.ContactName;
                 string contactNumber = string.IsNullOrEmpty(vmInterview.ContactNumber) ? process.ContactNumber : vmInterview.ContactNumber;
-                List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(externalUser.Email);
+                List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(email);
 
                 string body = emailTemplate.EmailBody
                     .Replace("{0}", noProcess)
@@ -406,7 +422,8 @@ namespace Interview.UI.Controllers
                     .Replace("{4}", startOral)
                     .Replace("{5}", location)
                     .Replace("{6}", contactName)
-                    .Replace("{7}", contactNumber);
+                    .Replace("{7}", contactNumber)
+                    .Replace("{callbackUrl}", callbackUrl);
 
                 EmailEnvelope emailEnvelope = new EmailEnvelope()
                 {
@@ -442,6 +459,43 @@ namespace Interview.UI.Controllers
 
             return result;
         
+        }
+
+        private string GetCallbackUrl(Guid processId, Guid? externalCandidateId)
+        {
+
+            string result;
+
+            if (externalCandidateId == null)
+            {
+                result = Url.ActionLink(
+                    action: "Schedule",
+                    controller: "Candidates",
+                    new
+                    {
+                        processId = processId
+                    },
+                    protocol: Request.Scheme,
+                    host: HostName
+                );
+            }
+            else
+            {
+                result = Url.ActionLink(
+                    action: "Schedule",
+                    controller: "Candidates",
+                    new
+                    {
+                        processId = processId,
+                        externalCandidateId = externalCandidateId
+                    },
+                    protocol: Request.Scheme,
+                    host: HostName
+                );
+            }
+
+            return result;
+
         }
 
         #endregion
