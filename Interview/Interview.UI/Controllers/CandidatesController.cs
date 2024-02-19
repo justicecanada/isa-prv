@@ -1,4 +1,7 @@
-﻿using GoC.WebTemplate.Components.Core.Services;
+﻿using AutoMapper;
+using GoC.WebTemplate.Components.Core.Services;
+using Interview.Entities;
+using Interview.UI.Models;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +15,16 @@ namespace Interview.UI.Controllers
 
         #region Declarations
 
-
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructors
 
-        public CandidatesController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> baseLocalizer)
+        public CandidatesController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> baseLocalizer, IMapper mapper)
             : base(modelAccessor, dal, baseLocalizer)
         {
-
+            _mapper = mapper;
         }
 
         #endregion
@@ -29,18 +32,53 @@ namespace Interview.UI.Controllers
         #region Public Internal Methods
 
         [Authorize]
-        public IActionResult Internal(Guid processId)
+        public async Task<IActionResult> Internal(Guid processId)
         {
+
+            await SetInternalViewBag(processId);
+
             return View();
+
+        }
+
+        private async Task SetInternalViewBag(Guid processId)
+        {
+
+            Process process = await _dal.GetEntity<Process>(processId) as Process;
+            List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
+            List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+
+            ViewBag.ProccessStartDate = process.StartDate;
+            ViewBag.ProccessEndDate = process.EndDate;
+            ViewBag.VmInterviews = vmInterviews;
+
         }
 
         #endregion
 
         #region External Methods
 
-        public IActionResult External(Guid processId, Guid externalCandidateId)
+        public async Task<IActionResult> External(Guid processId, Guid externalCandidateId)
         {
+
+            await SetExternalViewBag(processId, externalCandidateId);
+
             return View();
+
+        }
+
+        private async Task SetExternalViewBag(Guid processId, Guid externalCandidateId)
+        {
+
+            Process process = await _dal.GetEntity<Process>(processId) as Process;
+            List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
+            List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+
+            ViewBag.ProccessStartDate = process.StartDate;
+            ViewBag.ProccessEndDate = process.EndDate;
+            ViewBag.VmInterviews = vmInterviews;
+            ViewBag.ExternalCandidateId = externalCandidateId;
+
         }
 
         #endregion
