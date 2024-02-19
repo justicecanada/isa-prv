@@ -193,8 +193,26 @@ namespace Interview.UI.Services.Stats
         public List<VmDashboardItem> GetDashboardItems(List<Process> processes, List<Equity> equities, string cultureName, VmPeriodOfTimeTypes periodOfTimeType)
         {
 
+            List<VmDashboardItem> result = null;
+
+            if (periodOfTimeType == VmPeriodOfTimeTypes.Daily)
+                result = GetDashboardItemsByDay(processes, equities, cultureName);
+            else if (periodOfTimeType == VmPeriodOfTimeTypes.Monthly)
+                result = GetDashboardItemsByMonth(processes, equities, cultureName);
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        public List<VmDashboardItem> GetDashboardItemsByDay(List<Process> processes, List<Equity> equities, string cultureName)
+        {
+
             List<VmDashboardItem> result = new List<VmDashboardItem>();
-            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();            
+            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();
             VmDashboardItem dashboardItem;
             DateTime date;
             int numberSlots;
@@ -204,36 +222,24 @@ namespace Interview.UI.Services.Stats
             int numberCandidatesNotInSlots;
             int numberVirtuals;
             int numberInPersons;
-            int numberDaysOfInterview;
-            RoleUser roleUser;
+            int numberDaysOfInterview;           
+            Dictionary<DateTime, List<Entities.Interview>> dict = interviews.GroupBy(x => x.StartDate.Date).ToDictionary(y => y.Key, y => y.ToList());
 
-            if (periodOfTimeType == VmPeriodOfTimeTypes.Daily)
-            {
-                List<IGrouping<DateTimeOffset, Entities.Interview>> interviewGrouping = interviews.GroupBy(x => x.StartDate).ToList();
-                interviews = interviewGrouping.SelectMany(x => x.Select(x => x)).ToList();
-            }
-            else
-            {
-                var interviewGrouping = interviews.GroupBy(x => new { x.StartDate.Year, x.StartDate.Month }).ToList();
-                interviews = interviewGrouping.SelectMany(x => x.Select(x => x)).ToList();
-            }
-
-            foreach (Entities.Interview interview in interviews)
+            foreach (KeyValuePair<DateTime, List<Entities.Interview>> kvp in dict)
             {
 
-                numberSlots = interviews.Count();
-                date = interviews.Min(x => x.StartDate.Date);
-                numberProgressCompleted = interviews.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberSlots = kvp.Value.Count();
+                date = kvp.Value.Min(x => x.StartDate.Date);
+                numberProgressCompleted = kvp.Value.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
                 numberProgressRemaining = numberSlots - numberProgressCompleted;
-                numberCanidateInSlots = interviews.Where(x => x.Status == InterviewStates.Reserve).Count();
-                numberCandidatesNotInSlots = interviews.Where(x => x.Status == InterviewStates.Available).Count();
-                numberVirtuals = interviews.Where(x => string.IsNullOrEmpty(x.Room)).Count();
+                numberCanidateInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Reserve).Count();
+                numberCandidatesNotInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Available).Count();
+                numberVirtuals = kvp.Value.Where(x => string.IsNullOrEmpty(x.Room)).Count();
                 numberInPersons = numberSlots - numberVirtuals;
-                numberDaysOfInterview = interviews.DistinctBy(x => x.StartDate.Day).Count();
+                numberDaysOfInterview = kvp.Value.DistinctBy(x => x.StartDate.Day).Count();
 
                 dashboardItem = new VmDashboardItem()
                 {
-                    ProcessId = interview.ProcessId,
                     Date = date,
                     Dates = date.ToLongDateString(),
                     NumberSlots = numberSlots,
@@ -245,7 +251,76 @@ namespace Interview.UI.Services.Stats
                     NumberInPersons = numberInPersons,
                     NumberDaysOfInterview = numberDaysOfInterview
                 };
+                PopulateEeGroupItemsForDashboardItems(processes, kvp.Value, equities, cultureName, dashboardItem);
+                result.Add(dashboardItem);
 
+            }
+
+            return result;
+
+        }
+
+        public List<VmDashboardItem> GetDashboardItemsByMonth(List<Process> processes, List<Equity> equities, string cultureName)
+        {
+
+            List<VmDashboardItem> result = new List<VmDashboardItem>();
+            List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();
+            VmDashboardItem dashboardItem;
+            DateTime date;
+            int numberSlots;
+            int numberProgressCompleted;
+            int numberProgressRemaining;
+            int numberCanidateInSlots;
+            int numberCandidatesNotInSlots;
+            int numberVirtuals;
+            int numberInPersons;
+            int numberDaysOfInterview;
+            RoleUser roleUser;
+            var dict = interviews.GroupBy(x => new { Month = x.StartDate.Month, Year = x.StartDate.Year })
+                    .ToDictionary(y => y.Key, y => y.ToList());
+
+            foreach (var kvp in dict)
+            {
+
+                numberSlots = kvp.Value.Count();
+                date = kvp.Value.Min(x => x.StartDate.Date);
+                numberProgressCompleted = kvp.Value.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberProgressRemaining = numberSlots - numberProgressCompleted;
+                numberCanidateInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Reserve).Count();
+                numberCandidatesNotInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Available).Count();
+                numberVirtuals = kvp.Value.Where(x => string.IsNullOrEmpty(x.Room)).Count();
+                numberInPersons = numberSlots - numberVirtuals;
+                numberDaysOfInterview = kvp.Value.DistinctBy(x => x.StartDate.Day).Count();
+
+                dashboardItem = new VmDashboardItem()
+                {
+                    Date = date,
+                    Dates = date.ToLongDateString(),
+                    NumberSlots = numberSlots,
+                    NumberProgressCompleted = numberProgressCompleted,
+                    NumberProgressRemaining = numberProgressRemaining,
+                    NumberCandidateInSlots = numberCanidateInSlots,
+                    NumberCandidateNotInSlots = numberCandidatesNotInSlots,
+                    NumberVirtuals = numberVirtuals,
+                    NumberInPersons = numberInPersons,
+                    NumberDaysOfInterview = numberDaysOfInterview
+                };
+                PopulateEeGroupItemsForDashboardItems(processes, kvp.Value, equities, cultureName, dashboardItem);
+                result.Add(dashboardItem);
+
+            }
+
+            return result;
+
+        }
+
+        private void PopulateEeGroupItemsForDashboardItems(List<Process> processes, List<Entities.Interview> interviews, List<Equity> equities, string cultureName, VmDashboardItem dashboardItem)
+        {
+
+            RoleUser roleUser;
+
+            foreach (Entities.Interview interview in interviews)
+            {
                 foreach (InterviewUser interviewUser in interview.InterviewUsers)
                 {
                     roleUser = processes.SelectMany(x => x.RoleUsers.Where(x => x.Id == interviewUser.UserId)).FirstOrDefault();
@@ -288,23 +363,7 @@ namespace Interview.UI.Services.Stats
                     }
 
                 }
-
-                result.Add(dashboardItem);
-
             }
-
-            return result;
-
-        }
-
-        public List<VmInterviewCounts> GetInterviewStatsMonthlyView(List<Process> processes)
-        {
-
-            List<VmInterviewCounts> result = new List<VmInterviewCounts>();
-
-
-
-            return result;
 
         }
 
