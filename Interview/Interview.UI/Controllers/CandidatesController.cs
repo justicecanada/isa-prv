@@ -1,5 +1,6 @@
 ﻿using GoC.WebTemplate.Components.Core.Services;
 using Interview.UI.Services.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -27,6 +28,7 @@ namespace Interview.UI.Controllers
 
         #region Public Internal Methods
 
+        [Authorize]
         public IActionResult Internal(Guid processId)
         {
             return View();
