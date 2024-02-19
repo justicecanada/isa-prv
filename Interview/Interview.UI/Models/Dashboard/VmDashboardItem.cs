@@ -10,8 +10,6 @@
             EeBoardMembers = new Dictionary<Guid, VmEeGroupItem>();
         }
 
-        public Guid ProcessId { get; set; }
-
         public DateTime Date { get; set; }
 
         public string Dates { get; set; }

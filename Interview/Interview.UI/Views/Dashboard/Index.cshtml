@@ -2,6 +2,7 @@
 @using Interview.Entities
 @using Interview.UI.Models.Dashboard
 @using Interview.UI.Helpers
+@using System.Text
 @inject IViewLocalizer localizer
 
 @{
@@ -25,7 +26,26 @@
     }
 
     var periodOfTimeItems = Html.GetEnumSelectList<VmPeriodOfTimeTypes>().ToList();
-    periodOfTimeItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    //periodOfTimeItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+
+}
+
+@functions{
+
+    private string GetEeCandidateDetails(Dictionary<Guid, VmEeGroupItem> eeGroups)
+    {
+
+        StringBuilder sb = new StringBuilder();
+
+        foreach (KeyValuePair<Guid, VmEeGroupItem> kvp in eeGroups)
+        {
+            sb.Append($"<div>{kvp.Value.Name}: {kvp.Value.Count}</div>");
+        }
+
+        return sb.ToString();
+
+    }
+
 
 }
 
@@ -110,8 +130,8 @@
                         <div>@localizer["InPerson"]: @dashboardItem.NumberInPersons</div>
                     </td>
                     <td>@dashboardItem.NumberDaysOfInterview</td>
-                    <td>@dashboardItem.EeCandidates.Count</td>
-                    <td>@dashboardItem.EeBoardMembers.Count</td>
+                    <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeCandidates))</td>
+                    <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeBoardMembers))</td>
                 </tr>
             }
         </tbody>
