@@ -25,14 +25,18 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Schedule Methods
+        #region Public Internal Methods
 
-        public IActionResult Schedule(Guid processId)
+        public IActionResult Internal(Guid processId)
         {
             return View();
         }
 
-        public IActionResult Schedule(Guid processId, Guid externalCandidateId)
+        #endregion
+
+        #region External Methods
+
+        public IActionResult External(Guid processId, Guid externalCandidateId)
         {
             return View();
         }

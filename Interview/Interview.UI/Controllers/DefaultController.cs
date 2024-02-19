@@ -469,7 +469,7 @@ namespace Interview.UI.Controllers
             if (externalCandidateId == null)
             {
                 result = Url.ActionLink(
-                    action: "Schedule",
+                    action: "Internal",
                     controller: "Candidates",
                     new
                     {
@@ -482,7 +482,7 @@ namespace Interview.UI.Controllers
             else
             {
                 result = Url.ActionLink(
-                    action: "Schedule",
+                    action: "External",
                     controller: "Candidates",
                     new
                     {
