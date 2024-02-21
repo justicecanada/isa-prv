@@ -1,12 +1,18 @@
 ﻿@inject IViewLocalizer localizer
 
+@{
+
+    Guid? processId = ViewBag.ProcessId;
+
+}
+
 <div class="row mrgn-bttm-md">
 
     <div class="col-md-4">
         <section class="bs-callout bs-callout-danger">
             <p>@localizer["ManageProcess"]</p>
             <div>
-                @Html.ActionLink(localizer["ManageProcess"].Value, "Index", "Processes", null, new { @class = "btn btn-danger" })
+                @Html.ActionLink(localizer["ManageProcess"].Value, "Process", "Processes", new { processId = processId }, new { @class = "btn btn-danger" })
                 @Html.ActionLink(localizer["ManageEmails"].Value, "Index", "Emails", null, new { @class = "btn btn-default" })
             </div>
         </section>
