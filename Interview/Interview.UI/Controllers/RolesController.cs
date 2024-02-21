@@ -60,9 +60,10 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
+            bool showEquities = await GetShowEquities(null);
 
             // // Handle equities (this will be handled by the role the logged in user is in)
-            if (User.IsInRole(RoleTypes.Admin.ToString()))
+            if (showEquities)
             {
                 var equities = await _dal.GetAllEquities();
                 List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
@@ -273,13 +274,15 @@ namespace Interview.UI.Controllers
        
             if (loggedInRoleUser != null)
                 result = loggedInRoleUser.RoleUserType == RoleUserTypes.HR;
-
-            // Show Equities if user is in Owner Role and 
+           
             if (!result)
-            {                
+            {
+                // Show Equities if user is in Owner Role and 
                 if (User.IsInRole(RoleTypes.Owner.ToString()))
                 {
                     List<Group> groups = await _dal.GetGroupsByProcessId((Guid)_state.ProcessId);
+                    // There is a group user that has .HasAccessEE
+                    result = groups.Any(x => x.GroupOwners.Any(x => x.HasAccessEE));
                 }
             }
 
