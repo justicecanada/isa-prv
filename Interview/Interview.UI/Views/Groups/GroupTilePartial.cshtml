@@ -85,9 +85,13 @@
                 {
                     <li>
                         @groupOwner.GraphUser.surname, @groupOwner.GraphUser.givenName
+                        @if (groupOwner.HasAccessEE)
+                        {
+                            <span class="glyphicon glyphicon-star text-info"></span>
+                        }
                         <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
                             <span class="glyphicon glyphicon-trash text-danger"></span>
-                        </a>
+                        </a>                       
                     </li>
                 }
             </ul>
