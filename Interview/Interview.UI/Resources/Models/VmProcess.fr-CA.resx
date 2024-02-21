@@ -135,6 +135,9 @@
   <data name="DeadlineInterviewer" xml:space="preserve">
     <value>Date limite pour qu'un intervieweur applique sur une plage horaire</value>
   </data>
+  <data name="DepartmentId" xml:space="preserve">
+    <value>Département</value>
+  </data>
   <data name="EmailServiceSentFrom" xml:space="preserve">
     <value>Courriel principal relié au processus</value>
   </data>
@@ -163,15 +166,24 @@
     <value>Heure de début de journée (HH:MM:SS)</value>
   </data>
   <data name="MinTimeAfterMaxTime" xml:space="preserve">
-    <value>Min Time cannot be after Max Time (fr)</value>
+    <value>Le temps minimum ne peut pas être après le temps maximum</value>
   </data>
   <data name="NoProcessus" xml:space="preserve">
     <value>Numéro du processus de sélection</value>
+  </data>
+  <data name="ScheduleCandidateStart" xml:space="preserve">
+    <value>Arrivé du candidat</value>
+  </data>
+  <data name="ScheduleMarkingStart" xml:space="preserve">
+    <value>Évaluation du comité</value>
+  </data>
+  <data name="ScheduleMembersStart" xml:space="preserve">
+    <value>Arrivé des membres du comité</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Date de début des entrevues</value>
   </data>
   <data name="StartDateAfterEndDate" xml:space="preserve">
-    <value>Start Date cannot be after End Date (fr)</value>
+    <value>La date de début ne peut pas être postérieure à la date de fin</value>
   </data>
 </root>

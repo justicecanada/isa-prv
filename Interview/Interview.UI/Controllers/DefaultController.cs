@@ -74,10 +74,10 @@ namespace Interview.UI.Controllers
             // Handle RoleUser and set various view bag properties
             roleUser = await GetAndHandleRoleUser(processId);
             await SetIndexViewBag(processes, processId, roleUser);
+            RegisterIndexClientResources();
             SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
             SetPrivacyStatementViewbagAndRegisterClientResources(roleUser);
-
-            RegisterIndexClientResources();
+        
             _state.ProcessId = processId;
             result.ProcessId = processId;
 
@@ -103,7 +103,7 @@ namespace Interview.UI.Controllers
             ViewBag.ProcessId = processId;
             ViewBag.UserHasAccess = roleUser != null;
 
-            if (processId != null)
+            if (processes.Count != 0 && processId != null)
             {
 
                 Entities.Process process = processes.Where(x => x.Id == processId).First();
@@ -115,6 +115,8 @@ namespace Interview.UI.Controllers
 				ViewBag.VmInterviews = vmInterviews;
 
             }
+
+            ViewBag.ShowManageButtonsPartial = User.IsInRole(RoleTypes.Admin.ToString());
 
         }
 

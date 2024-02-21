@@ -120,4 +120,7 @@
   <data name="LanguageType" xml:space="preserve">
     <value>Language of Preference</value>
   </data>
+  <data name="LanguageTypeRequired" xml:space="preserve">
+    <value>is required.</value>
+  </data>
 </root>
