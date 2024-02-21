@@ -60,9 +60,10 @@ namespace Interview.UI.Controllers
         {
 
             VmIndex result = new VmIndex();
+            bool showEquities = await GetShowEquities(null);
 
             // // Handle equities (this will be handled by the role the logged in user is in)
-            if (User.IsInRole(RoleTypes.Admin.ToString()))
+            if (showEquities)
             {
                 var equities = await _dal.GetAllEquities();
                 List<VmEquity> vmEquities = (List<VmEquity>)_mapper.Map(equities, typeof(List<Equity>), typeof(List<VmEquity>));
@@ -97,9 +98,12 @@ namespace Interview.UI.Controllers
                 Guid roleUserId;
                 RoleUser roleUser = await GetRoleUser(vmIndex);
                 roleUserId = await _dal.AddEntity<RoleUser>(roleUser);
+                List<RoleUser> roleUsers = new List<RoleUser>();
+                roleUsers.Add(roleUser);
+                bool showEquities = await GetShowEquities(roleUsers);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
-                if (User.IsInRole(RoleTypes.Admin.ToString()))
+                if (showEquities)
                 {                   
                     foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {
@@ -168,7 +172,8 @@ namespace Interview.UI.Controllers
             ViewBag.ExternalUsers = externalUsers;
 
             // Show Equities
-            ViewBag.ShowEquities = User.IsInRole(RoleTypes.Admin.ToString());
+            bool showEquities = await GetShowEquities(roleUsers);           
+            ViewBag.ShowEquities = showEquities;
 
         }
 
@@ -249,6 +254,37 @@ namespace Interview.UI.Controllers
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             result = await _usersManager.GetUserInfoAsync(id.ToString(), tokenResponse.access_token);
+
+            return result;
+
+        }
+
+        private async Task<bool> GetShowEquities(List<RoleUser> roleUsers)
+        {
+
+            bool result = false;
+
+            // Show Equities if current UserRole is in HR role
+            if (roleUsers == null)
+                roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            GraphUser graphUser = await _usersManager.GetUserInfoAsync(User.Identity.Name, tokenResponse.access_token);
+            RoleUser loggedInRoleUser = roleUsers.Where(x => x.UserId == graphUser.id).FirstOrDefault();
+       
+            if (loggedInRoleUser != null)
+                result = loggedInRoleUser.RoleUserType == RoleUserTypes.HR;
+           
+            if (!result)
+            {
+                // Show Equities if user is in Owner Role and 
+                if (User.IsInRole(RoleTypes.Owner.ToString()))
+                {
+                    List<Group> groups = await _dal.GetGroupsByProcessId((Guid)_state.ProcessId);
+                    // There is a group user that has .HasAccessEE
+                    result = groups.Any(x => x.GroupOwners.Any(x => x.HasAccessEE));
+                }
+            }
 
             return result;
 
