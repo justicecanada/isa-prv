@@ -8,40 +8,42 @@
 
 }
 
-<form>
+<div class="row col-md-12">
+    <form>
 
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <section class="panel panel-default mt-3">
+        <section class="panel panel-default mrgn-tp-md">
 
-        <div class="panel-heading">
+            @*<div class="panel-heading">
 
-        </div>
+            </div>*@
 
-        <div class="panel-body">
+            <div class="panel-body">
 
-            <div class="row">
-                <div class="col-md-6">
-                    @Html.EditorFor(x => x.NameEn, "Question", new { inputControl = Html.TextBoxFor(x => x.NameEn, new { @class = "form-control" }) })
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.EditorFor(x => x.NameEn, "Question", new { inputControl = Html.TextBoxFor(x => x.NameEn, new { @class = "form-control" }) })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.EditorFor(x => x.NameFr, "Question", new { inputControl = Html.TextBoxFor(x => x.NameFr, new { @class = "form-control" }) })
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    @Html.EditorFor(x => x.NameFr, "Question", new { inputControl = Html.TextBoxFor(x => x.NameFr, new { @class = "form-control" }) })
-                </div>
+
             </div>
 
-        </div>
+            <div class="panel-footer">
 
-        <div class="panel-footer">
+                <div>
+                    <input type="submit" value="@localizer["Cancel"]" id="btnReset" class="btn btn-default mr-2" formaction=@Url.Action("Index", "Groups")
+                            formmethod="get" />
+                    <input type="submit" value="@localizer["Add"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("AddGroup", "Groups")
+                            formmethod="post" />
+                </div>
 
-            <div>
-                <input type="submit" value="@localizer["Cancel"]" id="btnReset" class="btn btn-default mr-2" formaction=@Url.Action("Index", "Groups")
-                        formmethod="get" />
-                <input type="submit" value="@localizer["Add"]" id="btnSave" class="btn btn-primary mr-2" formaction=@Url.Action("AddGroup", "Groups")
-                        formmethod="post" />
             </div>
 
-        </div>
+        </section>
 
-    </section>
-
-</form>
+    </form>
+</div>

@@ -14,6 +14,7 @@
     bool userHasAccess = ViewBag.UserHasAccess;
     bool showLanguageStatusModal = ViewBag.ShowLanguageStatusModal;
     bool showPrivacyStatementModal = ViewBag.ShowPrivacyStatementModal;
+    bool showManageButtonsPartial = ViewBag.ShowManageButtonsPartial;
 
     List<SelectListItem> vmProcessItems = new List<SelectListItem>();
     foreach (var processItem in processes)
@@ -30,12 +31,12 @@
 
 }
 
-@{
+@if (showManageButtonsPartial) {
     await Html.RenderPartialAsync("ManageButtonsPartial");
 }
 
 @*Only form control*@
-<div class="container">
+<div class="container mrgn-tp-md">
     <div class="row well well-lg">
         @using (Html.BeginForm("SwitchProcess", "Default", null, FormMethod.Post, null, new { id = "formProcess" }))
         {

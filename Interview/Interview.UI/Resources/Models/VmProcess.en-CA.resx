@@ -135,6 +135,9 @@
   <data name="DeadlineInterviewer" xml:space="preserve">
     <value>Deadline an interviewer can submit their availability</value>
   </data>
+  <data name="DepartmentId" xml:space="preserve">
+    <value>Department</value>
+  </data>
   <data name="EmailServiceSentFrom" xml:space="preserve">
     <value>Main email related to the process</value>
   </data>
@@ -173,6 +176,15 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="ScheduleCandidateStart" xml:space="preserve">
+    <value>Arrival of the candidate</value>
+  </data>
+  <data name="ScheduleMarkingStart" xml:space="preserve">
+    <value>Board marking</value>
+  </data>
+  <data name="ScheduleMembersStart" xml:space="preserve">
+    <value>Arrival of committee members</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Start Date of Interviews</value>

@@ -103,7 +103,7 @@ namespace Interview.UI.Controllers
                 bool showEquities = await GetShowEquities(roleUsers);
 
                 // Handle equities (this will be handled by the role the logged in user is in)
-                if (showEquities)
+                if (showEquities && vmIndex.Equities != null)
                 {                   
                     foreach (var equity in vmIndex.Equities.Where(x => x.IsSelected).ToList())
                     {

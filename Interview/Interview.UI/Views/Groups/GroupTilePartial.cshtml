@@ -11,7 +11,7 @@
 }
 
 <div class="col-md-4">
-    <section class="panel panel-default mt-3">
+    <section class="panel panel-default mrgn-tp-md">
 
         <div class="panel-heading">
             <div class="row">
@@ -62,8 +62,10 @@
                 @Html.HiddenFor(x => x.Id)
 
                 <div class="form-group">
-                    <div class="col-md-12">
-                        @Html.LabelFor(x => x.ProcessIdToAdd)
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.LabelFor(x => x.ProcessIdToAdd)
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-9">
@@ -80,32 +82,40 @@
             <div class="row col-md-12">
                 <h4 class="brdr-bttm">@localizer["GroupList"]</h4>
             </div>
-            <ul>
-                @foreach (var groupOwner in Model.GroupOwners)
-                {
-                    <li>
-                        @groupOwner.GraphUser.surname, @groupOwner.GraphUser.givenName
-                        <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
-                            <span class="glyphicon glyphicon-trash text-danger"></span>
-                        </a>
-                    </li>
-                }
-            </ul>
+            <div class="row col-md-12">
+                <ul>
+                    @foreach (var groupOwner in Model.GroupOwners)
+                    {
+                        <li>
+                            @groupOwner.GraphUser.surname, @groupOwner.GraphUser.givenName
+                            @if (groupOwner.HasAccessEE)
+                            {
+                                <span class="glyphicon glyphicon-star text-info"></span>
+                            }
+                            <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
+                                <span class="glyphicon glyphicon-trash text-danger"></span>
+                            </a>                       
+                        </li>
+                    }
+                </ul>
+            </div>
                                                                                                                                              
             <div class="row col-md-12">
                 <h4 class="brdr-bttm">@localizer["ProcessList"]</h4>
             </div>
-            <ul>
-                @foreach (var processGroup in Model.ProcessGroups)
-                {
-                    <li>
-                        @processGroup.Process.GroupNiv
-                        <a href="@Url.Action("RemoveProcess", "Groups", new { processGroupId = processGroup.Id } )">
-                            <span class="glyphicon glyphicon-trash text-danger"></span>
-                            </a>
-                    </li>
-                }
-            </ul>
+            <div class="row col-md-12">
+                <ul>
+                    @foreach (var processGroup in Model.ProcessGroups)
+                    {
+                        <li>
+                            @processGroup.Process.GroupNiv
+                            <a href="@Url.Action("RemoveProcess", "Groups", new { processGroupId = processGroup.Id } )">
+                                <span class="glyphicon glyphicon-trash text-danger"></span>
+                                </a>
+                        </li>
+                    }
+                </ul>
+            </div>
 
         </div>
 
