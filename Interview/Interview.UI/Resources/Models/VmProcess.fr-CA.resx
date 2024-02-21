@@ -135,6 +135,9 @@
   <data name="DeadlineInterviewer" xml:space="preserve">
     <value>Date limite pour qu'un intervieweur applique sur une plage horaire</value>
   </data>
+  <data name="DepartmentId" xml:space="preserve">
+    <value>Département</value>
+  </data>
   <data name="EmailServiceSentFrom" xml:space="preserve">
     <value>Courriel principal relié au processus</value>
   </data>

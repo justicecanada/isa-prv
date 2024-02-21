@@ -135,6 +135,9 @@
   <data name="DeadlineInterviewer" xml:space="preserve">
     <value>Deadline an interviewer can submit their availability</value>
   </data>
+  <data name="DepartmentId" xml:space="preserve">
+    <value>Department</value>
+  </data>
   <data name="EmailServiceSentFrom" xml:space="preserve">
     <value>Main email related to the process</value>
   </data>
