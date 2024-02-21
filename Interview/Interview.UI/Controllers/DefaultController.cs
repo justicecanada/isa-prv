@@ -114,6 +114,8 @@ namespace Interview.UI.Controllers
 
             }
 
+            ViewBag.ShowManageButtonsPartial = User.IsInRole(RoleTypes.Admin.ToString());
+
         }
 
         private void RegisterIndexClientResources()
