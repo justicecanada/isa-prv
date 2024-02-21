@@ -11,7 +11,7 @@
     }).Select(x => x.ToLower()).ToList();
 
     List<SelectListItem> languageItems = new List<SelectListItem>();
-    languageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    languageItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, null));
     foreach (LanguageTypes languageType in Enum.GetValues(typeof(LanguageTypes)))
         languageItems.Add(new SelectListItem()
         {

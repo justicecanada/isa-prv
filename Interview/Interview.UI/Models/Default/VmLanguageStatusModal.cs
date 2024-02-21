@@ -7,8 +7,8 @@ namespace Interview.UI.Models.Default
     public class VmLanguageStatusModal
     {
 
-        [Display(Name = "LanguageType")]
-        [Required]
+        [Required(ErrorMessage = "LanguageTypeRequired")]
+        [Display(Name = "LanguageType")]        
         public LanguageTypes LanguageType { get; set; }
 
     }
