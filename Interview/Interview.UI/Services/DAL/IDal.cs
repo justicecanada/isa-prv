@@ -64,6 +64,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<GroupOwner>> GetGroupOwnersByProcessIdAndUserId(Guid processId, Guid userId);
 
+        Task<List<Group>> GetGroupsByProcessId(Guid processId);
+
         Task<InternalUser> GetInternalUserByEntraId(Guid entraId);
 
         Task<List<ExternalUser>> GetExternalUsersByEmail(string email);
