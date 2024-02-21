@@ -263,16 +263,25 @@ namespace Interview.UI.Controllers
 
             bool result = false;
 
+            // Show Equities if current UserRole is in HR role
             if (roleUsers == null)
                 roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
 
             TokenResponse tokenResponse = await _tokenManager.GetToken();
             GraphUser graphUser = await _usersManager.GetUserInfoAsync(User.Identity.Name, tokenResponse.access_token);
             RoleUser loggedInRoleUser = roleUsers.Where(x => x.UserId == graphUser.id).FirstOrDefault();
-
-            // Show Equities if current UserRole is in HR role
+       
             if (loggedInRoleUser != null)
                 result = loggedInRoleUser.RoleUserType == RoleUserTypes.HR;
+
+            // Show Equities if user is in Owner Role and 
+            if (!result)
+            {                
+                if (User.IsInRole(RoleTypes.Owner.ToString()))
+                {
+                    List<Group> groups = await _dal.GetGroupsByProcessId((Guid)_state.ProcessId);
+                }
+            }
 
             return result;
 

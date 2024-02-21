@@ -245,6 +245,7 @@ namespace Interview.UI.Controllers
                 {
                     NameEn = vmAddGroup.NameEn,
                     NameFr = vmAddGroup.NameFr,
+                    ProcessId = (Guid)_state.ProcessId
                 };
                 group.GroupOwners.Add(new GroupOwner()
                 {

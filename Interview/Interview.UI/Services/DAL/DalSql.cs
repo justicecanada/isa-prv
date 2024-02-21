@@ -656,6 +656,17 @@ namespace Interview.UI.Services.DAL
 
         }
 
+        public async Task<List<Group>> GetGroupsByProcessId(Guid processId)
+        {
+
+            List<Group> result = await _context.Groups.Where(x => x.ProcessId == processId)
+                .Include(x => x.GroupOwners)
+                .ToListAsync(); 
+
+            return result;
+
+        }
+
         public async Task<InternalUser> GetInternalUserByEntraId(Guid entraId)
         {
 
