@@ -112,11 +112,15 @@ namespace Interview.UI.Controllers
             if (ModelState.IsValid)
             {
                 var process = _mapper.Map<Process>(vmProcess);
+                Guid processId;
 
                 process.CreatedDate = DateTime.Now;
                 process.InitUserId = EntraId;
                 process.Schedules = GetSchedules(vmProcess);
-                await _dal.AddEntity<Process>(process);
+                processId = await _dal.AddEntity<Process>(process);
+
+                if (_state.ProcessId == null)
+                    _state.ProcessId = processId;
 
                 return RedirectToAction("Index", "Emails", new { id = vmProcess.Id });
             }

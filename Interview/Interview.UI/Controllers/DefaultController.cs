@@ -101,7 +101,7 @@ namespace Interview.UI.Controllers
             ViewBag.ProcessId = processId;
             ViewBag.UserHasAccess = roleUser != null;
 
-            if (processId != null)
+            if (processes.Count != 0 && processId != null)
             {
 
                 Entities.Process process = processes.Where(x => x.Id == processId).First();
