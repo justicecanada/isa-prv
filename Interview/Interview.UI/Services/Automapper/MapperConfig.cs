@@ -40,8 +40,8 @@ namespace Interview.UI.Services.Automapper
             CreateMap<VmInterview, Interview.Entities.Interview>()
                 .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffset>());
 
-            CreateMap<InterviewUser, VmInterview>();
-            CreateMap<VmInterview, VmInterviewUser>();
+            CreateMap<InterviewUser, VmInterviewUser>();
+            CreateMap<VmInterviewUser, VmInterviewUser>();
 
             CreateMap<EmailTemplate, VmEmailTemplate>();
             CreateMap<VmEmailTemplate, EmailTemplate>();

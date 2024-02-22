@@ -109,10 +109,12 @@ namespace Interview.UI.Controllers
                 Entities.Process process = processes.Where(x => x.Id == processId).First();
 				List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId((Guid)processId);
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+                List<VmRoleUser> vmRoleUsers = _mapper.Map<List<VmRoleUser>>(process.RoleUsers);
 
 				ViewBag.ProccessStartDate = process.StartDate;
 				ViewBag.ProccessEndDate = process.EndDate;
 				ViewBag.VmInterviews = vmInterviews;
+                ViewBag.VmRoleUsers = vmRoleUsers;
 
             }
 
