@@ -111,6 +111,17 @@ namespace Interview.UI.Controllers
                 List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
                 List<VmRoleUser> vmRoleUsers = _mapper.Map<List<VmRoleUser>>(process.RoleUsers);
 
+                foreach (VmInterview vmInterview in vmInterviews)
+                {
+                    foreach (VmInterviewUser vmInterviewUser in vmInterview.InterviewUsers)
+                    {
+                        vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.InterviewId = vmInterview.Id;
+                    }
+                }
+
 				ViewBag.ProccessStartDate = process.StartDate;
 				ViewBag.ProccessEndDate = process.EndDate;
 				ViewBag.VmInterviews = vmInterviews;

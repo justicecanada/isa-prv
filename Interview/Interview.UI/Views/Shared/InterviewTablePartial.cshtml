@@ -30,9 +30,9 @@
     {
 
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        VmRoleUser candidateRoleUser = vmRoleUsers.Where(x => x.RoleUserType == VmRoleUserTypes.Candidate).FirstOrDefault();
-        VmRoleUser interviewRoleUser = vmRoleUsers.Where(x => x.RoleUserType == VmRoleUserTypes.Interviewer).FirstOrDefault();
-        VmRoleUser leadInterviewRoleUser = vmRoleUsers.Where(x => x.RoleUserType == VmRoleUserTypes.Lead).FirstOrDefault();
+        VmRoleUser candidateRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Candidate);
+        VmRoleUser interviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
+        VmRoleUser leadInterviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Lead); ;
 
         if (candidateRoleUser != null)
             sb.Append($"<div>Candidate: {candidateRoleUser.UserLastname} {candidateRoleUser.UserFirstname}</div>");
@@ -42,6 +42,19 @@
             sb.Append($"<div>Lead Interviewer: {leadInterviewRoleUser.UserLastname} {leadInterviewRoleUser.UserFirstname}</div>");
 
         return sb.ToString();
+
+    }
+
+    private VmRoleUser GetVmRoleUser(VmInterview interview, List<VmRoleUser> vmRoleUsers, RoleUserTypes roleUserType)
+    {
+
+        VmRoleUser result = null;
+        VmInterviewUser vmInterviewUser = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).FirstOrDefault();
+
+        if (vmInterviewUser != null)
+            result = vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First();
+
+        return result;
 
     }
 
