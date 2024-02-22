@@ -1,13 +1,107 @@
-﻿@inject IViewLocalizer localizer
+﻿@using Interview.Entities
+@inject IViewLocalizer localizer
 
 @{
 
-
+    List<VmInterview> vmInterviews = ViewBag.VmInterviews;
+    List<VmRoleUser> vmRoleUsers = ViewBag.VmRoleUsers;
+    DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    DateTime procesStartDate = ViewBag.ProccessStartDate;
+    DateTime processEndDate = ViewBag.ProccessEndDate;
+    Guid externalCandidateId = ViewBag.ExternalCandidateId;
 
 }
 
-<h1>@localizer["InternalCandidateSchedule"]</h1>
+@functions {
 
-@{
-    await Html.RenderPartialAsync("InterviewCalendarPartial");
+
+    private string GetInterviewDetails(VmInterview vmInterview)
+    {
+
+        string result = null;
+        DateTime time = DateTime.Today.Add(vmInterview.VmStartTime);
+
+        result = $"<div>{vmInterview.VmStartDate.ToString(Constants.DateFormat)} {time.ToString(@"hh\:mm tt")}</div> <div>{vmInterview.Location}</div> <div>{vmInterview.Room}</div>";
+
+        return result;
+
+    }
+
+    private string GetParticipantDetails(VmInterview interview, List<VmRoleUser> vmRoleUsers)
+    {
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        VmRoleUser candidateRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Candidate);
+        VmRoleUser interviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
+        VmRoleUser leadInterviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Lead); ;
+
+        if (candidateRoleUser != null)
+            sb.Append($"<div>Candidate: {candidateRoleUser.UserLastname} {candidateRoleUser.UserFirstname}</div>");
+        if (interviewRoleUser != null)
+            sb.Append($"<div>Interviewer: {interviewRoleUser.UserLastname} {interviewRoleUser.UserFirstname}</div>");
+        if (leadInterviewRoleUser != null)
+            sb.Append($"<div>Lead Interviewer: {leadInterviewRoleUser.UserLastname} {leadInterviewRoleUser.UserFirstname}</div>");
+
+        return sb.ToString();
+
+    }
+
+    private VmRoleUser GetVmRoleUser(VmInterview interview, List<VmRoleUser> vmRoleUsers, RoleUserTypes roleUserType)
+    {
+
+        VmRoleUser result = null;
+        VmInterviewUser vmInterviewUser = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).FirstOrDefault();
+
+        if (vmInterviewUser != null)
+            result = vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First();
+
+        return result;
+
+    }
+
+    private string GetRowClass(VmInterview interview)
+    {
+
+        string result = null;
+
+        if (interview.Status == InterviewStates.AvailableForCandidate)
+            result = "row-availableForCandidate";
+        else if (interview.Status == InterviewStates.PendingCommitteeMembers)
+            result = "row-pendingCommitteeMembers";
+        else if (interview.Status == InterviewStates.Booked)
+            result = "row-booked";
+
+        return result;
+
+    }
+
 }
+
+<h1>@localizer["ExternalCandidateSchedule"]</h1>
+
+<div class="row">
+    <div class="table-responsive col-md-11">
+        <table id="tblInterviews" class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="tableActionColumn">&nbsp;</th>
+                    <th>Details</th>
+                    <th>Participants</th>
+                    <th>Language</th>
+                </tr>
+            </thead>
+            @foreach (VmInterview vmInterview in vmInterviews)
+            {
+                <tr>
+                   @* <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Select</a></td>*@
+                    <td>
+                        @Html.ActionLink("Select", "SelectExternalInterview", "Candidates", new { interviewId = vmInterview.Id, externalCandidateId = externalCandidateId })
+                    </td>
+                    <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
+                    <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
+                    <td>Not sure which property drives this</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
