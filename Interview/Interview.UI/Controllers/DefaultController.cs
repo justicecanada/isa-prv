@@ -228,7 +228,7 @@ namespace Interview.UI.Controllers
             {
 
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
-                interview.Status = InterviewStates.Waiting;
+                interview.Status = GetInterviewState(vmInterview.VmInterviewerUserIds);
 
                 // Handle Interview
                 interview.ProcessId = (Guid)_state.ProcessId;
@@ -511,6 +511,23 @@ namespace Interview.UI.Controllers
             }
 
             return result;
+
+        }
+
+        private InterviewStates GetInterviewState(VmInterviewerUserIds vmInterviewUserIds)
+        {
+
+            InterviewStates? result = InterviewStates.Waiting;
+
+            if (vmInterviewUserIds.InterviewerUserId != null && vmInterviewUserIds.InterviewerLeadUserId != null)
+            {
+                if (vmInterviewUserIds.CandidateUserId == null)
+                    result = InterviewStates.Available;
+                else
+                    result = InterviewStates.Reserve; // Booked
+            }
+
+            return (InterviewStates)result;
 
         }
 
