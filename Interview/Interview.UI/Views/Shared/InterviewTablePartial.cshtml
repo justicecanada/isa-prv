@@ -58,14 +58,25 @@
 
     }
 
+    private string GetRowClass(VmInterview interview)
+    {
+
+        string result = null;
+
+        if (interview.Status == InterviewStates.Available)
+            result = "row-available";
+        else if (interview.Status == InterviewStates.Waiting)
+            result = "row-waiting";
+        else if (interview.Status == InterviewStates.Reserve)
+            result = "row-reserve";
+
+        return result;
+
+    }
+
 }
 
-@*<div>
-	<a id="interviewModal" href="#modalContainer">Add Interview</a>
-</div>*@
-
 <div class="container">
-    @*<div class="well well-lg">*@
         <div class="row">
             <a id="interviewTableModal" href="#modalContainer" class="btn btn-primary mrgn-bttm-md">Add Interview</a>
         </div>
@@ -79,13 +90,11 @@
                             <th>Details</th>
                             <th>Participants</th>
                             <th>Language</th>
-                            @*<th>ContactNumber</th>*@
                         </tr>
                     </thead>
                     @foreach (VmInterview vmInterview in vmInterviews)
                     {
-                        <tr>
-                            @*<td>@Html.ActionLink(localizer["Edit"].Value, "InterviewModal", "Default", new { Id = vmInterview.Id }, new { @class = "editTable" })</td>*@
+                        <tr class="@GetRowClass(vmInterview)">
                             <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Edit</a></td>
                             <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                             <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
@@ -96,6 +105,4 @@
             </div>
         </div>
 
-
-    @*</div> *@  
 </div>
