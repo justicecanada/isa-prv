@@ -20,7 +20,7 @@
         string result = null;
         DateTime time = DateTime.Today.Add(vmInterview.VmStartTime);
 
-        result = $"<div>{time.ToString(@"hh\:mm tt")}</div> <div>{vmInterview.Location}</div> <div>{vmInterview.Room}</div>";
+        result = $"<div>{vmInterview.VmStartDate.ToString(Constants.DateFormat)} {time.ToString(@"hh\:mm tt")}</div> <div>{vmInterview.Location}</div> <div>{vmInterview.Room}</div>";
 
         return result;
 
