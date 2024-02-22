@@ -64,36 +64,38 @@
 	<a id="interviewModal" href="#modalContainer">Add Interview</a>
 </div>*@
 
-<div class="container row">
-    <div class="well well-lg">
+<div class="container">
+    @*<div class="well well-lg">*@
         <div class="row">
             <a id="interviewTableModal" href="#modalContainer" class="btn btn-primary mrgn-bttm-md">Add Interview</a>
         </div>
 
-        <div class="table-responsive">
-            <table id="tblInterviews" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th class="tableActionColumn">&nbsp;</th>
-                        <th>Details</th>
-                        <th>Participants</th>
-                        <th>Language</th>
-                        @*<th>ContactNumber</th>*@
-                    </tr>
-                </thead>
-                @foreach (VmInterview vmInterview in vmInterviews)
-                {
-                    <tr>
-                        @*<td>@Html.ActionLink(localizer["Edit"].Value, "InterviewModal", "Default", new { Id = vmInterview.Id }, new { @class = "editTable" })</td>*@
-                        <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Edit</a></td>
-                        <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
-                        <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
-                        <td>Not sure which property drives this</td>
-                    </tr>
-                }
-            </table>
+        <div class="row">
+            <div class="table-responsive col-md-11">
+                <table id="tblInterviews" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="tableActionColumn">&nbsp;</th>
+                            <th>Details</th>
+                            <th>Participants</th>
+                            <th>Language</th>
+                            @*<th>ContactNumber</th>*@
+                        </tr>
+                    </thead>
+                    @foreach (VmInterview vmInterview in vmInterviews)
+                    {
+                        <tr>
+                            @*<td>@Html.ActionLink(localizer["Edit"].Value, "InterviewModal", "Default", new { Id = vmInterview.Id }, new { @class = "editTable" })</td>*@
+                            <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Edit</a></td>
+                            <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
+                            <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
+                            <td>Not sure which property drives this</td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
 
 
-    </div>   
+    @*</div> *@  
 </div>
