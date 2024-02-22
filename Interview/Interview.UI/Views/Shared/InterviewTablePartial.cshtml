@@ -63,12 +63,12 @@
 
         string result = null;
 
-        if (interview.Status == InterviewStates.Available)
-            result = "row-available";
-        else if (interview.Status == InterviewStates.Waiting)
-            result = "row-waiting";
-        else if (interview.Status == InterviewStates.Reserve)
-            result = "row-reserve";
+        if (interview.Status == InterviewStates.AvailableForCandidate)
+            result = "row-availableForCandidate";
+        else if (interview.Status == InterviewStates.PendingCommitteeMembers)
+            result = "row-pendingCommitteeMembers";
+        else if (interview.Status == InterviewStates.Booked)
+            result = "row-booked";
 
         return result;
 

@@ -517,14 +517,14 @@ namespace Interview.UI.Controllers
         private InterviewStates GetInterviewState(VmInterviewerUserIds vmInterviewUserIds)
         {
 
-            InterviewStates? result = InterviewStates.Waiting;
+            InterviewStates? result = InterviewStates.PendingCommitteeMembers;
 
             if (vmInterviewUserIds.InterviewerUserId != null && vmInterviewUserIds.InterviewerLeadUserId != null)
             {
                 if (vmInterviewUserIds.CandidateUserId == null)
-                    result = InterviewStates.Available;
+                    result = InterviewStates.AvailableForCandidate;
                 else
-                    result = InterviewStates.Reserve; // Booked
+                    result = InterviewStates.Booked;
             }
 
             return (InterviewStates)result;
