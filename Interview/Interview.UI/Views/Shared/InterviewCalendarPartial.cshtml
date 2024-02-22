@@ -20,7 +20,7 @@
 	public string GetDescription(VmInterview vmInterview)
 	{
 
-		string result = "Hey!";
+		string result = "";
 		TimeSpan duration = new TimeSpan(0, (int)vmInterview.Duration, 0);
 		string startAndEndTime = $"{vmInterview.VmStartTime.ToString(@"hh\:mm")} - {vmInterview.VmStartTime.Add(duration).ToString(@"hh\:mm")}";
 

@@ -60,6 +60,7 @@
 
         if (Model.ProcessId != null)
         {
+            await Html.RenderPartialAsync("InterviewTablePartial");
             await Html.RenderPartialAsync("InterviewCalendarPartial");
         }
 
