@@ -54,7 +54,7 @@
 <div class="container row">
     <div class="well well-lg">
         <div class="row">
-            <a id="interviewModal" href="#modalContainer" class="btn btn-primary mrgn-bttm-md">Add Interview</a>
+            <a id="interviewTableModal" href="#modalContainer" class="btn btn-primary mrgn-bttm-md">Add Interview</a>
         </div>
 
         <div class="table-responsive">
@@ -71,7 +71,8 @@
                 @foreach (VmInterview vmInterview in vmInterviews)
                 {
                     <tr>
-                        <td>Action!</td>
+                        @*<td>@Html.ActionLink(localizer["Edit"].Value, "InterviewModal", "Default", new { Id = vmInterview.Id }, new { @class = "editTable" })</td>*@
+                        <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Edit</a></td>
                         <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                         <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
                         <td>Not sure which property drives this</td>

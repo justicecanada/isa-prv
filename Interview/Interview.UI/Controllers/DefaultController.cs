@@ -130,6 +130,7 @@ namespace Interview.UI.Controllers
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/Index.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTableModal.js?v={BuildId}\"></script>");
 
         }
 
