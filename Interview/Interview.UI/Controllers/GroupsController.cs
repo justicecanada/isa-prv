@@ -121,7 +121,16 @@ namespace Interview.UI.Controllers
         #region Public Group Methods
 
         [HttpGet]
-        public async Task<IActionResult> DeleteGroup(Guid id)
+        public PartialViewResult DeleteGroupModal(Guid id)
+        {
+
+            return ConfirmDeleteModal(id, _localizer["DeleteGroupConfirmationString"].Value);
+
+        }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGroupModal(Guid id, bool hardDelete = false)
         {
 
             Group group = await _dal.GetEntity<Group>(id) as Group;
@@ -129,7 +138,10 @@ namespace Interview.UI.Controllers
             group.IsDeleted = true;
             await _dal.UpdateEntity(group);
 
-            return RedirectToAction("Index");
+            return new JsonResult(new { result = true, id = id })
+            {
+                StatusCode = 200
+            };
 
         }
 

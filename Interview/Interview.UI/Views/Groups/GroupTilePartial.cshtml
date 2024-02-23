@@ -24,7 +24,7 @@
                     <a href="@Url.Action("EditGroup", "Groups", new { id = Model.Id } )">
                         <span class="glyphicon glyphicon-edit text-info"></span>
                     </a>
-                    <a href="@Url.Action("DeleteGroup", "Groups", new { id = Model.Id } )">
+                    <a class="deleteGroup" data-id="@Model.Id" href="#modalContainer">
                         <span class="glyphicon glyphicon-trash text-danger"></span>
                     </a>
                 </div>
