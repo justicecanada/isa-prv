@@ -183,12 +183,15 @@ namespace Interview.UI.Controllers
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-DataTables/datatables.min.css'>");
+            WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
 
             // js
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/Index.js?v={BuildId}'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/TablePartial.js?v={BuildId}'></script>");
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/DeleteConfirmationModal.js?v={BuildId}'></script>");
 
         }
 
@@ -400,12 +403,24 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteRoleUser(Guid roleUserId)
+        public PartialViewResult DeleteRoleUserModal(Guid id)
         {
 
-            await _dal.DeleteEntity<RoleUser>(roleUserId);
+            return ConfirmDeleteModal(id, _localizer["DeleteConfirmationString"].Value);
 
-            return RedirectToAction("Index");
+        }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRoleUserModal(Guid id, bool hardDelete = false)
+        {
+
+            await _dal.DeleteEntity<RoleUser>(id);
+
+            return new JsonResult(new { result = true, id = id })
+            {
+                StatusCode = 200
+            };
 
         }
 
