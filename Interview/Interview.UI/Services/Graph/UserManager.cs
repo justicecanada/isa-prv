@@ -84,7 +84,7 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            string filter = "$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10 & {justiceFilter}";
+            string filter = "$filter=";
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
             {
