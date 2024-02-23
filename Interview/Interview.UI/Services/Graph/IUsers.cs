@@ -10,6 +10,8 @@ namespace Interview.UI.Services.Graph
 
         Task<SearchUsersResponse> SearchInternalUsersAsync(string query, string token);
 
+        Task<SearchUsersResponse> GetDisabledAccounts(string token);
+
     }
 
 }

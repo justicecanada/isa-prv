@@ -1,5 +1,6 @@
 ﻿using Interview.UI.Models.Graph;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Interview.UI.Services.Graph
 {
@@ -59,6 +60,33 @@ namespace Interview.UI.Services.Graph
             var justiceFilter = "userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$";
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10 & {justiceFilter}"))
+            {
+                Headers =
+                {
+                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
+                }
+            };
+            HttpResponseMessage response = _client.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+                result = await response.Content.ReadFromJsonAsync<SearchUsersResponse>();
+            else
+                badRequest = await response.Content.ReadFromJsonAsync<object>();
+
+            return result;
+
+        }
+
+        public async Task<SearchUsersResponse> GetDisabledAccounts(string token)
+        {
+
+            //https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=http#example-4-use-filter-and-top-to-get-one-user-with-a-display-name-that-starts-with-a-including-a-count-of-returned-objects
+
+            SearchUsersResponse result = null;
+            object badRequest = null;
+            string filter = "$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10 & {justiceFilter}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
             {
                 Headers =
                 {

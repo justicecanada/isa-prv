@@ -1,0 +1,35 @@
+﻿
+@{
+
+    string disabledAccounts = ViewBag.DisabledAccounts;
+
+}
+
+<h1>User Filter Results</h1>
+
+<section class="panel panel-default">
+    <div class="panel-body">
+        <p>Here is the full filter provided by Justice to filter out invalid user accounts:</p>
+        <ul>
+            <li>(user.accountEnabled -eq true)</li>
+            <li>and (user.dirSyncEnabled -eq true)</li>
+            <li>and (user.userType -eq \"member\")</li>
+            <li>@Html.Raw("and (user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")") </li>
+            <li>and (user.mail -notContains \"/\")</li>
+        </ul>
+        <p>This will return the top 5 results that match these conditions. This will allow us to assert that the users are not returned once the filter is fully defined.</p>
+    </div>
+</section>
+
+<section class="panel panel-default">
+    <div class="panel-header">
+        <h3>
+            (user.accountEnabled -eq true)
+        </h3>
+    </div>
+    <div class="panel-body">
+        <pre>
+            @Html.Raw(disabledAccounts);
+        </pre>
+    </div>
+</section>

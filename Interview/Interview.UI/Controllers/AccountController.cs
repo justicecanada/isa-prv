@@ -172,6 +172,25 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region User Filter Results
+
+        [HttpGet]
+        public async Task<IActionResult> UserFilterResults()
+        {
+
+            SearchUsersResponse searchUsersResponse = null;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+
+            // Disabled Users
+            searchUsersResponse = await _usersManager.GetDisabledAccounts(tokenResponse.access_token);
+            ViewBag.DisabledAccounts = JsonConvert.SerializeObject(searchUsersResponse);
+
+            return View();
+
+        }
+
+        #endregion
+
         #region Raise Exception Methods
 
         [HttpGet]
