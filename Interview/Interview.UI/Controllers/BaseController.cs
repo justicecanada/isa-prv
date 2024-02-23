@@ -104,12 +104,13 @@ namespace Interview.UI.Controllers
         #region Protected Action Methods
 
         [HttpGet]
-        public PartialViewResult ConfirmDeleteModal(Guid id)
+        public PartialViewResult ConfirmDeleteModal(Guid id, string message)
         {
 
             VmConfirmDeleteModal result = new VmConfirmDeleteModal();
 
             result.Id = id;
+            ViewBag.Message = message;
 
             return PartialView("ConfirmDeleteModal", result);
 

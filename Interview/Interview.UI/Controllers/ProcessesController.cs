@@ -25,18 +25,20 @@ namespace Interview.UI.Controllers
         private readonly IMapper _mapper;
         private readonly IState _state;
         private readonly IOptions _options;
+        private readonly IStringLocalizer<ProcessesController> _localizer;
 
         #endregion
 
         #region Constructors
 
         public ProcessesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions options, 
-            IStringLocalizer<BaseController> baseLocalizer) 
+            IStringLocalizer<BaseController> baseLocalizer, IStringLocalizer<ProcessesController> localizer) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
             _options = options;
+            _localizer = localizer;
         }
 
         #endregion
@@ -54,23 +56,11 @@ namespace Interview.UI.Controllers
 
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> DeleteProcess(Guid processId)
-        //{
-
-        //    await _dal.DeleteEntity<Process>(processId);
-
-        //    _state.ProcessId = null;
-
-        //    return RedirectToAction("Index");
-
-        //}
-
         [HttpGet]
         public PartialViewResult DeleteProcessModal(Guid id)
         {
 
-            return ConfirmDeleteModal(id);
+            return ConfirmDeleteModal(id, _localizer["DeleteConfirmationString"].Value);
 
         }
 
