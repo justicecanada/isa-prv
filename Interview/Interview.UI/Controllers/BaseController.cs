@@ -2,6 +2,7 @@
 using GoC.WebTemplate.Components.Entities;
 using GoC.WebTemplate.CoreMVC.Controllers;
 using Interview.Entities;
+using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
 using Interview.UI.Models.Shared;
@@ -109,6 +110,23 @@ namespace Interview.UI.Controllers
 
                 return result;
             }
+        }
+
+        #endregion
+
+        #region Protected Action Methods
+
+        [HttpGet]
+        public PartialViewResult ConfirmDeleteModal(Guid id, string message)
+        {
+
+            VmConfirmDeleteModal result = new VmConfirmDeleteModal();
+
+            result.Id = id;
+            ViewBag.Message = message;
+
+            return PartialView("ConfirmDeleteModal", result);
+
         }
 
         #endregion
