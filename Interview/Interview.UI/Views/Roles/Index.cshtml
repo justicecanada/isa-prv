@@ -153,4 +153,11 @@
     if (showLegend)
         await Html.RenderPartialAsync("LegendPartial");
     await Html.RenderPartialAsync("TablePartial");
+    await Html.RenderPartialAsync("ModalContainer");
 }
+
+<script type="text/javascript">
+
+    var deleteUri = "@Url.ActionLink("DeleteRoleUserModal", "Roles")";
+
+</script>

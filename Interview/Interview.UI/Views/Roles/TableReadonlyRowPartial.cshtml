@@ -49,9 +49,11 @@
         <a href="@Url.Action("UpdateRoleUser", "Roles", new { roleUserId = roleUser.Id } )">
             <span class="glyphicon glyphicon-edit text-info"></span>
         </a>
-        <a href="@Url.Action("DeleteRoleUser", "Roles", new { roleUserId = roleUser.Id } )">
+        
+        <a class="deleteRecord" data-id="@roleUser.Id" href="#modalContainer">
             <span class="glyphicon glyphicon-trash text-danger"></span>
         </a>
+
         @if ((bool)roleUser.IsExternal)
         {
             string imageClass = roleUser.DateExternalEmailSent.HasValue ? "text-success" : "text-danger";
