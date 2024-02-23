@@ -23,6 +23,7 @@ namespace Interview.UI.Controllers
         private readonly IUsers _usersManager;
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IStringLocalizer<GroupsController> _localizer;
 
         private const string _showAddGroupPartial = "SHOW_ADD_GROUP_PARTIAL";
         private const string _groupIdToEdit = "GROUP_ID_TO_EDIT";
@@ -32,13 +33,14 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IToken tokenManager, 
-            IUsers userManager, IStringLocalizer<BaseController> baseLocalizer) 
+            IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IStringLocalizer<GroupsController> localizer) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
             _tokenManager = tokenManager;
             _usersManager = userManager;
+            _localizer = localizer;
         }
 
         #endregion
@@ -76,6 +78,47 @@ namespace Interview.UI.Controllers
             return View(vmIndex);
 
         }
+
+        private async Task PopulateGroupOwnersWithGraphUser(List<VmGroup> vmGroups)
+        {
+
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+
+            foreach (VmGroup vmGroup in vmGroups)
+                foreach (VmGroupOwner vmGroupOwner in vmGroup.GroupOwners)
+                    vmGroupOwner.GraphUser = await _usersManager.GetUserInfoAsync(vmGroupOwner.UserId.ToString(), tokenResponse.access_token);
+
+        }
+
+        private async Task IndexSetViewBag()
+        {
+
+            List<Process> processes = await _dal.GetAllProcesses();
+            ViewBag.Processes = processes;
+
+            if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
+                ViewBag.VmAddGroup = new VmAddGroup();
+
+        }
+
+        private void IndexRegisterClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+            WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Groups/Index.js?v={BuildId}'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Groups/ConfirmDeletesModal.js?v={BuildId}'></script>");
+
+        }
+
+        #endregion
+
+        #region Public Group Methods
 
         [HttpGet]
         public async Task<IActionResult> DeleteGroup(Guid id)
@@ -115,6 +158,10 @@ namespace Interview.UI.Controllers
 
         }
 
+        #endregion
+
+        #region Public Employee Methods
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEmployee(VmGroup vmGroup)
@@ -141,14 +188,30 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RemoveEmployee(Guid groupOwnerId)
+        public PartialViewResult RemoveEmployeeModal(Guid id)
         {
 
-            await _dal.DeleteEntity<GroupOwner>(groupOwnerId);
-
-            return RedirectToAction("Index");
+            return ConfirmDeleteModal(id, _localizer["RemoveEmployeeConfirmationString"].Value);
 
         }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveEmployeeModal(Guid id, bool hardDelete = false)
+        {
+
+            await _dal.DeleteEntity<GroupOwner>(id);
+
+            return new JsonResult(new { result = true, id = id })
+            {
+                StatusCode = 200
+            };
+
+        }
+
+        #endregion
+
+        #region Public Process Methods
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -175,46 +238,24 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RemoveProcess(Guid processGroupId)
+        public PartialViewResult RemoveProcessModal(Guid id)
         {
 
-            await _dal.DeleteEntity<ProcessGroup>(processGroupId);
-
-            return RedirectToAction("Index");
+            return ConfirmDeleteModal(id, _localizer["RemoveProcessConfirmationString"].Value);
 
         }
 
-        private async Task PopulateGroupOwnersWithGraphUser(List<VmGroup> vmGroups)
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveProcessModal(Guid id, bool hardDelete = false)
         {
 
-            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            await _dal.DeleteEntity<ProcessGroup>(id);
 
-            foreach (VmGroup vmGroup in vmGroups)
-                foreach (VmGroupOwner vmGroupOwner in vmGroup.GroupOwners)
-                    vmGroupOwner.GraphUser = await _usersManager.GetUserInfoAsync(vmGroupOwner.UserId.ToString(), tokenResponse.access_token);
-
-        }
-
-        private async Task IndexSetViewBag()
-        {
-
-            List<Process> processes = await _dal.GetAllProcesses();
-            ViewBag.Processes = processes;
-
-            if (TempData[_showAddGroupPartial] != null && (bool)TempData[_showAddGroupPartial])
-                ViewBag.VmAddGroup = new VmAddGroup();
-
-        }
-
-        private void IndexRegisterClientResources()
-        {
-
-            // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-
-            // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Groups/Index.js?v={BuildId}'></script>");
+            return new JsonResult(new { result = true, id = id })
+            {
+                StatusCode = 200
+            };
 
         }
 
