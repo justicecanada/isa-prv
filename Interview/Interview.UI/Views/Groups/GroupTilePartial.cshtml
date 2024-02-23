@@ -24,7 +24,7 @@
                     <a href="@Url.Action("EditGroup", "Groups", new { id = Model.Id } )">
                         <span class="glyphicon glyphicon-edit text-info"></span>
                     </a>
-                    <a href="@Url.Action("DeleteGroup", "Groups", new { id = Model.Id } )">
+                    <a class="deleteGroup" data-id="@Model.Id" href="#modalContainer">
                         <span class="glyphicon glyphicon-trash text-danger"></span>
                     </a>
                 </div>
@@ -92,9 +92,9 @@
                             {
                                 <span class="glyphicon glyphicon-star text-info"></span>
                             }
-                            <a href="@Url.Action("RemoveEmployee", "Groups", new { groupOwnerId = groupOwner.Id } )">
+                            <a class="removeEmployee" data-id="@groupOwner.Id" href="#modalContainer">
                                 <span class="glyphicon glyphicon-trash text-danger"></span>
-                            </a>                       
+                            </a>
                         </li>
                     }
                 </ul>
@@ -109,9 +109,9 @@
                     {
                         <li>
                             @processGroup.Process.GroupNiv
-                            <a href="@Url.Action("RemoveProcess", "Groups", new { processGroupId = processGroup.Id } )">
+                            <a class="removeProcess" data-id="@processGroup.Id" href="#modalContainer">
                                 <span class="glyphicon glyphicon-trash text-danger"></span>
-                                </a>
+                            </a> 
                         </li>
                     }
                 </ul>

@@ -44,7 +44,7 @@
 
             <div class="mrgn-tp-md">
                 @Html.ActionLink(localizer["ProcessManagement"].Value, "Process", "Processes", new { processId = process.Id }, new { @class = "btn btn-default" })
-                @Html.ActionLink(localizer["Delete"].Value, "DeleteProcess", "Processes", new { processId = process.Id }, new { @class = "btn btn-danger" })
+                <a class="btn btn-danger deleteRecord" data-id="@process.Id" href="#modalContainer">@localizer["Delete"]</a>
             </div>
 
         </div>
