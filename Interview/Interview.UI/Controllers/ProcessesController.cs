@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using Interview.UI.Services.Options;
 using Interview.UI.Models.Options;
 using Microsoft.Extensions.Localization;
+using System.Diagnostics;
+using Process = Interview.Entities.Process;
 
 namespace Interview.UI.Controllers
 {
@@ -46,20 +48,45 @@ namespace Interview.UI.Controllers
         {
 
             await IndexSetViewBag();
+            IndexRegisterClientResources();
 
             return View();
 
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> DeleteProcess(Guid processId)
+        //{
+
+        //    await _dal.DeleteEntity<Process>(processId);
+
+        //    _state.ProcessId = null;
+
+        //    return RedirectToAction("Index");
+
+        //}
+
         [HttpGet]
-        public async Task<IActionResult> DeleteProcess(Guid processId)
+        public PartialViewResult DeleteProcessModal(Guid id)
         {
 
-            await _dal.DeleteEntity<Process>(processId);
+            return ConfirmDeleteModal(id);
+
+        }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProcessModal(Guid id, bool hardDelete = false)
+        {
+
+            await _dal.DeleteEntity<Process>(id);
 
             _state.ProcessId = null;
 
-            return RedirectToAction("Index");
+            return new JsonResult(new { result = true, id = id })
+            {
+                StatusCode = 200
+            };
 
         }
 
@@ -71,6 +98,20 @@ namespace Interview.UI.Controllers
 
             ViewBag.Processes = processes;
             ViewBag.Departments = departments;
+
+        }
+
+        private void IndexRegisterClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+            WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/DeleteConfirmationModal.js?v={BuildId}'></script>");
 
         }
 

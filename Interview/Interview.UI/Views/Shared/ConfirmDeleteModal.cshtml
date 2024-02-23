@@ -1,0 +1,26 @@
+﻿@model VmConfirmDeleteModal
+@using Interview.UI.Models
+@inject IViewLocalizer localizer
+
+@{
+
+
+
+}
+
+<header class="modal-header">
+    <h2 class="modal-title">@localizer["Message"]</h2>
+</header>
+
+<form id="deleteConfirmationModal">
+
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.Id)
+
+    <div class="modal-footer">
+        <button id="btnYesDeleteRecord" title="@localizer["Yes"]" value="Yes" class="btn btn-primary">@localizer["Yes"]</button>
+        <button id="btnNoDeleteRecord" title="@localizer["No"]" class="btn btn-secondary cancel ml-2">@localizer["No"]</button>
+    </div>
+
+</form>
