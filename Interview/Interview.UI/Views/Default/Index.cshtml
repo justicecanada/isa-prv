@@ -60,31 +60,7 @@
 
         if (Model.ProcessId != null)
         {
-            
-            <section class="panel panel-default mrgn-bttm-md">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Table view of Interviews
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    @{ await Html.RenderPartialAsync("InterviewTablePartial"); }
-                </div>
-            </section>
-            
-            <section class="panel panel-default mrgn-bttm-md">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Calendar view of Interviews
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    @{
-                        await Html.RenderPartialAsync("InterviewCalendarPartial");
-                    }
-                </div>
-            </section>
-
+            await Html.RenderPartialAsync("InterviewTablePartial");
         }
 
     }
