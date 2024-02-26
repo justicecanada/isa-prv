@@ -207,11 +207,6 @@ namespace Interview.UI.Controllers
             {
                 interview = await _dal.GetEntity<Entities.Interview>((Guid)id, true) as Entities.Interview;
                 result = _mapper.Map<VmInterviewModal>(interview);
-
-                //result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-                //result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
-                //result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
-                //result.VmInterviewerUserIds.InterviewId = id;
             }
 
 			await SetInterviewModalViewBag(interview);
@@ -231,8 +226,7 @@ namespace Interview.UI.Controllers
             {
 
                 Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterviewModal);
-                //interview.Status = GetInterviewState(vmInterviewModal.VmInterviewerUserIds);
-
+                
                 // Handle Interview
                 interview.ProcessId = (Guid)_state.ProcessId;
                 if (vmInterviewModal.Id == null)
@@ -374,8 +368,8 @@ namespace Interview.UI.Controllers
 
             result.InterviewId = id;
             result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.Id).ToList();
-            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.Id).ToList();
+            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.UserId).ToList();
+            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.UserId).ToList();
 
             await SetParticipantsModalViewBag();
 
@@ -387,6 +381,8 @@ namespace Interview.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ParticipantsModal(VmParticipantsModal vmParticipantsModal)
         {
+
+            //Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(vmParticipantsModal.InterviewId, true) as Entities.Interview;
 
             // Handle Users
             List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
@@ -401,13 +397,14 @@ namespace Interview.UI.Controllers
 
                 // Check to see if Candidate user has changed
                 if (dbCandidateInterviewUser == null || (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmParticipantsModal.CandidateUserId))
-                {
-                    Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(vmParticipantsModal.InterviewId, true) as Entities.Interview;
+                {                  
                     VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
                     vmInterview.VmInterviewerUserIds.CandidateUserId = dbCandidateInterviewUser.UserId;
                     await SendInterviewEmailToCandiate(vmInterview);
                 }
             }
+
+            //interview.Status = GetInterviewState(vmInterviewModal.VmInterviewerUserIds);
 
             return new JsonResult(new { result = true })
             {
@@ -447,7 +444,7 @@ namespace Interview.UI.Controllers
 
             foreach (Guid postedUserId in postedUserIds)
             {
-                interviewUser = filteredDbUsers.Where(x => x.Id == postedUserId).FirstOrDefault();
+                interviewUser = filteredDbUsers.Where(x => x.UserId == postedUserId).FirstOrDefault();
                 if (interviewUser == null)
                 {
                     // Add

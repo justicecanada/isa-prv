@@ -40,7 +40,7 @@
         }
         if (interviewRoleUsers.Count != 0)
         {
-            sb.Append("<div>Interviewer: ");
+            sb.Append("<div>Interviewers: ");
             foreach (VmRoleUser vmRoleUser in interviewRoleUsers)
             {
                 sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
@@ -51,11 +51,11 @@
         }
         if (leadInterviewRoleUsers.Count != 0)
         {
-            sb.Append("Lead Interviewer: ");
+            sb.Append("Lead Interviewers: ");
             foreach (VmRoleUser vmRoleUser in leadInterviewRoleUsers)
             {
                 sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
-                if (vmRoleUser != interviewRoleUsers.Last())
+                if (vmRoleUser != leadInterviewRoleUsers.Last())
                     sb.Append(", ");
             }
             sb.Append("</div>");
@@ -71,8 +71,6 @@
         List<VmRoleUser> result = new List<VmRoleUser>();
         List<VmInterviewUser> vmInterviewUsers = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).ToList();
 
-        //if (vmInterviewUser != null)
-        //    result = vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First();
         foreach (VmInterviewUser vmInterviewUser in vmInterviewUsers)
         {
             result.Add(vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First());
@@ -120,12 +118,12 @@
                     {
                         <tr class="@GetRowClass(vmInterview)">
                             <td>
-                                <span>
+                                <div>
                                     <a href="#modalContainer" class="editInterview" data-id="@vmInterview.Id">Edit</a>
-                                </span>
-                                <span>
+                                </div>
+                                <div>
                                     <a href="#modalContainer" class="editParticipants" data-id="@vmInterview.Id">Participants</a>
-                                </span>
+                                </div>
                             </td>
                             <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                             <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>

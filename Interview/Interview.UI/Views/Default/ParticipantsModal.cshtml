@@ -11,35 +11,34 @@
     foreach (var candidateUser in candidateUsers)
     {
         candidateUsersItems.Add(new SelectListItem()
-                {
-                    Value = candidateUser.Id.ToString(),
-                    Text = $"{candidateUser.UserFirstname} {candidateUser.UserLastname}"
-                });
+        {
+            Value = candidateUser.Id.ToString(),
+            Text = $"{candidateUser.UserFirstname} {candidateUser.UserLastname}"
+        });
     }
 
     List<RoleUser> interviewerUsers = ViewBag.InterviewerUsers;
     List<SelectListItem> interviewerUsersItems = new List<SelectListItem>();
-    //interviewerUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
     foreach (var interviewerUser in interviewerUsers)
     {
         interviewerUsersItems.Add(new SelectListItem()
-            {
-                Value = interviewerUser.Id.ToString(),
-                Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}",
-                //Selected = interviewerUser.UserId == Model.VmInterviewerUserIds.InterviewerUserId
-            });
+        {
+            Value = interviewerUser.Id.ToString(),
+            Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}",
+            Selected = Model.InterviewerUserIds.Contains(interviewerUser.Id)
+        });
     }
 
     List<RoleUser> leadUsers = ViewBag.LeadUsers;
     List<SelectListItem> leadItems = new List<SelectListItem>();
-    //leadItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
     foreach (var leadUser in leadUsers)
     {
         leadItems.Add(new SelectListItem()
-                {
-                    Value = leadUser.Id.ToString(),
-                    Text = $"{leadUser.UserFirstname} {leadUser.UserLastname}"
-                });
+        {
+            Value = leadUser.Id.ToString(),
+            Text = $"{leadUser.UserFirstname} {leadUser.UserLastname}",
+            Selected = Model.InterviewerLeadUserIds.Contains(leadUser.Id)
+        });
     }
 
 }
