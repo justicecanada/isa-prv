@@ -19,7 +19,7 @@
 
     List<RoleUser> interviewerUsers = ViewBag.InterviewerUsers;
     List<SelectListItem> interviewerUsersItems = new List<SelectListItem>();
-    interviewerUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    //interviewerUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
     foreach (var interviewerUser in interviewerUsers)
     {
         interviewerUsersItems.Add(new SelectListItem()
@@ -32,7 +32,7 @@
 
     List<RoleUser> leadUsers = ViewBag.LeadUsers;
     List<SelectListItem> leadItems = new List<SelectListItem>();
-    leadItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    //leadItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
     foreach (var leadUser in leadUsers)
     {
         leadItems.Add(new SelectListItem()
@@ -50,13 +50,47 @@
 
 <div class="modal-body">
 
-    <form id="interviewForm" action="@Url.Action("ParticipantsModal", "Default")" method="post">
+    <form id="participantsForm" action="@Url.Action("ParticipantsModal", "Default")" method="post">
+
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(x => x.InterviewId)
 
         @Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
 
-        @Html.EditorFor(x => x.InterviewerUserIds, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerUserIds, interviewerUsersItems, new { @class = "form-control" }) })
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.InterviewerUserIds)
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(x => x.InterviewerUserIds, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-12">
+                <select name="InterviewerUserIds" id="InterviewerUserIds" multiple>
+                    @foreach (SelectListItem item in interviewerUsersItems)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
 
-        @Html.EditorFor(x => x.InterviewerLeadUserIds, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerLeadUserIds, leadItems, new { @class = "form-control" }) })
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.InterviewerLeadUserIds)
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(x => x.InterviewerLeadUserIds, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-12">
+                <select name="InterviewerLeadUserIds" id="InterviewerLeadUserIds" multiple>
+                    @foreach (SelectListItem item in leadItems)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
 
     </form>
 

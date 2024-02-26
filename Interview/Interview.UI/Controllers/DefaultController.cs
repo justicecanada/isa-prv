@@ -512,14 +512,21 @@ namespace Interview.UI.Controllers
 
             result.InterviewId = id;
             result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-            //result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
-            //result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
             result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.Id).ToList();
             result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.Id).ToList();
 
             await SetParticipantsModalViewBag();
 
             return PartialView(result);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ParticipantsModal(VmParticipantsModal participantsModal)
+        {
+
+            return null;
 
         }
 
