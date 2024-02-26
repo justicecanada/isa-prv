@@ -52,11 +52,11 @@
 
     <form id="interviewForm" action="@Url.Action("ParticipantsModal", "Default")" method="post">
 
-        @*@Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
+        @Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
 
-        @Html.EditorFor(x => x.InterviewerUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerUserId, interviewerUsersItems, new { @class = "form-control" }) })
+        @Html.EditorFor(x => x.InterviewerUserIds, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerUserIds, interviewerUsersItems, new { @class = "form-control" }) })
 
-        @Html.EditorFor(x => x.InterviewerLeadUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerLeadUserId, leadItems, new { @class = "form-control" }) })*@
+        @Html.EditorFor(x => x.InterviewerLeadUserIds, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerLeadUserIds, leadItems, new { @class = "form-control" }) })
 
     </form>
 
