@@ -30,29 +30,53 @@
     {
 
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        VmRoleUser candidateRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Candidate);
-        VmRoleUser interviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
-        VmRoleUser leadInterviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Lead); ;
+        List<VmRoleUser> candidateRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Candidate);
+        List<VmRoleUser> interviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
+        List<VmRoleUser> leadInterviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Lead); ;
 
-        if (candidateRoleUser != null)
-            sb.Append($"<div>Candidate: {candidateRoleUser.UserLastname} {candidateRoleUser.UserFirstname}</div>");
-        if (interviewRoleUser != null)
-            sb.Append($"<div>Interviewer: {interviewRoleUser.UserLastname} {interviewRoleUser.UserFirstname}</div>");
-        if (leadInterviewRoleUser != null)
-            sb.Append($"<div>Lead Interviewer: {leadInterviewRoleUser.UserLastname} {leadInterviewRoleUser.UserFirstname}</div>");
+        if (candidateRoleUsers.Count != 0)
+        {
+            sb.Append($"<div>Candidate: {candidateRoleUsers[0].UserLastname} {candidateRoleUsers[0].UserFirstname}</div>");
+        }
+        if (interviewRoleUsers.Count != 0)
+        {
+            sb.Append("<div>Interviewer: ");
+            foreach (VmRoleUser vmRoleUser in interviewRoleUsers)
+            {
+                sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
+                if (vmRoleUser != interviewRoleUsers.Last())
+                    sb.Append(", ");
+            }
+            sb.Append("</div>");
+        }
+        if (leadInterviewRoleUsers.Count != 0)
+        {
+            sb.Append("Lead Interviewer: ");
+            foreach (VmRoleUser vmRoleUser in leadInterviewRoleUsers)
+            {
+                sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
+                if (vmRoleUser != interviewRoleUsers.Last())
+                    sb.Append(", ");
+            }
+            sb.Append("</div>");
+        }
 
         return sb.ToString();
 
     }
 
-    private VmRoleUser GetVmRoleUser(VmInterview interview, List<VmRoleUser> vmRoleUsers, RoleUserTypes roleUserType)
+    private List<VmRoleUser> GetVmRoleUsers(VmInterview interview, List<VmRoleUser> vmRoleUsers, RoleUserTypes roleUserType)
     {
 
-        VmRoleUser result = null;
-        VmInterviewUser vmInterviewUser = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).FirstOrDefault();
+        List<VmRoleUser> result = new List<VmRoleUser>();
+        List<VmInterviewUser> vmInterviewUsers = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).ToList();
 
-        if (vmInterviewUser != null)
-            result = vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First();
+        //if (vmInterviewUser != null)
+        //    result = vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First();
+        foreach (VmInterviewUser vmInterviewUser in vmInterviewUsers)
+        {
+            result.Add(vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First());
+        }
 
         return result;
 
