@@ -231,6 +231,7 @@ namespace Interview.UI.Controllers
                 interview.ProcessId = (Guid)_state.ProcessId;
                 if (vmInterviewModal.Id == null)
                 {
+                    interview.Status = InterviewStates.PendingCommitteeMembers;
                     vmInterviewModal.Id = await _dal.AddEntity<Interview.Entities.Interview>(interview);
                 }
                 else
@@ -382,7 +383,7 @@ namespace Interview.UI.Controllers
         public async Task<ActionResult> ParticipantsModal(VmParticipantsModal vmParticipantsModal)
         {
 
-            //Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(vmParticipantsModal.InterviewId, true) as Entities.Interview;
+            Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(vmParticipantsModal.InterviewId, true) as Entities.Interview;
 
             // Handle Users
             List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
@@ -399,12 +400,13 @@ namespace Interview.UI.Controllers
                 if (dbCandidateInterviewUser == null || (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmParticipantsModal.CandidateUserId))
                 {                  
                     VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
-                    vmInterview.VmInterviewerUserIds.CandidateUserId = dbCandidateInterviewUser.UserId;
+                    vmInterview.VmInterviewerUserIds.CandidateUserId = vmParticipantsModal.CandidateUserId;
                     await SendInterviewEmailToCandiate(vmInterview);
                 }
             }
 
-            //interview.Status = GetInterviewState(vmInterviewModal.VmInterviewerUserIds);
+            interview.Status = GetInterviewState(vmParticipantsModal);
+            await _dal.UpdateEntity(interview);
 
             return new JsonResult(new { result = true })
             {
@@ -503,22 +505,28 @@ namespace Interview.UI.Controllers
 
         }
 
-        //private InterviewStates GetInterviewState(VmInterviewerUserIds vmInterviewUserIds)
-        //{
+        private InterviewStates GetInterviewState(VmParticipantsModal vmParticipantsModal)
+        {
 
-        //    InterviewStates? result = InterviewStates.PendingCommitteeMembers;
+            InterviewStates? result = InterviewStates.PendingCommitteeMembers;
+            int interviewerCount = vmParticipantsModal.InterviewerUserIds.Count + vmParticipantsModal.InterviewerLeadUserIds.Count;
+            bool hasSingleLeadInterviewer = vmParticipantsModal.InterviewerLeadUserIds.Count == 1;
+            bool hasCandidate = vmParticipantsModal.CandidateUserId != null;
 
-        //    if (vmInterviewUserIds.InterviewerUserId != null && vmInterviewUserIds.InterviewerLeadUserId != null)
-        //    {
-        //        if (vmInterviewUserIds.CandidateUserId == null)
-        //            result = InterviewStates.AvailableForCandidate;
-        //        else
-        //            result = InterviewStates.Booked;
-        //    }
+            if (interviewerCount == 3)
+            {
+                if (hasSingleLeadInterviewer)
+                    result = InterviewStates.AvailableForCandidate;
+                else
+                    result = InterviewStates.PendingCommitteeMembers;
+            }
 
-        //    return (InterviewStates)result;
+            if (result == InterviewStates.AvailableForCandidate && hasCandidate)
+                result = InterviewStates.Booked;
 
-        //}
+            return (InterviewStates)result;
+
+        }
 
         private async Task SendInterviewEmailToCandiate(VmInterview vmInterview)
         {
