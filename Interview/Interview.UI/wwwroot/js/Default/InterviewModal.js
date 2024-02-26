@@ -1,4 +1,4 @@
-﻿var table = {
+﻿var interviewTable = {
 
     OpenLink: "#interviewTableModal",
     EditClass: "editTable",
@@ -20,7 +20,7 @@
 
         this.Form = $("#interviewForm")[0];
 
-        $(this.SubmitButtonSelector).on("click", table.Post);
+        $(this.SubmitButtonSelector).on("click", interviewTable.Post);
 
         $(this.CancelButtonSelector).on("click", function (e) {
             e.preventDefault();
@@ -31,7 +31,7 @@
 
     HandleCalendarUpdate: function (e) {
 
-        table.Init();
+        interviewTable.Init();
 
     },
 
@@ -41,8 +41,8 @@
             type: 'inline',
             modal: true,
             callbacks: {
-                elementParse: table.ElementParse,
-                close: table.Close,
+                elementParse: interviewTable.ElementParse,
+                close: interviewTable.Close,
             }
         });
 
@@ -50,15 +50,15 @@
 
     ElementParse: function (item, e) {
 
-        if ($(item.el[0]).hasClass(table.EditClass)) {
+        if ($(item.el[0]).hasClass(interviewTable.EditClass)) {
 
             var id = $(item.el[0]).data().id;
 
-            $.get(table.Uri + "?id=" + id)
+            $.get(interviewTable.Uri + "?id=" + id)
             //$.get(item.el[0].href)
                 .done(function (data, textStatus, jqXHR) {
-                    $(table.ModalSelector).html($(data));
-                    table.HookupModalHandlers();
+                    $(interviewTable.ModalSelector).html($(data));
+                    interviewTable.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     $.magnificPopup.close();
@@ -67,10 +67,10 @@
         }
         else {
 
-            $.get(table.Uri)
+            $.get(interviewTable.Uri)
                 .done(function (data, textStatus, jqXHR) {
-                    $(table.ModalSelector).html($(data));
-                    table.HookupModalHandlers();
+                    $(interviewTable.ModalSelector).html($(data));
+                    interviewTable.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     $.magnificPopup.close();
@@ -81,20 +81,20 @@
     },
 
     Close: function () {
-        $(table.ModalSelector).empty();
+        $(interviewTable.ModalSelector).empty();
     },
 
     Post: function (e) {
 
         e.preventDefault();
-        var formData = $(table.Form).serialize();
+        var formData = $(interviewTable.Form).serialize();
 
         $.ajax({
             type: "POST",
-            url: table.Uri,
+            url: interviewTable.Uri,
             data: formData,
-            success: table.PostSuccess,
-            fail: table.PostFail
+            success: interviewTable.PostSuccess,
+            fail: interviewTable.PostFail
         });
 
     },
@@ -103,13 +103,13 @@
 
         if (data.result) {
             $.magnificPopup.close();
-            table.PosbBack();
+            interviewTable.PosbBack();
             //table.UpdateTable(data.item);
             //table.HookupMagnificPopup();
         }
         else {
-            $(table.ModalSelector).html($(data));
-            table.HookupModalHandlers();
+            $(interviewTable.ModalSelector).html($(data));
+            interviewTable.HookupModalHandlers();
         }
 
     },
@@ -128,8 +128,8 @@
 }
 
 if (wb.isReady)
-    table.Init();
+    interviewTable.Init();
 else
     $(document).on("wb-ready.wb", function (event) {
-        table.Init();
+        interviewTable.Init();
     });
