@@ -144,6 +144,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/Index.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/ParticipantsModal.js?v={BuildId}\"></script>");
 
         }
 
@@ -197,20 +198,20 @@ namespace Interview.UI.Controllers
         public async Task<PartialViewResult> InterViewModal(Guid? id)
         {
 
-            VmInterview result = null;
+            VmInterviewModal result = null;
             Interview.Entities.Interview interview = null;
 
             if (id == null)
-                result = new VmInterview() { ProcessId = (Guid)_state.ProcessId };
+                result = new VmInterviewModal() { ProcessId = (Guid)_state.ProcessId };
             else
             {
-                interview = await _dal.GetEntity<Interview.Entities.Interview>((Guid)id, true) as Interview.Entities.Interview;
-                result = _mapper.Map<VmInterview>(interview);
+                interview = await _dal.GetEntity<Entities.Interview>((Guid)id, true) as Entities.Interview;
+                result = _mapper.Map<VmInterviewModal>(interview);
 
-                result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
-                result.VmInterviewerUserIds.InterviewId = id;
+                //result.VmInterviewerUserIds.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
+                //result.VmInterviewerUserIds.InterviewerUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
+                //result.VmInterviewerUserIds.InterviewerLeadUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
+                //result.VmInterviewerUserIds.InterviewId = id;
             }
 
 			await SetInterviewModalViewBag(interview);
@@ -221,47 +222,47 @@ namespace Interview.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> InterviewModal(VmInterview vmInterview)
+        public async Task<ActionResult> InterviewModal(VmInterviewModal vmInterviewModal)
         {
 
-            await HandleInterviewModalModelState(vmInterview);
+            await HandleInterviewModalModelState(vmInterviewModal);
 
             if (ModelState.IsValid)
             {
 
-                Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterview);
-                interview.Status = GetInterviewState(vmInterview.VmInterviewerUserIds);
+                Interview.Entities.Interview interview = _mapper.Map<Interview.Entities.Interview>(vmInterviewModal);
+                //interview.Status = GetInterviewState(vmInterviewModal.VmInterviewerUserIds);
 
                 // Handle Interview
                 interview.ProcessId = (Guid)_state.ProcessId;
-                if (vmInterview.Id == null)
+                if (vmInterviewModal.Id == null)
                 {
-                    vmInterview.Id = await _dal.AddEntity<Interview.Entities.Interview>(interview);
+                    vmInterviewModal.Id = await _dal.AddEntity<Interview.Entities.Interview>(interview);
                 }
                 else
                 {
                     await _dal.UpdateEntity(interview);
 
                     // Handle Users
-                    List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmInterview.Id);
-                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmInterview.Id);
-                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleUserTypes.Interviewer, (Guid)vmInterview.Id);
-                    await ResolveInterviewUser(vmInterview.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmInterview.Id);
+                    //List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmInterviewModal.Id);
+                    //await ResolveInterviewUser(vmInterviewModal.VmInterviewerUserIds.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmInterviewModal.Id);
+                    //await ResolveInterviewUser(vmInterviewModal.VmInterviewerUserIds.InterviewerUserId, dbInterviewUsers, RoleUserTypes.Interviewer, (Guid)vmInterviewModal.Id);
+                    //await ResolveInterviewUser(vmInterviewModal.VmInterviewerUserIds.InterviewerLeadUserId, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmInterviewModal.Id);
 
-                    // Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
-                    if (vmInterview.VmInterviewerUserIds.CandidateUserId != null)
-                    {
-                        InterviewUser dbCandidateInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+                    //// Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
+                    //if (vmInterviewModal.VmInterviewerUserIds.CandidateUserId != null)
+                    //{
+                    //    InterviewUser dbCandidateInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
 
-                        // Check to see if Candidate user has changed
-                        if (dbCandidateInterviewUser == null || 
-                            (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmInterview.VmInterviewerUserIds.CandidateUserId))
-                            await SendInterviewEmailToCandiate(vmInterview);
-                    }
+                    //    // Check to see if Candidate user has changed
+                    //    if (dbCandidateInterviewUser == null || 
+                    //        (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmInterviewModal.VmInterviewerUserIds.CandidateUserId))
+                    //        await SendInterviewEmailToCandiate(vmInterviewModal);
+                    //}
 
                 }
 
-                return new JsonResult(new { result = true, item = vmInterview })
+                return new JsonResult(new { result = true, item = vmInterviewModal })
                 {
                     StatusCode = 200
                 };
@@ -269,11 +270,11 @@ namespace Interview.UI.Controllers
             }
             else
             {
-                Interview.Entities.Interview interview = vmInterview.Id == null ? null : await _dal.GetEntity<Interview.Entities.Interview>((Guid)vmInterview.Id, true) as Interview.Entities.Interview;
+                Interview.Entities.Interview interview = vmInterviewModal.Id == null ? null : await _dal.GetEntity<Interview.Entities.Interview>((Guid)vmInterviewModal.Id, true) as Interview.Entities.Interview;
 
                 await SetInterviewModalViewBag(interview);
 
-                return PartialView(vmInterview);
+                return PartialView(vmInterviewModal);
             }
 
         }
@@ -318,24 +319,6 @@ namespace Interview.UI.Controllers
 			ViewBag.ProccessStartDate = process.StartDate;
 			ViewBag.ProccessEndDate = process.EndDate;
 
-			// Handle Interview Users
-			List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-			if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.Owner.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
-			{
-				bool hasAccess = true;
-				if (User.IsInRole(RoleTypes.Owner.ToString()))
-				{
-					// Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
-					// get the list as a variable first. Moving on...
-					var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ProcessId, EntraId);
-					hasAccess = groupOwners.Any();
-				}
-			}
-
-			ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
-			ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList();
-			ViewBag.LeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList();
-
 		}
 
         private async Task ResolveInterviewUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleUserTypes roleUserType, Guid interviewId)
@@ -374,17 +357,17 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task HandleInterviewModalModelState(VmInterview vmInterview)
+        private async Task HandleInterviewModalModelState(VmInterviewModal vmInterviewModal)
         {
 
-            if (vmInterview.VmStartTime != null && vmInterview.Duration != null)
+            if (vmInterviewModal.VmStartTime != null && vmInterviewModal.Duration != null)
             {
 
                 Entities.Process process = await _dal.GetEntity<Entities.Process>((Guid)_state.ProcessId) as Entities.Process;
                 //DateTime interviewEndTime = DateTime.Now.AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
-                DateTime interviewEndTime = new DateTime().AddMinutes(vmInterview.VmStartTime.TotalMinutes).AddMinutes((int)vmInterview.Duration);
+                DateTime interviewEndTime = new DateTime().AddMinutes(vmInterviewModal.VmStartTime.TotalMinutes).AddMinutes((int)vmInterviewModal.Duration);
 
-                if (vmInterview.VmStartTime < process.MinTime || interviewEndTime.TimeOfDay > process.MaxTime)
+                if (vmInterviewModal.VmStartTime < process.MinTime || interviewEndTime.TimeOfDay > process.MaxTime)
                 {
                     ModelState.AddModelError("VmStartTime", _localizer["InterviewVmStartDateAndDuration"].Value
                         .Replace("{min}", ((TimeSpan)process.MinTime).ToString())
@@ -516,22 +499,69 @@ namespace Interview.UI.Controllers
 
         }
 
-        private InterviewStates GetInterviewState(VmInterviewerUserIds vmInterviewUserIds)
+        #endregion
+
+        #region Participants Modal
+
+        [HttpGet]
+        public async Task<PartialViewResult> ParticipantsModal(Guid id)
         {
 
-            InterviewStates? result = InterviewStates.PendingCommitteeMembers;
+            VmParticipantsModal result = new VmParticipantsModal();
+            Entities.Interview interview = await _dal.GetEntity<Entities.Interview>((Guid)id, true) as Entities.Interview;
 
-            if (vmInterviewUserIds.InterviewerUserId != null && vmInterviewUserIds.InterviewerLeadUserId != null)
-            {
-                if (vmInterviewUserIds.CandidateUserId == null)
-                    result = InterviewStates.AvailableForCandidate;
-                else
-                    result = InterviewStates.Booked;
-            }
+            result.InterviewId = id;
+            result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
+            //result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
+            //result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
+            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.Id).ToList();
+            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.Id).ToList();
 
-            return (InterviewStates)result;
+            await SetParticipantsModalViewBag();
+
+            return PartialView(result);
 
         }
+
+        private async Task SetParticipantsModalViewBag()
+        {
+
+            // Handle Interview Users
+            List<RoleUser> roleUsers = await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+            if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.Owner.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
+            {
+                bool hasAccess = true;
+                if (User.IsInRole(RoleTypes.Owner.ToString()))
+                {
+                    // Despit the above line's dal call returning a list, it treats the returned type as a single entity, so need to 
+                    // get the list as a variable first. Moving on...
+                    var groupOwners = await _dal.GetGroupOwnersByContextIdAndUserId((Guid)_state.ProcessId, EntraId);
+                    hasAccess = groupOwners.Any();
+                }
+            }
+
+            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
+            ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList();
+            ViewBag.LeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList();
+
+        }
+
+        //private InterviewStates GetInterviewState(VmInterviewerUserIds vmInterviewUserIds)
+        //{
+
+        //    InterviewStates? result = InterviewStates.PendingCommitteeMembers;
+
+        //    if (vmInterviewUserIds.InterviewerUserId != null && vmInterviewUserIds.InterviewerLeadUserId != null)
+        //    {
+        //        if (vmInterviewUserIds.CandidateUserId == null)
+        //            result = InterviewStates.AvailableForCandidate;
+        //        else
+        //            result = InterviewStates.Booked;
+        //    }
+
+        //    return (InterviewStates)result;
+
+        //}
 
         #endregion
 

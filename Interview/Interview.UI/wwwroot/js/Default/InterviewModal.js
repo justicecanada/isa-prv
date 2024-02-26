@@ -1,7 +1,7 @@
-﻿var interviewTable = {
+﻿var interviewModal = {
 
     OpenLink: "#interviewTableModal",
-    EditClass: "editTable",
+    EditClass: "editInterview",
     ModalSelector: "#modalContainer",
     Uri: "/Default/InterviewModal",
     Form: null,
@@ -11,8 +11,6 @@
     Init: function () {
 
         this.HookupMagnificPopup();
-        //$(document).off("wb-updated.wb-calevt", ".wb-calevt");
-        //$(document).on("wb-updated.wb-calevt", ".wb-calevt", interview.HandleCalendarUpdate);
 
     },
 
@@ -20,7 +18,7 @@
 
         this.Form = $("#interviewForm")[0];
 
-        $(this.SubmitButtonSelector).on("click", interviewTable.Post);
+        $(this.SubmitButtonSelector).on("click", interviewModal.Post);
 
         $(this.CancelButtonSelector).on("click", function (e) {
             e.preventDefault();
@@ -31,7 +29,7 @@
 
     HandleCalendarUpdate: function (e) {
 
-        interviewTable.Init();
+        interviewModal.Init();
 
     },
 
@@ -41,8 +39,8 @@
             type: 'inline',
             modal: true,
             callbacks: {
-                elementParse: interviewTable.ElementParse,
-                close: interviewTable.Close,
+                elementParse: interviewModal.ElementParse,
+                close: interviewModal.Close,
             }
         });
 
@@ -50,15 +48,15 @@
 
     ElementParse: function (item, e) {
 
-        if ($(item.el[0]).hasClass(interviewTable.EditClass)) {
+        if ($(item.el[0]).hasClass(interviewModal.EditClass)) {
 
             var id = $(item.el[0]).data().id;
 
-            $.get(interviewTable.Uri + "?id=" + id)
+            $.get(interviewModal.Uri + "?id=" + id)
             //$.get(item.el[0].href)
                 .done(function (data, textStatus, jqXHR) {
-                    $(interviewTable.ModalSelector).html($(data));
-                    interviewTable.HookupModalHandlers();
+                    $(interviewModal.ModalSelector).html($(data));
+                    interviewModal.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     $.magnificPopup.close();
@@ -67,10 +65,10 @@
         }
         else {
 
-            $.get(interviewTable.Uri)
+            $.get(interviewModal.Uri)
                 .done(function (data, textStatus, jqXHR) {
-                    $(interviewTable.ModalSelector).html($(data));
-                    interviewTable.HookupModalHandlers();
+                    $(interviewModal.ModalSelector).html($(data));
+                    interviewModal.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     $.magnificPopup.close();
@@ -81,20 +79,20 @@
     },
 
     Close: function () {
-        $(interviewTable.ModalSelector).empty();
+        $(interviewModal.ModalSelector).empty();
     },
 
     Post: function (e) {
 
         e.preventDefault();
-        var formData = $(interviewTable.Form).serialize();
+        var formData = $(interviewModal.Form).serialize();
 
         $.ajax({
             type: "POST",
-            url: interviewTable.Uri,
+            url: interviewModal.Uri,
             data: formData,
-            success: interviewTable.PostSuccess,
-            fail: interviewTable.PostFail
+            success: interviewModal.PostSuccess,
+            fail: interviewModal.PostFail
         });
 
     },
@@ -103,13 +101,13 @@
 
         if (data.result) {
             $.magnificPopup.close();
-            interviewTable.PosbBack();
+            interviewModal.PosbBack();
             //table.UpdateTable(data.item);
             //table.HookupMagnificPopup();
         }
         else {
-            $(interviewTable.ModalSelector).html($(data));
-            interviewTable.HookupModalHandlers();
+            $(interviewModal.ModalSelector).html($(data));
+            interviewModal.HookupModalHandlers();
         }
 
     },
@@ -128,8 +126,8 @@
 }
 
 if (wb.isReady)
-    interviewTable.Init();
+    interviewModal.Init();
 else
     $(document).on("wb-ready.wb", function (event) {
-        interviewTable.Init();
+        interviewModal.Init();
     });

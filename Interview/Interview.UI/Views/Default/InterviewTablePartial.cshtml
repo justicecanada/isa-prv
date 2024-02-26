@@ -95,7 +95,14 @@
                     @foreach (VmInterview vmInterview in vmInterviews)
                     {
                         <tr class="@GetRowClass(vmInterview)">
-                            <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Edit</a></td>
+                            <td>
+                                <span>
+                                    <a href="#modalContainer" class="editInterview" data-id="@vmInterview.Id">Edit</a>
+                                </span>
+                                <span>
+                                    <a href="#modalContainer" class="editParticipants" data-id="@vmInterview.Id">Participants</a>
+                                </span>
+                            </td>
                             <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                             <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
                             <td>Not sure which property drives this</td>
