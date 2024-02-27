@@ -124,6 +124,11 @@
                                 <div>
                                     <a href="#modalContainer" class="editParticipants" data-id="@vmInterview.Id">Participants</a>
                                 </div>
+                                <div>
+                                <a class="deleteRecord" data-id="@vmInterview.Id" href="#modalContainer">
+                                        @localizer["Delete"]
+                                    </a>
+                                </div>
                             </td>
                             <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                             <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
@@ -135,3 +140,9 @@
         </div>
 
 </div>
+
+<script type="text/javascript">
+
+    var deleteUri = "@Url.ActionLink("DeleteInterviewModal", "Default")";
+
+</script>

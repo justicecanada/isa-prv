@@ -145,6 +145,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewModal.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/ParticipantsModal.js?v={BuildId}\"></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/DeleteConfirmationModal.js?v={BuildId}'></script>");
 
         }
 
@@ -609,6 +610,32 @@ namespace Interview.UI.Controllers
                 result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
 
             return result;
+
+        }
+
+        #endregion
+
+        #region Delete Interview Modal
+
+        [HttpGet]
+        public PartialViewResult DeleteInterviewModal(Guid id)
+        {
+
+            return ConfirmDeleteModal(id, _localizer["DeleteConfirmationString"].Value);
+
+        }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteInterviewModal(Guid id, bool hardDelete = false)
+        {
+
+            await _dal.DeleteEntity<Entities.Interview>(id);
+
+            return new JsonResult(new { result = true, id = id })
+            {
+                StatusCode = 200
+            };
 
         }
 
