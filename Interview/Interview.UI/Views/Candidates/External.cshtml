@@ -4,7 +4,6 @@
 @{
 
     List<VmInterview> vmInterviews = ViewBag.VmInterviews;
-    List<VmRoleUser> vmRoleUsers = ViewBag.VmRoleUsers;
     DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime procesStartDate = ViewBag.ProccessStartDate;
     DateTime processEndDate = ViewBag.ProccessEndDate;
@@ -21,39 +20,16 @@
         string result = null;
         DateTime time = DateTime.Today.Add(vmInterview.VmStartTime);
 
-        result = $"<div>{vmInterview.VmStartDate.ToString(Constants.DateFormat)} {time.ToString(@"hh\:mm tt")}</div> <div>{vmInterview.Location}</div> <div>{vmInterview.Room}</div>";
+        result = $"<div>{vmInterview.VmStartDate.ToString(Constants.DateFormat)} {time.ToString(@"hh\:mm tt")}</div>";
 
         return result;
 
     }
 
-    private string GetParticipantDetails(VmInterview interview, List<VmRoleUser> vmRoleUsers)
+    private string GetRoomAndLocation(VmInterview vmInterview)
     {
 
-        System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        VmRoleUser candidateRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Candidate);
-        VmRoleUser interviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
-        VmRoleUser leadInterviewRoleUser = GetVmRoleUser(interview, vmRoleUsers, RoleUserTypes.Lead); ;
-
-        if (candidateRoleUser != null)
-            sb.Append($"<div>Candidate: {candidateRoleUser.UserLastname} {candidateRoleUser.UserFirstname}</div>");
-        if (interviewRoleUser != null)
-            sb.Append($"<div>Interviewer: {interviewRoleUser.UserLastname} {interviewRoleUser.UserFirstname}</div>");
-        if (leadInterviewRoleUser != null)
-            sb.Append($"<div>Lead Interviewer: {leadInterviewRoleUser.UserLastname} {leadInterviewRoleUser.UserFirstname}</div>");
-
-        return sb.ToString();
-
-    }
-
-    private VmRoleUser GetVmRoleUser(VmInterview interview, List<VmRoleUser> vmRoleUsers, RoleUserTypes roleUserType)
-    {
-
-        VmRoleUser result = null;
-        VmInterviewUser vmInterviewUser = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).FirstOrDefault();
-
-        if (vmInterviewUser != null)
-            result = vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First();
+        string result = $"<div>{vmInterview.Location}</div> <div>{vmInterview.Room}</div>";
 
         return result;
 
@@ -86,7 +62,8 @@
                 <tr>
                     <th class="tableActionColumn">&nbsp;</th>
                     <th>Details</th>
-                    <th>Participants</th>
+                    <th>Room and Location</th>
+                    <th>Equities</th>
                     <th>Language</th>
                 </tr>
             </thead>
@@ -98,7 +75,8 @@
                         @Html.ActionLink("Select", "SelectExternalInterview", "Candidates", new { interviewId = vmInterview.Id, externalCandidateId = externalCandidateId })
                     </td>
                     <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
-                    <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
+                    <td>@Html.Raw(GetRoomAndLocation(vmInterview))</td>
+                    <td></td>
                     <td>Not sure which property drives this</td>
                 </tr>
             }

@@ -92,13 +92,13 @@ namespace Interview.UI.Controllers
             List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
             List<Entities.Interview> availableInterviews = interviews.Where(x => x.Status == InterviewStates.AvailableForCandidate).ToList();
             List<VmInterview> vmAvailableInterviews = _mapper.Map<List<VmInterview>>(availableInterviews);
-            List<VmRoleUser> vmRoleUsers = _mapper.Map<List<VmRoleUser>>(process.RoleUsers);
-
+            RoleUser candidateRoleUser = process.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.UserId == externalCandidateId).First();
+            var equities = await _dal.GetRoleUserEquitiesByRoleUserId(candidateRoleUser.Id);
+            
             ViewBag.ProccessStartDate = process.StartDate;
             ViewBag.ProccessEndDate = process.EndDate;
             ViewBag.VmInterviews = vmAvailableInterviews;
             ViewBag.ExternalCandidateId = externalCandidateId;
-            ViewBag.VmRoleUsers = vmRoleUsers;
 
         }
 
