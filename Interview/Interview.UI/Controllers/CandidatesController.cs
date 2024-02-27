@@ -79,9 +79,24 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> SelectExternalInterview(Guid interviewId, Guid externalCandidateId)
         {
 
-            await SetExternalViewBag((Guid)_state.ProcessId, externalCandidateId);
+            Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(interviewId) as Entities.Interview;
+            Process process = await _dal.GetEntity<Process>(interview.ProcessId, true) as Process;
+            RoleUser candidateRoleUser = process.RoleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.UserId == externalCandidateId)).First();
+            InterviewUser newInterviewUser = new InterviewUser()
+            {
+                UserId = candidateRoleUser.Id,
+                RoleUserType = RoleUserTypes.Candidate,
+                InterviewId = interviewId
+            };
 
-            return View("External");
+            // Handle Interview
+            interview.Status = InterviewStates.Booked;
+            await _dal.UpdateEntity(interview);
+
+            // Handle Interview User
+            await _dal.AddEntity<InterviewUser>(newInterviewUser);
+
+            return RedirectToAction("InterviewBooked", "Candidates", new { id = interviewId });
 
         }
 
@@ -93,12 +108,34 @@ namespace Interview.UI.Controllers
             List<Entities.Interview> availableInterviews = interviews.Where(x => x.Status == InterviewStates.AvailableForCandidate).ToList();
             List<VmInterview> vmAvailableInterviews = _mapper.Map<List<VmInterview>>(availableInterviews);
             RoleUser candidateRoleUser = process.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.UserId == externalCandidateId).First();
-            var equities = await _dal.GetRoleUserEquitiesByRoleUserId(candidateRoleUser.Id);
+            List<RoleUserEquity> roleUserEquities = await _dal.GetRoleUserEquitiesByRoleUserId(candidateRoleUser.Id);
             
             ViewBag.ProccessStartDate = process.StartDate;
             ViewBag.ProccessEndDate = process.EndDate;
             ViewBag.VmInterviews = vmAvailableInterviews;
             ViewBag.ExternalCandidateId = externalCandidateId;
+            ViewBag.RoleUserEquities = roleUserEquities;
+
+        }
+
+        #endregion
+
+        #region Interview Booked
+
+        [HttpGet]
+        public async Task<IActionResult> InterviewBooked(Guid id)
+        {
+
+            Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(id, true) as Entities.Interview;
+            VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
+            Process process = await _dal.GetEntity<Process>(interview.ProcessId, true) as Process;
+            RoleUser candidateRoleUser = process.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).First();
+            List<RoleUserEquity> roleUserEquities = await _dal.GetRoleUserEquitiesByRoleUserId(candidateRoleUser.Id);
+
+            ViewBag.VmInterview = vmInterview;
+            ViewBag.RoleUserEquities = roleUserEquities;
+
+            return View();
 
         }
 
