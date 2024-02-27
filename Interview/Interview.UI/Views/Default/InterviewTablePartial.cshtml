@@ -6,8 +6,8 @@
     List<VmInterview> vmInterviews = ViewBag.VmInterviews;
     List<VmRoleUser> vmRoleUsers = ViewBag.VmRoleUsers;
     DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-	DateTime procesStartDate = ViewBag.ProccessStartDate;
-	DateTime processEndDate = ViewBag.ProccessEndDate;
+    DateTime procesStartDate = ViewBag.ProccessStartDate;
+    DateTime processEndDate = ViewBag.ProccessEndDate;
 
 }
 
@@ -36,11 +36,11 @@
 
         if (candidateRoleUsers.Count != 0)
         {
-            sb.Append($"<div>Candidate: {candidateRoleUsers[0].UserLastname} {candidateRoleUsers[0].UserFirstname}</div>");
+            sb.Append($"<div>{@localizer["Candidate"].Value}: {candidateRoleUsers[0].UserLastname} {candidateRoleUsers[0].UserFirstname}</div>");
         }
         if (interviewRoleUsers.Count != 0)
         {
-            sb.Append("<div>Interviewers: ");
+            sb.Append($"<div>{@localizer["Interviewers"].Value}: ");
             foreach (VmRoleUser vmRoleUser in interviewRoleUsers)
             {
                 sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
@@ -51,7 +51,7 @@
         }
         if (leadInterviewRoleUsers.Count != 0)
         {
-            sb.Append("Lead Interviewers: ");
+            sb.Append($"<div>{@localizer["LeadInterviewers"].Value}: ");
             foreach (VmRoleUser vmRoleUser in leadInterviewRoleUsers)
             {
                 sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
@@ -109,9 +109,9 @@
                     <thead>
                         <tr>
                             <th class="tableActionColumn">&nbsp;</th>
-                            <th>Details</th>
-                            <th>Participants</th>
-                            <th>Language</th>
+                            <th>@localizer["Details"]</th>
+                            <th>@localizer["Participants"]</th>
+                            <th>@localizer["Language"]</th>
                         </tr>
                     </thead>
                     @foreach (VmInterview vmInterview in vmInterviews)
@@ -119,10 +119,10 @@
                         <tr class="@GetRowClass(vmInterview)">
                             <td>
                                 <div>
-                                    <a href="#modalContainer" class="editInterview" data-id="@vmInterview.Id">Edit</a>
+                                    <a href="#modalContainer" class="editInterview" data-id="@vmInterview.Id">@localizer["Edit"]</a>
                                 </div>
                                 <div>
-                                    <a href="#modalContainer" class="editParticipants" data-id="@vmInterview.Id">Participants</a>
+                                    <a href="#modalContainer" class="editParticipants" data-id="@vmInterview.Id">@localizer["Participants"]</a>
                                 </div>
                                 <div>
                                 <a class="deleteRecord" data-id="@vmInterview.Id" href="#modalContainer">
