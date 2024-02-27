@@ -511,12 +511,12 @@ namespace Interview.UI.Controllers
 
             InterviewStates? result = InterviewStates.PendingCommitteeMembers;
             int interviewerCount = vmParticipantsModal.InterviewerUserIds.Count + vmParticipantsModal.InterviewerLeadUserIds.Count;
-            bool hasSingleLeadInterviewer = vmParticipantsModal.InterviewerLeadUserIds.Count == 1;
+            bool hasALeadInterviewer = vmParticipantsModal.InterviewerLeadUserIds.Any();
             bool hasCandidate = vmParticipantsModal.CandidateUserId != null;
 
             if (interviewerCount == 3)
             {
-                if (hasSingleLeadInterviewer)
+                if (hasALeadInterviewer)
                     result = InterviewStates.AvailableForCandidate;
                 else
                     result = InterviewStates.PendingCommitteeMembers;
