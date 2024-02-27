@@ -129,6 +129,12 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>French</value>
+  </data>
   <data name="Interviewers" xml:space="preserve">
     <value>Interviewers</value>
   </data>

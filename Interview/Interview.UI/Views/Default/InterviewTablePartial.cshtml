@@ -9,6 +9,9 @@
     DateTime procesStartDate = ViewBag.ProccessStartDate;
     DateTime processEndDate = ViewBag.ProccessEndDate;
 
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    string language = cultureName == Constants.EnglishCulture ? localizer["English"].Value : localizer["French"].Value;
+
 }
 
 @functions {
@@ -132,7 +135,7 @@
                             </td>
                             <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                             <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
-                            <td>Not sure which property drives this</td>
+                            <td>@language</td>
                         </tr>
                     }
                 </table>
