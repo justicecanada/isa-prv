@@ -1,0 +1,85 @@
+﻿
+@using Interview.Entities
+@using System.Text
+
+@{
+
+    VmInterview vmInterview = ViewBag.VmInterview;
+    List<RoleUserEquity> roleUserEquities = ViewBag.RoleUserEquities;
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+
+}
+
+@functions {
+
+    private string GetInterviewDetails(VmInterview vmInterview)
+    {
+
+        string result = null;
+        DateTime time = DateTime.Today.Add(vmInterview.VmStartTime);
+
+        result = $"<div>{vmInterview.VmStartDate.ToString(Constants.DateFormat)} {time.ToString(@"hh\:mm tt")}</div>";
+
+        return result;
+
+    }
+
+    private string GetEquities(List<RoleUserEquity> roleUserEquities, string cultureName)
+    {
+
+        StringBuilder sb = new StringBuilder();
+        string equityDescription;
+
+        sb.Append("<ul>");
+        foreach (RoleUserEquity roleUserEquity in roleUserEquities)
+        {
+            equityDescription = cultureName == Constants.EnglishCulture ? roleUserEquity.Equity.NameEN : roleUserEquity.Equity.NameFR;
+            sb.Append($"<li>{equityDescription}</li>");
+        }
+        sb.Append("</ul>");
+
+        return sb.ToString();
+
+    }
+
+}
+
+<h1>Interview Booked</h1>
+
+<div class="row">
+    <div class="col-md-4 bold">
+        Location: 
+    </div>
+    <div class="col-md-8">
+        @vmInterview.Location
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 bold">
+        Room:
+    </div>
+    <div class="col-md-8">
+        @vmInterview.Room
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 bold">
+        Date and Time:
+    </div>
+    <div class="col-md-8">
+        @Html.Raw(GetInterviewDetails(vmInterview))
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 bold">
+        Equities:
+    </div>
+    <div class="col-md-8">
+        @Html.Raw(GetEquities(roleUserEquities, cultureName))
+    </div>
+</div>
+

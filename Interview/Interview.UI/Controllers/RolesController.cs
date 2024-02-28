@@ -473,11 +473,13 @@ namespace Interview.UI.Controllers
         private async Task SendExternalEmail(EmailTemplate emailTemplate, ExternalUser externalUser, string accessToken)
         {
 
+            string callbackUrl = GetCallbackUrl(externalUser.Id);
             string body = emailTemplate.EmailBody
                 .Replace("{0}", externalUser.GivenName)
                 .Replace("{1}", externalUser.SurName)
                 .Replace("{8}", externalUser.Id.ToString().Substring(0, 5))
-                .Replace("{9}", "<strong>Get PathBase from somewhere - this is just a placeholder</strong>");
+                .Replace("{9}", "<strong>Get PathBase from somewhere - this is just a placeholder</strong>")
+                .Replace("{callbackUrl}", callbackUrl); 
             List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(externalUser.Email);
 
             EmailEnvelope emailEnvelope = new EmailEnvelope()
@@ -496,6 +498,43 @@ namespace Interview.UI.Controllers
                 saveToSentItems = "false"
             };
             HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, accessToken, User.Identity.Name);
+
+        }
+
+        private string GetCallbackUrl(Guid? externalCandidateId)
+        {
+
+            string result;
+
+            if (externalCandidateId == null)
+            {
+                result = Url.ActionLink(
+                    action: "Internal",
+                    controller: "Candidates",
+                    new
+                    {
+                        processId = _state.ProcessId,
+                    },
+                    protocol: Request.Scheme,
+                    host: HostName
+                );
+            }
+            else
+            {
+                result = Url.ActionLink(
+                    action: "External",
+                    controller: "Candidates",
+                    new
+                    {
+                        processId = _state.ProcessId,
+                        externalCandidateId = externalCandidateId
+                    },
+                    protocol: Request.Scheme,
+                    host: HostName
+                );
+            }
+
+            return result;
 
         }
 

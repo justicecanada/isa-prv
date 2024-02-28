@@ -1,0 +1,103 @@
+﻿@model VmParticipantsModal
+@using Interview.Entities
+@using Interview.UI.Models.Default
+@inject IViewLocalizer localizer
+
+@{
+
+    List<RoleUser> candidateUsers = ViewBag.CandidateUsers;
+    List<SelectListItem> candidateUsersItems = new List<SelectListItem>();
+    candidateUsersItems.Add(new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    foreach (var candidateUser in candidateUsers)
+    {
+        candidateUsersItems.Add(new SelectListItem()
+        {
+            Value = candidateUser.Id.ToString(),
+            Text = $"{candidateUser.UserFirstname} {candidateUser.UserLastname}"
+        });
+    }
+
+    List<RoleUser> interviewerUsers = ViewBag.InterviewerUsers;
+    List<SelectListItem> interviewerUsersItems = new List<SelectListItem>();
+    foreach (var interviewerUser in interviewerUsers)
+    {
+        interviewerUsersItems.Add(new SelectListItem()
+        {
+            Value = interviewerUser.Id.ToString(),
+            Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}",
+            Selected = Model.InterviewerUserIds.Contains(interviewerUser.Id)
+        });
+    }
+
+    List<RoleUser> leadUsers = ViewBag.LeadUsers;
+    List<SelectListItem> leadItems = new List<SelectListItem>();
+    foreach (var leadUser in leadUsers)
+    {
+        leadItems.Add(new SelectListItem()
+        {
+            Value = leadUser.Id.ToString(),
+            Text = $"{leadUser.UserFirstname} {leadUser.UserLastname}",
+            Selected = Model.InterviewerLeadUserIds.Contains(leadUser.Id)
+        });
+    }
+
+}
+
+<header class="modal-header">
+    <h2 class="modal-title">@localizer["ModalTitle"]</h2>
+</header>
+
+<div class="modal-body">
+
+    <form id="participantsForm" action="@Url.Action("ParticipantsModal", "Default")" method="post">
+
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(x => x.InterviewId)
+
+        @Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
+
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.InterviewerUserIds)
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(x => x.InterviewerUserIds, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-12">
+                <select name="InterviewerUserIds" id="InterviewerUserIds" multiple>
+                    @foreach (SelectListItem item in interviewerUsersItems)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.InterviewerLeadUserIds)
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(x => x.InterviewerLeadUserIds, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-12">
+                <select name="InterviewerLeadUserIds" id="InterviewerLeadUserIds" multiple>
+                    @foreach (SelectListItem item in leadItems)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+    </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button id="btnParticipantsClose" title="Cancel" class="btn btn-secondary cancel ml-2">@localizer["Close"]</button>
+        <input id="btnParticipantSave" type="submit" value="@localizer["Save"]" class="btn btn-primary" formaction="/Default/ParticipantsModal" />
+    </div>
+
+</div>

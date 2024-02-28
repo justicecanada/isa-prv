@@ -55,9 +55,9 @@ namespace Interview.Entities
 
     public enum InterviewStates
     {
-        Available = 1,
-        Waiting = 2,
-        Reserve = 3
+        AvailableForCandidate = 1,
+        PendingCommitteeMembers = 2,
+        Booked = 3
     }
 
 }

@@ -4,6 +4,7 @@ using Interview.UI.Models;
 using System.Globalization;
 using System;
 using System.Xml;
+using Interview.UI.Models.Default;
 
 namespace Interview.UI.Services.Automapper
 {
@@ -35,13 +36,19 @@ namespace Interview.UI.Services.Automapper
             CreateMap<VmRoleUserEquity, RoleUserEquity>();
 
             CreateMap<Interview.Entities.Interview, VmInterview>()
-                .ForMember(x => x.VmStartDate, opt => opt.MapFrom<DateTimeOffsetToDateTime>())
-                .ForMember(x => x.VmStartTime, opt => opt.MapFrom<DateTimeOffSetToTimeSpan>());
+                .ForMember(x => x.VmStartDate, opt => opt.MapFrom<DateTimeOffsetToDateTimeForInterview>())
+                .ForMember(x => x.VmStartTime, opt => opt.MapFrom<DateTimeOffSetToTimeSpanForInterview>());
             CreateMap<VmInterview, Interview.Entities.Interview>()
-                .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffset>());
+                .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffsetForInterview>());
 
-            CreateMap<InterviewUser, VmInterview>();
-            CreateMap<VmInterview, VmInterviewUser>();
+            CreateMap<Interview.Entities.Interview, VmInterviewModal>()
+                .ForMember(x => x.VmStartDate, opt => opt.MapFrom<DateTimeOffsetToDateTimeForInterviewModal>())
+                .ForMember(x => x.VmStartTime, opt => opt.MapFrom<DateTimeOffSetToTimeSpanForInterviewForInterviewModal>());
+            CreateMap<VmInterviewModal, Interview.Entities.Interview>()
+                .ForMember(x => x.StartDate, opt => opt.MapFrom<DateTimeTimeSpanTimeZoneToDateTimeOffsetForInterviewModal>());
+
+            CreateMap<InterviewUser, VmInterviewUser>();
+            CreateMap<VmInterviewUser, VmInterviewUser>();
 
             CreateMap<EmailTemplate, VmEmailTemplate>();
             CreateMap<VmEmailTemplate, EmailTemplate>();
