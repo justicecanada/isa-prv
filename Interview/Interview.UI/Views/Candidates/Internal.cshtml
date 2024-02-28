@@ -1,0 +1,14 @@
+﻿
+@inject IViewLocalizer localizer    
+
+@{
+
+
+
+}
+
+<h1>@localizer["InternalCandidateSchedule"]</h1>
+
+@{
+    await Html.RenderPartialAsync("InterviewCalendarPartial");
+}

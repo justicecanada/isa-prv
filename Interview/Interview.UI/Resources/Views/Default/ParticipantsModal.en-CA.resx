@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DeleteConfirmationString" xml:space="preserve">
-    <value>Are you sure you want to delete this time slot and the link with its members?</value>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
   </data>
-  <data name="InterviewVmStartDateAndDuration" xml:space="preserve">
-    <value>The interview cannot start before {min} or end after {max}</value>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>== Please Select ==</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>

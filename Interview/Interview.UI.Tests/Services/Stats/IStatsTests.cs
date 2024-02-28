@@ -898,7 +898,7 @@ namespace Interview.UI.Tests.Services.Stats
             {
                 interview = (Entities.Interview)GetEntity<Entities.Interview>(true);
                 interview.ProcessId = processId;
-                interview.Status = InterviewStates.Reserve;
+                interview.Status = InterviewStates.Booked;
                 interview.StartDate = DateTime.Now.AddDays(-1);
                 result.Add(interview);
             }

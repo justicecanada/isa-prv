@@ -28,7 +28,7 @@ namespace Interview.UI.Services.Stats
             VmInterviewCounts result = new VmInterviewCounts();
 
             result.TotalInterviews = processes.Sum(x => x.Interviews.Count);
-            result.CompletedInterviews = processes.SelectMany(x => x.Interviews.Where(x => x.Status == InterviewStates.Reserve && 
+            result.CompletedInterviews = processes.SelectMany(x => x.Interviews.Where(x => x.Status == InterviewStates.Booked && 
                 x.StartDate.Date < DateTime.Now)).Count();
             result.RemainingInterviews = result.TotalInterviews - result.CompletedInterviews;
             result.InterviewDays = processes.SelectMany(x => x.Interviews.Select(y => y.StartDate.Date.ToString("dd/MM/yyyy")).Distinct()).Distinct().Count();
@@ -230,10 +230,10 @@ namespace Interview.UI.Services.Stats
 
                 numberSlots = kvp.Value.Count();
                 date = kvp.Value.Min(x => x.StartDate.Date);
-                numberProgressCompleted = kvp.Value.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberProgressCompleted = kvp.Value.Where(x => x.Status == InterviewStates.Booked && x.StartDate < DateTime.Now).Count();
                 numberProgressRemaining = numberSlots - numberProgressCompleted;
-                numberCanidateInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Reserve).Count();
-                numberCandidatesNotInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Available).Count();
+                numberCanidateInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Booked).Count();
+                numberCandidatesNotInSlots = kvp.Value.Where(x => x.Status == InterviewStates.AvailableForCandidate).Count();
                 numberVirtuals = kvp.Value.Where(x => string.IsNullOrEmpty(x.Room)).Count();
                 numberInPersons = numberSlots - numberVirtuals;
                 numberDaysOfInterview = kvp.Value.DistinctBy(x => x.StartDate.Day).Count();
@@ -284,10 +284,10 @@ namespace Interview.UI.Services.Stats
 
                 numberSlots = kvp.Value.Count();
                 date = kvp.Value.Min(x => x.StartDate.Date);
-                numberProgressCompleted = kvp.Value.Where(x => x.Status == InterviewStates.Reserve && x.StartDate < DateTime.Now).Count();
+                numberProgressCompleted = kvp.Value.Where(x => x.Status == InterviewStates.Booked && x.StartDate < DateTime.Now).Count();
                 numberProgressRemaining = numberSlots - numberProgressCompleted;
-                numberCanidateInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Reserve).Count();
-                numberCandidatesNotInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Available).Count();
+                numberCanidateInSlots = kvp.Value.Where(x => x.Status == InterviewStates.Booked).Count();
+                numberCandidatesNotInSlots = kvp.Value.Where(x => x.Status == InterviewStates.AvailableForCandidate).Count();
                 numberVirtuals = kvp.Value.Where(x => string.IsNullOrEmpty(x.Room)).Count();
                 numberInPersons = numberSlots - numberVirtuals;
                 numberDaysOfInterview = kvp.Value.DistinctBy(x => x.StartDate.Day).Count();

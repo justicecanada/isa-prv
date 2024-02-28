@@ -10,7 +10,7 @@
 }
 
 <div>
-	<a id="interviewModal" href="#modalContainer">Add Interview</a>
+	<a id="interviewModal" href="#modalContainer" class="btn btn-primary mrgn-bttm-md">Add Interview</a>
 </div>
 
 <div id="interviewCalendar" class="cal-cnt-fluid"></div>
@@ -20,7 +20,7 @@
 	public string GetDescription(VmInterview vmInterview)
 	{
 
-		string result = "Hey!";
+		string result = "";
 		TimeSpan duration = new TimeSpan(0, (int)vmInterview.Duration, 0);
 		string startAndEndTime = $"{vmInterview.VmStartTime.ToString(@"hh\:mm")} - {vmInterview.VmStartTime.Add(duration).ToString(@"hh\:mm")}";
 

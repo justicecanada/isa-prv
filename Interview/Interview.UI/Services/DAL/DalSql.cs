@@ -587,7 +587,10 @@ namespace Interview.UI.Services.DAL
         public async Task<List<RoleUserEquity>> GetRoleUserEquitiesByRoleUserId(Guid userId)
         {
 
-            var result = await _context.RoleUserEquities.Where(x => x.RoleUserId == userId).ToListAsync();
+            var result = await _context.RoleUserEquities.Where(x => x.RoleUserId == userId)
+                .Include(x => x.Equity)
+                .Include(x => x.RoleUser)
+                .ToListAsync();
 
             return result;
 
