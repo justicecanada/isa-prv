@@ -115,9 +115,9 @@ namespace Interview.UI.Controllers
                 {
                     foreach (VmInterviewUser vmInterviewUser in vmInterview.InterviewUsers)
                     {
-                        vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.RoleUserId;
+                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.RoleUserId;
+                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.RoleUserId;
                         vmInterview.VmInterviewerUserIds.InterviewId = vmInterview.Id;
                     }
                 }
@@ -369,9 +369,9 @@ namespace Interview.UI.Controllers
             Entities.Interview interview = await _dal.GetEntity<Entities.Interview>((Guid)id, true) as Entities.Interview;
 
             result.InterviewId = id;
-            result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.UserId).ToList();
-            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.UserId).ToList();
+            result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.RoleUserId;
+            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.RoleUserId).ToList();
+            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.RoleUserId).ToList();
 
             await SetParticipantsModalViewBag();
 
@@ -403,7 +403,7 @@ namespace Interview.UI.Controllers
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
 
             // Handle Emails
-            await HandleInterviewerEmails(interviewUserActions);
+            await HandleInterviewerEmails(interviewUserActions, (Guid)vmParticipantsModal.InterviewId);
 
             //// Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
             //if (vmParticipantsModal.CandidateUserId != null)
@@ -462,13 +462,13 @@ namespace Interview.UI.Controllers
 
             foreach (Guid postedUserId in postedUserIds)
             {
-                interviewUser = filteredDbUsers.Where(x => x.UserId == postedUserId).FirstOrDefault();
+                interviewUser = filteredDbUsers.Where(x => x.RoleUserId == postedUserId).FirstOrDefault();
                 if (interviewUser == null)
                 {
                     // Add
                     InterviewUser newInterviewUser = new InterviewUser()
                     {
-                        UserId = (Guid)postedUserId,
+                        RoleUserId = (Guid)postedUserId,
                         RoleUserType = roleUserType,
                         InterviewId = interviewId
                     };
@@ -479,7 +479,7 @@ namespace Interview.UI.Controllers
 
             foreach (InterviewUser dbInterviewUser in filteredDbUsers)
             {
-                if (!postedUserIds.Contains(dbInterviewUser.UserId))
+                if (!postedUserIds.Contains(dbInterviewUser.RoleUserId))
                 {
                     // Delete
                     await _dal.DeleteEntity(dbInterviewUser);
@@ -503,19 +503,19 @@ namespace Interview.UI.Controllers
                 // Add
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
-                    UserId = (Guid)postedUserId,
+                    RoleUserId = (Guid)postedUserId,
                     RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
                 addedInterviewUserId = await _dal.AddEntity<InterviewUser>(newInterviewUser);
                 result.Add(new InterviewUserAction() { InterviewUserId = (Guid)addedInterviewUserId, InterviewUserActionType = InterviewUserActionTypes.Added});
             }
-            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.UserId != postedUserId))
+            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.RoleUserId != postedUserId))
             {
                 // Update
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
-                    UserId = (Guid)postedUserId,
+                    RoleUserId = (Guid)postedUserId,
                     RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
@@ -558,10 +558,28 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task HandleInterviewerEmails(List<InterviewUserAction> interviewUserActions)
+        private async Task HandleInterviewerEmails(List<InterviewUserAction> interviewUserActions, Guid interviewId)
         {
 
+            List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(interviewId);
+            InterviewUserEmail interviewUserEmail = null;
 
+            foreach (InterviewUserAction interviewUserAction in interviewUserActions)
+            {
+
+                if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Added)
+                {
+                    interviewUserEmail = new InterviewUserEmail() { InterviewUserId = interviewUserAction.InterviewUserId, EmailType = EmailTypes.CandidateRegisteredTimeSlot, DateSent = DateTime.Now };
+                    await _dal.AddEntity<InterviewUserEmail>(interviewUserEmail);
+                }
+                else if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Removed)
+                {
+                    
+
+                    // No need to delete coresponding InterviewUserEmail because it was deleted when the InterviewUser was deleted.
+                }
+
+            }
 
         }
 

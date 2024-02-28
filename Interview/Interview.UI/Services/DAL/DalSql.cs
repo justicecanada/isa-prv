@@ -64,6 +64,10 @@ namespace Interview.UI.Services.DAL
                     _context.InterviewUsers.Add((InterviewUser)entity);
                     break;
 
+                case nameof(InterviewUserEmail):
+                    _context.InterviewUserEmails.Add((InterviewUserEmail)entity);
+                    break;
+
                 case nameof(Process):
                     _context.Processes.Add((Process)entity);
                     break;
@@ -179,6 +183,10 @@ namespace Interview.UI.Services.DAL
 
                     // No child objects
                     result = await _context.InterviewUsers.FindAsync(id);
+                    break;
+
+                case nameof(InterviewUserEmail):
+                    result = await _context.InterviewUserEmails.FindAsync(id);
                     break;
 
                 case nameof(Schedule):
@@ -611,8 +619,18 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.InterviewUsers.Where(x => x.InterviewId == interviewId)
+                .Include(x => x.RoleUser)
                 .Include(x => x.InterviewUserEmails)
                 .ToListAsync();
+
+            return result;
+
+        }
+
+        public async Task<InterviewUserEmail> GetInterviewUserEmailByInterviewUserId(Guid interviewUserId)
+        {
+
+            InterviewUserEmail result = await _context.InterviewUserEmails.Where(x => x.InterviewUserId == interviewUserId).FirstOrDefaultAsync();
 
             return result;
 
