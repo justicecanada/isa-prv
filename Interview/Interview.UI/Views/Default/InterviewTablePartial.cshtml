@@ -1,0 +1,151 @@
+﻿@using Interview.Entities
+@inject IViewLocalizer localizer
+
+@{
+
+    List<VmInterview> vmInterviews = ViewBag.VmInterviews;
+    List<VmRoleUser> vmRoleUsers = ViewBag.VmRoleUsers;
+    DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    DateTime procesStartDate = ViewBag.ProccessStartDate;
+    DateTime processEndDate = ViewBag.ProccessEndDate;
+
+    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    string language = cultureName == Constants.EnglishCulture ? localizer["English"].Value : localizer["French"].Value;
+
+}
+
+@functions {
+
+
+    private string GetInterviewDetails(VmInterview vmInterview)
+    {
+
+        string result = null;
+        DateTime time = DateTime.Today.Add(vmInterview.VmStartTime);
+
+        result = $"<div>{vmInterview.VmStartDate.ToString(Constants.DateFormat)} {time.ToString(@"hh\:mm tt")}</div> <div>{vmInterview.Location}</div> <div>{vmInterview.Room}</div>";
+
+        return result;
+
+    }
+
+    private string GetParticipantDetails(VmInterview interview, List<VmRoleUser> vmRoleUsers)
+    {
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        List<VmRoleUser> candidateRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Candidate);
+        List<VmRoleUser> interviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
+        List<VmRoleUser> leadInterviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Lead); ;
+
+        if (candidateRoleUsers.Count != 0)
+        {
+            sb.Append($"<div>{@localizer["Candidate"].Value}: {candidateRoleUsers[0].UserLastname} {candidateRoleUsers[0].UserFirstname}</div>");
+        }
+        if (interviewRoleUsers.Count != 0)
+        {
+            sb.Append($"<div>{@localizer["Interviewers"].Value}: ");
+            foreach (VmRoleUser vmRoleUser in interviewRoleUsers)
+            {
+                sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
+                if (vmRoleUser != interviewRoleUsers.Last())
+                    sb.Append(", ");
+            }
+            sb.Append("</div>");
+        }
+        if (leadInterviewRoleUsers.Count != 0)
+        {
+            sb.Append($"<div>{@localizer["LeadInterviewers"].Value}: ");
+            foreach (VmRoleUser vmRoleUser in leadInterviewRoleUsers)
+            {
+                sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
+                if (vmRoleUser != leadInterviewRoleUsers.Last())
+                    sb.Append(", ");
+            }
+            sb.Append("</div>");
+        }
+
+        return sb.ToString();
+
+    }
+
+    private List<VmRoleUser> GetVmRoleUsers(VmInterview interview, List<VmRoleUser> vmRoleUsers, RoleUserTypes roleUserType)
+    {
+
+        List<VmRoleUser> result = new List<VmRoleUser>();
+        List<VmInterviewUser> vmInterviewUsers = interview.InterviewUsers.Where(x => x.RoleUserType == roleUserType).ToList();
+
+        foreach (VmInterviewUser vmInterviewUser in vmInterviewUsers)
+        {
+            result.Add(vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First());
+        }
+
+        return result;
+
+    }
+
+    private string GetRowClass(VmInterview interview)
+    {
+
+        string result = null;
+
+        if (interview.Status == InterviewStates.AvailableForCandidate)
+            result = "row-availableForCandidate";
+        else if (interview.Status == InterviewStates.PendingCommitteeMembers)
+            result = "row-pendingCommitteeMembers";
+        else if (interview.Status == InterviewStates.Booked)
+            result = "row-booked";
+
+        return result;
+
+    }
+
+}
+
+<div class="container">
+        <div class="row">
+            <a id="interviewTableModal" href="#modalContainer" class="btn btn-primary mrgn-bttm-md">Add Interview</a>
+        </div>
+
+        <div class="row">
+            <div class="table-responsive col-md-11">
+                <table id="tblInterviews" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="tableActionColumn">&nbsp;</th>
+                            <th>@localizer["Details"]</th>
+                            <th>@localizer["Participants"]</th>
+                            <th>@localizer["Language"]</th>
+                        </tr>
+                    </thead>
+                    @foreach (VmInterview vmInterview in vmInterviews)
+                    {
+                        <tr class="@GetRowClass(vmInterview)">
+                            <td>
+                                <div>
+                                    <a href="#modalContainer" class="editInterview" data-id="@vmInterview.Id">@localizer["Edit"]</a>
+                                </div>
+                                <div>
+                                    <a href="#modalContainer" class="editParticipants" data-id="@vmInterview.Id">@localizer["Participants"]</a>
+                                </div>
+                                <div>
+                                <a class="deleteRecord" data-id="@vmInterview.Id" href="#modalContainer">
+                                        @localizer["Delete"]
+                                    </a>
+                                </div>
+                            </td>
+                            <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
+                            <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
+                            <td>@language</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+</div>
+
+<script type="text/javascript">
+
+    var deleteUri = "@Url.ActionLink("DeleteInterviewModal", "Default")";
+
+</script>

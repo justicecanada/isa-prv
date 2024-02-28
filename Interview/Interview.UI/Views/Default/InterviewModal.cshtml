@@ -1,5 +1,5 @@
-﻿@model VmInterview
-@using Interview.UI.Models
+﻿@model VmInterviewModal
+@using Interview.UI.Models.Default
 @using Interview.UI.Helpers
 @inject IViewLocalizer localizer
 
@@ -51,17 +51,11 @@
 
             </div>
             <div class="col-md-6">
-
                 @if (Model.Id != null)
                 {
-                    ViewData.TemplateInfo.HtmlFieldPrefix = "VmInterviewerUserIds";
-                    await Html.RenderPartialAsync("InterviewUsersPartial", Model.VmInterviewerUserIds);
-                    ViewData.TemplateInfo.HtmlFieldPrefix = "";
-                    await Html.RenderPartialAsync("InterviewSchedulePartial");                   
+                    await Html.RenderPartialAsync("InterviewSchedulePartial");
                 }
-
             </div>
-
         </div>
 
         <div class="modal-footer">

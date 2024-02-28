@@ -1,7 +1,7 @@
-﻿var interview = {
+﻿var interviewModal = {
 
-    OpenLink: "#interviewModal",
-    EditClass: "cal-evt-lnk",
+    OpenLink: "#interviewTableModal",
+    EditClass: "editInterview",
     ModalSelector: "#modalContainer",
     Uri: "/Default/InterviewModal",
     Form: null,
@@ -10,10 +10,7 @@
 
     Init: function () {
 
-        this.ManageCalendarAnchors();
         this.HookupMagnificPopup();
-        $(document).off("wb-updated.wb-calevt", ".wb-calevt");
-        $(document).on("wb-updated.wb-calevt", ".wb-calevt", interview.HandleCalendarUpdate);
 
     },
 
@@ -21,7 +18,7 @@
 
         this.Form = $("#interviewForm")[0];
 
-        $(this.SubmitButtonSelector).on("click", interview.Post);
+        $(this.SubmitButtonSelector).on("click", interviewModal.Post);
 
         $(this.CancelButtonSelector).on("click", function (e) {
             e.preventDefault();
@@ -30,20 +27,9 @@
 
     },
 
-    ManageCalendarAnchors: function () {
-
-        $("." + this.EditClass).each(function () {
-            var source = this.hash;
-            var id = $(source).find(".interviewId").val();
-            $(this).attr("href", interview.ModalSelector);
-            $(this).attr("data-id", id);
-        });
-
-    },
-
     HandleCalendarUpdate: function (e) {
 
-        interview.Init();
+        interviewModal.Init();
 
     },
 
@@ -53,23 +39,24 @@
             type: 'inline',
             modal: true,
             callbacks: {
-                elementParse: interview.ElementParse,
-                close: interview.Close,
+                elementParse: interviewModal.ElementParse,
+                close: interviewModal.Close,
             }
         });
 
     },
 
-    ElementParse: function (item) {
+    ElementParse: function (item, e) {
 
-        if ($(item.el[0]).hasClass(interview.EditClass)) {
+        if ($(item.el[0]).hasClass(interviewModal.EditClass)) {
 
             var id = $(item.el[0]).data().id;
 
-            $.get(interview.Uri + "?id=" + id)
+            $.get(interviewModal.Uri + "?id=" + id)
+            //$.get(item.el[0].href)
                 .done(function (data, textStatus, jqXHR) {
-                    $(interview.ModalSelector).html($(data));
-                    interview.HookupModalHandlers();
+                    $(interviewModal.ModalSelector).html($(data));
+                    interviewModal.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     $.magnificPopup.close();
@@ -78,10 +65,10 @@
         }
         else {
 
-            $.get(interview.Uri)
+            $.get(interviewModal.Uri)
                 .done(function (data, textStatus, jqXHR) {
-                    $(interview.ModalSelector).html($(data));
-                    interview.HookupModalHandlers();
+                    $(interviewModal.ModalSelector).html($(data));
+                    interviewModal.HookupModalHandlers();
                 })
                 .fail(function (data, textStatus, jqXHR) {
                     $.magnificPopup.close();
@@ -92,20 +79,20 @@
     },
 
     Close: function () {
-        $(interview.ModalSelector).empty();
+        $(interviewModal.ModalSelector).empty();
     },
 
     Post: function (e) {
 
         e.preventDefault();
-        var formData = $(interview.Form).serialize();
+        var formData = $(interviewModal.Form).serialize();
 
         $.ajax({
             type: "POST",
-            url: interview.Uri,
+            url: interviewModal.Uri,
             data: formData,
-            success: interview.PostSuccess,
-            fail: interview.PostFail
+            success: interviewModal.PostSuccess,
+            fail: interviewModal.PostFail
         });
 
     },
@@ -114,13 +101,13 @@
 
         if (data.result) {
             $.magnificPopup.close();
-            interview.PosbBack();
+            interviewModal.PosbBack();
             //table.UpdateTable(data.item);
-            //interview.HookupMagnificPopup();
+            //table.HookupMagnificPopup();
         }
         else {
-            $(interview.ModalSelector).html($(data));
-            interview.HookupModalHandlers();
+            $(interviewModal.ModalSelector).html($(data));
+            interviewModal.HookupModalHandlers();
         }
 
     },
@@ -139,8 +126,8 @@
 }
 
 if (wb.isReady)
-    interview.Init();
+    interviewModal.Init();
 else
     $(document).on("wb-ready.wb", function (event) {
-        interview.Init();
+        interviewModal.Init();
     });
