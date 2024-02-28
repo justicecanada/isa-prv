@@ -6,6 +6,8 @@
 
         public Guid? ProcessId { get; set;  }
 
+        public string NoticationMessage { get; set; }
+
     }
 
 }

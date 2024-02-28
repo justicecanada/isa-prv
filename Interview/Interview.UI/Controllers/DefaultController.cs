@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using Process = Interview.Entities.Process;
 
 namespace Interview.UI.Controllers
@@ -77,6 +78,7 @@ namespace Interview.UI.Controllers
             RegisterIndexClientResources();
             SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
             SetPrivacyStatementViewbagAndRegisterClientResources(roleUser);
+            HandleNotification();
         
             _state.ProcessId = processId;
             result.ProcessId = processId;
@@ -188,6 +190,19 @@ namespace Interview.UI.Controllers
             }
 
             return result;
+
+        }
+
+        private void HandleNotification()
+        {
+
+            string notificationMessage = _state.NoticationMessage;
+
+            if (!string.IsNullOrEmpty(notificationMessage))
+            {
+                Notify(notificationMessage, "success");
+                _state.NoticationMessage = null;
+            }
 
         }
 
@@ -403,7 +418,9 @@ namespace Interview.UI.Controllers
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
 
             // Handle Emails
-            await HandleInterviewerEmails(interviewUserActions, (Guid)vmParticipantsModal.InterviewId);
+            dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
+            await HandleInterviewerEmails(interviewUserActions, dbInterviewUsers);
+            HandleInterviewUserNotification(interviewUserActions, dbInterviewUsers);
 
             //// Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
             //if (vmParticipantsModal.CandidateUserId != null)
@@ -558,10 +575,9 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task HandleInterviewerEmails(List<InterviewUserAction> interviewUserActions, Guid interviewId)
+        private async Task HandleInterviewerEmails(List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
-
-            List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId(interviewId);
+           
             InterviewUserEmail interviewUserEmail = null;
 
             foreach (InterviewUserAction interviewUserAction in interviewUserActions)
@@ -664,6 +680,30 @@ namespace Interview.UI.Controllers
                 result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
 
             return result;
+
+        }
+
+        private void HandleInterviewUserNotification(List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
+        {
+            
+            StringBuilder sb = new StringBuilder();
+            InterviewUser interviewUser = null;
+            List<InterviewUserAction> addedInterviewUserActions = interviewUserActions.Where(x => x.InterviewUserActionType == InterviewUserActionTypes.Added).ToList();
+
+            if (addedInterviewUserActions.Any())
+            {
+                sb.Append(_localizer["InterviewUserNotificationPrefix"].Value);
+                sb.Append("<ul>");
+                foreach (InterviewUserAction interviewUserAction in addedInterviewUserActions)
+                {
+                    interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
+                    sb.Append($"<li>{interviewUser.RoleUser.UserFirstname} {interviewUser.RoleUser.UserLastname}</li>");
+                }
+                sb.Append("</ul>");
+                sb.Append(_localizer["InterviewUserNotificationSuffix"].Value);
+
+                _state.NoticationMessage = sb.ToString();
+            }
 
         }
 
