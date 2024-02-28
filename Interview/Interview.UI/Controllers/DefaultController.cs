@@ -602,47 +602,7 @@ namespace Interview.UI.Controllers
                 callbackUrl = GetCallbackUrl(process.Id, null);
             }
 
-            if (emailTemplate != null && process.Schedules.Count != 0)
-            {
-
-                string noProcess = process.NoProcessus;
-                string groupNiv = process.GroupNiv;
-                string startDate = vmInterview.VmStartDate.ToLongDateString();
-                string startTime = vmInterview.VmStartDate.ToLongTimeString();
-                string startOral = "Figure this out";
-                string location = $"{vmInterview.Location} {vmInterview.Room}";
-                string contactName = string.IsNullOrEmpty(vmInterview.ContactName) ? process.ContactName : vmInterview.ContactName;
-                string contactNumber = string.IsNullOrEmpty(vmInterview.ContactNumber) ? process.ContactNumber : vmInterview.ContactNumber;
-                List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(email);
-
-                string body = emailTemplate.EmailBody
-                    .Replace("{0}", noProcess)
-                    .Replace("{1}", groupNiv)
-                    .Replace("{2}", startDate)
-                    .Replace("{3}", startTime)
-                    .Replace("{4}", startOral)
-                    .Replace("{5}", location)
-                    .Replace("{6}", contactName)
-                    .Replace("{7}", contactNumber)
-                    .Replace("{callbackUrl}", callbackUrl);
-
-                result = new EmailEnvelope()
-                {
-                    message = new EmailMessage()
-                    {
-                        subject = emailTemplate.EmailSubject,
-                        body = new EmailBody()
-                        {
-                            contentType = "HTML",
-                            content = body
-                        },
-                        toRecipients = toRecipients,
-                        //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
-                    },
-                    saveToSentItems = "false"
-                };
- 
-            }
+            result = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, email, callbackUrl);
 
             return result;
 
