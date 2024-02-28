@@ -419,7 +419,7 @@ namespace Interview.UI.Controllers
 
             // Handle Emails
             dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
-            await HandleInterviewerEmails(interviewUserActions, dbInterviewUsers);
+            await HandleInterviewerEmails(interview, interviewUserActions, dbInterviewUsers);
             HandleInterviewUserNotification(interviewUserActions, dbInterviewUsers);
 
             //// Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
@@ -575,23 +575,37 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task HandleInterviewerEmails(List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
+        private async Task HandleInterviewerEmails(Entities.Interview interview, List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
            
             InterviewUserEmail interviewUserEmail = null;
+            InterviewUser interviewUser = null;
+            VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
+            List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
+            EmailTemplate emailTemplate = null;
 
             foreach (InterviewUserAction interviewUserAction in interviewUserActions)
             {
 
                 if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Added)
                 {
+
+                    // Handle emailing
+                    interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
+
+                    if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
+                    {
+                        emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
+                        await SendInterviewEmailToCandiate(vmInterview, emailTemplate, interviewUser.RoleUser);
+                    }
+
+                    // Hanlde Interview User Emails
                     interviewUserEmail = new InterviewUserEmail() { InterviewUserId = interviewUserAction.InterviewUserId, EmailType = EmailTypes.CandidateRegisteredTimeSlot, DateSent = DateTime.Now };
                     await _dal.AddEntity<InterviewUserEmail>(interviewUserEmail);
+
                 }
                 else if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Removed)
                 {
-                    
-
                     // No need to delete coresponding InterviewUserEmail because it was deleted when the InterviewUser was deleted.
                 }
 
@@ -599,13 +613,13 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SendInterviewEmailToCandiate(VmInterview vmInterview)
+        private async Task SendInterviewEmailToCandiate(VmInterview vmInterview, EmailTemplate emailTemplate, RoleUser roleUser)
         {
 
             Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
-            EmailTemplate emailTemplate = await GetEmailTemplateForInterviewEmailToCandiate();
+            //EmailTemplate emailTemplate = await GetEmailTemplateForInterviewEmailToCandiate();
             List<Schedule> schedules = await _dal.GetSchedulesByProcessId((Guid)_state.ProcessId);
-            RoleUser roleUser = await _dal.GetEntity<RoleUser>((Guid)vmInterview.VmInterviewerUserIds.CandidateUserId) as RoleUser;
+            //RoleUser roleUser = await _dal.GetEntity<RoleUser>((Guid)vmInterview.VmInterviewerUserIds.CandidateUserId) as RoleUser;
             ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
             string email;
@@ -668,20 +682,20 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task<EmailTemplate> GetEmailTemplateForInterviewEmailToCandiate()
-        {
+        //private async Task<EmailTemplate> GetEmailTemplateForInterviewEmailToCandiate()
+        //{
 
-            EmailTemplate result = null;
-            List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
+        //    EmailTemplate result = null;
+        //    List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
 
-            if (User.IsInRole(RoleTypes.Admin.ToString()))
-                result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
-            else
-                result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
+        //    if (User.IsInRole(RoleTypes.Admin.ToString()))
+        //        result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
+        //    else
+        //        result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         private void HandleInterviewUserNotification(List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
