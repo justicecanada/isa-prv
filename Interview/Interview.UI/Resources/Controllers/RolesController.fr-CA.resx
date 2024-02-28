@@ -120,6 +120,9 @@
   <data name="DeleteConfirmationString" xml:space="preserve">
     <value>Êtes-vous certain de vouloir supprimer cette assignation?</value>
   </data>
+  <data name="EmailExternalUser" xml:space="preserve">
+    <value>Un courriel à été envoyé au candidat incluant son code d'activation et la procédure à suivre.</value>
+  </data>
   <data name="ExternalUserAlreadyExists" xml:space="preserve">
     <value>This External User already exists. (fr)</value>
   </data>
