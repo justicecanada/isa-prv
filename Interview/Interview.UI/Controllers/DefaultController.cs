@@ -550,7 +550,10 @@ namespace Interview.UI.Controllers
 
                     if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
-                        emailEnvelope = await SendInterviewEmailToCandiate(emailTemplates, vmInterview, interviewUser.RoleUser, tokenResponse);
+                        if (User.IsInRole(RoleTypes.Admin.ToString()))
+                            emailEnvelope = await GetEmailEnvelopeForCandidateAddedByHR(emailTemplates, vmInterview, interviewUser.RoleUser, tokenResponse);
+                        else
+                            emailEnvelope = await GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplates, vmInterview, interviewUser.RoleUser, tokenResponse);
                     }
 
                     responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
@@ -561,7 +564,36 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task<EmailEnvelope> SendInterviewEmailToCandiate(List<EmailTemplate> emailTemplates, VmInterview vmInterview, RoleUser roleUser, 
+        private async Task<EmailEnvelope> GetEmailEnvelopeForCandidateAddedByHR(List<EmailTemplate> emailTemplates, VmInterview vmInterview, RoleUser roleUser,
+            TokenResponse tokenResponse)
+        {
+
+            EmailEnvelope result = null;
+            EmailTemplate emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
+            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;
+            string email;
+            string callbackUrl = null;
+
+            if ((bool)roleUser.IsExternal)
+            {
+                ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
+                email = roleUser.ExternalUserEmail;
+                callbackUrl = GetCallbackUrl(process.Id, externalUser.Id);
+            }
+            else
+            {
+                GraphUser graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+                email = graphUser.mail;
+                callbackUrl = GetCallbackUrl(process.Id, null);
+            }
+
+            result = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, email, callbackUrl);
+
+            return result;
+
+        }
+
+        private async Task<EmailEnvelope> GetEmailEnvelopeForCandidateRegisteredTimeSlot(List<EmailTemplate> emailTemplates, VmInterview vmInterview, RoleUser roleUser, 
             TokenResponse tokenResponse)
         {
 
