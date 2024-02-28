@@ -610,7 +610,9 @@ namespace Interview.UI.Services.DAL
         public async Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId)
         {
 
-            var result = await _context.InterviewUsers.Where(x => x.InterviewId == interviewId).ToListAsync();
+            var result = await _context.InterviewUsers.Where(x => x.InterviewId == interviewId)
+                .Include(x => x.InterviewUserEmails)
+                .ToListAsync();
 
             return result;
 
