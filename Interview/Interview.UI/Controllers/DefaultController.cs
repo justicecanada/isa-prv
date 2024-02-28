@@ -402,19 +402,22 @@ namespace Interview.UI.Controllers
             roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.InterviewerLeadUserIds, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
 
-            // Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
-            if (vmParticipantsModal.CandidateUserId != null)
-            {
-                InterviewUser dbCandidateInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+            // Handle Emails
+            await HandleInterviewerEmails(interviewUserActions);
 
-                // Check to see if Candidate user has changed
-                if (dbCandidateInterviewUser == null || (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmParticipantsModal.CandidateUserId))
-                {                  
-                    VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
-                    vmInterview.VmInterviewerUserIds.CandidateUserId = vmParticipantsModal.CandidateUserId;
-                    await SendInterviewEmailToCandiate(vmInterview);
-                }
-            }
+            //// Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
+            //if (vmParticipantsModal.CandidateUserId != null)
+            //{
+            //    InterviewUser dbCandidateInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+
+            //    // Check to see if Candidate user has changed
+            //    if (dbCandidateInterviewUser == null || (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmParticipantsModal.CandidateUserId))
+            //    {                  
+            //        VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
+            //        vmInterview.VmInterviewerUserIds.CandidateUserId = vmParticipantsModal.CandidateUserId;
+            //        await SendInterviewEmailToCandiate(vmInterview);
+            //    }
+            //}
 
             interview.Status = GetInterviewState(vmParticipantsModal);
             await _dal.UpdateEntity(interview);
@@ -552,6 +555,13 @@ namespace Interview.UI.Controllers
                 result = InterviewStates.Booked;
 
             return (InterviewStates)result;
+
+        }
+
+        private async Task HandleInterviewerEmails(List<InterviewUserAction> interviewUserActions)
+        {
+
+
 
         }
 
