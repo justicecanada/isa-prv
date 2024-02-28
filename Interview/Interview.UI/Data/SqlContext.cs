@@ -38,6 +38,7 @@ namespace Interview.UI.Data
         public DbSet<Interview.Entities.GroupOwner> GroupsOwners { get; set; }
         public DbSet<Interview.Entities.Interview> Interviews { get; set; }
         public DbSet<Interview.Entities.InterviewUser> InterviewUsers { get; set; }     
+        public DbSet<Interview.Entities.InterviewUserEmail> InterviewUserEmails { get; set; }
         public DbSet<Interview.Entities.Schedule> Schedules { get; set; }
         public DbSet<Interview.Entities.RoleUser> RoleUsers { get; set; }
         public DbSet<Interview.Entities.RoleUserEquity> RoleUserEquities { get; set; }

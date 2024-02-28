@@ -9,11 +9,18 @@ namespace Interview.Entities
     
     public class InterviewUser : EntityBase
     {
+
+        public InterviewUser()
+        {
+            InterviewUserEmails = new List<InterviewUserEmail>();
+        }
     
         public Guid InterviewId { get; set; }
         // This is a RoleUser.Id
         public Guid UserId { get; set; }
         public RoleUserTypes RoleUserType { get; set; }
+
+        public List<InterviewUserEmail> InterviewUserEmails { get; set; }
 
     }
 

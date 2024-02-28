@@ -33,14 +33,17 @@
   <Class Name="Interview.Entities.InterviewUser" Collapsed="true">
     <Position X="2.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>AgAAAAAAAAAQAAAAAAAAAAgAAAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>InterviewUser.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="InterviewUserEmails" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Interview.Entities.RoleUser" Collapsed="true">
     <Position X="5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAQAAAAAAAAAAAgIQBggEAAQAAAAAAIAAAA=</HashCode>
+      <HashCode>AgAAAAAAAAQAAAAAAAAAAAgIQFggEAAQAACAAAIAAAA=</HashCode>
       <FileName>RoleUser.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,7 +64,7 @@
   <Class Name="Interview.Entities.Group" Collapsed="true">
     <Position X="7" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACgAAAAAAAAAEAABAAAAAQAAEAE=</HashCode>
+      <HashCode>AAAAAAAAAACAAAAAACAAAAAAAAAAEAABAAAAAQAAEAE=</HashCode>
       <FileName>Group.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -96,6 +99,13 @@
       <Property Name="Process" />
       <Property Name="Group" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="Interview.Entities.InterviewUserEmail" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InterviewUserEmail.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

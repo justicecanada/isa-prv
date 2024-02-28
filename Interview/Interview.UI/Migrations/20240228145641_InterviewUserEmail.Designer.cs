@@ -4,6 +4,7 @@ using Interview.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.UI.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20240228145641_InterviewUserEmail")]
+    partial class InterviewUserEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,8 +267,6 @@ namespace Interview.UI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InterviewUserId");
 
                     b.ToTable("InterviewUserEmails");
                 });
@@ -522,15 +523,6 @@ namespace Interview.UI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Interview.Entities.InterviewUserEmail", b =>
-                {
-                    b.HasOne("Interview.Entities.InterviewUser", null)
-                        .WithMany("InterviewUserEmails")
-                        .HasForeignKey("InterviewUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Interview.Entities.ProcessGroup", b =>
                 {
                     b.HasOne("Interview.Entities.Group", "Group")
@@ -602,11 +594,6 @@ namespace Interview.UI.Migrations
             modelBuilder.Entity("Interview.Entities.Interview", b =>
                 {
                     b.Navigation("InterviewUsers");
-                });
-
-            modelBuilder.Entity("Interview.Entities.InterviewUser", b =>
-                {
-                    b.Navigation("InterviewUserEmails");
                 });
 
             modelBuilder.Entity("Interview.Entities.Process", b =>
