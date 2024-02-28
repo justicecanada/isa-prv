@@ -443,7 +443,7 @@ namespace Interview.UI.Controllers
             roleusers.Add(roleuser);
             await SendExteralEmailsForExternaRolelUsers(emailTemplate, roleusers);
 
-            Notify("Email has been sent", "success");
+            Notify(_localizer["EmailExternalUser"].Value, "success");
 
             return RedirectToAction("Index");
 
