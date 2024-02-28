@@ -690,17 +690,14 @@ namespace Interview.UI.Controllers
 
             if (addedInterviewUserActions.Any())
             {
-                sb.Append(_localizer["InterviewUserNotificationPrefix"].Value);
-                sb.Append("<ul>");
                 foreach (InterviewUserAction interviewUserAction in addedInterviewUserActions)
                 {
                     interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
-                    sb.Append($"<li>{interviewUser.RoleUser.UserFirstname} {interviewUser.RoleUser.UserLastname}</li>");
+                    if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
+                    {
+                        _state.NoticationMessage = _localizer["InterviewUserNotification"].Value;
+                    }
                 }
-                sb.Append("</ul>");
-                sb.Append(_localizer["InterviewUserNotificationSuffix"].Value);
-
-                _state.NoticationMessage = sb.ToString();
             }
 
         }

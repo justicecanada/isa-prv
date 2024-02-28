@@ -120,13 +120,10 @@
   <data name="DeleteConfirmationString" xml:space="preserve">
     <value>Êtes-vous certain de vouloir supprimer cette plage horaire et la liaison avec ses membres?</value>
   </data>
+  <data name="InterviewUserNotification" xml:space="preserve">
+    <value>A confirmation email has been sent to the Candidate. (fr)</value>
+  </data>
   <data name="InterviewUserNotificationPrefix" xml:space="preserve">
     <value>The interview time slot for this interview has been booked for:</value>
-  </data>
-  <data name="InterviewUserNotificationSuffix" xml:space="preserve">
-    <value>A confirmation email has been sent to each participant.</value>
-  </data>
-  <data name="InterviewVmStartDateAndDuration" xml:space="preserve">
-    <value>The interview cannot start before {min} or end after {max} (fr)</value>
   </data>
 </root>
