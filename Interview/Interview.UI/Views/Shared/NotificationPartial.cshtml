@@ -12,10 +12,13 @@
 }
 
 @if (vmNotificatinPartial != null)
-{
-    <div class="mrgn-tp-md wb-dismissable">
-        <div class="alert alert-@vmNotificatinPartial.AlertClass">
-            <p>@vmNotificatinPartial.Message</p>
+{   
+    <div class="wb-dismissable-container" data-dismissable-item-id="dismiss1">
+        <div class="wb-dismissable-wrapper">
+            <div class="alert alert-@vmNotificatinPartial.AlertClass">
+                <p>@vmNotificatinPartial.Message</p>                
+            </div>
         </div>
+        <button title="Dismiss" class="mfp-close content-dismiss" type="button">×<span class="wb-inv"> Dismiss</span></button>
     </div>
 }
