@@ -56,4 +56,11 @@ namespace Interview.UI.Models
         Monthly = 3
     }
 
+    public enum InterviewUserActionTypes
+    {
+        Added = 1,
+        Removed = 2,
+        NoAction = 3
+    }
+
 }

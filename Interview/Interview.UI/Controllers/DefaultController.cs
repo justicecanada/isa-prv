@@ -388,8 +388,18 @@ namespace Interview.UI.Controllers
 
             // Handle Users
             List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
-            await ResolveCandidateUser(vmParticipantsModal.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmParticipantsModal.InterviewId);
+            List<InterviewUserAction> interviewUserActions = new List<InterviewUserAction>();
+            List<InterviewUserAction> roleSpecificInterviewUserActions;
+
+            // Charge list of interviewUserActions so emails can be sent accordingly.
+            // Candidates
+            roleSpecificInterviewUserActions = await ResolveCandidateUser(vmParticipantsModal.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmParticipantsModal.InterviewId);
+            interviewUserActions.AddRange(roleSpecificInterviewUserActions);
+
+            // Board Members
             await ResolveInterviewUsers(vmParticipantsModal.InterviewerUserIds, dbInterviewUsers, RoleUserTypes.Interviewer, (Guid)vmParticipantsModal.InterviewId);
+
+            // Lead Board Members
             await ResolveInterviewUsers(vmParticipantsModal.InterviewerLeadUserIds, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmParticipantsModal.InterviewId);
 
             // Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
@@ -470,9 +480,11 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task ResolveCandidateUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleUserTypes roleUserType, Guid interviewId)
+        private async Task<List<InterviewUserAction>> ResolveCandidateUser(Guid? postedUserId, List<InterviewUser> dbInterviewUsers, RoleUserTypes roleUserType, Guid interviewId)
         {
 
+            List<InterviewUserAction> result = new List<InterviewUserAction>();
+            Guid? addedInterviewUserId = null;
             InterviewUser dbInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == roleUserType).FirstOrDefault();
 
             if (dbInterviewUser == null && postedUserId != null)
@@ -484,9 +496,10 @@ namespace Interview.UI.Controllers
                     RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
-                await _dal.AddEntity<InterviewUser>(newInterviewUser);
+                addedInterviewUserId = await _dal.AddEntity<InterviewUser>(newInterviewUser);
+                result.Add(new InterviewUserAction() { InterviewUserId = (Guid)addedInterviewUserId, InterviewUserActionType = InterviewUserActionTypes.Added});
             }
-            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.Id != postedUserId))
+            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.UserId != postedUserId))
             {
                 // Update
                 InterviewUser newInterviewUser = new InterviewUser()
@@ -496,13 +509,18 @@ namespace Interview.UI.Controllers
                     InterviewId = interviewId
                 };
                 await _dal.DeleteEntity(dbInterviewUser);
-                await _dal.AddEntity<InterviewUser>(newInterviewUser);
+                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                addedInterviewUserId = await _dal.AddEntity<InterviewUser>(newInterviewUser);
+                result.Add(new InterviewUserAction() { InterviewUserId = (Guid)addedInterviewUserId, InterviewUserActionType = InterviewUserActionTypes.Added });
             }
             else if (dbInterviewUser != null && postedUserId == null)
             {
                 // Delete
                 await _dal.DeleteEntity(dbInterviewUser);
+                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
             }
+
+            return result;
 
         }
 
