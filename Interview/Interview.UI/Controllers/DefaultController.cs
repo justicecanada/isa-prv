@@ -2,6 +2,7 @@
 using Azure.Core;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
+using Interview.UI.Migrations;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
@@ -20,6 +21,7 @@ using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using InterviewUserEmail = Interview.Entities.InterviewUserEmail;
 using Process = Interview.Entities.Process;
 
 namespace Interview.UI.Controllers
@@ -383,21 +385,10 @@ namespace Interview.UI.Controllers
             // Handle Emails
             dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
             await HandleInterviewerEmails(interview, interviewUserActions, dbInterviewUsers);
+            await HandleInterviewUserActions(interviewUserActions);
+
+            // Handle Notification
             HandleInterviewUserNotification(interviewUserActions, dbInterviewUsers);
-
-            //// Email Candidate (given the UX of InterviewModal, the Candiate is only added when updating, so send email here).
-            //if (vmParticipantsModal.CandidateUserId != null)
-            //{
-            //    InterviewUser dbCandidateInterviewUser = dbInterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
-
-            //    // Check to see if Candidate user has changed
-            //    if (dbCandidateInterviewUser == null || (dbCandidateInterviewUser != null && dbCandidateInterviewUser.UserId != vmParticipantsModal.CandidateUserId))
-            //    {                  
-            //        VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
-            //        vmInterview.VmInterviewerUserIds.CandidateUserId = vmParticipantsModal.CandidateUserId;
-            //        await SendInterviewEmailToCandiate(vmInterview);
-            //    }
-            //}
 
             interview.Status = GetInterviewState(vmParticipantsModal);
             await _dal.UpdateEntity(interview);
@@ -540,8 +531,7 @@ namespace Interview.UI.Controllers
 
         private async Task HandleInterviewerEmails(Entities.Interview interview, List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
-           
-            InterviewUserEmail interviewUserEmail = null;
+  
             InterviewUser interviewUser = null;
             VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
             List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
@@ -565,16 +555,8 @@ namespace Interview.UI.Controllers
 
                     responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
 
-                    // Hanlde Interview User Emails
-                    interviewUserEmail = new InterviewUserEmail() { InterviewUserId = interviewUserAction.InterviewUserId, EmailType = EmailTypes.CandidateRegisteredTimeSlot, DateSent = DateTime.Now };
-                    await _dal.AddEntity<InterviewUserEmail>(interviewUserEmail);
-
                 }
-                else if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Removed)
-                {
-                    // No need to delete coresponding InterviewUserEmail because it was deleted when the InterviewUser was deleted.
-                }
-
+ 
             }
 
         }
@@ -607,21 +589,6 @@ namespace Interview.UI.Controllers
             return result;
 
         }
-
-        //private async Task<EmailTemplate> GetEmailTemplateForInterviewEmailToCandiate()
-        //{
-
-        //    EmailTemplate result = null;
-        //    List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
-
-        //    if (User.IsInRole(RoleTypes.Admin.ToString()))
-        //        result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
-        //    else
-        //        result = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
-
-        //    return result;
-
-        //}
 
         private string GetCallbackUrl(Guid processId, Guid? externalCandidateId)
         {
@@ -657,6 +624,28 @@ namespace Interview.UI.Controllers
             }
 
             return result;
+
+        }
+
+        private async Task HandleInterviewUserActions(List<InterviewUserAction> interviewUserActions)
+        {
+
+            InterviewUserEmail interviewUserEmail = null;
+
+            foreach (InterviewUserAction interviewUserAction in interviewUserActions)
+            {
+                if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Added)
+                {
+                    // Add
+                    interviewUserEmail = new InterviewUserEmail() { InterviewUserId = interviewUserAction.InterviewUserId, EmailType = EmailTypes.CandidateRegisteredTimeSlot, DateSent = DateTime.Now };
+                    await _dal.AddEntity<InterviewUserEmail>(interviewUserEmail);
+
+                }
+                else if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Removed)
+                {
+                    // No need to delete coresponding InterviewUserEmail because it was deleted when the InterviewUser was deleted.
+                }
+            }
 
         }
 
