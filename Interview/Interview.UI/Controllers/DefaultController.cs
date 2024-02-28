@@ -335,43 +335,6 @@ namespace Interview.UI.Controllers
 
         }
 
-        private string GetCallbackUrl(Guid processId, Guid? externalCandidateId)
-        {
-
-            string result;
-
-            if (externalCandidateId == null)
-            {
-                result = Url.ActionLink(
-                    action: "Internal",
-                    controller: "Candidates",
-                    new
-                    {
-                        processId = processId
-                    },
-                    protocol: Request.Scheme,
-                    host: HostName
-                );
-            }
-            else
-            {
-                result = Url.ActionLink(
-                    action: "External",
-                    controller: "Candidates",
-                    new
-                    {
-                        processId = processId,
-                        externalCandidateId = externalCandidateId
-                    },
-                    protocol: Request.Scheme,
-                    host: HostName
-                );
-            }
-
-            return result;
-
-        }
-
         #endregion
 
         #region Participants Modal
@@ -582,7 +545,9 @@ namespace Interview.UI.Controllers
             InterviewUser interviewUser = null;
             VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
             List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
-            EmailTemplate emailTemplate = null;
+            EmailEnvelope emailEnvelope = null;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            HttpResponseMessage responseMessage = null;
 
             foreach (InterviewUserAction interviewUserAction in interviewUserActions)
             {
@@ -595,9 +560,10 @@ namespace Interview.UI.Controllers
 
                     if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
-                        emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
-                        await SendInterviewEmailToCandiate(vmInterview, emailTemplate, interviewUser.RoleUser);
+                        emailEnvelope = await SendInterviewEmailToCandiate(emailTemplates, vmInterview, interviewUser.RoleUser, tokenResponse);
                     }
+
+                    responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
 
                     // Hanlde Interview User Emails
                     interviewUserEmail = new InterviewUserEmail() { InterviewUserId = interviewUserAction.InterviewUserId, EmailType = EmailTypes.CandidateRegisteredTimeSlot, DateSent = DateTime.Now };
@@ -613,20 +579,19 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SendInterviewEmailToCandiate(VmInterview vmInterview, EmailTemplate emailTemplate, RoleUser roleUser)
+        private async Task<EmailEnvelope> SendInterviewEmailToCandiate(List<EmailTemplate> emailTemplates, VmInterview vmInterview, RoleUser roleUser, 
+            TokenResponse tokenResponse)
         {
 
-            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId) as Process;
-            //EmailTemplate emailTemplate = await GetEmailTemplateForInterviewEmailToCandiate();
-            List<Schedule> schedules = await _dal.GetSchedulesByProcessId((Guid)_state.ProcessId);
-            //RoleUser roleUser = await _dal.GetEntity<RoleUser>((Guid)vmInterview.VmInterviewerUserIds.CandidateUserId) as RoleUser;
-            ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
-            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            EmailEnvelope result = null;
+            EmailTemplate emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
+            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;            
             string email;
-            string callbackUrl;
+            string callbackUrl = null;
 
             if ((bool)roleUser.IsExternal)
             {
+                ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
                 email = roleUser.ExternalUserEmail;
                 callbackUrl = GetCallbackUrl(process.Id, externalUser.Id);
             }
@@ -637,7 +602,7 @@ namespace Interview.UI.Controllers
                 callbackUrl = GetCallbackUrl(process.Id, null);
             }
 
-            if (emailTemplate != null && schedules != null)
+            if (emailTemplate != null && process.Schedules.Count != 0)
             {
 
                 string noProcess = process.NoProcessus;
@@ -661,7 +626,7 @@ namespace Interview.UI.Controllers
                     .Replace("{7}", contactNumber)
                     .Replace("{callbackUrl}", callbackUrl);
 
-                EmailEnvelope emailEnvelope = new EmailEnvelope()
+                result = new EmailEnvelope()
                 {
                     message = new EmailMessage()
                     {
@@ -676,9 +641,10 @@ namespace Interview.UI.Controllers
                     },
                     saveToSentItems = "false"
                 };
-                HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
-
+ 
             }
+
+            return result;
 
         }
 
@@ -696,6 +662,43 @@ namespace Interview.UI.Controllers
         //    return result;
 
         //}
+
+        private string GetCallbackUrl(Guid processId, Guid? externalCandidateId)
+        {
+
+            string result;
+
+            if (externalCandidateId == null)
+            {
+                result = Url.ActionLink(
+                    action: "Internal",
+                    controller: "Candidates",
+                    new
+                    {
+                        processId = processId
+                    },
+                    protocol: Request.Scheme,
+                    host: HostName
+                );
+            }
+            else
+            {
+                result = Url.ActionLink(
+                    action: "External",
+                    controller: "Candidates",
+                    new
+                    {
+                        processId = processId,
+                        externalCandidateId = externalCandidateId
+                    },
+                    protocol: Request.Scheme,
+                    host: HostName
+                );
+            }
+
+            return result;
+
+        }
 
         private void HandleInterviewUserNotification(List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
