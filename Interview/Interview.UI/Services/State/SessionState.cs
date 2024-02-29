@@ -2,7 +2,7 @@
 
 namespace Interview.UI.Services.State
 {
-    
+
     public class SessionState : IState
     {
 
@@ -28,6 +28,24 @@ namespace Interview.UI.Services.State
                     _session.Remove(Constants.ProcessId);
                 else
                     _session.SetString(Constants.ProcessId, value.ToString());
+            }
+        }
+
+        public string NoticationMessage
+        {
+            get
+            {
+                if (_session.Keys.Contains(Constants.NotificationMessage))
+                    return _session.GetString(Constants.NotificationMessage);
+                else
+                    return null;
+            }
+            set
+            {
+                if (value == null)
+                    _session.Remove(Constants.NotificationMessage);
+                else
+                    _session.SetString(Constants.NotificationMessage, value.ToString());
             }
         }
 

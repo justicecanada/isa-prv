@@ -17,7 +17,8 @@ namespace Interview.Entities
     
         public Guid InterviewId { get; set; }
         // This is a RoleUser.Id
-        public Guid UserId { get; set; }
+        public Guid RoleUserId { get; set; }
+        public RoleUser RoleUser { get; set; }
         public RoleUserTypes RoleUserType { get; set; }
 
         public List<InterviewUserEmail> InterviewUserEmails { get; set; }
