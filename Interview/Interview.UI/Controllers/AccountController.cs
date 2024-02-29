@@ -183,7 +183,7 @@ namespace Interview.UI.Controllers
 
             // Disabled Users
             searchUsersResponse = await _usersManager.GetDisabledAccounts(tokenResponse.access_token);
-            ViewBag.DisabledAccounts = JsonConvert.SerializeObject(searchUsersResponse);
+            ViewBag.DisabledAccounts = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
 
             return View();
 

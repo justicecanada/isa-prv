@@ -84,7 +84,7 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            string filter = "$filter=";
+            string filter = "$filter=accountEnabled eq false&$top=10";
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
             {
