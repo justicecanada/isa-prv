@@ -8,7 +8,7 @@
     DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime procesStartDate = ViewBag.ProccessStartDate;
     DateTime processEndDate = ViewBag.ProccessEndDate;
-    Guid graphUserId = ViewBag.GraphUserId;
+    Guid externalCandidateId = ViewBag.ExternalCandidateId;
     List<RoleUserEquity> roleUserEquities = ViewBag.RoleUserEquities;
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
@@ -93,9 +93,9 @@
             @foreach (VmInterview vmInterview in vmInterviews)
             {
                 <tr>
-                    @* <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Select</a></td>*@
+                   @* <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Select</a></td>*@
                     <td>
-                        @Html.ActionLink("Select", "SelectExternalInterview", "Candidates", new { interviewId = vmInterview.Id, externalCandidateId = graphUserId })
+                        @Html.ActionLink("Select", "SelectInterview", "Candidates", new { interviewId = vmInterview.Id, externalCandidateId = externalCandidateId })
                     </td>
                     <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                     <td>@Html.Raw(GetRoomAndLocation(vmInterview))</td>

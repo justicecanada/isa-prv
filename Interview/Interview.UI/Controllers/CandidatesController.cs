@@ -41,55 +41,21 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Internal Methods
-
-        [Authorize]
-        public async Task<IActionResult> Internal(Guid processId)
-        {
-
-            GraphUser graphUser = await GetGraphUser();
-
-            await SetInternalViewBag(processId, graphUser);
-
-            return View();
-
-        }
-
-        private async Task SetInternalViewBag(Guid processId, GraphUser graphUser)
-        {
-
-            Process process = await _dal.GetEntity<Process>(processId, true) as Process;
-            List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
-            List<Entities.Interview> availableInterviews = interviews.Where(x => x.Status == InterviewStates.AvailableForCandidate).ToList();
-            List<VmInterview> vmAvailableInterviews = _mapper.Map<List<VmInterview>>(availableInterviews);
-            RoleUser candidateRoleUser = process.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.UserId == graphUser.id).First();
-            List<RoleUserEquity> roleUserEquities = await _dal.GetRoleUserEquitiesByRoleUserId(graphUser.id);
-
-            ViewBag.ProccessStartDate = process.StartDate;
-            ViewBag.ProccessEndDate = process.EndDate;
-            ViewBag.VmInterviews = vmAvailableInterviews;
-            ViewBag.GraphUserId = graphUser.id;
-            ViewBag.RoleUserEquities = roleUserEquities;
-
-        }
-
-        #endregion
-
-        #region External Methods
+        #region Interviews Methods
 
         [HttpGet]
-        public async Task<IActionResult> External(Guid processId, Guid externalCandidateId)
+        public async Task<IActionResult> Interviews(Guid processId, Guid externalCandidateId)
         {
 
             _state.ProcessId = processId;
-            await SetExternalViewBag(processId, externalCandidateId);
+            await SetInterviewsViewBag(processId, externalCandidateId);
 
             return View();
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> SelectExternalInterview(Guid interviewId, Guid externalCandidateId)
+        public async Task<IActionResult> SelectInterview(Guid interviewId, Guid externalCandidateId)
         {
 
             Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(interviewId) as Entities.Interview;
@@ -113,7 +79,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetExternalViewBag(Guid processId, Guid externalCandidateId)
+        private async Task SetInterviewsViewBag(Guid processId, Guid externalCandidateId)
         {
 
             Process process = await _dal.GetEntity<Process>(processId, true) as Process;
