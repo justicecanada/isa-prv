@@ -417,7 +417,7 @@ namespace Interview.UI.Controllers
                 }
             }
 
-            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
+            ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
             ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList();
             ViewBag.LeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList();
 
@@ -531,12 +531,15 @@ namespace Interview.UI.Controllers
 
         private async Task HandleInterviewerEmails(Entities.Interview interview, List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
-  
+
+            EmailEnvelope emailEnvelope = null;
             InterviewUser interviewUser = null;
+            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;
             VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
             List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
-            EmailEnvelope emailEnvelope = null;
+            EmailTemplate emailTemplate = null;   
             TokenResponse tokenResponse = await _tokenManager.GetToken();
+            GraphUser graphUser = null;
             HttpResponseMessage responseMessage = null;
 
             foreach (InterviewUserAction interviewUserAction in interviewUserActions)
@@ -547,13 +550,20 @@ namespace Interview.UI.Controllers
 
                     // Handle emailing
                     interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
+                    graphUser = await _usersManager.GetUserInfoAsync(interviewUser.RoleUser.UserId.ToString(), tokenResponse.access_token);
 
                     if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
                         if (User.IsInRole(RoleTypes.Admin.ToString()))
-                            emailEnvelope = await GetEmailEnvelopeForCandidateAddedByHR(emailTemplates, vmInterview, interviewUser.RoleUser, tokenResponse);
+                        {
+                            emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();                          
+                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, graphUser.mail);
+                        }
                         else
-                            emailEnvelope = await GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplates, vmInterview, interviewUser.RoleUser, tokenResponse);
+                        {
+                            emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
+                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, graphUser.mail);
+                        }
                     }
 
                     responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
@@ -561,101 +571,6 @@ namespace Interview.UI.Controllers
                 }
  
             }
-
-        }
-
-        private async Task<EmailEnvelope> GetEmailEnvelopeForCandidateAddedByHR(List<EmailTemplate> emailTemplates, VmInterview vmInterview, RoleUser roleUser,
-            TokenResponse tokenResponse)
-        {
-
-            EmailEnvelope result = null;
-            EmailTemplate emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
-            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;
-            string email;
-            string callbackUrl = null;
-
-            if ((bool)roleUser.IsExternal)
-            {
-                ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
-                email = roleUser.ExternalUserEmail;
-                callbackUrl = GetCallbackUrl(process.Id, externalUser.Id);
-            }
-            else
-            {
-                GraphUser graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
-                email = graphUser.mail;
-                callbackUrl = GetCallbackUrl(process.Id, null);
-            }
-
-            result = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, email, callbackUrl);
-
-            return result;
-
-        }
-
-        private async Task<EmailEnvelope> GetEmailEnvelopeForCandidateRegisteredTimeSlot(List<EmailTemplate> emailTemplates, VmInterview vmInterview, RoleUser roleUser, 
-            TokenResponse tokenResponse)
-        {
-
-            EmailEnvelope result = null;
-            EmailTemplate emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
-            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;            
-            string email;
-            string callbackUrl = null;
-
-            if ((bool)roleUser.IsExternal)
-            {
-                ExternalUser externalUser = await _dal.GetEntity<ExternalUser>((Guid)roleUser.UserId) as ExternalUser;
-                email = roleUser.ExternalUserEmail;
-                callbackUrl = GetCallbackUrl(process.Id, externalUser.Id);
-            }
-            else
-            {
-                GraphUser graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
-                email = graphUser.mail;
-                callbackUrl = GetCallbackUrl(process.Id, null);
-            }
-
-            result = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, email, callbackUrl);
-
-            return result;
-
-        }
-
-        private string GetCallbackUrl(Guid processId, Guid? externalCandidateId)
-        {
-
-            string result;
-
-            if (externalCandidateId == null)
-            {
-                result = Url.ActionLink(
-                    action: "Internal",
-                    controller: "Candidates",
-                    new
-                    {
-                        processId = processId
-                    },
-                    protocol: Request.Scheme,
-                    host: HostName
-                );
-            }
-            else
-            {
-                result = Url.ActionLink(
-                    action: "External",
-                    controller: "Candidates",
-                    new
-                    {
-                        processId = processId,
-                        externalCandidateId = externalCandidateId
-                    },
-                    protocol: Request.Scheme,
-                    host: HostName
-                );
-            }
-
-            return result;
 
         }
 

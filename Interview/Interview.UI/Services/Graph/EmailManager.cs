@@ -96,7 +96,7 @@ namespace Interview.UI.Services.Graph
 
         }
 
-        public EmailEnvelope GetEmailEnvelopeForCandidateAddedByHR(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email, string callbackUrl)
+        public EmailEnvelope GetEmailEnvelopeForCandidateAddedByHR(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email)
         {
 
             EmailEnvelope result = null;
@@ -122,8 +122,7 @@ namespace Interview.UI.Services.Graph
                     .Replace("{4}", startOral)
                     .Replace("{5}", location)
                     .Replace("{6}", contactName)
-                    .Replace("{7}", contactNumber)
-                    .Replace("{callbackUrl}", callbackUrl);
+                    .Replace("{7}", contactNumber);
 
                 result = new EmailEnvelope()
                 {
@@ -147,7 +146,7 @@ namespace Interview.UI.Services.Graph
 
         }
 
-        public EmailEnvelope GetEmailEnvelopeForCandidateRegisteredTimeSlot(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email, string callbackUrl)
+        public EmailEnvelope GetEmailEnvelopeForCandidateRegisteredTimeSlot(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email)
         {
 
             EmailEnvelope result = null;
@@ -173,8 +172,7 @@ namespace Interview.UI.Services.Graph
                     .Replace("{4}", startOral)
                     .Replace("{5}", location)
                     .Replace("{6}", contactName)
-                    .Replace("{7}", contactNumber)
-                    .Replace("{callbackUrl}", callbackUrl);
+                    .Replace("{7}", contactNumber);
 
                 result = new EmailEnvelope()
                 {

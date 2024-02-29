@@ -504,35 +504,17 @@ namespace Interview.UI.Controllers
         private string GetCallbackUrl(Guid? externalCandidateId)
         {
 
-            string result;
-
-            if (externalCandidateId == null)
-            {
-                result = Url.ActionLink(
-                    action: "Internal",
-                    controller: "Candidates",
-                    new
-                    {
-                        processId = _state.ProcessId,
-                    },
-                    protocol: Request.Scheme,
-                    host: HostName
-                );
-            }
-            else
-            {
-                result = Url.ActionLink(
-                    action: "External",
-                    controller: "Candidates",
-                    new
-                    {
-                        processId = _state.ProcessId,
-                        externalCandidateId = externalCandidateId
-                    },
-                    protocol: Request.Scheme,
-                    host: HostName
-                );
-            }
+            string result = Url.ActionLink(
+                action: "Interviews",
+                controller: "Candidates",
+                new
+                {
+                    processId = _state.ProcessId,
+                    externalCandidateId = externalCandidateId
+                },
+                protocol: Request.Scheme,
+                host: HostName
+            );
 
             return result;
 
