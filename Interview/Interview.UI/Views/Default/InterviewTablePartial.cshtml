@@ -113,6 +113,7 @@
                         <tr>
                             <th class="tableActionColumn">&nbsp;</th>
                             <th>@localizer["Details"]</th>
+                            <th>@localizer["Statue"]</th>
                             <th>@localizer["Participants"]</th>
                             <th>@localizer["Language"]</th>
                         </tr>
@@ -134,6 +135,7 @@
                                 </div>
                             </td>
                             <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
+                            <td>@localizer[vmInterview.Status.ToString()]</td>
                             <td>@Html.Raw(GetParticipantDetails(vmInterview, vmRoleUsers))</td>
                             <td>@language</td>
                         </tr>

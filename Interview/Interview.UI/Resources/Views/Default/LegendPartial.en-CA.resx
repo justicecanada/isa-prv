@@ -141,6 +141,9 @@
   <data name="LegendAvailabilities" xml:space="preserve">
     <value>Legend of Availabilities</value>
   </data>
+  <data name="PendingCommitteeMember" xml:space="preserve">
+    <value>Pending for a committee member</value>
+  </data>
   <data name="RacializedGroup" xml:space="preserve">
     <value>Member of a Racialized group</value>
   </data>
