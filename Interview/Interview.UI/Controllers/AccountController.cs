@@ -185,6 +185,10 @@ namespace Interview.UI.Controllers
             searchUsersResponse = await _usersManager.GetDisabledAccounts(tokenResponse.access_token);
             ViewBag.DisabledAccounts = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
 
+            // Bad Emails
+            searchUsersResponse = await _usersManager.GetBadEmails(tokenResponse.access_token);
+            ViewBag.BadEmails = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
+
             return View();
 
         }

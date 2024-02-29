@@ -80,8 +80,7 @@ namespace Interview.UI.Services.Graph
         public async Task<SearchUsersResponse> GetDisabledAccounts(string token)
         {
 
-            //https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=http#example-4-use-filter-and-top-to-get-one-user-with-a-display-name-that-starts-with-a-including-a-count-of-returned-objects
-
+            // (user.accountEnabled -eq true) 
             SearchUsersResponse result = null;
             object badRequest = null;
             string filter = "$filter=accountEnabled eq false&$top=10";
@@ -91,6 +90,34 @@ namespace Interview.UI.Services.Graph
                 Headers =
                 {
                     { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
+                }
+            };
+            HttpResponseMessage response = _client.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+                result = await response.Content.ReadFromJsonAsync<SearchUsersResponse>();
+            else
+                badRequest = await response.Content.ReadFromJsonAsync<object>();
+
+            return result;
+
+        }
+
+        public async Task<SearchUsersResponse> GetBadEmails(string token)
+        {
+
+            //(user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
+
+            SearchUsersResponse result = null;
+            object badRequest = null;
+            string filter = "$filter= endswith(userPrincipalName,'.onmicrosoft.com') OR endswith(userPrincipalName,'.osi-bis.ca') OR endswith(userPrincipalName,'.lcc-cdc.gc.ca') OR endswith(userPrincipalName,'.interlocuteur-special-interlocutor.ca') OR endswith(userPrincipalName,'.ombudsman.gc.ca') &$top=10&$count=true";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
+            {
+                Headers =
+                {
+                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" },
+                    { "ConsistencyLevel", "eventual" }
                 }
             };
             HttpResponseMessage response = _client.SendAsync(request).Result;

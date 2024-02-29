@@ -12,6 +12,8 @@ namespace Interview.UI.Services.Graph
 
         Task<SearchUsersResponse> GetDisabledAccounts(string token);
 
+        Task<SearchUsersResponse> GetBadEmails(string token);
+
     }
 
 }

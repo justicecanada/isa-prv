@@ -2,6 +2,7 @@
 @{
 
     string disabledAccounts = ViewBag.DisabledAccounts;
+    string badEmails = ViewBag.BadEmails;
 
 }
 
@@ -21,15 +22,30 @@
     </div>
 </section>
 
-<section class="panel panel-default">
-    <div class="panel-header">
-        <h3>
-            (user.accountEnabled -eq true)
-        </h3>
-    </div>
-    <div class="panel-body">
-        <pre>
-            @Html.Raw(disabledAccounts);
-        </pre>
-    </div>
-</section>
+
+<ul class="list-unstyled">
+    <li>
+        <details>
+            <summary>
+                <h3>
+                    (user.accountEnabled -eq true)
+                </h3>
+            </summary>
+            <pre>
+                @Html.Raw(disabledAccounts);
+            </pre>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary>
+                <h3>
+                    and (user.userPrincipalName -match \"^[^./]+\\.[^./]+(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
+                </h3>
+            </summary>
+            <pre>
+                @Html.Raw(badEmails);
+            </pre>
+        </details>
+    </li>
+</ul>
