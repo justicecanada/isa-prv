@@ -325,6 +325,7 @@ namespace Interview.UI.Services.DAL
             var result = await _context.Processes.Where(x => !x.IsDeleted &&
                 (x.Groups.Any(y => y.GroupOwners.Any(z => z.UserId.Equals(userId)))
                 || x.RoleUsers.Any(y => y.UserId.Equals(userId))))
+                .Include(x => x.RoleUsers)
                 .Include(x => x.Schedules)
                 .ToListAsync();
 
