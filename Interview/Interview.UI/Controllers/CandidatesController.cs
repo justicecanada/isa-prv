@@ -2,7 +2,9 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,63 +22,40 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IToken _tokenManager;
+        private readonly IUsers _usersManager;
 
         #endregion
 
         #region Constructors
 
         public CandidatesController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> baseLocalizer, IMapper mapper, 
-            IState state)
+            IState state, IToken tokenManager, IUsers userManager)
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
+            _tokenManager = tokenManager;
+            _usersManager = userManager;
         }
 
         #endregion
 
-        #region Public Internal Methods
-
-        [Authorize]
-        public async Task<IActionResult> Internal(Guid processId)
-        {
-
-            await SetInternalViewBag(processId);
-
-            return View();
-
-        }
-
-        private async Task SetInternalViewBag(Guid processId)
-        {
-
-            Process process = await _dal.GetEntity<Process>(processId) as Process;
-            List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
-            List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
-
-            ViewBag.ProccessStartDate = process.StartDate;
-            ViewBag.ProccessEndDate = process.EndDate;
-            ViewBag.VmInterviews = vmInterviews;
-
-        }
-
-        #endregion
-
-        #region External Methods
+        #region Interviews Methods
 
         [HttpGet]
-        public async Task<IActionResult> External(Guid processId, Guid externalCandidateId)
+        public async Task<IActionResult> Interviews(Guid processId, Guid externalCandidateId)
         {
 
             _state.ProcessId = processId;
-            await SetExternalViewBag(processId, externalCandidateId);
+            await SetInterviewsViewBag(processId, externalCandidateId);
 
             return View();
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> SelectExternalInterview(Guid interviewId, Guid externalCandidateId)
+        public async Task<IActionResult> SelectInterview(Guid interviewId, Guid externalCandidateId)
         {
 
             Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(interviewId) as Entities.Interview;
@@ -100,7 +79,7 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task SetExternalViewBag(Guid processId, Guid externalCandidateId)
+        private async Task SetInterviewsViewBag(Guid processId, Guid externalCandidateId)
         {
 
             Process process = await _dal.GetEntity<Process>(processId, true) as Process;
@@ -136,6 +115,31 @@ namespace Interview.UI.Controllers
             ViewBag.RoleUserEquities = roleUserEquities;
 
             return View();
+
+        }
+
+        #endregion
+
+        #region Common Methodes
+
+        private async Task<GraphUser> GetGraphUser()
+        {
+
+            // Need to add Authorization Bearer (token) request header:
+            // https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#example-2-signed-in-user-request
+            // Links regarding Container Apps Easy Auth and tokens:
+            //   1. https://johnnyreilly.com/azure-container-apps-easy-auth-and-dotnet-authentication
+            //   2. https://github.com/microsoft/azure-container-apps/issues/995#issuecomment-1820496130
+            //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
+
+            // Get Token
+            GraphUser result = null;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            string userPrincipalName = User.Identity.Name;
+
+            result = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
+
+            return result;
 
         }
 

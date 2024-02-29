@@ -95,7 +95,7 @@
                 <tr>
                    @* <td><a href="#modalContainer" class="editTable" data-id="@vmInterview.Id">Select</a></td>*@
                     <td>
-                        @Html.ActionLink("Select", "SelectExternalInterview", "Candidates", new { interviewId = vmInterview.Id, externalCandidateId = externalCandidateId })
+                        @Html.ActionLink("Select", "SelectInterview", "Candidates", new { interviewId = vmInterview.Id, externalCandidateId = externalCandidateId })
                     </td>
                     <td>@Html.Raw(GetInterviewDetails(vmInterview))</td>
                     <td>@Html.Raw(GetRoomAndLocation(vmInterview))</td>
