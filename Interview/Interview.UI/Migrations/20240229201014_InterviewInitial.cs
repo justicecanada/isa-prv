@@ -107,7 +107,7 @@ namespace Interview.UI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HasAccessEE = table.Column<bool>(type: "bit", nullable: true)
+                    HasAccessEE = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -334,6 +334,26 @@ namespace Interview.UI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "InterviewUserEmails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InterviewUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmailType = table.Column<int>(type: "int", nullable: false),
+                    DateSent = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InterviewUserEmails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InterviewUserEmails_InterviewUsers_InterviewUserId",
+                        column: x => x.InterviewUserId,
+                        principalTable: "InterviewUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_ProcessId",
                 table: "EmailTemplates",
@@ -358,6 +378,11 @@ namespace Interview.UI.Migrations
                 name: "IX_Interviews_ProcessId",
                 table: "Interviews",
                 column: "ProcessId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InterviewUserEmails_InterviewUserId",
+                table: "InterviewUserEmails",
+                column: "InterviewUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InterviewUsers_InterviewId",
@@ -417,7 +442,7 @@ namespace Interview.UI.Migrations
                 name: "InternalUsers");
 
             migrationBuilder.DropTable(
-                name: "InterviewUsers");
+                name: "InterviewUserEmails");
 
             migrationBuilder.DropTable(
                 name: "ProcessGroups");
@@ -429,7 +454,7 @@ namespace Interview.UI.Migrations
                 name: "Schedules");
 
             migrationBuilder.DropTable(
-                name: "Interviews");
+                name: "InterviewUsers");
 
             migrationBuilder.DropTable(
                 name: "Groups");
@@ -439,6 +464,9 @@ namespace Interview.UI.Migrations
 
             migrationBuilder.DropTable(
                 name: "RoleUsers");
+
+            migrationBuilder.DropTable(
+                name: "Interviews");
 
             migrationBuilder.DropTable(
                 name: "Processes");

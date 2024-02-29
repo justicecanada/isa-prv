@@ -2,7 +2,6 @@
 using Azure.Core;
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
-using Interview.UI.Migrations;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
@@ -119,9 +118,9 @@ namespace Interview.UI.Controllers
                 {
                     foreach (VmInterviewUser vmInterviewUser in vmInterview.InterviewUsers)
                     {
-                        vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.RoleUserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.RoleUserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.RoleUserId;
+                        vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
                         vmInterview.VmInterviewerUserIds.InterviewId = vmInterview.Id;
                     }
                 }
@@ -349,9 +348,9 @@ namespace Interview.UI.Controllers
             Entities.Interview interview = await _dal.GetEntity<Entities.Interview>((Guid)id, true) as Entities.Interview;
 
             result.InterviewId = id;
-            result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.RoleUserId;
-            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.RoleUserId).ToList();
-            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.RoleUserId).ToList();
+            result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
+            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.UserId).ToList();
+            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.UserId).ToList();
 
             await SetParticipantsModalViewBag();
 
@@ -365,6 +364,7 @@ namespace Interview.UI.Controllers
         {
 
             Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(vmParticipantsModal.InterviewId, true) as Entities.Interview;
+            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;
 
             // Handle Users
             List<InterviewUser> dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
@@ -384,11 +384,11 @@ namespace Interview.UI.Controllers
 
             // Handle Emails
             dbInterviewUsers = await _dal.GetInterviewUsersByInterviewId((Guid)vmParticipantsModal.InterviewId);
-            await HandleInterviewerEmails(interview, interviewUserActions, dbInterviewUsers);
+            await HandleInterviewerEmails(process, interview, interviewUserActions, dbInterviewUsers);
             await HandleInterviewUserActions(interviewUserActions);
 
             // Handle Notification
-            HandleInterviewUserNotification(interviewUserActions, dbInterviewUsers);
+            HandleInterviewUserNotification(process, interviewUserActions, dbInterviewUsers);
 
             interview.Status = GetInterviewState(vmParticipantsModal);
             await _dal.UpdateEntity(interview);
@@ -433,13 +433,13 @@ namespace Interview.UI.Controllers
 
             foreach (Guid postedUserId in postedUserIds)
             {
-                interviewUser = filteredDbUsers.Where(x => x.RoleUserId == postedUserId).FirstOrDefault();
+                interviewUser = filteredDbUsers.Where(x => x.UserId == postedUserId).FirstOrDefault();
                 if (interviewUser == null)
                 {
                     // Add
                     InterviewUser newInterviewUser = new InterviewUser()
                     {
-                        RoleUserId = (Guid)postedUserId,
+                        UserId = (Guid)postedUserId,
                         RoleUserType = roleUserType,
                         InterviewId = interviewId
                     };
@@ -450,7 +450,7 @@ namespace Interview.UI.Controllers
 
             foreach (InterviewUser dbInterviewUser in filteredDbUsers)
             {
-                if (!postedUserIds.Contains(dbInterviewUser.RoleUserId))
+                if (!postedUserIds.Contains(dbInterviewUser.UserId))
                 {
                     // Delete
                     await _dal.DeleteEntity(dbInterviewUser);
@@ -474,19 +474,19 @@ namespace Interview.UI.Controllers
                 // Add
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
-                    RoleUserId = (Guid)postedUserId,
+                    UserId = (Guid)postedUserId,
                     RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
                 addedInterviewUserId = await _dal.AddEntity<InterviewUser>(newInterviewUser);
                 result.Add(new InterviewUserAction() { InterviewUserId = (Guid)addedInterviewUserId, InterviewUserActionType = InterviewUserActionTypes.Added});
             }
-            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.RoleUserId != postedUserId))
+            else if ((dbInterviewUser != null && postedUserId != null) && (dbInterviewUser.UserId != postedUserId))
             {
                 // Update
                 InterviewUser newInterviewUser = new InterviewUser()
                 {
-                    RoleUserId = (Guid)postedUserId,
+                    UserId = (Guid)postedUserId,
                     RoleUserType = roleUserType,
                     InterviewId = interviewId
                 };
@@ -529,12 +529,12 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task HandleInterviewerEmails(Entities.Interview interview, List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
+        private async Task HandleInterviewerEmails(Process process, Entities.Interview interview, List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
 
             EmailEnvelope emailEnvelope = null;
             InterviewUser interviewUser = null;
-            Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Process;
+            RoleUser roleUser = null;           
             VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
             List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
             EmailTemplate emailTemplate = null;   
@@ -550,13 +550,14 @@ namespace Interview.UI.Controllers
 
                     // Handle emailing
                     interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
-                    graphUser = await _usersManager.GetUserInfoAsync(interviewUser.RoleUser.UserId.ToString(), tokenResponse.access_token);
+                    roleUser = process.RoleUsers.Where(x => x.Id == interviewUser.UserId).First();
+                    graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
 
-                    if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
+                    if (roleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
                         if (User.IsInRole(RoleTypes.Admin.ToString()))
                         {
-                            emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();                          
+                            emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
                             emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, graphUser.mail);
                         }
                         else
@@ -596,11 +597,12 @@ namespace Interview.UI.Controllers
 
         }
 
-        private void HandleInterviewUserNotification(List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
+        private void HandleInterviewUserNotification(Process process, List<InterviewUserAction> interviewUserActions, List<InterviewUser> dbInterviewUsers)
         {
             
             StringBuilder sb = new StringBuilder();
             InterviewUser interviewUser = null;
+            RoleUser roleUser = null;
             List<InterviewUserAction> addedInterviewUserActions = interviewUserActions.Where(x => x.InterviewUserActionType == InterviewUserActionTypes.Added).ToList();
 
             if (addedInterviewUserActions.Any())
@@ -608,7 +610,8 @@ namespace Interview.UI.Controllers
                 foreach (InterviewUserAction interviewUserAction in addedInterviewUserActions)
                 {
                     interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
-                    if (interviewUser.RoleUser.RoleUserType == RoleUserTypes.Candidate)
+                    roleUser = process.RoleUsers.Where(x => x.Id == interviewUser.UserId).First();
+                    if (roleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
                         _state.NoticationMessage = _localizer["InterviewUserNotification"].Value;
                     }

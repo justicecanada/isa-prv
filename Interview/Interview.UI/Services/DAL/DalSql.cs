@@ -174,7 +174,6 @@ namespace Interview.UI.Services.DAL
                     if (getChildObjects)
                         result = await _context.Interviews.Where(x => x.Id == id)
                             .Include(x => x.InterviewUsers)
-                            .ThenInclude(x => x.RoleUser)
                             .FirstOrDefaultAsync();
                     else
                         result = await _context.Interviews.FindAsync(id);
@@ -621,7 +620,6 @@ namespace Interview.UI.Services.DAL
         {
 
             var result = await _context.InterviewUsers.Where(x => x.InterviewId == interviewId)
-                .Include(x => x.RoleUser)
                 .Include(x => x.InterviewUserEmails)
                 .ToListAsync();
 

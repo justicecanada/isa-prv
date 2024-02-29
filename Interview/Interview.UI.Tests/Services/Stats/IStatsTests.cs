@@ -1030,7 +1030,7 @@ namespace Interview.UI.Tests.Services.Stats
             InterviewUser result = (InterviewUser)GetEntity<InterviewUser>(true);
 
             result.InterviewId = interviewId;
-            result.RoleUserId = roleUserId;
+            result.UserId = roleUserId;
             result.RoleUserType = GetRandomRoleUserType();
 
             return result;
