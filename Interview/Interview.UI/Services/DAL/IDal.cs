@@ -56,6 +56,8 @@ namespace Interview.UI.Services.DAL
 
         Task<List<InterviewUser>> GetInterviewUsersByInterviewId(Guid interviewId);
 
+        Task<InterviewUserEmail> GetInterviewUserEmailByInterviewUserId(Guid interviewUserId);
+
         Task<List<Schedule>> GetSchedulesByProcessId(Guid processId);
 
         Task<List<EmailTemplate>> GetEmailTemplatesByProcessId(Guid processId, EmailTypes? emailType = null);
