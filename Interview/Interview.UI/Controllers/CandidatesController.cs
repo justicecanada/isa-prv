@@ -2,7 +2,9 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
+using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,17 +22,21 @@ namespace Interview.UI.Controllers
 
         private readonly IMapper _mapper;
         private readonly IState _state;
+        private readonly IToken _tokenManager;
+        private readonly IUsers _usersManager;
 
         #endregion
 
         #region Constructors
 
         public CandidatesController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> baseLocalizer, IMapper mapper, 
-            IState state)
+            IState state, IToken tokenManager, IUsers userManager)
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
+            _tokenManager = tokenManager;
+            _usersManager = userManager;
         }
 
         #endregion
@@ -41,22 +47,29 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Internal(Guid processId)
         {
 
-            await SetInternalViewBag(processId);
+            GraphUser graphUser = await GetGraphUser();
+
+            await SetInternalViewBag(processId, graphUser);
 
             return View();
 
         }
 
-        private async Task SetInternalViewBag(Guid processId)
+        private async Task SetInternalViewBag(Guid processId, GraphUser graphUser)
         {
 
-            Process process = await _dal.GetEntity<Process>(processId) as Process;
+            Process process = await _dal.GetEntity<Process>(processId, true) as Process;
             List<Interview.Entities.Interview> interviews = await _dal.GetInterViewsByProcessId(processId);
-            List<VmInterview> vmInterviews = _mapper.Map<List<VmInterview>>(interviews);
+            List<Entities.Interview> availableInterviews = interviews.Where(x => x.Status == InterviewStates.AvailableForCandidate).ToList();
+            List<VmInterview> vmAvailableInterviews = _mapper.Map<List<VmInterview>>(availableInterviews);
+            RoleUser candidateRoleUser = process.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.UserId == graphUser.id).First();
+            List<RoleUserEquity> roleUserEquities = await _dal.GetRoleUserEquitiesByRoleUserId(graphUser.id);
 
             ViewBag.ProccessStartDate = process.StartDate;
             ViewBag.ProccessEndDate = process.EndDate;
-            ViewBag.VmInterviews = vmInterviews;
+            ViewBag.VmInterviews = vmAvailableInterviews;
+            ViewBag.GraphUserId = graphUser.id;
+            ViewBag.RoleUserEquities = roleUserEquities;
 
         }
 
@@ -136,6 +149,31 @@ namespace Interview.UI.Controllers
             ViewBag.RoleUserEquities = roleUserEquities;
 
             return View();
+
+        }
+
+        #endregion
+
+        #region Common Methodes
+
+        private async Task<GraphUser> GetGraphUser()
+        {
+
+            // Need to add Authorization Bearer (token) request header:
+            // https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#example-2-signed-in-user-request
+            // Links regarding Container Apps Easy Auth and tokens:
+            //   1. https://johnnyreilly.com/azure-container-apps-easy-auth-and-dotnet-authentication
+            //   2. https://github.com/microsoft/azure-container-apps/issues/995#issuecomment-1820496130
+            //   3. https://github.com/microsoft/azure-container-apps/issues/479#issuecomment-1817523559
+
+            // Get Token
+            GraphUser result = null;
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            string userPrincipalName = User.Identity.Name;
+
+            result = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
+
+            return result;
 
         }
 
