@@ -174,6 +174,7 @@ namespace Interview.UI.Services.DAL
                     if (getChildObjects)
                         result = await _context.Interviews.Where(x => x.Id == id)
                             .Include(x => x.InterviewUsers)
+                            .ThenInclude(x => x.RoleUser)
                             .FirstOrDefaultAsync();
                     else
                         result = await _context.Interviews.FindAsync(id);
