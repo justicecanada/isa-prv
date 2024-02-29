@@ -141,6 +141,9 @@
   <data name="LegendAvailabilities" xml:space="preserve">
     <value>Légende des disponibilités</value>
   </data>
+  <data name="PendingCommitteeMember" xml:space="preserve">
+    <value>Réservé pour une entrevue</value>
+  </data>
   <data name="RacializedGroup" xml:space="preserve">
     <value>Membre d’un groupe racialisé</value>
   </data>

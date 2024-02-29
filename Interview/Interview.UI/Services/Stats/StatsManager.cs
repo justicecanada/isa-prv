@@ -96,7 +96,7 @@ namespace Interview.UI.Services.Stats
             foreach (Equity equity in equities)
             {
                 countForEquity = processes.SelectMany(x => x.Interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead) &&
-                    roleUserEquities.Where(a => a.RoleUserId == y.UserId && a.EquityId == equity.Id).Count() > 0))).Count();
+                    roleUserEquities.Where(a => a.RoleUserId == y.RoleUserId && a.EquityId == equity.Id).Count() > 0))).Count();
                 result.Add(new VmEquityStat()
                 {
                     Description = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
@@ -122,7 +122,7 @@ namespace Interview.UI.Services.Stats
             foreach (Equity equity in equities)
             {
                 countForEquity = processes.SelectMany(x => x.Interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Candidate) &&
-                    roleUserEquities.Where(a => a.RoleUserId == y.UserId && a.EquityId == equity.Id).Count() > 0))).Count();
+                    roleUserEquities.Where(a => a.RoleUserId == y.RoleUserId && a.EquityId == equity.Id).Count() > 0))).Count();
                 result.Add(new VmEquityStat()
                 {
                     Description = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
@@ -153,7 +153,7 @@ namespace Interview.UI.Services.Stats
             {
 
                 List<Entities.Interview> interviews = processes.SelectMany(x => x.Interviews).ToList();
-                interviewUser = interviews.SelectMany(x => x.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.UserId == roleUser.Id).ToList()).FirstOrDefault();
+                interviewUser = interviews.SelectMany(x => x.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate && x.RoleUserId == roleUser.Id).ToList()).FirstOrDefault();
 
                 if (interviewUser != null)
                 {
@@ -323,7 +323,7 @@ namespace Interview.UI.Services.Stats
             {
                 foreach (InterviewUser interviewUser in interview.InterviewUsers)
                 {
-                    roleUser = processes.SelectMany(x => x.RoleUsers.Where(x => x.Id == interviewUser.UserId)).FirstOrDefault();
+                    roleUser = processes.SelectMany(x => x.RoleUsers.Where(x => x.Id == interviewUser.RoleUserId)).FirstOrDefault();
                     if (roleUser != null)
                     {
                         if (roleUser.RoleUserType == RoleUserTypes.Candidate)

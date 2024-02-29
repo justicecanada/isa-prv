@@ -1,4 +1,6 @@
-﻿using Interview.UI.Models.Graph;
+﻿using Interview.Entities;
+using Interview.UI.Models;
+using Interview.UI.Models.Graph;
 
 namespace Interview.UI.Services.Graph
 {
@@ -9,6 +11,10 @@ namespace Interview.UI.Services.Graph
         Task<HttpResponseMessage> SendEmailAsync(EmailEnvelope emailEnvelope, string token, string userName);
 
         List<EmailRecipent> GetEmailRecipients(string recipients);
+
+        EmailEnvelope GetEmailEnvelopeForCandidateAddedByHR(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email, string callbackUrl);
+
+        EmailEnvelope GetEmailEnvelopeForCandidateRegisteredTimeSlot(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email, string callbackUrl);
 
     }
 

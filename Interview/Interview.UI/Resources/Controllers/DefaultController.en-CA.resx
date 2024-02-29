@@ -120,6 +120,9 @@
   <data name="DeleteConfirmationString" xml:space="preserve">
     <value>Are you sure you want to delete this time slot and the link with its members?</value>
   </data>
+  <data name="InterviewUserNotification" xml:space="preserve">
+    <value>A confirmation email has been sent to the Candidate.</value>
+  </data>
   <data name="InterviewVmStartDateAndDuration" xml:space="preserve">
     <value>The interview cannot start before {min} or end after {max}</value>
   </data>
