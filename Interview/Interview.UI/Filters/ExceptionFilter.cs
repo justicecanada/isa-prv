@@ -25,7 +25,7 @@ namespace Interview.UI.Filters
             string exceptionId = Guid.NewGuid().ToString().Substring(0, 8);
             string userName = _httpContextAccessor.HttpContext.User.Identity.Name;
 
-            var msgObj = new { message = exception.Message, exceptionId = exceptionId, userName = userName, stacktrace = exception.StackTrace };
+            var msgObj = GetExceptionDetails(exception, exceptionId, userName);
             var msg = JsonConvert.SerializeObject(msgObj);
 
             _logger.LogError(exception, msg);
@@ -42,6 +42,22 @@ namespace Interview.UI.Filters
 
             if (request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 result = true;
+
+            return result;
+
+        }
+
+        private object GetExceptionDetails(Exception exception, string exceptionId, string userName)
+        {
+
+            object result = new
+            {
+                message = exception.Message,
+                exceptionId = exceptionId,
+                userName = userName,
+                stacktrace = exception.StackTrace,
+                innerException = exception.InnerException == null ? null : GetExceptionDetails(exception.InnerException, exceptionId, userName)
+            };
 
             return result;
 

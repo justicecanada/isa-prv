@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System;
 
 namespace Interview.UI.Filters
 {
@@ -26,18 +27,52 @@ namespace Interview.UI.Filters
             // Log exception
             string exceptionId = Guid.NewGuid().ToString().Substring(0, 8);
             string userName = _httpContextAccessor.HttpContext.User.Identity.Name;
+            bool isAjaxRequest = GetIsAjaxRequest(context.HttpContext.Request);
 
-            var msgObj = new { message = exception.Message, exceptionId = exceptionId, userName = userName, stacktrace = exception.StackTrace };
-            var msg = JsonConvert.SerializeObject(msgObj);
+            // Log exception
+            var msgObj = GetExceptionDetails(exception, exceptionId, userName);
+            var msg = JsonConvert.SerializeObject(msgObj);           
 
             _logger.LogError(exception, msg);
 
-            result = new RedirectToActionResult("IndexModal", "Error", new { area = "", exceptionId = exceptionId });
-            context.Result = result;
+            // Handle response
+            if (isAjaxRequest)
+                result = new RedirectToActionResult("IndexModal", "Error", new { area = "", exceptionId = exceptionId });
+            else
+                result = new RedirectToActionResult("Index", "Error", new { area = "", exceptionId = exceptionId });
 
+            context.Result = result;
             context.ExceptionHandled = true;
 
             return;
+
+        }
+
+        private bool GetIsAjaxRequest(HttpRequest request)
+        {
+
+            bool result = false;
+
+            if (request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                result = true;
+
+            return result;
+
+        }
+
+        private object GetExceptionDetails(Exception exception, string exceptionId, string userName)
+        {
+
+            object result = new
+            {
+                message = exception.Message,
+                exceptionId = exceptionId,
+                userName = userName,
+                stacktrace = exception.StackTrace,
+                innerException = exception.InnerException == null ? null : GetExceptionDetails(exception.InnerException, exceptionId, userName)
+            };
+
+            return result;
 
         }
 
