@@ -175,7 +175,7 @@ namespace Interview.UI.Controllers
         #region User Filter Results
 
         [HttpGet]
-        public async Task<IActionResult> UserFilterResults()
+        public async Task<IActionResult> UserFilterClauses()
         {
 
             SearchUsersResponse searchUsersResponse = null;
