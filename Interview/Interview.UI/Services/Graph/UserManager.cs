@@ -110,7 +110,7 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            string filter = "$filter= endswith(userPrincipalName,'.onmicrosoft.com') OR endswith(userPrincipalName,'.osi-bis.ca') OR endswith(userPrincipalName,'.lcc-cdc.gc.ca') OR endswith(userPrincipalName,'.interlocuteur-special-interlocutor.ca') OR endswith(userPrincipalName,'.ombudsman.gc.ca') &$top=10&$count=true";
+            string filter = "$filter= endswith(userPrincipalName,'.justice.gc.ca') OR endswith(userPrincipalName,'.osi-bis.ca') OR endswith(userPrincipalName,'.lcc-cdc.gc.ca') OR endswith(userPrincipalName,'.interlocuteur-special-interlocutor.ca') OR endswith(userPrincipalName,'.ombudsman.gc.ca') &$top=10&$count=true";
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
             {
