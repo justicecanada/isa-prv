@@ -2,8 +2,10 @@
 @{
 
     string disabledAccounts = ViewBag.DisabledAccounts;
+    string dirSyncs = ViewBag.DirSyncs;
+    string memberUserTypes = ViewBag.MemberUserTypes;
     string badEmails = ViewBag.BadEmails;
-    string dirSyncs = ViewBag.DirSync;
+    //string noSlashesInEmails = ViewBag.NoSlashesInEmails;
 
 }
 
@@ -33,19 +35,7 @@
                 </h3>
             </summary>
             <pre>
-                @Html.Raw(disabledAccounts);
-            </pre>
-        </details>
-    </li>
-    <li>
-        <details>
-            <summary>
-                <h3>
-                    and (user.userPrincipalName -match \"^[^./]+\\.[^./]+(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
-                </h3>
-            </summary>
-            <pre>
-                @Html.Raw(badEmails);
+                @Html.Raw(disabledAccounts)
             </pre>
         </details>
     </li>
@@ -57,8 +47,44 @@
                 </h3>
             </summary>
             <pre>
-                @Html.Raw(dirSyncs);
+                @Html.Raw(dirSyncs)
             </pre>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary>
+                <h3>
+                    and (user.userType -eq \"member\") 
+                </h3>
+            </summary>
+            <pre>
+                @Html.Raw(memberUserTypes)
+            </pre>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary>
+                <h3>
+                    and (user.userPrincipalName -match \"^[^./]+\\.[^./]+(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
+                </h3>
+            </summary>
+            <pre>
+                @Html.Raw(badEmails)
+            </pre>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary>
+                <h3>
+                    and (user.mail -notContains \"/\")
+                </h3>
+            </summary>
+            <div class="row col-md-12">
+                <a href="https://learn.microsoft.com/en-us/graph/aad-advanced-queries?tabs=http#query-scenarios-that-require-advanced-query-capabilities" target="_blank">There is no .Contains method on the Graph Query API.</a>
+            </div>
         </details>
     </li>
 </ul>

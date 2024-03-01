@@ -10,11 +10,15 @@ namespace Interview.UI.Services.Graph
 
         Task<SearchUsersResponse> SearchInternalUsersAsync(string query, string token);
 
-        Task<SearchUsersResponse> GetDisabledAccounts(string token);
+        Task<SearchUsersResponse> GetDisabledAccountsAsync(string token);
 
-        Task<SearchUsersResponse> GetBadEmails(string token);
+        Task<SearchUsersResponse> GetBadEmailsAsync(string token);
 
-        Task<SearchUsersResponse> GetDirSyncEnabled(string token);
+        Task<SearchUsersResponse> GetDirSyncEnabledAsync(string token);
+
+        Task<SearchUsersResponse> GetMemberUserTypesAsync(string token);
+
+        Task<SearchUsersResponse> GetNoSlashesInEmailAsync(string token);
 
     }
 

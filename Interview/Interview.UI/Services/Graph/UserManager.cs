@@ -82,7 +82,7 @@ namespace Interview.UI.Services.Graph
 
         #region Exploratory Filter Clauses
 
-        public async Task<SearchUsersResponse> GetDisabledAccounts(string token)
+        public async Task<SearchUsersResponse> GetDisabledAccountsAsync(string token)
         {
 
             // (user.accountEnabled -eq true) 
@@ -97,7 +97,7 @@ namespace Interview.UI.Services.Graph
 
         }
 
-        public async Task<SearchUsersResponse> GetBadEmails(string token)
+        public async Task<SearchUsersResponse> GetBadEmailsAsync(string token)
         {
 
             // (user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
@@ -114,7 +114,7 @@ namespace Interview.UI.Services.Graph
 
         }
 
-        public async Task<SearchUsersResponse> GetDirSyncEnabled(string token)
+        public async Task<SearchUsersResponse> GetDirSyncEnabledAsync(string token)
         {
 
             // and (user.dirSyncEnabled -eq true) 
@@ -122,6 +122,38 @@ namespace Interview.UI.Services.Graph
             SearchUsersResponse result = null;
             object badRequest = null;
             string filterClause = "dirSyncEnabled eq true";
+            HttpResponseMessage response = await QueryGraph(filterClause, token);
+
+            result = await GetSearchUserResponse(response, filterClause);
+
+            return result;
+
+        }
+
+        public async Task<SearchUsersResponse> GetMemberUserTypesAsync(string token)
+        {
+
+            // and (user.dirSyncEnabled -eq true) 
+
+            SearchUsersResponse result = null;
+            object badRequest = null;
+            string filterClause = "userType eq 'member'";
+            HttpResponseMessage response = await QueryGraph(filterClause, token);
+
+            result = await GetSearchUserResponse(response, filterClause);
+
+            return result;
+
+        }
+
+        public async Task<SearchUsersResponse> GetNoSlashesInEmailAsync(string token)
+        {
+
+            // and (user.mail -notContains \"/\")
+
+            SearchUsersResponse result = null;
+            object badRequest = null;
+            string filterClause = "userType eq 'member'";
             HttpResponseMessage response = await QueryGraph(filterClause, token);
 
             result = await GetSearchUserResponse(response, filterClause);
