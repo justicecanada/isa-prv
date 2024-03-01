@@ -68,6 +68,7 @@ namespace Interview.UI
             {
                 options.Filters.Add(typeof(ExceptionFilter));
                 options.Filters.Add(typeof(ViewExceptionFilter));
+                options.Filters.Add(typeof(AsyncExceptionFilter));
                 options.Filters.Add(typeof(LanguageFilter));
             })
                 .AddRazorRuntimeCompilation();

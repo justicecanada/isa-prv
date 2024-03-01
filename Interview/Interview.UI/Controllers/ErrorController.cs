@@ -27,6 +27,15 @@ namespace Interview.UI.Controllers
 
         }
 
+        public PartialViewResult IndexModal(string exceptionId)
+        {
+
+            ViewBag.ExceptionId = exceptionId;
+
+            return PartialView();
+
+        }
+
     }
 
 }

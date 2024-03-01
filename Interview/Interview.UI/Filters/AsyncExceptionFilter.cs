@@ -4,24 +4,26 @@ using Newtonsoft.Json;
 
 namespace Interview.UI.Filters
 {
-    
-    public class ExceptionFilter : IExceptionFilter
+
+    public class AsyncExceptionFilter : IAsyncExceptionFilter
     {
 
-        private readonly ILogger<ExceptionFilter> _logger;
+        private readonly ILogger<AsyncExceptionFilter> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ExceptionFilter(ILogger<ExceptionFilter> logger, IHttpContextAccessor httpContextAccessor)
+        public AsyncExceptionFilter(ILogger<AsyncExceptionFilter> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public void OnException(ExceptionContext context)
+        public async Task OnExceptionAsync(ExceptionContext context)
         {
 
+            RedirectToActionResult result;
             Exception exception = context.Exception;
-            bool isAjaxRequest = GetIsAjaxRequest(context.HttpContext.Request);
+
+            // Log exception
             string exceptionId = Guid.NewGuid().ToString().Substring(0, 8);
             string userName = _httpContextAccessor.HttpContext.User.Identity.Name;
 
@@ -30,20 +32,12 @@ namespace Interview.UI.Filters
 
             _logger.LogError(exception, msg);
 
-            var result = new RedirectToActionResult("Index", "Error", new { area = "", exceptionId = exceptionId });
+            result = new RedirectToActionResult("IndexModal", "Error", new { area = "", exceptionId = exceptionId });
             context.Result = result;
 
-        }
+            context.ExceptionHandled = true;
 
-        private bool GetIsAjaxRequest(HttpRequest request)
-        {
-
-            bool result = false;
-
-            if (request.Headers["X-Requested-With"] == "XMLHttpRequest")
-                result = true;
-
-            return result;
+            return;
 
         }
 
