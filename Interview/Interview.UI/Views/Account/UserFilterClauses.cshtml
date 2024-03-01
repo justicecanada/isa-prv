@@ -3,6 +3,7 @@
 
     string disabledAccounts = ViewBag.DisabledAccounts;
     string badEmails = ViewBag.BadEmails;
+    string dirSyncs = ViewBag.DirSync;
 
 }
 
@@ -45,6 +46,18 @@
             </summary>
             <pre>
                 @Html.Raw(badEmails);
+            </pre>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary>
+                <h3>
+                    and (user.dirSyncEnabled -eq true)
+                </h3>
+            </summary>
+            <pre>
+                @Html.Raw(dirSyncs);
             </pre>
         </details>
     </li>

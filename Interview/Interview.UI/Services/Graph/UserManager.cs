@@ -1,4 +1,5 @@
 ﻿using Interview.UI.Models.Graph;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -85,23 +86,12 @@ namespace Interview.UI.Services.Graph
         {
 
             // (user.accountEnabled -eq true) 
+
             SearchUsersResponse result = null;
-            object badRequest = null;
-            string filter = "$filter=accountEnabled eq false&$top=10";
+            string filterClause = "accountEnabled eq true";
+            HttpResponseMessage response = await QueryGraph(filterClause, token);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
-            {
-                Headers =
-                {
-                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
-                }
-            };
-            HttpResponseMessage response = _client.SendAsync(request).Result;
-
-            if (response.StatusCode == HttpStatusCode.OK)
-                result = await response.Content.ReadFromJsonAsync<SearchUsersResponse>();
-            else
-                badRequest = await response.Content.ReadFromJsonAsync<object>();
+            result = await GetSearchUserResponse(response, filterClause);
 
             return result;
 
@@ -110,14 +100,50 @@ namespace Interview.UI.Services.Graph
         public async Task<SearchUsersResponse> GetBadEmails(string token)
         {
 
-            //(user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
+            // (user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\")
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            string filter = "$filter= endswith(userPrincipalName,'@justice.gc.ca') OR endswith(userPrincipalName,'.osi-bis.ca') OR endswith(userPrincipalName,'.lcc-cdc.gc.ca') OR endswith(userPrincipalName,'.interlocuteur-special-interlocutor.ca') OR endswith(userPrincipalName,'.ombudsman.gc.ca') &$top=10&$count=true";
-            //string filter = "$filter= endswith(userPrincipalName,'.justice.gc.ca') &$top=10&$count=true";
+            string filterClause = "endswith(userPrincipalName,'@justice.gc.ca') OR endswith(userPrincipalName,'.osi-bis.ca') OR " + 
+                "endswith(userPrincipalName,'.lcc-cdc.gc.ca') OR endswith(userPrincipalName,'.interlocuteur-special-interlocutor.ca') OR endswith(userPrincipalName,'.ombudsman.gc.ca')";
+            HttpResponseMessage response = await QueryGraph(filterClause, token);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?{filter}"))
+            result = await GetSearchUserResponse(response, filterClause);
+
+            return result;
+
+        }
+
+        public async Task<SearchUsersResponse> GetDirSyncEnabled(string token)
+        {
+
+            // and (user.dirSyncEnabled -eq true) 
+
+            SearchUsersResponse result = null;
+            object badRequest = null;
+            string filterClause = "dirSyncEnabled eq true";
+            HttpResponseMessage response = await QueryGraph(filterClause, token);
+
+            result = await GetSearchUserResponse(response, filterClause);
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task<HttpResponseMessage> QueryGraph(string filterClause, string token)
+        {
+
+            HttpResponseMessage result = null;
+            string graphUserUrl = $"{_host}/v1.0/users?";
+            string filterPrefix = "$filter=";
+            string filterSuffix = "&$top=10&$count=true";
+            string filter = $"{filterPrefix} {filterClause} {filterSuffix}";
+            Uri uri = new Uri($"{graphUserUrl}{filter}");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri)
             {
                 Headers =
                 {
@@ -125,12 +151,29 @@ namespace Interview.UI.Services.Graph
                     { "ConsistencyLevel", "eventual" }
                 }
             };
-            HttpResponseMessage response = _client.SendAsync(request).Result;
 
+            result = _client.SendAsync(request).Result;
+
+            return result;
+
+        }
+
+        private async Task<SearchUsersResponse> GetSearchUserResponse(HttpResponseMessage response, string filterClause)
+        {
+
+            SearchUsersResponse result = null;
+ 
             if (response.StatusCode == HttpStatusCode.OK)
+            {
                 result = await response.Content.ReadFromJsonAsync<SearchUsersResponse>();
+            }
             else
-                badRequest = await response.Content.ReadFromJsonAsync<object>();
+            {
+                result = new SearchUsersResponse();
+                result.badRequest = response.Content.ReadFromJsonAsync<object>();
+            }
+            result.statusCode = response.StatusCode;
+            result.filterClause = filterClause;
 
             return result;
 

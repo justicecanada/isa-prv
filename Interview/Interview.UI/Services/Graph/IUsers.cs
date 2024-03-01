@@ -14,6 +14,8 @@ namespace Interview.UI.Services.Graph
 
         Task<SearchUsersResponse> GetBadEmails(string token);
 
+        Task<SearchUsersResponse> GetDirSyncEnabled(string token);
+
     }
 
 }

@@ -189,6 +189,10 @@ namespace Interview.UI.Controllers
             searchUsersResponse = await _usersManager.GetBadEmails(tokenResponse.access_token);
             ViewBag.BadEmails = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
 
+            // DirSync
+            searchUsersResponse = await _usersManager.GetDirSyncEnabled(tokenResponse.access_token);
+            ViewBag.DirSync = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
+
             return View();
 
         }
