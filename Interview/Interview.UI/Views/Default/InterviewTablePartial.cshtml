@@ -9,8 +9,6 @@
     DateTime procesStartDate = ViewBag.ProccessStartDate;
     DateTime processEndDate = ViewBag.ProccessEndDate;
 
-    throw new Exception("In the view!");
-
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     string language = cultureName == Constants.EnglishCulture ? localizer["English"].Value : localizer["French"].Value;
 
