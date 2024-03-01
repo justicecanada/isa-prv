@@ -76,7 +76,7 @@
 
         foreach (VmInterviewUser vmInterviewUser in vmInterviewUsers)
         {
-            result.Add(vmRoleUsers.Where(x => x.Id == vmInterviewUser.RoleUserId).First());
+            result.Add(vmRoleUsers.Where(x => x.Id == vmInterviewUser.UserId).First());
         }
 
         return result;

@@ -63,7 +63,7 @@ namespace Interview.UI.Controllers
             RoleUser candidateRoleUser = process.RoleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.UserId == externalCandidateId)).First();
             InterviewUser newInterviewUser = new InterviewUser()
             {
-                RoleUserId = candidateRoleUser.Id,
+                UserId = candidateRoleUser.Id,
                 RoleUserType = RoleUserTypes.Candidate,
                 InterviewId = interviewId
             };
