@@ -58,7 +58,6 @@ namespace Interview.UI.Filters
 
         }
 
-
     }
 
 }
