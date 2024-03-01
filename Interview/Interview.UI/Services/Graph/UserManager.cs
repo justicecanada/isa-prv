@@ -82,7 +82,7 @@ namespace Interview.UI.Services.Graph
 
         #region Exploratory Filter Clauses
 
-        public async Task<SearchUsersResponse> GetDisabledAccountsAsync(string token)
+        public async Task<SearchUsersResponse> GetEnabledAccountsAsync(string token)
         {
 
             // (user.accountEnabled -eq true) 

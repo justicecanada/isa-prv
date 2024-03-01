@@ -182,8 +182,8 @@ namespace Interview.UI.Controllers
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             // Disabled Users
-            searchUsersResponse = await _usersManager.GetDisabledAccountsAsync(tokenResponse.access_token);
-            ViewBag.DisabledAccounts = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
+            searchUsersResponse = await _usersManager.GetEnabledAccountsAsync(tokenResponse.access_token);
+            ViewBag.EnabledAccounts = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
 
             // DirSync
             searchUsersResponse = await _usersManager.GetDirSyncEnabledAsync(tokenResponse.access_token);
