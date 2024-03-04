@@ -67,6 +67,8 @@ namespace Interview.UI
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
+                options.Filters.Add(typeof(ViewExceptionFilter));
+                options.Filters.Add(typeof(AsyncExceptionFilter));
                 options.Filters.Add(typeof(LanguageFilter));
             })
                 .AddRazorRuntimeCompilation();
