@@ -1,4 +1,5 @@
-﻿using Interview.UI.Services.DAL;
+﻿using Interview.Entities;
+using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System;
@@ -174,16 +175,21 @@ namespace Interview.UI.Auth
             // Inject Role from InternalUser
             var dal = Context.RequestServices.GetService<DalSql>();
             Guid entraId = new Guid(Context.User.Claims.FirstOrDefault(x => x.Type == Constants.EntraIdClaimKey).Value);
-            var internalUser = await dal.GetInternalUserByEntraId(entraId);
-            if (internalUser != null)
+            InternalUser internalUser = await dal.GetInternalUserByEntraId(entraId);
+
+            if (internalUser == null)
             {
-                // https://stackoverflow.com/questions/53292286/is-there-a-way-to-add-claims-in-an-asp-net-core-middleware-after-authentication
-                var claim = new Claim(ClaimTypes.Role, internalUser.RoleType.ToString(), "http://www.w3.org/2001/XMLSchema#string", "LOCAL AUTHORITY", "LOCAL AUTHORITY");
-                var interviewClaims = new List<Claim>();
-                interviewClaims.Add(claim);
-                var appIdentity = new ClaimsIdentity(interviewClaims);
-                Context.User.AddIdentity(appIdentity);
+                // First time user accesses app
+                internalUser = new InternalUser() { EntraId = entraId , RoleType = RoleTypes.Owner};
+                await dal.AddEntity<InternalUser>(internalUser);
             }
+
+            // https://stackoverflow.com/questions/53292286/is-there-a-way-to-add-claims-in-an-asp-net-core-middleware-after-authentication
+            var claim = new Claim(ClaimTypes.Role, internalUser.RoleType.ToString(), "http://www.w3.org/2001/XMLSchema#string", "LOCAL AUTHORITY", "LOCAL AUTHORITY");
+            var interviewClaims = new List<Claim>();
+            interviewClaims.Add(claim);
+            var appIdentity = new ClaimsIdentity(interviewClaims);
+            Context.User.AddIdentity(appIdentity);
 
         }
 
