@@ -63,6 +63,7 @@ namespace Interview.UI.Controllers
             }
 
             RegisterIndexClientResources();
+            HandleCommonPageMethods();
 
             return View(result);
 

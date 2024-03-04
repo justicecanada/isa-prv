@@ -49,6 +49,7 @@ namespace Interview.UI.Controllers
             await SetIndexFilterViewBag(processId);
             await SetIndexResultsViewBag(result);
             RegisterIndexClientResources();
+            HandleCommonPageMethods();
 
             return View(result);
 
@@ -62,6 +63,7 @@ namespace Interview.UI.Controllers
             await SetIndexFilterViewBag(vmFilter.ProcessId);
             await SetIndexResultsViewBag(vmFilter);
             RegisterIndexClientResources();
+            HandleCommonPageMethods();
 
             return View("Index", vmFilter);
 

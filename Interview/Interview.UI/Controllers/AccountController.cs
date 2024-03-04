@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 namespace Interview.UI.Controllers
 {
 
+    [Authorize(Roles = Roles.Admin)]
     public class AccountController : BaseController
     {
 
@@ -53,6 +54,7 @@ namespace Interview.UI.Controllers
         #region Public Login Methods
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
 
@@ -82,6 +84,8 @@ namespace Interview.UI.Controllers
 
             ViewBag.GraphUser = graphUser;
             result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
+
+            HandleCommonPageMethods();
 
             return View(result);
 
@@ -131,6 +135,8 @@ namespace Interview.UI.Controllers
             // js
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
+
+            HandleCommonPageMethods();
 
             return View();
 

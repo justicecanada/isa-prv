@@ -72,6 +72,7 @@ namespace Interview.UI.Controllers
 
             await IndexSetViewBag();
             IndexRegisterClientResources();
+            HandleCommonPageMethods();
 
             if (TempData[Constants.RoleUserIdToUpdate] != null)
             {
@@ -119,11 +120,13 @@ namespace Interview.UI.Controllers
                 return RedirectToAction("Index");
 
             }
+
             else
             {
 
                 await IndexSetViewBag();
                 IndexRegisterClientResources();
+                HandleCommonPageMethods();
 
                 return View(vmIndex);
 

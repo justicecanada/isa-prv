@@ -74,6 +74,7 @@ namespace Interview.UI.Controllers
             
             await IndexSetViewBag();
             IndexRegisterClientResources();
+            HandleCommonPageMethods();
 
             return View(vmIndex);
 

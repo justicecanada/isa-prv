@@ -51,6 +51,7 @@ namespace Interview.UI.Controllers
 
             await IndexSetViewBag();
             IndexRegisterClientResources();
+            HandleCommonPageMethods();
 
             return View();
 
@@ -128,6 +129,7 @@ namespace Interview.UI.Controllers
 
             await ProcesesSetViewBag();
             RegisterProcessesClientResources();
+            HandleCommonPageMethods();
 
             return View(vmProcess);
 
@@ -159,6 +161,7 @@ namespace Interview.UI.Controllers
             {
                 await ProcesesSetViewBag();
                 RegisterProcessesClientResources();
+                HandleCommonPageMethods();
 
                 return View("Process", vmProcess);
             }
@@ -195,6 +198,7 @@ namespace Interview.UI.Controllers
             {
                 await ProcesesSetViewBag();
                 RegisterProcessesClientResources();
+                HandleCommonPageMethods();
 
                 return View("Process", vmProcess);
             }

@@ -48,6 +48,7 @@ namespace Interview.UI.Controllers
 
             result.ProcessId = processId;
             await SetIndexViewBag(processId);
+            HandleCommonPageMethods();
 
             return View(result);
 

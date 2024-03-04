@@ -38,17 +38,6 @@ namespace Interview.UI.Controllers
             _dal = dal;
             _localizer = localizer;
 
-            //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
-
-            // Top menu
-            WebTemplateModel.MenuLinks = new List<MenuLink>();
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Account"].Value, Href = "/Account/Details" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = "Send Emails", Href = "/Emails/SendEmail" });
-
             // css
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel=\"stylesheet\" href=\"/css/site.css?v={BuildId}\" />");
             WebTemplateModel.HTMLHeaderElements.Add("<script src=\"/lib/jquery/dist/jquery.min.js\"></script>");
@@ -132,6 +121,25 @@ namespace Interview.UI.Controllers
         #endregion
 
         #region Protected Methods
+
+        protected void HandleCommonPageMethods()
+        {
+
+            // This cannot be handled in the BaseController constructor because User is null at that time.
+            //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
+
+            // Top menu
+            WebTemplateModel.MenuLinks = new List<MenuLink>();
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
+            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
+            if (User.IsInRole(RoleTypes.Admin.ToString()))
+            {
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Account"].Value, Href = "/Account/Details" });
+            }
+
+        }
 
         protected async Task<List<Process>> GetProcessesForLoggedInUser()
         {
