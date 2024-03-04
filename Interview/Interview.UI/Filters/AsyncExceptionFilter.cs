@@ -1,37 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System;
 
 namespace Interview.UI.Filters
 {
-    
-    public class ExceptionFilter : IExceptionFilter
+
+    public class AsyncExceptionFilter : IAsyncExceptionFilter
     {
 
-        private readonly ILogger<ExceptionFilter> _logger;
+        private readonly ILogger<AsyncExceptionFilter> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ExceptionFilter(ILogger<ExceptionFilter> logger, IHttpContextAccessor httpContextAccessor)
+        public AsyncExceptionFilter(ILogger<AsyncExceptionFilter> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public void OnException(ExceptionContext context)
+        public async Task OnExceptionAsync(ExceptionContext context)
         {
 
+            RedirectToActionResult result;
             Exception exception = context.Exception;
-            bool isAjaxRequest = GetIsAjaxRequest(context.HttpContext.Request);
+
+            // Log exception
             string exceptionId = Guid.NewGuid().ToString().Substring(0, 8);
             string userName = _httpContextAccessor.HttpContext.User.Identity.Name;
+            bool isAjaxRequest = GetIsAjaxRequest(context.HttpContext.Request);
 
+            // Log exception
             var msgObj = GetExceptionDetails(exception, exceptionId, userName);
-            var msg = JsonConvert.SerializeObject(msgObj);
+            var msg = JsonConvert.SerializeObject(msgObj);           
 
             _logger.LogError(exception, msg);
 
-            var result = new RedirectToActionResult("Index", "Error", new { area = "", exceptionId = exceptionId });
+            // Handle response
+            if (isAjaxRequest)
+                result = new RedirectToActionResult("IndexModal", "Error", new { area = "", exceptionId = exceptionId });
+            else
+                result = new RedirectToActionResult("Index", "Error", new { area = "", exceptionId = exceptionId });
+
             context.Result = result;
+            context.ExceptionHandled = true;
+
+            return;
 
         }
 
