@@ -26,6 +26,7 @@ namespace Interview.UI.Controllers
         private readonly IUsers _usersManager;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
         #endregion
 
@@ -33,7 +34,7 @@ namespace Interview.UI.Controllers
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IToken tokenManager, IUsers userManager, 
             IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
-            IMapper mapper)
+            IMapper mapper, IStringLocalizer<AccountController> localizer)
             : base(modelAccessor, dal, baseLocalizer)
         {
 
@@ -41,6 +42,7 @@ namespace Interview.UI.Controllers
             _usersManager = userManager;
             _hostEnvironment = hostEnvironment;
             _mapper = mapper;
+            _localizer = localizer;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -77,13 +79,6 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> ManageUserRoles()
         {
 
-            //VmInternalUser result = null;
-            //GraphUser graphUser = await GetGraphUser();
-            //InternalUser internalUser = await _dal.GetInternalUserByEntraId(EntraId);
-
-            //ViewBag.GraphUser = graphUser;
-            //result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
-
             RegisterManageUserRolesClientResources();
             HandleCommonPageMethods();
 
@@ -104,14 +99,14 @@ namespace Interview.UI.Controllers
 
                 InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
 
-                if (vmInternalUser.Id == null)
+                if (vmInternalUser.Id == Guid.Empty)
                     await _dal.AddEntity<InternalUser>(internaluser);
                 else
                     await _dal.UpdateEntity(internaluser);
 
                 RegisterManageUserRolesClientResources();
                 HandleCommonPageMethods();
-                Notify($"User {graphUser.givenName} {graphUser.surname} was added to role {vmInternalUser.RoleType}", "success");
+                Notify(string.Format(_localizer["UserAddedToRole"].Value, graphUser.givenName, graphUser.surname, vmInternalUser.RoleType), "success");
 
                 return View();
 
