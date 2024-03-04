@@ -127,14 +127,21 @@ namespace Interview.UI.Controllers
         public async Task<PartialViewResult> UserDetailsPartial(string userPrincipalName)
         {
 
-            string result = null;
+            VmInternalUser result = null;
+            InternalUser internalUser = null;
             GraphUser graphUser = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             graphUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
             ViewBag.GraphUser = graphUser;
+            internalUser = await _dal.GetInternalUserByEntraId(graphUser.id);
 
-            return PartialView();
+            if (internalUser == null)
+                internalUser = new InternalUser() { EntraId = graphUser.id };
+
+            result = _mapper.Map<VmInternalUser>(internalUser);
+
+            return PartialView(result);
 
         }
 

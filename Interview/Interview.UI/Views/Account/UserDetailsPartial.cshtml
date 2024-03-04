@@ -1,14 +1,20 @@
-﻿
+﻿@model VmInternalUser
 @using Interview.UI.Models.Graph
 @inject IViewLocalizer localizer
 
 @{
 
-    GraphUser graphUser = ViewBag.GraphUser; 
+    GraphUser graphUser = ViewBag.GraphUser;
+    string roleHeading = Model.Id == Guid.Empty ? localizer["AddRole"].Value : localizer["ChangeRole"].Value;
+
+    var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
+    rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    if (Model.RoleType != null)
+        rolesItems.Where(x => x.Value == ((int)Model.RoleType).ToString()).First().Selected = true;
 
 }
 
-<section class="panel panel-primary mrgn-tp-md">
+<section class="panel panel-success mrgn-tp-md">
 
     <header class="panel-heading">
         <h5 class="panel-title">@localizer["UserDetails"]</h5>
@@ -47,5 +53,28 @@
         </div>
 
     </div>
+
+</section>
+
+<section class="panel panel-primary mrgn-tp-md">
+
+    <header class="panel-heading">
+        <h5 class="panel-title">@roleHeading</h5>
+    </header>
+
+    <div class="panel-body">
+            <form>
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(x => x.Id)
+
+            @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
+
+                <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ChangeRole", "Account")
+                       formmethod="post" />
+
+            </form>
+        </div>
 
 </section>
