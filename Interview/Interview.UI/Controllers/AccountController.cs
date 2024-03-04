@@ -74,8 +74,7 @@ namespace Interview.UI.Controllers
         #region Public Details Methods
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> ManageUserRoles()
         {
 
             VmInternalUser result = null;
