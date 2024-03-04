@@ -1,10 +1,11 @@
 ﻿var searchInternalUser = {
 
     SearchUri: "/Account/SearchInteralUsers",
-    GetDetailsUri: "/Account/GetUserDetails",
+    GetDetailsUri: "/Account/UserDetailsPartial",
     InputSelector: "#InternalName",
     UserDetailsContainer: $("#userDetailsContainer")[0],
-    UserDetails: $("#userDetails")[0],
+    //UserDetails: $("#userDetails")[0],
+    UserDetailsPartialContainer: $("#divUserDetailsPartial")[0],
 
     Init: function () {
 
@@ -41,12 +42,15 @@
 
         $.ajax({
             url: searchInternalUser.GetDetailsUri,
-            dataType: "json",
+            dataType: "html",
             async: true,
             data: { userPrincipalName: userPrincipalName },
-            success: function (event, ui) {
+            success: function (html, ui) {
                 $(searchInternalUser.UserDetailsContainer).show();
-                $(searchInternalUser.UserDetails).html(event.results);
+                $(searchInternalUser.UserDetailsPartialContainer).html(html);
+            },
+            error: function (e, status) {
+                debugger;
             }
         });
 

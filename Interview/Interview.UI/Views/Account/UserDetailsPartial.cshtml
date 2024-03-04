@@ -1,0 +1,51 @@
+﻿
+@using Interview.UI.Models.Graph
+@inject IViewLocalizer localizer
+
+@{
+
+    GraphUser graphUser = ViewBag.GraphUser; 
+
+}
+
+<section class="panel panel-primary mrgn-tp-md">
+
+    <header class="panel-heading">
+        <h5 class="panel-title">@localizer["UserDetails"]</h5>
+    </header>
+
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-md-2">
+                <strong>@localizer["FirstName"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.givenName
+            </div>
+            <div class="col-md-2">
+                <strong>@localizer["LastName"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.surname
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <strong>@localizer["DisplayName"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.displayName
+            </div>
+            <div class="col-md-2">
+                <strong>@localizer["Email"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.mail
+            </div>
+        </div>
+
+    </div>
+
+</section>

@@ -71,7 +71,7 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Details Methods
+        #region Public Manage User Roles Methods
 
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles()
@@ -106,9 +106,25 @@ namespace Interview.UI.Controllers
             };
 
         }
+      
+        private void RegisterManageUserRolesClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
+
+        }
+
+        #endregion
+
+        #region Public User Details Partial Methods
 
         [HttpGet]
-        public async Task<JsonResult> GetUserDetails(string userPrincipalName)
+        public async Task<PartialViewResult> UserDetailsPartial(string userPrincipalName)
         {
 
             string result = null;
@@ -116,12 +132,9 @@ namespace Interview.UI.Controllers
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             graphUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            result = JsonConvert.SerializeObject(graphUser, Formatting.Indented);
+            ViewBag.GraphUser = graphUser;
 
-            return new JsonResult(new { result = true, results = result })
-            {
-                StatusCode = 200
-            };
+            return PartialView();
 
         }
 
@@ -152,39 +165,6 @@ namespace Interview.UI.Controllers
 
                 return View("Details", vmInternalUser);
             }
-
-        }
-
-        private void RegisterManageUserRolesClientResources()
-        {
-
-            // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-
-            // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
-
-        }
-
-        #endregion
-
-        #region Public Search Users Methods
-
-        [HttpGet]
-        public async Task<IActionResult> SearchUsers()
-        {
-
-            // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-
-            // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
-
-            HandleCommonPageMethods();
-
-            return View();
 
         }
 
