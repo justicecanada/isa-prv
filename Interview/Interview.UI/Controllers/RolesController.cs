@@ -474,29 +474,8 @@ namespace Interview.UI.Controllers
         {
 
             string callbackUrl = GetCallbackUrl(externalUser.Id);
-            string body = emailTemplate.EmailBody
-                .Replace("{0}", externalUser.GivenName)
-                .Replace("{1}", externalUser.SurName)
-                .Replace("{8}", externalUser.Id.ToString().Substring(0, 5))
-                .Replace("{9}", "<strong>Get PathBase from somewhere - this is just a placeholder</strong>")
-                .Replace("{callbackUrl}", callbackUrl); 
-            List<EmailRecipent> toRecipients = _emailsManager.GetEmailRecipients(externalUser.Email);
+            EmailEnvelope emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateExternal(emailTemplate, externalUser, callbackUrl);
 
-            EmailEnvelope emailEnvelope = new EmailEnvelope()
-            {
-                message = new EmailMessage()
-                {
-                    subject = emailTemplate.EmailSubject,
-                    body = new EmailBody()
-                    {
-                        contentType = "HTML",
-                        content = body
-                    },
-                    toRecipients = toRecipients,
-                    //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
-                },
-                saveToSentItems = "false"
-            };
             HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, accessToken, User.Identity.Name);
 
         }
