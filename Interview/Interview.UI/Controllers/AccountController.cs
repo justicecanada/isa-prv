@@ -77,64 +77,14 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> ManageUserRoles()
         {
 
-            VmInternalUser result = null;
-            GraphUser graphUser = await GetGraphUser();
-            InternalUser internalUser = await _dal.GetInternalUserByEntraId(EntraId);
+            //VmInternalUser result = null;
+            //GraphUser graphUser = await GetGraphUser();
+            //InternalUser internalUser = await _dal.GetInternalUserByEntraId(EntraId);
 
-            ViewBag.GraphUser = graphUser;
-            result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
+            //ViewBag.GraphUser = graphUser;
+            //result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
 
-            HandleCommonPageMethods();
-
-            return View(result);
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeRole(VmInternalUser vmInternalUser)
-        {
-
-            if (ModelState.IsValid)
-            {
-
-                InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
-
-                internaluser.EntraId = EntraId;
-                if (vmInternalUser.Id == null)
-                    await _dal.AddEntity<InternalUser>(internaluser);
-                else
-                    await _dal.UpdateEntity(internaluser);
-
-                return RedirectToAction("Details");
-
-            }
-            else
-            {
-                GraphUser graphUser = await GetGraphUser();
-
-                ViewBag.GraphUser = graphUser;
-
-                return View("Details", vmInternalUser);
-            }
-
-        }
-
-        #endregion
-
-        #region Public Search Users Methods
-
-        [HttpGet]
-        public async Task<IActionResult> SearchUsers()
-        {
-
-            // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-
-            // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
-
+            RegisterManageUserRolesClientResources();
             HandleCommonPageMethods();
 
             return View();
@@ -172,6 +122,69 @@ namespace Interview.UI.Controllers
             {
                 StatusCode = 200
             };
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeRole(VmInternalUser vmInternalUser)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
+
+                internaluser.EntraId = EntraId;
+                if (vmInternalUser.Id == null)
+                    await _dal.AddEntity<InternalUser>(internaluser);
+                else
+                    await _dal.UpdateEntity(internaluser);
+
+                return RedirectToAction("Details");
+
+            }
+            else
+            {
+                GraphUser graphUser = await GetGraphUser();
+
+                ViewBag.GraphUser = graphUser;
+
+                return View("Details", vmInternalUser);
+            }
+
+        }
+
+        private void RegisterManageUserRolesClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
+
+        }
+
+        #endregion
+
+        #region Public Search Users Methods
+
+        [HttpGet]
+        public async Task<IActionResult> SearchUsers()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
+
+            HandleCommonPageMethods();
+
+            return View();
 
         }
 
