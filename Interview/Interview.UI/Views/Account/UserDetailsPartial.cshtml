@@ -52,21 +52,15 @@
             </div>
         </div>
 
-    </div>
+        <hr />
 
-</section>
+        <form>
 
-<section class="panel panel-primary mrgn-tp-md">
-
-    <header class="panel-heading">
-        <h5 class="panel-title">@roleHeading</h5>
-    </header>
-
-    <div class="panel-body">
-            <form>
+            <h3>@localizer["ChangeRole"]</h3>
 
             @Html.AntiForgeryToken()
 
+            @Html.HiddenFor(x => x.Id)
             @Html.HiddenFor(x => x.EntraId)
 
             @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
@@ -74,7 +68,8 @@
             <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ManageUserRoles", "Account")
                        formmethod="post" />
 
-            </form>
-        </div>
+        </form>
+
+    </div>
 
 </section>

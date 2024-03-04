@@ -96,32 +96,35 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> ManageUserRoles(VmInternalUser vmInternalUser)
         {
 
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            GraphUser graphUser = await _usersManager.GetUserInfoAsync(vmInternalUser.EntraId.ToString(), tokenResponse.access_token);
+
             if (ModelState.IsValid)
             {
 
                 InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
 
-                internaluser.EntraId = EntraId;
                 if (vmInternalUser.Id == null)
                     await _dal.AddEntity<InternalUser>(internaluser);
                 else
                     await _dal.UpdateEntity(internaluser);
 
-                return RedirectToAction("ManageUserRoles");
+                RegisterManageUserRolesClientResources();
+                HandleCommonPageMethods();
+                Notify($"User {graphUser.givenName} {graphUser.surname} was added to role {vmInternalUser.RoleType}", "success");
+
+                return View();
 
             }
             else
             {
-
-                TokenResponse tokenResponse = await _tokenManager.GetToken();
-                GraphUser graphUser = await _usersManager.GetUserInfoAsync(vmInternalUser.EntraId.ToString(), tokenResponse.access_token);
 
                 ViewBag.GraphUser = graphUser;
 
                 RegisterManageUserRolesClientResources();
                 HandleCommonPageMethods();
 
-                return View("ManageUserRoles", vmInternalUser);
+                return View(vmInternalUser);
             }
 
         }
