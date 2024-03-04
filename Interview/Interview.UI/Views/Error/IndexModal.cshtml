@@ -1,0 +1,21 @@
+﻿
+
+@{
+
+    string exceptionId = ViewBag.ExceptionId;
+
+}
+
+<header class="modal-header">
+    <h2 class="modal-title">Error</h2>
+    @*<div class="mfp-close"></div>*@
+    <button title="%title%" type="button" class="mfp-close">x</button>
+</header>
+
+<div class="modal-body">
+
+    <h1>Custom Error page</h1>
+
+    <p>ExceptionId = @exceptionId</p>
+
+</div>
