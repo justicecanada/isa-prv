@@ -170,7 +170,7 @@ namespace Interview.UI.Controllers
 
                 ViewBag.GraphUser = graphUser;
 
-                return View("Details", vmInternalUser);
+                return View("UserDetailsPartial", vmInternalUser);
             }
 
         }
