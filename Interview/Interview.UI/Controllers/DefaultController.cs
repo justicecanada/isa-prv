@@ -565,10 +565,8 @@ namespace Interview.UI.Controllers
                             emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
                             emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, graphUser.mail);
                         }
+                        responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
                     }
-
-                    responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
-
                 }
  
             }
