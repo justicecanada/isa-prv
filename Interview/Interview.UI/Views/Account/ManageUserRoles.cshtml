@@ -1,13 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Interview.UI.Models.Graph
+@inject IViewLocalizer localizer
+
 @{
+
+    GraphUser graphUser = ViewBag.GraphUser;
+
 }
 
-<h1>Search Users</h1>
+<h1>@localizer["ChangeUserRole"]</h1>
 
+<label for="InternalName">@localizer["SearchUser"]:</label>
 <input class="form-control ui-autocomplete-input" id="InternalName" name="InternalName" type="text" value="" autocomplete="off">
 
-<div id="userDetailsContainer" style="display: none">
-    <div id="divUserDetailsPartial"></div>
+
+<div id="userDetailsContainer">
+    <div id="divUserDetailsPartial">
+        @if (graphUser != null)
+        {
+            await Html.RenderPartialAsync("UserDetailsPartial");
+        }
+    </div>
 </div>

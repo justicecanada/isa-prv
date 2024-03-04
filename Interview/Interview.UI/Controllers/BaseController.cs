@@ -136,7 +136,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
             if (User.IsInRole(RoleTypes.Admin.ToString()))
             {
-                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Account"].Value, Href = "/Account/ManageUserRoles" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
             }
 
         }

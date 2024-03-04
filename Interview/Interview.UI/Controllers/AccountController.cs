@@ -91,6 +91,41 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageUserRoles(VmInternalUser vmInternalUser)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
+
+                internaluser.EntraId = EntraId;
+                if (vmInternalUser.Id == null)
+                    await _dal.AddEntity<InternalUser>(internaluser);
+                else
+                    await _dal.UpdateEntity(internaluser);
+
+                return RedirectToAction("Details");
+
+            }
+            else
+            {
+
+                TokenResponse tokenResponse = await _tokenManager.GetToken();
+                GraphUser graphUser = await _usersManager.GetUserInfoAsync(vmInternalUser.EntraId.ToString(), tokenResponse.access_token);
+
+                ViewBag.GraphUser = graphUser;
+
+                RegisterManageUserRolesClientResources();
+                HandleCommonPageMethods();
+
+                return View("ManageUserRoles", vmInternalUser);
+            }
+
+        }
+
         [HttpGet]
         public async Task<JsonResult> SearchInteralUsers(string query)
         {
@@ -106,23 +141,7 @@ namespace Interview.UI.Controllers
             };
 
         }
-      
-        private void RegisterManageUserRolesClientResources()
-        {
-
-            // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-
-            // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
-
-        }
-
-        #endregion
-
-        #region Public User Details Partial Methods
-
+ 
         [HttpGet]
         public async Task<PartialViewResult> UserDetailsPartial(string userPrincipalName)
         {
@@ -145,33 +164,15 @@ namespace Interview.UI.Controllers
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeRole(VmInternalUser vmInternalUser)
+        private void RegisterManageUserRolesClientResources()
         {
 
-            if (ModelState.IsValid)
-            {
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
 
-                InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
-
-                internaluser.EntraId = EntraId;
-                if (vmInternalUser.Id == null)
-                    await _dal.AddEntity<InternalUser>(internaluser);
-                else
-                    await _dal.UpdateEntity(internaluser);
-
-                return RedirectToAction("Details");
-
-            }
-            else
-            {
-                GraphUser graphUser = await GetGraphUser();
-
-                ViewBag.GraphUser = graphUser;
-
-                return View("UserDetailsPartial", vmInternalUser);
-            }
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
 
         }
 

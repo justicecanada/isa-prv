@@ -67,11 +67,11 @@
 
             @Html.AntiForgeryToken()
 
-            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.EntraId)
 
             @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
 
-                <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ChangeRole", "Account")
+            <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ManageUserRoles", "Account")
                        formmethod="post" />
 
             </form>
