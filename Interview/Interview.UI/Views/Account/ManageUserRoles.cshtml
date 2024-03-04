@@ -3,11 +3,20 @@
 
 @{
 
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "RoleType"
+    }).Select(x => x.ToLower()).ToList();
+
     GraphUser graphUser = ViewBag.GraphUser;
 
 }
 
 <h1>@localizer["ChangeUserRole"]</h1>
+
+@{
+    await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
+}
 
 <label for="InternalName">@localizer["SearchUser"]:</label>
 <input class="form-control ui-autocomplete-input" id="InternalName" name="InternalName" type="text" value="" autocomplete="off">

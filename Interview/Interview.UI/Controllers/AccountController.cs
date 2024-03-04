@@ -107,7 +107,7 @@ namespace Interview.UI.Controllers
                 else
                     await _dal.UpdateEntity(internaluser);
 
-                return RedirectToAction("Details");
+                return RedirectToAction("ManageUserRoles");
 
             }
             else
