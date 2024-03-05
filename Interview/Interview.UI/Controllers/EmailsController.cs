@@ -25,19 +25,21 @@ namespace Interview.UI.Controllers
         private readonly IState _state;
         private readonly IToken _tokenManager;
         private readonly IEmails _emailsManager;
+        private readonly IStringLocalizer<EmailsController> _localizer;
 
         #endregion
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, 
-            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<BaseController> baseLocalizer, 
+            IToken tokenManager, IEmails emailsManager, IStringLocalizer<EmailsController> localizer) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
             _tokenManager = tokenManager;
             _emailsManager = emailsManager;
+            _localizer = localizer;
         }
 
         #endregion
@@ -85,6 +87,8 @@ namespace Interview.UI.Controllers
                 else
                     await _dal.UpdateEntity(emailTemplate);
             }
+
+            Notify(_localizer["NotifySaveSuccess"].Value, "success");
 
             return RedirectToAction("Index");
 

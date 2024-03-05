@@ -117,6 +117,8 @@ namespace Interview.UI.Controllers
                     }
                 }
 
+                Notify(_localizer["NotifyUserRoleAddedSuccess"].Value, "success");
+
                 return RedirectToAction("Index");
 
             }
@@ -401,6 +403,8 @@ namespace Interview.UI.Controllers
 
             }
 
+            Notify(_localizer["NotifyUserRoleEditSuccess"].Value, "success");
+
             return RedirectToAction("Index");
 
         }
@@ -419,6 +423,8 @@ namespace Interview.UI.Controllers
         {
 
             await _dal.DeleteEntity<RoleUser>(id);
+
+            Notify(_localizer["NotifyDeleteRoleSuccess"].Value, "success");
 
             return new JsonResult(new { result = true, id = id })
             {
