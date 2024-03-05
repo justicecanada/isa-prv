@@ -11,6 +11,10 @@
 
 <h1>@localizer["Title"]</h1>
 
+@{
+    await Html.RenderPartialAsync("NotificationPartial");
+}
+
 <div role="alert" id="ctl00_cphMainContent_wetInfoVar" class="alert-info alert">
     @Html.Raw(localizer["Message"].Value)
 </div>
