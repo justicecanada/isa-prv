@@ -65,7 +65,6 @@ namespace Interview.UI.Controllers
             }
 
             RegisterIndexClientResources();
-            HandleNotification();
 
             return View(result);
 
@@ -88,7 +87,7 @@ namespace Interview.UI.Controllers
                     await _dal.UpdateEntity(emailTemplate);
             }
 
-            _state.NoticationMessage = _localizer["NotifySaveSuccess"].Value;
+            Notify(_localizer["NotifySaveSuccess"].Value, "success");
 
             return RedirectToAction("Index");
 
@@ -100,19 +99,6 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/JusRichTextBoxFor.js?v={BuildId}\"></script>");
-
-        }
-
-        private void HandleNotification()
-        {
-
-            string notificationMessage = _state.NoticationMessage;
-
-            if (!string.IsNullOrEmpty(notificationMessage))
-            {
-                Notify(notificationMessage, "success");
-                _state.NoticationMessage = null;
-            }
 
         }
 

@@ -51,7 +51,6 @@ namespace Interview.UI.Controllers
 
             await IndexSetViewBag();
             IndexRegisterClientResources();
-            HandleNotification();
 
             return View();
 
@@ -73,7 +72,7 @@ namespace Interview.UI.Controllers
             await _dal.DeleteEntity<Process>(id);
 
             //_state.ProcessId = null;
-            _state.NoticationMessage = _localizer["NotifyDeleteSuccess"].Value;
+            Notify(_localizer["NotifyDeleteSuccess"].Value, "success");
 
             return new JsonResult(new { result = true, id = id })
             {
