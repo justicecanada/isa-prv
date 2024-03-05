@@ -57,7 +57,7 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            string baseUrl = $"{_host}/v1.0/users";
+            string baseUrl = $"{_host}/v1.0/users?";
             string filterKey = "$filter=";
             string nameFilter = $"startswith(givenName, '{query}') or startswith(surname, '{query}')";
 
