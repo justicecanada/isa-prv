@@ -4,6 +4,7 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
+using Interview.UI.Models.Roles;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
