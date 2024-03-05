@@ -5,6 +5,7 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
+using Interview.UI.Models.Roles;
 using Interview.UI.Models.Shared;
 using Interview.UI.Services.DAL;
 using Microsoft.AspNetCore.Mvc;
@@ -134,7 +135,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
             WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
-            if (User.IsInRole(RoleTypes.Admin.ToString()))
+            if (User.IsInRole(Roles.Admin))
             {
                 WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
             }
