@@ -62,15 +62,18 @@ namespace Interview.UI.Services.Graph
             string nameClause = $"startswith(givenName, '{query}') or startswith(surname, '{query}')";
             string enabledClause = "accountEnabled eq true";
             string memberClause = "userType eq 'member'";
-            string filterSuffix = "&$top=10";
+            string emailClause = "endswith(userPrincipalName,'@justice.gc.ca') OR endswith(userPrincipalName,'.osi-bis.ca') OR " +
+                "endswith(userPrincipalName,'.lcc-cdc.gc.ca') OR endswith(userPrincipalName,'.interlocuteur-special-interlocutor.ca') OR endswith(userPrincipalName,'.ombudsman.gc.ca')";
+            string filterSuffix = "&$top=10&$count=true";
 
-            string fullFilter = $"{baseUrl}{filterKey}({nameClause}) and ({enabledClause}) and ({memberClause}){filterSuffix}";
+            string fullFilter = $"{baseUrl}{filterKey}({nameClause}) and ({enabledClause}) and ({memberClause}) and ({emailClause}){filterSuffix}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri(fullFilter))
             {
                 Headers =
                 {
-                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" }
+                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {token}" },
+                    { "ConsistencyLevel", "eventual" }
                 }
             };
             HttpResponseMessage response = _client.SendAsync(request).Result;
