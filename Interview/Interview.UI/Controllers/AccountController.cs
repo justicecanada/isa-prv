@@ -172,41 +172,6 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region User Filter Results
-
-        [HttpGet]
-        public async Task<IActionResult> UserFilterClauses()
-        {
-
-            SearchUsersResponse searchUsersResponse = null;
-            TokenResponse tokenResponse = await _tokenManager.GetToken();
-
-            // Disabled Users
-            searchUsersResponse = await _usersManager.GetEnabledAccountsAsync(tokenResponse.access_token);
-            ViewBag.EnabledAccounts = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
-
-            // DirSync
-            searchUsersResponse = await _usersManager.GetDirSyncEnabledAsync(tokenResponse.access_token);
-            ViewBag.DirSyncs = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
-
-            // Member User Types
-            searchUsersResponse = await _usersManager.GetMemberUserTypesAsync(tokenResponse.access_token);
-            ViewBag.MemberUserTypes = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
-
-            // Bad Emails
-            searchUsersResponse = await _usersManager.GetBadEmailsAsync(tokenResponse.access_token);
-            ViewBag.BadEmails = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
-
-            // No Slashes in Emails
-            //searchUsersResponse = await _usersManager.GetNoSlashesInEmailAsync(tokenResponse.access_token);
-            //ViewBag.NoSlashesInEmails = JsonConvert.SerializeObject(searchUsersResponse, Formatting.Indented);
-
-            return View();
-
-        }
-
-        #endregion
-
         #region Raise Exception Methods
 
         [HttpGet]
