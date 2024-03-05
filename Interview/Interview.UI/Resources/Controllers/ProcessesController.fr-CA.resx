@@ -120,4 +120,7 @@
   <data name="DeleteConfirmationString" xml:space="preserve">
     <value>Êtes-vous certain de vouloir supprimer ce processus?</value>
   </data>
+  <data name="NotifyDeleteSuccess" xml:space="preserve">
+    <value>Ce processus à été supprimé avec succès.</value>
+  </data>
 </root>
