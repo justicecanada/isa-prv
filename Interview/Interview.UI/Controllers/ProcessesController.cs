@@ -71,7 +71,8 @@ namespace Interview.UI.Controllers
 
             await _dal.DeleteEntity<Process>(id);
 
-            _state.ProcessId = null;
+            //_state.ProcessId = null;
+            Notify(_localizer["NotifyDeleteSuccess"].Value, "success");
 
             return new JsonResult(new { result = true, id = id })
             {
@@ -102,6 +103,19 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/DeleteConfirmationModal.js?v={BuildId}'></script>");
+
+        }
+
+        private void HandleNotification()
+        {
+
+            string notificationMessage = _state.NoticationMessage;
+
+            if (!string.IsNullOrEmpty(notificationMessage))
+            {
+                Notify(notificationMessage, "success");
+                _state.NoticationMessage = null;
+            }
 
         }
 

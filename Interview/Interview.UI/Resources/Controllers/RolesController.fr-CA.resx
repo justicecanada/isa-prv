@@ -129,8 +129,17 @@
   <data name="InternalUserDoesNotExist" xml:space="preserve">
     <value>That Internal User does not exist. (fr)</value>
   </data>
+  <data name="NotifyDeleteRoleSuccess" xml:space="preserve">
+    <value>L\'assignation de ce rôle à été supprimé avec succès.</value>
+  </data>
   <data name="NotifyMultipleExternalEmailSuccess" xml:space="preserve">
     <value>Les courriels pour les candidats externes ont été envoyés.</value>
+  </data>
+  <data name="NotifyUserRoleAddedSuccess" xml:space="preserve">
+    <value>Le rôle de l\'employé a été ajouté avec succès.</value>
+  </data>
+  <data name="NotifyUserRoleEditSuccess" xml:space="preserve">
+    <value>Le rôle de cet employé a été modifié avec succès.</value>
   </data>
   <data name="UserAlreadyInRole" xml:space="preserve">
     <value>This User is already in the Role. (fr)</value>
