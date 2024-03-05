@@ -61,10 +61,10 @@ namespace Interview.UI.Services.Graph
             string filterKey = "$filter=";
             string nameClause = $"startswith(givenName, '{query}') or startswith(surname, '{query}')";
             string enabledClause = "accountEnabled eq true";
+            string memberClause = "userType eq 'member'";
             string filterSuffix = "&$top=10";
 
-            string fullFilter = $"{baseUrl}{filterKey}({nameClause}) and ({enabledClause}){filterSuffix}";
-
+            string fullFilter = $"{baseUrl}{filterKey}({nameClause}) and ({enabledClause}) and ({memberClause}){filterSuffix}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri(fullFilter))
             {
