@@ -57,10 +57,15 @@ namespace Interview.UI.Services.Graph
 
             SearchUsersResponse result = null;
             object badRequest = null;
-            //var justiceFilter = "(user.accountEnabled -eq true) and (user.dirSyncEnabled -eq true) and (user.userType -eq \"member\") and (user.userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$\") and (user.mail -notContains \"/\")";
-            var justiceFilter = "userPrincipalName -match \"^[^./]+\\.[^./]+@(?>justice\\.gc\\.ca|osi-bis\\.ca|lcc-cdc\\.gc\\.ca|interlocuteur-special-interlocutor\\.ca|ombudsman\\.gc\\.ca)$";
+            string baseUrl = $"{_host}/v1.0/users";
+            string filterKey = "$filter=";
+            string nameFilter = $"startswith(givenName, '{query}') or startswith(surname, '{query}')";
 
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users?$filter=startswith(givenName, '{query}') or startswith(surname, '{query}')&$top=10 & {justiceFilter}"))
+            string filterSuffix = "&$top=10";
+
+            string fullFilter = $"{baseUrl}{filterKey}{nameFilter}{filterSuffix}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(fullFilter))
             {
                 Headers =
                 {
