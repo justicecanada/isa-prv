@@ -59,11 +59,12 @@ namespace Interview.UI.Services.Graph
             object badRequest = null;
             string baseUrl = $"{_host}/v1.0/users?";
             string filterKey = "$filter=";
-            string nameFilter = $"startswith(givenName, '{query}') or startswith(surname, '{query}')";
-
+            string nameClause = $"startswith(givenName, '{query}') or startswith(surname, '{query}')";
+            string enabledClause = "accountEnabled eq true";
             string filterSuffix = "&$top=10";
 
-            string fullFilter = $"{baseUrl}{filterKey}{nameFilter}{filterSuffix}";
+            string fullFilter = $"{baseUrl}{filterKey}({nameClause}) and ({enabledClause}){filterSuffix}";
+
 
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri(fullFilter))
             {
