@@ -129,8 +129,17 @@
   <data name="InternalUserDoesNotExist" xml:space="preserve">
     <value>That Internal User does not exist.</value>
   </data>
+  <data name="NotifyDeleteRoleSuccess" xml:space="preserve">
+    <value>The assignment of this role has been removed successfully!</value>
+  </data>
   <data name="NotifyMultipleExternalEmailSuccess" xml:space="preserve">
     <value>Emails for external candidates have been sent.</value>
+  </data>
+  <data name="NotifyUserRoleAddedSuccess" xml:space="preserve">
+    <value>The role of the employee has been added successfully.</value>
+  </data>
+  <data name="NotifyUserRoleEditSuccess" xml:space="preserve">
+    <value>The role of this employee has been changed successfully.</value>
   </data>
   <data name="UserAlreadyInRole" xml:space="preserve">
     <value>This User is already in the Role.</value>
