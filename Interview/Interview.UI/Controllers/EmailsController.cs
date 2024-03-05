@@ -25,19 +25,21 @@ namespace Interview.UI.Controllers
         private readonly IState _state;
         private readonly IToken _tokenManager;
         private readonly IEmails _emailsManager;
+        private readonly IStringLocalizer<EmailsController> _localizer;
 
         #endregion
 
         #region Constructors
 
-        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, 
-            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager) 
+        public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<BaseController> baseLocalizer, 
+            IToken tokenManager, IEmails emailsManager, IStringLocalizer<EmailsController> localizer) 
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
             _tokenManager = tokenManager;
             _emailsManager = emailsManager;
+            _localizer = localizer;
         }
 
         #endregion
@@ -63,6 +65,7 @@ namespace Interview.UI.Controllers
             }
 
             RegisterIndexClientResources();
+            HandleNotification();
 
             return View(result);
 
@@ -85,6 +88,8 @@ namespace Interview.UI.Controllers
                     await _dal.UpdateEntity(emailTemplate);
             }
 
+            _state.NoticationMessage = _localizer["NotifySaveSuccess"].Value;
+
             return RedirectToAction("Index");
 
         }
@@ -95,6 +100,19 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add("<script src=\"/assets/vendor/ckeditor5/build/ckeditor.js\"></script>");
 
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/JusRichTextBoxFor.js?v={BuildId}\"></script>");
+
+        }
+
+        private void HandleNotification()
+        {
+
+            string notificationMessage = _state.NoticationMessage;
+
+            if (!string.IsNullOrEmpty(notificationMessage))
+            {
+                Notify(notificationMessage, "success");
+                _state.NoticationMessage = null;
+            }
 
         }
 
