@@ -24,7 +24,8 @@ namespace Interview.UI.Services.Graph
         private readonly IMemoryCache _cache;
         private readonly X509Certificate2 _certificate;
 
-        private const string _host = "https://login.microsoftonline.com";
+        private const string _host = "https://login.microsoftonline.com/";
+        private const string _subdirectory = "/oauth2/v2.0/token";
         private const string _grantType = "client_credentials";
         private const string _scope = "https://graph.microsoft.com/.default";
         private const string _cacheKey = "TOKEN_CACHE_KEY";
@@ -120,7 +121,8 @@ namespace Interview.UI.Services.Graph
             // User Secrets: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&source=recommendations&tabs=windows
 
             TokenResponse result = null;
-            var clientAssertion = GetSignedClientAssertion(_certificate, _tokenOptions.Value.ClientId);
+            var tokenEndpoint = $"{_host}{_tokenOptions.Value.TenantId}{_subdirectory}";
+            var clientAssertion = GetSignedClientAssertion(_certificate, tokenEndpoint, _tokenOptions.Value.ClientId);
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
               { "client_id", _tokenOptions.Value.ClientId },
 
@@ -134,7 +136,7 @@ namespace Interview.UI.Services.Graph
               { "grant_type", _grantType },
               { "scope", _scope },
             });
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}{_tokenOptions.Value.Uri}"))
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(tokenEndpoint))
             {
                 Content = content
             };
@@ -150,16 +152,13 @@ namespace Interview.UI.Services.Graph
 
         }
 
-        private string GetSignedClientAssertion(X509Certificate2 certificate, string clientId)
+        string GetSignedClientAssertion(X509Certificate2 certificate, string tokenEndpoint, string clientId)
         {
-
-            // https://learn.microsoft.com/en-us/entra/msal/dotnet/acquiring-tokens/web-apps-apis/confidential-client-assertions#crafting-the-assertion
-
             // no need to add exp, nbf as JsonWebTokenHandler will add them by default.
             string result = null;
             var claims = new Dictionary<string, object>()
             {
-                { "aud", "https://login.microsoftonline.com/44c0b27b-bb8b-4284-829c-8ad96d3b40e5/oauth2/v2.0/token" },
+                { "aud", tokenEndpoint },
                 { "iss", clientId },
                 { "jti", Guid.NewGuid().ToString() },
                 { "sub", clientId }
@@ -184,7 +183,6 @@ namespace Interview.UI.Services.Graph
             return result;
 
         }
-
 
         private void LogCredentials()
         {

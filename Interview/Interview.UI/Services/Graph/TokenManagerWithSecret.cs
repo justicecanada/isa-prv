@@ -21,7 +21,8 @@ namespace Interview.UI.Services.Graph
         private readonly ILogger<TokenManagerWithSecret> _logger;
         private readonly IMemoryCache _cache;
 
-        private const string _host = "https://login.microsoftonline.com";
+        private const string _host = "https://login.microsoftonline.com/";
+        private const string _subdirectory = "/oauth2/v2.0/token";
         private const string _grantType = "client_credentials";
         private const string _scope = "https://graph.microsoft.com/.default";
         private const string _cacheKey = "TOKEN_CACHE_KEY";  
@@ -113,14 +114,10 @@ namespace Interview.UI.Services.Graph
               { "grant_type", _grantType },
               { "scope", _scope },
             });
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}{_tokenOptions.Value.Uri}"))
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{_host}{_tokenOptions.Value.TenantId}{_subdirectory}"))
             {
                 Content = content
             };
-
-            //LogCredentials();
-
-            _client.BaseAddress = new Uri(_host);
             HttpResponseMessage response = _client.SendAsync(request).Result;
 
             result = await response.Content.ReadFromJsonAsync<TokenResponse>();
