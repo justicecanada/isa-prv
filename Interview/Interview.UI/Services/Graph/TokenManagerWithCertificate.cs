@@ -3,6 +3,8 @@ using Interview.UI.Models.Graph;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
@@ -118,9 +120,17 @@ namespace Interview.UI.Services.Graph
             // User Secrets: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&source=recommendations&tabs=windows
 
             TokenResponse result = null;
+            var clientAssertion = GetSignedClientAssertion(_certificate, _tokenOptions.Value.ClientId);
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
               { "client_id", _tokenOptions.Value.ClientId },
+
+              // Used for Secret
               //{ "client_secret", _config["microsoft-provider-authentication-secret"] },
+
+              // Used for Cert
+              { "client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" },
+              { "client_assertion", clientAssertion },
+
               { "grant_type", _grantType },
               { "scope", _scope },
             });
@@ -128,7 +138,6 @@ namespace Interview.UI.Services.Graph
             {
                 Content = content
             };
-            request.Headers.Add("X-ARR-ClientCert", _certificate.GetRawCertDataString());
 
             //LogCredentials();
 
@@ -140,6 +149,42 @@ namespace Interview.UI.Services.Graph
             return result;
 
         }
+
+        private string GetSignedClientAssertion(X509Certificate2 certificate, string clientId)
+        {
+
+            // https://learn.microsoft.com/en-us/entra/msal/dotnet/acquiring-tokens/web-apps-apis/confidential-client-assertions#crafting-the-assertion
+
+            // no need to add exp, nbf as JsonWebTokenHandler will add them by default.
+            string result = null;
+            var claims = new Dictionary<string, object>()
+            {
+                { "aud", "https://login.microsoftonline.com/44c0b27b-bb8b-4284-829c-8ad96d3b40e5/oauth2/v2.0/token" },
+                { "iss", clientId },
+                { "jti", Guid.NewGuid().ToString() },
+                { "sub", clientId }
+            };
+
+            var securityTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Claims = claims,
+                SigningCredentials = new X509SigningCredentials(certificate)
+            };
+
+            var handler = new JsonWebTokenHandler();
+            try
+            {
+                result = handler.CreateToken(securityTokenDescriptor);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+            }
+
+            return result;
+
+        }
+
 
         private void LogCredentials()
         {
