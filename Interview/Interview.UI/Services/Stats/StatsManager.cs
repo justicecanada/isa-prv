@@ -208,7 +208,7 @@ namespace Interview.UI.Services.Stats
 
         #region Private Methods
 
-        public List<VmDashboardItem> GetDashboardItemsByDay(List<Process> processes, List<Equity> equities, string cultureName)
+        private List<VmDashboardItem> GetDashboardItemsByDay(List<Process> processes, List<Equity> equities, string cultureName)
         {
 
             List<VmDashboardItem> result = new List<VmDashboardItem>();
@@ -260,7 +260,7 @@ namespace Interview.UI.Services.Stats
 
         }
 
-        public List<VmDashboardItem> GetDashboardItemsByMonth(List<Process> processes, List<Equity> equities, string cultureName)
+        private List<VmDashboardItem> GetDashboardItemsByMonth(List<Process> processes, List<Equity> equities, string cultureName)
         {
 
             List<VmDashboardItem> result = new List<VmDashboardItem>();
@@ -330,34 +330,40 @@ namespace Interview.UI.Services.Stats
                         {
                             foreach (Equity equity in equities)
                             {
-                                if (!dashboardItem.EeCandidates.ContainsKey(equity.Id))
+                                if (roleUser.RoleUserEquities.Any(x => x.EquityId == equity.Id))
                                 {
-                                    dashboardItem.EeCandidates.Add(equity.Id, new VmEeGroupItem()
+                                    if (!dashboardItem.EeCandidates.ContainsKey(equity.Id))
                                     {
-                                        EquityId = equity.Id,
-                                        Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
-                                        Count = 1
-                                    });
+                                        dashboardItem.EeCandidates.Add(equity.Id, new VmEeGroupItem()
+                                        {
+                                            EquityId = equity.Id,
+                                            Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                                            Count = 1
+                                        });
+                                    }
+                                    else
+                                        dashboardItem.EeCandidates[equity.Id].Count++;
                                 }
-                                else
-                                    dashboardItem.EeCandidates[equity.Id].Count++;
                             }
                         }
                         else
                         {
                             foreach (Equity equity in equities)
                             {
-                                if (!dashboardItem.EeBoardMembers.ContainsKey(equity.Id))
+                                if (roleUser.RoleUserEquities.Any(x => x.EquityId == equity.Id))
                                 {
-                                    dashboardItem.EeBoardMembers.Add(equity.Id, new VmEeGroupItem()
+                                    if (!dashboardItem.EeBoardMembers.ContainsKey(equity.Id))
                                     {
-                                        EquityId = equity.Id,
-                                        Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
-                                        Count = 1
-                                    });
+                                        dashboardItem.EeBoardMembers.Add(equity.Id, new VmEeGroupItem()
+                                        {
+                                            EquityId = equity.Id,
+                                            Name = cultureName == Constants.EnglishCulture ? equity.NameEN : equity.NameFR,
+                                            Count = 1
+                                        });
+                                    }
+                                    else
+                                        dashboardItem.EeBoardMembers[equity.Id].Count++;
                                 }
-                                else
-                                    dashboardItem.EeBoardMembers[equity.Id].Count++;
                             }
                         }
                     }
