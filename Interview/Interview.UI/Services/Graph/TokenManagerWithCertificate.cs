@@ -114,7 +114,7 @@ namespace Interview.UI.Services.Graph
         private async Task<TokenResponse> RefreshToken()
         {
 
-            // Get Token https://learn.microsoft.com/en-us/graph/auth-v2-service?tabs=http#token-request
+            // Get Token https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#second-case-access-token-request-with-a-certificate
             // User Secrets: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&source=recommendations&tabs=windows
 
             TokenResponse result = null;
