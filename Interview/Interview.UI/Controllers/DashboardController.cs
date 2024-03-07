@@ -92,6 +92,11 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Dashboard/Index.js?v={BuildId}'></script>");
 
+            if (System.Globalization.CultureInfo.CurrentCulture.Name == Constants.EnglishCulture)
+                WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Resources.en.js?v={BuildId}'></script>");
+            else
+                WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Resources.fr.js?v={BuildId}'></script>");
+
         }
 
         #endregion

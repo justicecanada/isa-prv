@@ -51,34 +51,67 @@
             columns: [
                 { data: "dates" },
                 { data: "numberslots" },
-                { data: "progress" },
-                { data: "numberprogresscompleted" },
-                { data: "numbercandidateinslots" },
+                {
+                    data: function (row, type, val, meta) {
+                        return row;
+                    },
+                    render: function (data, type, full, meta) {
+                        return "<div>" + Resources.Dashboard.Completed + ": " + data.numberprogresscompleted + "</div>" +
+                            "<div>" + Resources.Dashboard.Remaining + ": " + data.numberprogressremaining + "</div>";
+                    },
+                },
+                {
+                    data: function (row, type, val, meta) {
+                        return row;
+                    },
+                    render: function (data, type, full, meta) {
+                        return "<div>" + Resources.Dashboard.InTimeSlot + ": " + data.numbercandidateinslots + "</div>" +
+                            "<div>" + Resources.Dashboard.NotInTimeSlot + ": " + data.numbercandidatenotinslots + "</div>";
+                    },
+                },
+                {
+                    data: function (row, type, val, meta) {
+                        return row;
+                    },
+                    render: function (data, type, full, meta) {
+                        return "<div>" + Resources.Dashboard.Virtual + ": " + data.numbervirtuals + "</div>" +
+                            "<div>" + Resources.Dashboard.InPerson + ": " + data.numberinpersons + "</div>";
+                    },
+                },
                 { data: "numbervirtuals" },
-                { data: "nnumberdaysofinterview" },
-                { data: "eecandidates" }
-            ],
-            //columnDefs: [
-            //    { targets: "no-sort", orderable: false },
-            //    { targets: "no-search", searchable: false },
-            //    //{
-            //    //    targets: "trim",
-            //    //    render: function (data, type, full, meta) {
-            //    //        if (type === "display") {
-            //    //            data = strtrunc(data, 10);
-            //    //        }
+                {
+                    data: function (row, type, val, meta) {
+                        return row;
+                    },
+                    render: function (data, type, full, meta) {
 
-            //    //        return data;
-            //    //    }
-            //    //},
-            //    //{ targets: "date-type", type: "date-eu" },
-            //    //{
-            //    //    targets: 10,
-            //    //    data: null,
-            //    //    defaultContent: "<a class='btn btn-link' role='button' href='#' onclick='edit(this)'>Edit</a>",
-            //    //    orderable: false
-            //    //},
-            //]
+                        var result = null;
+
+                        //$(data.eeboardmembers).each(function () {
+                        //    $(this).each(function () {
+                        //        result = result + this.name + ": " + this.count;
+                        //    })
+                        //});
+
+                        return result;
+
+                    },
+                },
+                {
+                    data: function (row, type, val, meta) {
+                        return row;
+                    },
+                    render: function (data, type, full, meta) {
+
+                        var result = null;
+
+
+
+                        return result;
+
+                    },
+                },
+            ],
         });
 
     },
