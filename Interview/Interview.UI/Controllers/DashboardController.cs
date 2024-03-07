@@ -80,36 +80,6 @@ namespace Interview.UI.Controllers
 
         }
 
-        //private async Task SetIndexResultsViewBag(VmFilter vmFilter)
-        //{
-
-        //    List<Entities.Process> processResults = null;
-        //    List<VmDashboardItem> dashboardItems = null;
-
-        //    if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
-        //        processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
-        //    else if (User.IsInRole(RoleTypes.Owner.ToString()))
-        //        processResults = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
-        //    else
-        //        processResults = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
-        //    processResults.OrderByDescending(x => x.CreatedDate);
-
-        //    // Equities
-        //    List<Equity> equities = await _dal.GetAllEquities();
-        //    ViewBag.Equities = equities;
-
-        //    // Stats
-        //    string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-        //    VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
-        //    ViewBag.InterviewCounts = vmInterviewCounts;
-
-        //    // Dashboard Items
-        //    dashboardItems = _statsManager.GetDashboardItems(processResults, equities, cultureName, 
-        //        vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
-        //    ViewBag.DashboardItems = dashboardItems;
-
-        //}
-
         private void RegisterIndexClientResources()
         {
 
@@ -127,14 +97,56 @@ namespace Interview.UI.Controllers
         #region Results Table Methods
 
         [HttpPost]
-        public JsonResult GetResults([FromBody]DtParameters dtParameters)
+        public async Task<JsonResult> GetResults([FromBody]DtParameters dtParameters)
         {
 
+            DtResult<VmDashboardItem> result = null;            
             VmFilter vmFilter = JsonConvert.DeserializeObject<VmFilter>(dtParameters.formfilter);
+            List<VmDashboardItem> dashboardItems = await GetDashboardItems(vmFilter);
 
-            string result = JsonConvert.SerializeObject(dtParameters);
+            result = new DtResult<VmDashboardItem>
+            {
+                Draw = dtParameters.draw,
+                RecordsTotal = dashboardItems.Count,        // This needs to be the full non paged result set.
+                RecordsFiltered = dashboardItems.Count,     // This needs to be the amount of filtered records.
+                Data = dashboardItems
+                    .Skip(dtParameters.start)
+                    .Take(dtParameters.length)
+                    .ToList()
+            };
 
             return Json(result);
+
+        }
+
+        private async Task<List<VmDashboardItem>> GetDashboardItems(VmFilter vmFilter)
+        {
+
+            List<VmDashboardItem> result = null;
+            List<Entities.Process> processResults = null;
+
+            if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
+                processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
+            else if (User.IsInRole(RoleTypes.Owner.ToString()))
+                processResults = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
+            else
+                processResults = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
+            processResults.OrderByDescending(x => x.CreatedDate);
+
+            //// Equities
+            List<Equity> equities = await _dal.GetAllEquities();
+            //ViewBag.Equities = equities;
+
+            //// Stats
+            string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            //VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
+            //ViewBag.InterviewCounts = vmInterviewCounts;
+
+            // Dashboard Items
+            result = _statsManager.GetDashboardItems(processResults, equities, cultureName,
+                vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
+
+            return result;
 
         }
 

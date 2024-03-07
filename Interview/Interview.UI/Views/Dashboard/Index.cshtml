@@ -111,8 +111,8 @@
                 <th>@localizer["NumberBoardMembers"]</th>
             </tr>
         </thead>
-        <tbody>
-            @*@foreach (VmDashboardItem dashboardItem in dashboardItems)
+        @*<tbody>
+            @foreach (VmDashboardItem dashboardItem in dashboardItems)
             {
                 <tr>
                     <td>@dashboardItem.Dates</td>
@@ -133,7 +133,7 @@
                     <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeCandidates))</td>
                     <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeBoardMembers))</td>
                 </tr>
-            }*@
-        </tbody>
+            }
+        </tbody>*@
     </table>
 </div>

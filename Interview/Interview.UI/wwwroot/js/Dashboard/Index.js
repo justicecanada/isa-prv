@@ -44,13 +44,19 @@
                         EndDate: $(table.EndDate).val(),
                     };
                     d.formfilter = JSON.stringify(formFilter);
-                    //d.formfilter = $(formFilter).serialize();
 
                     return JSON.stringify(d);
                 }
             },
             columns: [
-                { data: "Dates" },
+                {
+                    render: function (data, type, full, meta) {
+                        return data.Dates;
+                    },
+                    data: function (row, type, val, meta) {
+                        return row;
+                    }
+                },
                 { data: "NumberSlots" },
                 { data: "Progress" },
                 { data: "NumberProgressCompleted" },
