@@ -4,8 +4,8 @@
     public class DtParameters
     {
 
-        //public object FormFilter { get; set;  }
-        
+        public string formfilter { get; set; }
+
         /// <summary>
         /// Draw counter.
         /// This is used by DataTables to ensure that the Ajax returns from server-side processing requests are drawn in sequence by DataTables (Ajax requests are asynchronous and thus can return out of sequence).

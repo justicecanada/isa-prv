@@ -7,17 +7,17 @@ namespace Interview.UI.Models.Dashboard
     {
 
         [Display(Name = "ProcessId")]
-        public Guid? ProcessId { get; set; }
+        public Guid? processid { get; set; }
 
         [Display(Name = "PeriodOfTimeType")]
-        public VmPeriodOfTimeTypes? PeriodOfTimeType { get; set; }
-        public string IntPeriodOfTime { get; set; }
+        public string periodoftime { get; set; }
+        //public string IntPeriodOfTime { get; set; }
 
         [Display(Name = "StartDate")]
-        public DateTime? StartDate { get; set; }
+        public DateTime? startdate { get; set; }
 
         [Display(Name = "EndDate")]
-        public DateTime? EndDate { get; set; }
+        public DateTime? enddate { get; set; }
 
     }
 

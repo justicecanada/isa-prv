@@ -4,8 +4,8 @@
     Url: "/Dashboard/GetResults",
     ProcessId: $("#ProcessId")[0],
     PeriodOfTimeType: $("#PeriodOfTimeType")[0],
-    StartDate: $("#StartDate")[0],
-    EndDate: $("#EndDate")[0],
+    StartDate: $("#startdate")[0],
+    EndDate: $("#enddate")[0],
 
     Init: function () {
 
@@ -37,20 +37,14 @@
                 dataType: "json",
                 data: function (d) {
 
-                    //var formFilter = {
-                    //    ProcessId: $(table.ProcessId).val(),
-                    //    PeriodOfTimeType: $(table.PeriodOfTimeType).val(),
-                    //    StartDate: $(table.StartDate).val(),
-                    //    EndDate: $(table.EndDate).val(),
-                    //};
-                    //d.FormFilter = formFilter;
-
-                    //result = JSON.stringify(d);
-
-                    //var result = {
-                    //    draw: d.draw
-                    //};
-
+                    var formFilter = {
+                        ProcessId: $(table.ProcessId).val(),
+                        PeriodOfTimeType: $(table.PeriodOfTimeType).val(),
+                        StartDate: $(table.StartDate).val(),
+                        EndDate: $(table.EndDate).val(),
+                    };
+                    d.formfilter = JSON.stringify(formFilter);
+                    //d.formfilter = $(formFilter).serialize();
 
                     return JSON.stringify(d);
                 }
