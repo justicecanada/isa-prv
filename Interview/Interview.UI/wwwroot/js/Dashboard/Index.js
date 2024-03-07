@@ -49,43 +49,36 @@
                 }
             },
             columns: [
-                {
-                    render: function (data, type, full, meta) {
-                        return data.Dates;
-                    },
-                    data: function (row, type, val, meta) {
-                        return row;
-                    }
-                },
-                { data: "NumberSlots" },
-                { data: "Progress" },
-                { data: "NumberProgressCompleted" },
-                { data: "NumberCandidateInSlots" },
-                { data: "NumberVirtuals" },
-                { data: "NumberDaysOfInterview" },
-                { data: "EeCandidates" },
+                { data: "dates" },
+                { data: "numberslots" },
+                { data: "progress" },
+                { data: "numberprogresscompleted" },
+                { data: "numbercandidateinslots" },
+                { data: "numbervirtuals" },
+                { data: "nnumberdaysofinterview" },
+                { data: "eecandidates" }
             ],
-            columnDefs: [
-                { targets: "no-sort", orderable: false },
-                { targets: "no-search", searchable: false },
-                //{
-                //    targets: "trim",
-                //    render: function (data, type, full, meta) {
-                //        if (type === "display") {
-                //            data = strtrunc(data, 10);
-                //        }
+            //columnDefs: [
+            //    { targets: "no-sort", orderable: false },
+            //    { targets: "no-search", searchable: false },
+            //    //{
+            //    //    targets: "trim",
+            //    //    render: function (data, type, full, meta) {
+            //    //        if (type === "display") {
+            //    //            data = strtrunc(data, 10);
+            //    //        }
 
-                //        return data;
-                //    }
-                //},
-                //{ targets: "date-type", type: "date-eu" },
-                //{
-                //    targets: 10,
-                //    data: null,
-                //    defaultContent: "<a class='btn btn-link' role='button' href='#' onclick='edit(this)'>Edit</a>",
-                //    orderable: false
-                //},
-            ]
+            //    //        return data;
+            //    //    }
+            //    //},
+            //    //{ targets: "date-type", type: "date-eu" },
+            //    //{
+            //    //    targets: 10,
+            //    //    data: null,
+            //    //    defaultContent: "<a class='btn btn-link' role='button' href='#' onclick='edit(this)'>Edit</a>",
+            //    //    orderable: false
+            //    //},
+            //]
         });
 
     },

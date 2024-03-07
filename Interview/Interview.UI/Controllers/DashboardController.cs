@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
+using System.Text.Json;
 
 namespace Interview.UI.Controllers
 {
@@ -97,14 +99,12 @@ namespace Interview.UI.Controllers
         #region Results Table Methods
 
         [HttpPost]
-        public async Task<JsonResult> GetResults([FromBody]DtParameters dtParameters)
+        public async Task<string> GetResults([FromBody]DtParameters dtParameters)
         {
-
-            DtResult<VmDashboardItem> result = null;            
+           
             VmFilter vmFilter = JsonConvert.DeserializeObject<VmFilter>(dtParameters.formfilter);
             List<VmDashboardItem> dashboardItems = await GetDashboardItems(vmFilter);
-
-            result = new DtResult<VmDashboardItem>
+            DtResult<VmDashboardItem> dtResult = new DtResult<VmDashboardItem>
             {
                 Draw = dtParameters.draw,
                 RecordsTotal = dashboardItems.Count,        // This needs to be the full non paged result set.
@@ -114,8 +114,10 @@ namespace Interview.UI.Controllers
                     .Take(dtParameters.length)
                     .ToList()
             };
+            JsonSerializerOptions settings = new JsonSerializerOptions() { PropertyNamingPolicy = new LowerCaseNamingPolicy() };
+            string result = System.Text.Json.JsonSerializer.Serialize(dtResult, settings);
 
-            return Json(result);
+            return result;
 
         }
 
@@ -152,6 +154,17 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+    }
+
+    public class LowerCaseNamingPolicy : JsonNamingPolicy
+    {
+        public override string ConvertName(string name)
+        {
+            if (string.IsNullOrEmpty(name) || !char.IsUpper(name[0]))
+                return name;
+
+            return name.ToLower();
+        }
     }
 
 }
