@@ -127,7 +127,7 @@ namespace Interview.UI.Controllers
         #region Results Table Methods
 
         [HttpPost]
-        public JsonResult GetResults(DtParameters dtParameters)
+        public JsonResult GetResults([FromBody]DtParameters dtParameters)
         {
 
             string result = JsonConvert.SerializeObject(dtParameters);

@@ -47,6 +47,10 @@
 
                     //result = JSON.stringify(d);
 
+                    //var result = {
+                    //    draw: d.draw
+                    //};
+
 
                     return JSON.stringify(d);
                 }
