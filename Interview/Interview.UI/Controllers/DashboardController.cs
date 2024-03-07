@@ -4,12 +4,14 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Dashboard;
+using Interview.UI.Models.JqueryDataTables;
 using Interview.UI.Models.Stats;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Stats;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Interview.UI.Controllers
 {
@@ -117,6 +119,20 @@ namespace Interview.UI.Controllers
             // js
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Dashboard/Index.js?v={BuildId}'></script>");
+
+        }
+
+        #endregion
+
+        #region Results Table Methods
+
+        [HttpPost]
+        public JsonResult GetResults(DtParameters dtParameters)
+        {
+
+            string result = JsonConvert.SerializeObject(dtParameters);
+
+            return Json(result);
 
         }
 

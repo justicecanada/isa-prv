@@ -56,7 +56,7 @@
         <h5 class="panel-title">@localizer["DahboardFilters"]</h5>
     </header>
     <div class="panel-body">
-        @using (Html.BeginForm("Filter", "Dashboard", null, FormMethod.Post, null, new { id = "formProcess" }))
+        @using (Html.BeginForm("Filter", "Dashboard", null, FormMethod.Post, null, new { id = "formFilters" }))
         {
 
             @Html.AntiForgeryToken()
@@ -98,7 +98,7 @@
 }
 
 <div class="table-responsive">
-    <table id="roleInterviews" class="table table-striped" data-toggle="table" data-pagination="true">
+    <table id="tblResults" class="table table-striped" data-toggle="table" data-pagination="true">
         <thead>        
             <tr>
                 <th>@localizer["Dates"]</th>
@@ -112,7 +112,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (VmDashboardItem dashboardItem in dashboardItems)
+            @*@foreach (VmDashboardItem dashboardItem in dashboardItems)
             {
                 <tr>
                     <td>@dashboardItem.Dates</td>
@@ -133,7 +133,7 @@
                     <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeCandidates))</td>
                     <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeBoardMembers))</td>
                 </tr>
-            }
+            }*@
         </tbody>
     </table>
 </div>

@@ -11,6 +11,7 @@ namespace Interview.UI.Models.Dashboard
 
         [Display(Name = "PeriodOfTimeType")]
         public VmPeriodOfTimeTypes? PeriodOfTimeType { get; set; }
+        public string IntPeriodOfTime { get; set; }
 
         [Display(Name = "StartDate")]
         public DateTime? StartDate { get; set; }
