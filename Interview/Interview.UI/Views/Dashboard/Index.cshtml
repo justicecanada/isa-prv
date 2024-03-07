@@ -14,14 +14,14 @@
     List<VmDashboardItem> dashboardItems = ViewBag.DashboardItems;
 
     List<SelectListItem> vmProcessItems = new List<SelectListItem>();
-    vmProcessItems.Add(new SelectListItem() { Value = "", Text = localizer["AllProcesses"].Value, Selected = Model.processid == null });
+    vmProcessItems.Add(new SelectListItem() { Value = "", Text = localizer["AllProcesses"].Value, Selected = Model.ProcessId == null });
     foreach (var processItem in processes)
     {
         vmProcessItems.Add(new SelectListItem()
                 {
                     Value = processItem.Id.ToString(),
                     Text = processItem.NoProcessus,
-                    Selected = processItem.Id == Model.processid
+                    Selected = processItem.Id == Model.ProcessId
                 });
     }
 
@@ -63,13 +63,13 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    @Html.EditorFor(x => x.processid, "Question", new { inputControl = @Html.DropDownList("ProcessId", vmProcessItems, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.ProcessId, "Question", new { inputControl = @Html.DropDownList("ProcessId", vmProcessItems, new { @class = "form-control" }) })
                 </div>
                 <div class="col-md-2">
-                    @Html.EditorFor(x => x.periodoftime, "Question", new { inputControl = @Html.DropDownList("PeriodOfTimeType", periodOfTimeItems, new { @class = "form-control" }) })
+                    @Html.EditorFor(x => x.PeriodOfTimeType, "Question", new { inputControl = @Html.DropDownList("PeriodOfTimeType", periodOfTimeItems, new { @class = "form-control" }) })
                 </div>
                 <div class="col-md-3">
-                    @Html.EditorFor(x => x.startdate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.startdate, new { date = Model.startdate }) })
+                    @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.StartDate, new { date = Model.StartDate }) })
                 </div>
                 <div class="col-md-3">
                     @Html.ActionLink(localizer["Clear"].Value, "Index", "Dashboard", null, new { @class = "btn btn-default" })
@@ -83,7 +83,7 @@
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-3">
-                    @Html.EditorFor(x => x.enddate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.enddate, new { date = Model.enddate }) })
+                    @Html.EditorFor(x => x.EndDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.EndDate, new { date = Model.EndDate }) })
                 </div>
                 <div class="col-md-3">
                 </div>

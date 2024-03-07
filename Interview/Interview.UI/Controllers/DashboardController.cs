@@ -47,7 +47,7 @@ namespace Interview.UI.Controllers
             VmFilter result = new VmFilter();
             Guid? processId = processIdToFilter == null ? null : new Guid(processIdToFilter);
 
-            result.processid = processId;
+            result.ProcessId = processId;
             await SetIndexFilterViewBag(processId);
             //await SetIndexResultsViewBag(result);
             RegisterIndexClientResources();
@@ -61,7 +61,7 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> Filter(VmFilter vmFilter)
         {
 
-            await SetIndexFilterViewBag(vmFilter.processid);
+            await SetIndexFilterViewBag(vmFilter.ProcessId);
             //await SetIndexResultsViewBag(vmFilter);
             RegisterIndexClientResources();
 
@@ -130,8 +130,7 @@ namespace Interview.UI.Controllers
         public JsonResult GetResults([FromBody]DtParameters dtParameters)
         {
 
-            string formfilter = System.Text.RegularExpressions.Regex.Unescape(dtParameters.formfilter);
-            VmFilter vmFilter = JsonConvert.DeserializeObject<VmFilter>(formfilter);
+            VmFilter vmFilter = JsonConvert.DeserializeObject<VmFilter>(dtParameters.formfilter);
 
             string result = JsonConvert.SerializeObject(dtParameters);
 
