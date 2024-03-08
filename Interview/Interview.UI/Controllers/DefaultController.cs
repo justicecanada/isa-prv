@@ -121,8 +121,8 @@ namespace Interview.UI.Controllers
                     foreach (VmInterviewUser vmInterviewUser in vmInterview.InterviewUsers)
                     {
                         vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).FirstOrDefault()?.UserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.BoardMemberUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.BoardMemberLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).FirstOrDefault()?.UserId;
                         vmInterview.VmInterviewerUserIds.InterviewId = vmInterview.Id;
                     }
                 }
@@ -295,18 +295,18 @@ namespace Interview.UI.Controllers
                 List<Schedule> schedules = await _dal.GetSchedulesByProcessId(interview.ProcessId);
                 TimeSpan startTime = interview.StartDate.TimeOfDay;
                 TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
-                TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
+                TimeSpan boardMemberArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
                 TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
 
                 ViewBag.CandidateArrival = candidateArrival.Add(startTime).ToString(@"hh\:mm");
-                ViewBag.InterviewerArrival = interviewerArrival.Add(startTime).ToString(@"hh\:mm");
+                ViewBag.BoardMemberArrival = boardMemberArrival.Add(startTime).ToString(@"hh\:mm");
                 ViewBag.Marking = marking.Add(startTime).ToString(@"hh\:mm"); ;
 
             }
             else
             {
                 ViewBag.CandidateArrival = string.Empty;
-                ViewBag.InterviewerArrival = string.Empty;
+                ViewBag.BoardMemberArrival = string.Empty;
                 ViewBag.Marking = string.Empty;
             }
 
