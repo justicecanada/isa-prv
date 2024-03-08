@@ -34,8 +34,8 @@
 
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
         List<VmRoleUser> candidateRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Candidate);
-        List<VmRoleUser> interviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Interviewer); ;
-        List<VmRoleUser> leadInterviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Lead); ;
+        List<VmRoleUser> interviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.BoardMember); ;
+        List<VmRoleUser> leadInterviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.BoardMemberLead); ;
 
         if (candidateRoleUsers.Count != 0)
         {

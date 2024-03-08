@@ -31,9 +31,9 @@ namespace Interview.Entities
     public enum RoleUserTypes
     {
         HR = 1,
-        Interviewer = 2,
-        Lead = 3,
-        Assistant = 4,
+        BoardMember = 2,
+        BoardMemberLead = 3,
+        BoardMemberAssistant = 4,
         Candidate = 5,
         Admin = 6
     }

@@ -120,19 +120,19 @@
   <data name="Admin" xml:space="preserve">
     <value>Admin</value>
   </data>
-  <data name="Assistant" xml:space="preserve">
-    <value>Adjoint(e)</value>
+  <data name="BoardMember" xml:space="preserve">
+    <value>Board Member</value>
+  </data>
+  <data name="BoardMemberAssistant" xml:space="preserve">
+    <value>Board Member Assistant</value>
+  </data>
+  <data name="BoardMemberLead" xml:space="preserve">
+    <value>Lead Board Member</value>
   </data>
   <data name="Candidate" xml:space="preserve">
-    <value>Candidat(e)</value>
+    <value>Candidate</value>
   </data>
   <data name="HR" xml:space="preserve">
-    <value>RH</value>
-  </data>
-  <data name="Interviewer" xml:space="preserve">
-    <value>Intervieweur</value>
-  </data>
-  <data name="Lead" xml:space="preserve">
-    <value>Intervieweur principal</value>
+    <value>HR</value>
   </data>
 </root>

@@ -24,12 +24,12 @@ namespace Interview.UI.Models
     {
         [Display(Name = "HR")]
         HR = 1,
-        [Display(Name = "Interviewer")]
-        Interviewer = 2,
-        [Display(Name = "Lead")]
-        Lead = 3,
-        [Display(Name = "Assistant")]
-        Assistant = 4,
+        [Display(Name = "BoardMember")]
+        BoardMember = 2,
+        [Display(Name = "BoardMemberLead")]
+        BoardMemberLead = 3,
+        [Display(Name = "BoardMemberAssistant")]
+        BoardMemberAssistant = 4,
         [Display(Name = "Candidate")]
         Candidate = 5,
         [Display(Name = "Admin")]
