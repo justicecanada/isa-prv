@@ -17,27 +17,27 @@
         });
     }
 
-    List<RoleUser> interviewerUsers = ViewBag.InterviewerUsers;
-    List<SelectListItem> interviewerUsersItems = new List<SelectListItem>();
-    foreach (var interviewerUser in interviewerUsers)
+    List<RoleUser> boardMemberUsers = ViewBag.BoardMemberUsers;
+    List<SelectListItem> boardMemberUsersItgems = new List<SelectListItem>();
+    foreach (var boardMemberUser in boardMemberUsers)
     {
-        interviewerUsersItems.Add(new SelectListItem()
+        boardMemberUsersItgems.Add(new SelectListItem()
         {
-            Value = interviewerUser.Id.ToString(),
-            Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}",
-            Selected = Model.InterviewerUserIds.Contains(interviewerUser.Id)
+            Value = boardMemberUser.Id.ToString(),
+            Text = $"{boardMemberUser.UserFirstname} {boardMemberUser.UserLastname}",
+            Selected = Model.BoardMemberUserIds.Contains(boardMemberUser.Id)
         });
     }
 
-    List<RoleUser> leadUsers = ViewBag.LeadUsers;
-    List<SelectListItem> leadItems = new List<SelectListItem>();
-    foreach (var leadUser in leadUsers)
+    List<RoleUser> boardMemberLeadUsers = ViewBag.BoardMemberLeadUsers;
+    List<SelectListItem> boardMemberLeadItems = new List<SelectListItem>();
+    foreach (var boardMemberLeadUser in boardMemberLeadUsers)
     {
-        leadItems.Add(new SelectListItem()
+        boardMemberLeadItems.Add(new SelectListItem()
         {
-            Value = leadUser.Id.ToString(),
-            Text = $"{leadUser.UserFirstname} {leadUser.UserLastname}",
-            Selected = Model.InterviewerLeadUserIds.Contains(leadUser.Id)
+            Value = boardMemberLeadUser.Id.ToString(),
+            Text = $"{boardMemberLeadUser.UserFirstname} {boardMemberLeadUser.UserLastname}",
+            Selected = Model.BoardMemberLeadUserIds.Contains(boardMemberLeadUser.Id)
         });
     }
 
@@ -59,14 +59,14 @@
 
         <div class="row form-group">
             <div class="col-md-12">
-                @Html.LabelFor(x => x.InterviewerUserIds)
+                @Html.LabelFor(x => x.BoardMemberUserIds)
             </div>
             <div class="col-md-12">
-                @Html.ValidationMessageFor(x => x.InterviewerUserIds, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.BoardMemberUserIds, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-12">
                 <select name="InterviewerUserIds" id="InterviewerUserIds" multiple>
-                    @foreach (SelectListItem item in interviewerUsersItems)
+                    @foreach (SelectListItem item in boardMemberUsersItgems)
                     {
                         <option value="@item.Value" selected="@item.Selected">@item.Text</option>
                     }
@@ -76,14 +76,14 @@
 
         <div class="row form-group">
             <div class="col-md-12">
-                @Html.LabelFor(x => x.InterviewerLeadUserIds)
+                @Html.LabelFor(x => x.BoardMemberLeadUserIds)
             </div>
             <div class="col-md-12">
-                @Html.ValidationMessageFor(x => x.InterviewerLeadUserIds, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(x => x.BoardMemberLeadUserIds, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-12">
                 <select name="InterviewerLeadUserIds" id="InterviewerLeadUserIds" multiple>
-                    @foreach (SelectListItem item in leadItems)
+                    @foreach (SelectListItem item in boardMemberLeadItems)
                     {
                         <option value="@item.Value" selected="@item.Selected">@item.Text</option>
                     }

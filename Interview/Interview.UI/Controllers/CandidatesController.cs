@@ -24,19 +24,21 @@ namespace Interview.UI.Controllers
         private readonly IState _state;
         private readonly IToken _tokenManager;
         private readonly IUsers _usersManager;
+        private readonly IEmails _emailsManager;
 
         #endregion
 
         #region Constructors
 
         public CandidatesController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> baseLocalizer, IMapper mapper, 
-            IState state, IToken tokenManager, IUsers userManager)
+            IState state, IToken tokenManager, IUsers userManager, IEmails emailsManager)
             : base(modelAccessor, dal, baseLocalizer)
         {
             _mapper = mapper;
             _state = state;
             _tokenManager = tokenManager;
             _usersManager = userManager;
+            _emailsManager = emailsManager;
         }
 
         #endregion
@@ -75,6 +77,9 @@ namespace Interview.UI.Controllers
             // Handle Interview User
             await _dal.AddEntity<InterviewUser>(newInterviewUser);
 
+            // Email Candidate
+            await HandleCandidateEmail(process, interview, candidateRoleUser);
+
             return RedirectToAction("InterviewBooked", "Candidates", new { id = interviewId });
 
         }
@@ -95,6 +100,30 @@ namespace Interview.UI.Controllers
             ViewBag.ExternalCandidateId = externalCandidateId;
             ViewBag.RoleUserEquities = roleUserEquities;
 
+        }
+
+        private async Task HandleCandidateEmail(Process process, Entities.Interview interview, RoleUser candidateRoleUser)
+        {
+
+            List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId);
+            EmailTemplate emailTemplate = null;
+            EmailEnvelope emailEnvelope = null;
+            VmInterview vmInterview = _mapper.Map<VmInterview>(interview);
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            HttpResponseMessage responseMessage = null;
+
+            if (User.IsInRole(RoleTypes.Admin.ToString()))
+            {
+                emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
+                emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, candidateRoleUser.ExternalUserEmail);
+            }
+            else
+            {
+                emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
+                emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, candidateRoleUser.ExternalUserEmail);
+            }
+            responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+ 
         }
 
         #endregion

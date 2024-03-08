@@ -120,6 +120,9 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ModalTitle" xml:space="preserve">
+    <value>Participants</value>
+  </data>
   <data name="PleaseSelect" xml:space="preserve">
     <value>== Please Select ==</value>
   </data>

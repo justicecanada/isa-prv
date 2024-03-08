@@ -6,6 +6,8 @@ namespace Interview.UI.Models
     public class VmInternalUser : VmBase
     {
 
+        public Guid? EntraId { get; set; }
+
         public string? GraphUserName { get; set; }
 
         [Required]

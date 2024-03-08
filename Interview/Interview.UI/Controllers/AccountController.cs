@@ -4,6 +4,7 @@ using Interview.Entities;
 using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
+using Interview.UI.Models.Roles;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
@@ -16,6 +17,7 @@ using Newtonsoft.Json;
 namespace Interview.UI.Controllers
 {
 
+    [Authorize(Roles = Roles.Admin)]
     public class AccountController : BaseController
     {
 
@@ -25,6 +27,7 @@ namespace Interview.UI.Controllers
         private readonly IUsers _usersManager;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
         #endregion
 
@@ -32,7 +35,7 @@ namespace Interview.UI.Controllers
 
         public AccountController(IModelAccessor modelAccessor, DalSql dal, IToken tokenManager, IUsers userManager, 
             IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
-            IMapper mapper)
+            IMapper mapper, IStringLocalizer<AccountController> localizer)
             : base(modelAccessor, dal, baseLocalizer)
         {
 
@@ -40,6 +43,7 @@ namespace Interview.UI.Controllers
             _usersManager = userManager;
             _hostEnvironment = hostEnvironment;
             _mapper = mapper;
+            _localizer = localizer;
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -53,6 +57,7 @@ namespace Interview.UI.Controllers
         #region Public Login Methods
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
 
@@ -69,70 +74,54 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Details Methods
+        #region Public Manage User Roles Methods
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> ManageUserRoles()
         {
 
-            VmInternalUser result = null;
-            GraphUser graphUser = await GetGraphUser();
-            InternalUser internalUser = await _dal.GetInternalUserByEntraId(EntraId);
+            RegisterManageUserRolesClientResources();
+            HandleCommonPageMethods();
 
-            ViewBag.GraphUser = graphUser;
-            result = internalUser == null ? new VmInternalUser() : _mapper.Map<VmInternalUser>(internalUser);
-
-            return View(result);
+            return View();
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeRole(VmInternalUser vmInternalUser)
+        public async Task<IActionResult> ManageUserRoles(VmInternalUser vmInternalUser)
         {
+
+            TokenResponse tokenResponse = await _tokenManager.GetToken();
+            GraphUser graphUser = await _usersManager.GetUserInfoAsync(vmInternalUser.EntraId.ToString(), tokenResponse.access_token);
 
             if (ModelState.IsValid)
             {
 
                 InternalUser internaluser = _mapper.Map<InternalUser>(vmInternalUser);
 
-                internaluser.EntraId = EntraId;
-                if (vmInternalUser.Id == null)
+                if (vmInternalUser.Id == Guid.Empty)
                     await _dal.AddEntity<InternalUser>(internaluser);
                 else
                     await _dal.UpdateEntity(internaluser);
 
-                return RedirectToAction("Details");
+                RegisterManageUserRolesClientResources();
+                HandleCommonPageMethods();
+                Notify(string.Format(_localizer["UserAddedToRole"].Value, graphUser.givenName, graphUser.surname, vmInternalUser.RoleType), "success");
+
+                return View();
 
             }
             else
             {
-                GraphUser graphUser = await GetGraphUser();
 
                 ViewBag.GraphUser = graphUser;
 
-                return View("Details", vmInternalUser);
+                RegisterManageUserRolesClientResources();
+                HandleCommonPageMethods();
+
+                return View(vmInternalUser);
             }
-
-        }
-
-        #endregion
-
-        #region Public Search Users Methods
-
-        [HttpGet]
-        public async Task<IActionResult> SearchUsers()
-        {
-
-            // css
-            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
-
-            // js
-            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
-            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
-
-            return View();
 
         }
 
@@ -151,22 +140,38 @@ namespace Interview.UI.Controllers
             };
 
         }
-
+ 
         [HttpGet]
-        public async Task<JsonResult> GetUserDetails(string userPrincipalName)
+        public async Task<PartialViewResult> UserDetailsPartial(string userPrincipalName)
         {
 
-            string result = null;
+            VmInternalUser result = null;
+            InternalUser internalUser = null;
             GraphUser graphUser = null;
             TokenResponse tokenResponse = await _tokenManager.GetToken();
 
             graphUser = await _usersManager.GetUserInfoAsync(userPrincipalName, tokenResponse.access_token);
-            result = JsonConvert.SerializeObject(graphUser, Formatting.Indented);
+            ViewBag.GraphUser = graphUser;
+            internalUser = await _dal.GetInternalUserByEntraId(graphUser.id);
 
-            return new JsonResult(new { result = true, results = result })
-            {
-                StatusCode = 200
-            };
+            if (internalUser == null)
+                internalUser = new InternalUser() { EntraId = graphUser.id };
+
+            result = _mapper.Map<VmInternalUser>(internalUser);
+
+            return PartialView(result);
+
+        }
+
+        private void RegisterManageUserRolesClientResources()
+        {
+
+            // css
+            WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.css'>");
+
+            // js
+            WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
+            WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Account/SearchUsers.js?v={BuildId} \"></script>");
 
         }
 
