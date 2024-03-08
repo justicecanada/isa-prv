@@ -117,19 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Dashboard" xml:space="preserve">
-    <value>Tableau de bord</value>
+  <data name="AddRole" xml:space="preserve">
+    <value>Add Role (fr)</value>
   </data>
-  <data name="GroupList" xml:space="preserve">
-    <value>Liste des groupes</value>
+  <data name="ChangeRole" xml:space="preserve">
+    <value>Change Role (fr)</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Accueil</value>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Display Name (fr)</value>
   </data>
-  <data name="ProcessList" xml:space="preserve">
-    <value>Liste des processus</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email (fr)</value>
   </data>
-  <data name="UserRoles" xml:space="preserve">
-    <value>User Roles (fr)</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name (fr)</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name (fr)</value>
+  </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>== Veuillez sélectionner ==</value>
+  </data>
+  <data name="UserDetails" xml:space="preserve">
+    <value>User Details (fr)</value>
   </data>
 </root>

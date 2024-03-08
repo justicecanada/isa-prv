@@ -75,10 +75,12 @@ namespace Interview.UI.Controllers
 
             // Handle RoleUser and set various view bag properties
             roleUser = await GetAndHandleRoleUser(processId);
-            await SetIndexViewBag(processes, processId, roleUser);
-            RegisterIndexClientResources();
+            await SetIndexViewBag(processes, processId, roleUser);          
             SetLanguageStatusViewbagAndRegisterClientResources(roleUser);
             SetPrivacyStatementViewbagAndRegisterClientResources(roleUser);
+
+            RegisterIndexClientResources();
+            HandleCommonPageMethods();
             HandleNotification();
         
             _state.ProcessId = processId;
