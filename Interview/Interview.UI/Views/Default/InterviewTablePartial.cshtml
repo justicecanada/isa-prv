@@ -34,31 +34,31 @@
 
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
         List<VmRoleUser> candidateRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.Candidate);
-        List<VmRoleUser> interviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.BoardMember); ;
-        List<VmRoleUser> leadInterviewRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.BoardMemberLead); ;
+        List<VmRoleUser> boardMemberRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.BoardMember); ;
+        List<VmRoleUser> boardMemberLeadRoleUsers = GetVmRoleUsers(interview, vmRoleUsers, RoleUserTypes.BoardMemberLead); ;
 
         if (candidateRoleUsers.Count != 0)
         {
             sb.Append($"<div>{@localizer["Candidate"].Value}: {candidateRoleUsers[0].UserLastname} {candidateRoleUsers[0].UserFirstname}</div>");
         }
-        if (interviewRoleUsers.Count != 0)
+        if (boardMemberRoleUsers.Count != 0)
         {
-            sb.Append($"<div>{@localizer["Interviewers"].Value}: ");
-            foreach (VmRoleUser vmRoleUser in interviewRoleUsers)
+            sb.Append($"<div>{@localizer["BoardMembers"].Value}: ");
+            foreach (VmRoleUser vmRoleUser in boardMemberRoleUsers)
             {
                 sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
-                if (vmRoleUser != interviewRoleUsers.Last())
+                if (vmRoleUser != boardMemberRoleUsers.Last())
                     sb.Append(", ");
             }
             sb.Append("</div>");
         }
-        if (leadInterviewRoleUsers.Count != 0)
+        if (boardMemberLeadRoleUsers.Count != 0)
         {
-            sb.Append($"<div>{@localizer["LeadInterviewers"].Value}: ");
-            foreach (VmRoleUser vmRoleUser in leadInterviewRoleUsers)
+            sb.Append($"<div>{@localizer["BoardMemberLeads"].Value}: ");
+            foreach (VmRoleUser vmRoleUser in boardMemberLeadRoleUsers)
             {
                 sb.Append($"{vmRoleUser.UserLastname} {vmRoleUser.UserFirstname}");
-                if (vmRoleUser != leadInterviewRoleUsers.Last())
+                if (vmRoleUser != boardMemberLeadRoleUsers.Last())
                     sb.Append(", ");
             }
             sb.Append("</div>");
