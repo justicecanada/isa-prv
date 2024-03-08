@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BoardMemberLeadUserIds" xml:space="preserve">
-    <value>Membre Pincipal du Jury</value>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
   </data>
-  <data name="BoardMemberUserIds" xml:space="preserve">
-    <value>Membre du Jury</value>
+  <data name="BoardMember" xml:space="preserve">
+    <value>Board Member</value>
   </data>
-  <data name="CandidateUserId" xml:space="preserve">
-    <value>Candidat</value>
+  <data name="BoardMemberAssistant" xml:space="preserve">
+    <value>Board Member Assistant</value>
+  </data>
+  <data name="BoardMemberLead" xml:space="preserve">
+    <value>Lead Board Member</value>
+  </data>
+  <data name="Candidate" xml:space="preserve">
+    <value>Candidate</value>
+  </data>
+  <data name="HR" xml:space="preserve">
+    <value>HR</value>
   </data>
 </root>

@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin" xml:space="preserve">
-    <value>Admin</value>
-  </data>
-  <data name="Assistant" xml:space="preserve">
-    <value>Adjoint(e)</value>
-  </data>
-  <data name="Candidate" xml:space="preserve">
-    <value>Candidat(e)</value>
-  </data>
-  <data name="HR" xml:space="preserve">
-    <value>RH</value>
-  </data>
-  <data name="Interviewer" xml:space="preserve">
-    <value>Intervieweur</value>
-  </data>
-  <data name="Lead" xml:space="preserve">
-    <value>Intervieweur principal</value>
+  <data name="UserAddedToRole" xml:space="preserve">
+    <value>User {0} {1} was added to role {2}</value>
   </data>
 </root>

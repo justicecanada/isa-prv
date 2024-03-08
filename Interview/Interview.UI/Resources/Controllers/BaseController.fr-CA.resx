@@ -129,4 +129,7 @@
   <data name="ProcessList" xml:space="preserve">
     <value>Liste des processus</value>
   </data>
+  <data name="UserRoles" xml:space="preserve">
+    <value>User Roles (fr)</value>
+  </data>
 </root>

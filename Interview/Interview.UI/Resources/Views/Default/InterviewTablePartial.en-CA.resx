@@ -120,6 +120,12 @@
   <data name="AvailableForCandidate" xml:space="preserve">
     <value>Available for a candidate</value>
   </data>
+  <data name="BoardMemberLeads" xml:space="preserve">
+    <value>Lead Board Members</value>
+  </data>
+  <data name="BoardMembers" xml:space="preserve">
+    <value>Board Members</value>
+  </data>
   <data name="BookedForInterview" xml:space="preserve">
     <value>Booked for an interview</value>
   </data>
@@ -141,14 +147,8 @@
   <data name="French" xml:space="preserve">
     <value>French</value>
   </data>
-  <data name="Interviewers" xml:space="preserve">
-    <value>Interviewers</value>
-  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
-  </data>
-  <data name="LeadInterviewers" xml:space="preserve">
-    <value>Lead Interviewers</value>
   </data>
   <data name="Participants" xml:space="preserve">
     <value>Participants</value>

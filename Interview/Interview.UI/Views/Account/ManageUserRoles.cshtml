@@ -1,0 +1,35 @@
+﻿@using Interview.UI.Models.Graph
+@inject IViewLocalizer localizer
+
+@{
+
+    ViewBag.FieldOrder = new List<string>(new string[]
+    {
+        "RoleType"
+    }).Select(x => x.ToLower()).ToList();
+
+    GraphUser graphUser = ViewBag.GraphUser;
+
+}
+
+<h1>@localizer["Title"]</h1>                                                                 
+
+@{
+    await Html.RenderPartialAsync("ValidationSummary", new { @id = "validationSummaryModal" });
+}
+@{
+    await Html.RenderPartialAsync("NotificationPartial");
+}
+
+<label for="InternalName">@localizer["SearchUser"]:</label>
+<input class="form-control ui-autocomplete-input" id="InternalName" name="InternalName" type="text" value="" autocomplete="off">
+
+
+<div id="userDetailsContainer">
+    <div id="divUserDetailsPartial">
+        @if (graphUser != null)
+        {
+            await Html.RenderPartialAsync("UserDetailsPartial");
+        }
+    </div>
+</div>

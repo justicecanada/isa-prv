@@ -1,0 +1,75 @@
+﻿@model VmInternalUser
+@using Interview.UI.Models.Graph
+@inject IViewLocalizer localizer
+
+@{
+
+    GraphUser graphUser = ViewBag.GraphUser;
+    string roleHeading = Model.Id == Guid.Empty ? localizer["AddRole"].Value : localizer["ChangeRole"].Value;
+
+    var rolesItems = Html.GetEnumSelectList<VmRoleTypes>().ToList();
+    rolesItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
+    if (Model.RoleType != null)
+        rolesItems.Where(x => x.Value == ((int)Model.RoleType).ToString()).First().Selected = true;
+
+}
+
+<section class="panel panel-success mrgn-tp-md">
+
+    <header class="panel-heading">
+        <h5 class="panel-title">@localizer["UserDetails"]</h5>
+    </header>
+
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-md-2">
+                <strong>@localizer["FirstName"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.givenName
+            </div>
+            <div class="col-md-2">
+                <strong>@localizer["LastName"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.surname
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <strong>@localizer["DisplayName"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.displayName
+            </div>
+            <div class="col-md-2">
+                <strong>@localizer["Email"]:</strong>
+            </div>
+            <div class="col-md-4">
+                @graphUser.mail
+            </div>
+        </div>
+
+        <hr />
+
+        <form>
+
+            <h3>@roleHeading</h3>
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.EntraId)
+
+            @Html.EditorFor(x => x.RoleType, "Question", new { inputControl = @Html.DropDownList("RoleType", rolesItems, new { @class = "form-control" }) })
+
+            <input type="submit" value="@localizer["Save"]" id="btnNext" class="btn btn-primary mr-2" formaction=@Url.Action("ManageUserRoles", "Account")
+                       formmethod="post" />
+
+        </form>
+
+    </div>
+
+</section>

@@ -16,6 +16,8 @@ namespace Interview.UI.Services.Graph
 
         EmailEnvelope GetEmailEnvelopeForCandidateRegisteredTimeSlot(EmailTemplate emailTemplate, Process process, VmInterview vmInterview, string email);
 
+        EmailEnvelope GetEmailEnvelopeForCandidateExternal(EmailTemplate emailTemplate, ExternalUser externalUser, string callbackUrl);
+
     }
 
 }
