@@ -121,8 +121,8 @@ namespace Interview.UI.Controllers
                     foreach (VmInterviewUser vmInterviewUser in vmInterview.InterviewUsers)
                     {
                         vmInterview.VmInterviewerUserIds.CandidateUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).FirstOrDefault()?.UserId;
-                        vmInterview.VmInterviewerUserIds.InterviewerLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.BoardMemberUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).FirstOrDefault()?.UserId;
+                        vmInterview.VmInterviewerUserIds.BoardMemberLeadUserId = vmInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).FirstOrDefault()?.UserId;
                         vmInterview.VmInterviewerUserIds.InterviewId = vmInterview.Id;
                     }
                 }
@@ -295,18 +295,18 @@ namespace Interview.UI.Controllers
                 List<Schedule> schedules = await _dal.GetSchedulesByProcessId(interview.ProcessId);
                 TimeSpan startTime = interview.StartDate.TimeOfDay;
                 TimeSpan candidateArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Candidate).First().StartValue, 0);
-                TimeSpan interviewerArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
+                TimeSpan boardMemberArrival = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Members).First().StartValue, 0);
                 TimeSpan marking = new TimeSpan(0, (int)schedules.Where(x => x.ScheduleType == ScheduleTypes.Marking).First().StartValue, 0);
 
                 ViewBag.CandidateArrival = candidateArrival.Add(startTime).ToString(@"hh\:mm");
-                ViewBag.InterviewerArrival = interviewerArrival.Add(startTime).ToString(@"hh\:mm");
+                ViewBag.BoardMemberArrival = boardMemberArrival.Add(startTime).ToString(@"hh\:mm");
                 ViewBag.Marking = marking.Add(startTime).ToString(@"hh\:mm"); ;
 
             }
             else
             {
                 ViewBag.CandidateArrival = string.Empty;
-                ViewBag.InterviewerArrival = string.Empty;
+                ViewBag.BoardMemberArrival = string.Empty;
                 ViewBag.Marking = string.Empty;
             }
 
@@ -351,8 +351,8 @@ namespace Interview.UI.Controllers
 
             result.InterviewId = id;
             result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList().Select(x => x.UserId).ToList();
-            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList().Select(x => x.UserId).ToList();
+            result.BoardMemberUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList().Select(x => x.UserId).ToList();
+            result.BoardMemberLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList().Select(x => x.UserId).ToList();
 
             await SetParticipantsModalViewBag();
 
@@ -378,10 +378,10 @@ namespace Interview.UI.Controllers
             roleSpecificInterviewUserActions = await ResolveCandidateUser(vmParticipantsModal.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
             // Board Members
-            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.InterviewerUserIds, dbInterviewUsers, RoleUserTypes.Interviewer, (Guid)vmParticipantsModal.InterviewId);
+            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.BoardMemberUserIds, dbInterviewUsers, RoleUserTypes.BoardMember, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
             // Lead Board Members
-            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.InterviewerLeadUserIds, dbInterviewUsers, RoleUserTypes.Lead, (Guid)vmParticipantsModal.InterviewId);
+            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.BoardMemberLeadUserIds, dbInterviewUsers, RoleUserTypes.BoardMemberLead, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
 
             // Handle Emails
@@ -420,8 +420,8 @@ namespace Interview.UI.Controllers
             }
 
             ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
-            ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer).ToList();
-            ViewBag.LeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Lead).ToList();
+            ViewBag.BoardMemberUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
+            ViewBag.BoardMemberLeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
 
         }
 
@@ -512,13 +512,13 @@ namespace Interview.UI.Controllers
         {
 
             InterviewStates? result = InterviewStates.PendingCommitteeMembers;
-            int interviewerCount = vmParticipantsModal.InterviewerUserIds.Count + vmParticipantsModal.InterviewerLeadUserIds.Count;
-            bool hasALeadInterviewer = vmParticipantsModal.InterviewerLeadUserIds.Any();
+            int interviewerCount = vmParticipantsModal.BoardMemberUserIds.Count + vmParticipantsModal.BoardMemberLeadUserIds.Count;
+            bool hasLeadBoardMember = vmParticipantsModal.BoardMemberLeadUserIds.Any();
             bool hasCandidate = vmParticipantsModal.CandidateUserId != null;
 
             if (interviewerCount == 3)
             {
-                if (hasALeadInterviewer)
+                if (hasLeadBoardMember)
                     result = InterviewStates.AvailableForCandidate;
                 else
                     result = InterviewStates.PendingCommitteeMembers;
@@ -756,8 +756,8 @@ namespace Interview.UI.Controllers
 
             bool showPrivacyStatementModal = false;
 
-            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleUserType == RoleUserTypes.Candidate || roleUser.RoleUserType == RoleUserTypes.Interviewer
-                || roleUser.RoleUserType == RoleUserTypes.Lead))
+            if (roleUser != null && !roleUser.HasAcceptedPrivacyStatement && (roleUser.RoleUserType == RoleUserTypes.Candidate || roleUser.RoleUserType == RoleUserTypes.BoardMember
+                || roleUser.RoleUserType == RoleUserTypes.BoardMemberLead))
             {
                 showPrivacyStatementModal = true;
                 WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/PrivacyStatementModal.js?v={BuildId}\"></script>");

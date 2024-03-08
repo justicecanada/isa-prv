@@ -9,8 +9,8 @@ namespace Interview.UI.Models.Default
         public VmParticipantsModal()
         {
 
-            InterviewerUserIds = new List<Guid>();
-            InterviewerLeadUserIds = new List<Guid>();
+            BoardMemberUserIds = new List<Guid>();
+            BoardMemberLeadUserIds = new List<Guid>();
 
         }
 
@@ -19,11 +19,11 @@ namespace Interview.UI.Models.Default
         [Display(Name = "CandidateUserId")]
         public Guid? CandidateUserId { get; set; }
 
-        [Display(Name = "InterviewerUserId")]
-        public List<Guid> InterviewerUserIds { get; set; }
+        [Display(Name = "BoardMemberUserIds")]
+        public List<Guid> BoardMemberUserIds { get; set; }
 
-        [Display(Name = "InterviewerLeadUserId")]
-        public List<Guid> InterviewerLeadUserIds { get; set; }
+        [Display(Name = "BoardMemberLeadUserIds")]
+        public List<Guid> BoardMemberLeadUserIds { get; set; }
 
     }
 

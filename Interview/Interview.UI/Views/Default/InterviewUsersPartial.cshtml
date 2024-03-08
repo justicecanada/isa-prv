@@ -26,7 +26,7 @@
                 {
                     Value = interviewerUser.Id.ToString(),
                     Text = $"{interviewerUser.UserFirstname} {interviewerUser.UserLastname}",
-                    Selected = interviewerUser.UserId == Model.InterviewerUserId
+                    Selected = interviewerUser.UserId == Model.BoardMemberUserId
                 });
     }
 
@@ -46,6 +46,6 @@
 
 @Html.EditorFor(x => x.CandidateUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.CandidateUserId, candidateUsersItems, new { @class = "form-control" }) })
 
-@Html.EditorFor(x => x.InterviewerUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerUserId, interviewerUsersItems, new { @class = "form-control" }) })
+@Html.EditorFor(x => x.BoardMemberUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.BoardMemberUserId, interviewerUsersItems, new { @class = "form-control" }) })
 
-@Html.EditorFor(x => x.InterviewerLeadUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.InterviewerLeadUserId, leadItems, new { @class = "form-control" }) })
+@Html.EditorFor(x => x.BoardMemberLeadUserId, "Question", new { inputControl = @Html.DropDownListFor(x => x.BoardMemberLeadUserId, leadItems, new { @class = "form-control" }) })

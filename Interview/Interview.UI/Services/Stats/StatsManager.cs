@@ -65,7 +65,7 @@ namespace Interview.UI.Services.Stats
         {
 
             List<VmEquityStat> result = new List<VmEquityStat>();
-            List<RoleUser> filteredRoleUsers = processes.SelectMany(x => x.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.Interviewer || x.RoleUserType == RoleUserTypes.Lead)).ToList();
+            List<RoleUser> filteredRoleUsers = processes.SelectMany(x => x.RoleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember || x.RoleUserType == RoleUserTypes.BoardMemberLead)).ToList();
             int totalUserRolesForCandidate = filteredRoleUsers.Sum(x => x.RoleUserEquities.Count);
             int countForEquity;
 
@@ -95,7 +95,7 @@ namespace Interview.UI.Services.Stats
 
             foreach (Equity equity in equities)
             {
-                countForEquity = processes.SelectMany(x => x.Interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.Interviewer || y.RoleUserType == RoleUserTypes.Lead) &&
+                countForEquity = processes.SelectMany(x => x.Interviews.SelectMany(x => x.InterviewUsers.Where(y => (y.RoleUserType == RoleUserTypes.BoardMember || y.RoleUserType == RoleUserTypes.BoardMemberLead) &&
                     roleUserEquities.Where(a => a.RoleUserId == y.UserId && a.EquityId == equity.Id).Count() > 0))).Count();
                 result.Add(new VmEquityStat()
                 {
