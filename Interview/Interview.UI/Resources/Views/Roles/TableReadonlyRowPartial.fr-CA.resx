@@ -120,11 +120,17 @@
   <data name="Admin" xml:space="preserve">
     <value>Admin</value>
   </data>
-  <data name="Assistant" xml:space="preserve">
-    <value>Adjoint(e)</value>
-  </data>
   <data name="Bilingual" xml:space="preserve">
     <value>Bilingue</value>
+  </data>
+  <data name="BoardMember" xml:space="preserve">
+    <value>Membre du Jury</value>
+  </data>
+  <data name="BoardMemberAssistant" xml:space="preserve">
+    <value>Adjoint(e)</value>
+  </data>
+  <data name="BoardMemberLead" xml:space="preserve">
+    <value>Membre Pincipal du Jury</value>
   </data>
   <data name="Candidate" xml:space="preserve">
     <value>Candidat(e)</value>
@@ -140,11 +146,5 @@
   </data>
   <data name="HR" xml:space="preserve">
     <value>RH</value>
-  </data>
-  <data name="Interviewer" xml:space="preserve">
-    <value>Intervieweur</value>
-  </data>
-  <data name="Lead" xml:space="preserve">
-    <value>Intervieweur principal</value>
   </data>
 </root>

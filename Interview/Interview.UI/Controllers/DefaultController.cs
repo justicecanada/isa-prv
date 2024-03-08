@@ -351,8 +351,8 @@ namespace Interview.UI.Controllers
 
             result.InterviewId = id;
             result.CandidateUserId = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault()?.UserId;
-            result.InterviewerUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList().Select(x => x.UserId).ToList();
-            result.InterviewerLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList().Select(x => x.UserId).ToList();
+            result.BoardMemberUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList().Select(x => x.UserId).ToList();
+            result.BoardMemberLeadUserIds = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList().Select(x => x.UserId).ToList();
 
             await SetParticipantsModalViewBag();
 
@@ -378,10 +378,10 @@ namespace Interview.UI.Controllers
             roleSpecificInterviewUserActions = await ResolveCandidateUser(vmParticipantsModal.CandidateUserId, dbInterviewUsers, RoleUserTypes.Candidate, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
             // Board Members
-            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.InterviewerUserIds, dbInterviewUsers, RoleUserTypes.BoardMember, (Guid)vmParticipantsModal.InterviewId);
+            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.BoardMemberUserIds, dbInterviewUsers, RoleUserTypes.BoardMember, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
             // Lead Board Members
-            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.InterviewerLeadUserIds, dbInterviewUsers, RoleUserTypes.BoardMemberLead, (Guid)vmParticipantsModal.InterviewId);
+            roleSpecificInterviewUserActions = await ResolveInterviewUsers(vmParticipantsModal.BoardMemberLeadUserIds, dbInterviewUsers, RoleUserTypes.BoardMemberLead, (Guid)vmParticipantsModal.InterviewId);
             interviewUserActions.AddRange(roleSpecificInterviewUserActions);
 
             // Handle Emails
@@ -420,8 +420,8 @@ namespace Interview.UI.Controllers
             }
 
             ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
-            ViewBag.InterviewerUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
-            ViewBag.LeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
+            ViewBag.BoardMemberUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
+            ViewBag.BoardMemberLeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
 
         }
 
@@ -512,8 +512,8 @@ namespace Interview.UI.Controllers
         {
 
             InterviewStates? result = InterviewStates.PendingCommitteeMembers;
-            int interviewerCount = vmParticipantsModal.InterviewerUserIds.Count + vmParticipantsModal.InterviewerLeadUserIds.Count;
-            bool hasALeadInterviewer = vmParticipantsModal.InterviewerLeadUserIds.Any();
+            int interviewerCount = vmParticipantsModal.BoardMemberUserIds.Count + vmParticipantsModal.BoardMemberLeadUserIds.Count;
+            bool hasALeadInterviewer = vmParticipantsModal.BoardMemberLeadUserIds.Any();
             bool hasCandidate = vmParticipantsModal.CandidateUserId != null;
 
             if (interviewerCount == 3)
