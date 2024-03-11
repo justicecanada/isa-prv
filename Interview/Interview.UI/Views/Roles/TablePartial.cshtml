@@ -4,7 +4,7 @@
 
 @{
 
-    List<RoleUser> roleUsers = ViewBag.RoleUsers;
+    List<RoleUser> roleUsers = ViewBag.Process.RoleUsers;
 
     Guid? roleUserIdToUpdate = (Guid?)TempData[Constants.RoleUserIdToUpdate];
     bool showEquities = ViewBag.ShowEquities;
@@ -48,7 +48,3 @@ else
         </table>
     </div>
 }
-
-@*<link href="~/lib/jquery-DataTables/datatables.min.css" rel="stylesheet" />
-<script src="~/lib/jquery-DataTables/datatables.min.js"></script>
-<script src="~/js/Roles/TablePartial.js" asp-append-version="true"></script>*@

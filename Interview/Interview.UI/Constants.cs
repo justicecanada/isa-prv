@@ -8,6 +8,7 @@
         public const string FrenchCulture = "fr-CA";
         public const string DateFormat = "yyyy-MM-dd";
         public const string DateTimeFormat = "yyyy-MM-dd h:mm";
+        public const string TimeFormat = "h:mm tt";
 
         public const string AssemblyVersionKey = "ASSEMBLY_VERSION";
         public const string ProcessId = "PROCESS_ID";
