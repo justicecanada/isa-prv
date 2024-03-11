@@ -6,6 +6,7 @@ using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
 using Interview.UI.Models.Graph;
+//using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
@@ -353,8 +354,7 @@ namespace Interview.UI.Controllers
                 if (candidate != null)
                 {
                     Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Entities.Process;
-                    List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId(process.Id);
-                    EmailTemplate emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewChanged).FirstOrDefault();
+                    EmailTemplate emailTemplate = process.EmailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewChanged).FirstOrDefault();
 
                     if (emailTemplate != null)
                     {
@@ -668,12 +668,36 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> DeleteInterviewModal(Guid id, bool hardDelete = false)
         {
 
-            await _dal.DeleteEntity<Entities.Interview>(id);
+            await HandleInterviewDeletedEmail(id);
+            //await _dal.DeleteEntity<Entities.Interview>(id);
 
             return new JsonResult(new { result = true, id = id })
             {
                 StatusCode = 200
             };
+
+        }
+
+        private async Task HandleInterviewDeletedEmail(Guid interviewId)
+        {
+
+            Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(interviewId, true) as Entities.Interview;
+            InterviewUser candidate = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+
+            if (candidate != null)
+            {
+                Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Entities.Process;
+                EmailTemplate emailTemplate = process.EmailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewDeleted).FirstOrDefault();
+
+                if (emailTemplate != null)
+                {
+                    RoleUser roleUser = process.RoleUsers.Where(x => x.Id == candidate.UserId).First();
+                    EmailEnvelope emailEnvelope = _emailsManager.GetEmailEnvelopeForInterviewDeleted(emailTemplate, process, interview, roleUser.ExternalUserEmail);
+                    TokenResponse tokenResponse = await _tokenManager.GetToken();
+                    HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+                }
+
+            }
 
         }
 

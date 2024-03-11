@@ -20,6 +20,8 @@ namespace Interview.UI.Services.Graph
 
         EmailEnvelope GetEmailEnvelopeForInterviewChanged(EmailTemplate emailTemplate, Process process, Entities.Interview interview, string email);
 
+        EmailEnvelope GetEmailEnvelopeForInterviewDeleted(EmailTemplate emailTemplate, Process process, Entities.Interview interview, string email);
+
     }
 
 }
