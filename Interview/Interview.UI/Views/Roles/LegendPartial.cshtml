@@ -5,7 +5,7 @@
 
 @{
 
-    List<RoleUser> roleUsers = ViewBag.RoleUsers;
+    List<RoleUser> roleUsers = ViewBag.Process.RoleUsers;
     bool disabledExistingButton = !roleUsers.Any(x => (bool)x.IsExternal && !x.DateExternalEmailSent.HasValue);
     string disabledExistingButtonClasses = disabledExistingButton ? "btn btn-default disabled" : "btn btn-default";
 
