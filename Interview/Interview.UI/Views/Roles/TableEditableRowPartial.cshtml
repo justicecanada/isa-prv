@@ -45,6 +45,7 @@
             {
                 string roleName = localizer[roleUser.RoleUserType.ToString()].Value;
                 @roleName
+                <input type="hidden" id="RoleUserType" name="RoleUserType" value="@Model.RoleUserToEdit.RoleUserType">
             }
         </td>
         <td>@Html.DropDownList("LanguageType", userLanguageItems, new { @class = "form-control" })</td>
