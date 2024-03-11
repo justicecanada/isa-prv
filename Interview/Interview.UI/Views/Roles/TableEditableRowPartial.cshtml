@@ -6,6 +6,7 @@
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    Process process = ViewBag.Process;
     RoleUser roleUser = ViewBag.RoleUser;
     string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
 
@@ -19,6 +20,14 @@
         userLanguageItems.Where(x => x.Value == ((int)roleUser.LanguageType).ToString()).First().Selected = true;
 
     bool showEquities = ViewBag.ShowEquities;
+    bool canEditRole = false;
+    if (roleUser.RoleUserType != RoleUserTypes.Candidate)
+    {
+        if (roleUser.RoleUserType == RoleUserTypes.BoardMember || roleUser.RoleUserType == RoleUserTypes.BoardMemberLead)
+            canEditRole = !process.Interviews.Any(x => x.InterviewUsers.Any(x => x.UserId == roleUser.Id));
+        else
+            canEditRole = true;
+    }
 
 }
 
@@ -27,7 +36,18 @@
         <input type="hidden" value="@Model.RoleUserToEdit.Id" id="Id" name="Id" />
         @Html.AntiForgeryToken()
         <td>@userName</td>
-    <td>@Html.DropDownList("RoleUserType", roleUserTypeItems, new { @class = "form-control" })</td>
+        <td>
+            @if (canEditRole)
+            {
+                @Html.DropDownList("RoleUserType", roleUserTypeItems, new { @class = "form-control" })
+            }
+            else
+            {
+                string roleName = localizer[roleUser.RoleUserType.ToString()].Value;
+                @roleName
+                <input type="hidden" id="RoleUserType" name="RoleUserType" value="@Model.RoleUserToEdit.RoleUserType">
+            }
+        </td>
         <td>@Html.DropDownList("LanguageType", userLanguageItems, new { @class = "form-control" })</td>
         @if (showEquities)
         {

@@ -76,7 +76,7 @@ namespace Interview.UI.Controllers
 
             if (TempData[Constants.RoleUserIdToUpdate] != null)
             {
-                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.RoleUsers).Where(x => x.Id == (Guid)TempData[Constants.RoleUserIdToUpdate]).First();
+                RoleUser roleUserToEdit = ((List<RoleUser>)ViewBag.Process.RoleUsers).Where(x => x.Id == (Guid)TempData[Constants.RoleUserIdToUpdate]).First();
                 result.RoleUserToEdit = (VmRoleUser)_mapper.Map(roleUserToEdit, typeof(RoleUser), typeof(VmRoleUser));
             }
 
