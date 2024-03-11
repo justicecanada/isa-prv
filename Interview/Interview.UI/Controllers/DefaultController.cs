@@ -669,7 +669,7 @@ namespace Interview.UI.Controllers
         {
 
             await HandleInterviewDeletedEmail(id);
-            //await _dal.DeleteEntity<Entities.Interview>(id);
+            await _dal.DeleteEntity<Entities.Interview>(id);
 
             return new JsonResult(new { result = true, id = id })
             {
