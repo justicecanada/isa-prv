@@ -19,6 +19,7 @@
         userLanguageItems.Where(x => x.Value == ((int)roleUser.LanguageType).ToString()).First().Selected = true;
 
     bool showEquities = ViewBag.ShowEquities;
+    bool canEditRole = false;
 
 }
 
@@ -27,7 +28,17 @@
         <input type="hidden" value="@Model.RoleUserToEdit.Id" id="Id" name="Id" />
         @Html.AntiForgeryToken()
         <td>@userName</td>
-    <td>@Html.DropDownList("RoleUserType", roleUserTypeItems, new { @class = "form-control" })</td>
+        <td>
+            @if (canEditRole)
+            {
+                @Html.DropDownList("RoleUserType", roleUserTypeItems, new { @class = "form-control" })
+            }
+            else
+            {
+                string roleName = localizer[roleUser.RoleUserType.ToString()].Value;
+                @roleName
+            }
+        </td>
         <td>@Html.DropDownList("LanguageType", userLanguageItems, new { @class = "form-control" })</td>
         @if (showEquities)
         {
