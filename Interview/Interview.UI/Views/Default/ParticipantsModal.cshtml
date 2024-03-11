@@ -65,7 +65,7 @@
                 @Html.ValidationMessageFor(x => x.BoardMemberUserIds, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-12">
-                <select name="InterviewerUserIds" id="InterviewerUserIds" multiple>
+                <select name="BoardMemberUserIds" id="BoardMemberUserIds" multiple>
                     @foreach (SelectListItem item in boardMemberUsersItgems)
                     {
                         <option value="@item.Value" selected="@item.Selected">@item.Text</option>
@@ -82,7 +82,7 @@
                 @Html.ValidationMessageFor(x => x.BoardMemberLeadUserIds, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-12">
-                <select name="InterviewerLeadUserIds" id="InterviewerLeadUserIds" multiple>
+                <select name="BoardMemberLeadUserIds" id="BoardMemberLeadUserIds" multiple>
                     @foreach (SelectListItem item in boardMemberLeadItems)
                     {
                         <option value="@item.Value" selected="@item.Selected">@item.Text</option>

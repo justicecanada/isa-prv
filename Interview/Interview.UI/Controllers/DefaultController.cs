@@ -6,6 +6,7 @@ using Interview.UI.Models;
 using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Default;
 using Interview.UI.Models.Graph;
+//using Interview.UI.Models.Groups;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
 using Interview.UI.Services.State;
@@ -255,7 +256,8 @@ namespace Interview.UI.Controllers
                 }
                 else
                 {
-                    await _dal.UpdateEntity(interview);
+                    await HandleEmailCandidateIfInterviewChanged(interview);
+                    await _dal.UpdateEntity(interview);                  
                 }
 
                 return new JsonResult(new { result = true, item = vmInterviewModal })
@@ -332,6 +334,35 @@ namespace Interview.UI.Controllers
                     ModelState.AddModelError("VmStartTime", _localizer["InterviewVmStartDateAndDuration"].Value
                         .Replace("{min}", ((TimeSpan)process.MinTime).ToString())
                         .Replace("{max}", ((TimeSpan)process.MaxTime).ToString()));
+                }
+
+            }
+
+        }
+
+        private async Task HandleEmailCandidateIfInterviewChanged(Entities.Interview interview)
+        {
+
+            Entities.Interview dbInterview = await _dal.GetEntity<Entities.Interview>(interview.Id, true) as Entities.Interview;
+
+            // Check if the details of the interview have changed.
+            if (dbInterview.Room != interview.Room || dbInterview.Location != interview.Location || dbInterview.StartDate != interview.StartDate)
+            {
+                // Check if there is a Candidate to email
+                InterviewUser candidate = dbInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+
+                if (candidate != null)
+                {
+                    Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Entities.Process;
+                    EmailTemplate emailTemplate = process.EmailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewChanged).FirstOrDefault();
+
+                    if (emailTemplate != null)
+                    {
+                        RoleUser roleUser = process.RoleUsers.Where(x => x.Id == candidate.UserId).First();
+                        EmailEnvelope emailEnvelope = _emailsManager.GetEmailEnvelopeForInterviewChanged(emailTemplate, process, interview, roleUser.ExternalUserEmail);
+                        TokenResponse tokenResponse = await _tokenManager.GetToken();
+                        HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+                    }
                 }
 
             }
@@ -419,7 +450,7 @@ namespace Interview.UI.Controllers
                 }
             }
 
-            ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
+            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
             ViewBag.BoardMemberUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
             ViewBag.BoardMemberLeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
 
@@ -493,7 +524,9 @@ namespace Interview.UI.Controllers
                     InterviewId = interviewId
                 };
                 await _dal.DeleteEntity(dbInterviewUser);
-                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed,
+                    RemovedRoleUserId = dbInterviewUser.UserId
+                }); ;
                 addedInterviewUserId = await _dal.AddEntity<InterviewUser>(newInterviewUser);
                 result.Add(new InterviewUserAction() { InterviewUserId = (Guid)addedInterviewUserId, InterviewUserActionType = InterviewUserActionTypes.Added });
             }
@@ -501,7 +534,8 @@ namespace Interview.UI.Controllers
             {
                 // Delete
                 await _dal.DeleteEntity(dbInterviewUser);
-                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed,
+                    RemovedRoleUserId = dbInterviewUser.UserId });
             }
 
             return result;
@@ -543,30 +577,58 @@ namespace Interview.UI.Controllers
             TokenResponse tokenResponse = await _tokenManager.GetToken();
             GraphUser graphUser = null;
             HttpResponseMessage responseMessage = null;
+            string email = null;
 
-            foreach (InterviewUserAction interviewUserAction in interviewUserActions)
+            foreach (InterviewUserAction interviewUserAction in interviewUserActions.Where(x => x.InterviewUserActionType != InterviewUserActionTypes.NoAction))
             {
 
                 if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Added)
                 {
-
-                    // Handle emailing
                     interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
                     roleUser = process.RoleUsers.Where(x => x.Id == interviewUser.UserId).First();
-                    graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+
+                    if ((bool)roleUser.IsExternal)
+                        email = roleUser.ExternalUserEmail;
+                    else
+                    {
+                        graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+                        email = graphUser.mail;
+                    }
 
                     if (roleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
+
                         if (User.IsInRole(RoleTypes.Admin.ToString()))
                         {
                             emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
-                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, graphUser.mail);
+                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, email);
                         }
                         else
                         {
                             emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
-                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, graphUser.mail);
+                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, email);
                         }
+                        responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+                    }
+
+                }
+                else if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Removed)
+                {
+
+                    roleUser = await _dal.GetEntity<RoleUser>(interviewUserAction.RemovedRoleUserId) as RoleUser;
+
+                    if (roleUser.RoleUserType == RoleUserTypes.Candidate)
+                    {
+                        if ((bool)roleUser.IsExternal)
+                            email = roleUser.ExternalUserEmail;
+                        else
+                        {
+                            graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+                            email = graphUser.mail;
+                        }
+
+                        emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewDeleted).FirstOrDefault();
+                        emailEnvelope = _emailsManager.GetEmailEnvelopeForInterviewDeleted(emailTemplate, process, interview, email);
                         responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
                     }
                 }
@@ -637,12 +699,36 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> DeleteInterviewModal(Guid id, bool hardDelete = false)
         {
 
+            await HandleInterviewDeletedEmail(id);
             await _dal.DeleteEntity<Entities.Interview>(id);
 
             return new JsonResult(new { result = true, id = id })
             {
                 StatusCode = 200
             };
+
+        }
+
+        private async Task HandleInterviewDeletedEmail(Guid interviewId)
+        {
+
+            Entities.Interview interview = await _dal.GetEntity<Entities.Interview>(interviewId, true) as Entities.Interview;
+            InterviewUser candidate = interview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+
+            if (candidate != null)
+            {
+                Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Entities.Process;
+                EmailTemplate emailTemplate = process.EmailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewDeleted).FirstOrDefault();
+
+                if (emailTemplate != null)
+                {
+                    RoleUser roleUser = process.RoleUsers.Where(x => x.Id == candidate.UserId).First();
+                    EmailEnvelope emailEnvelope = _emailsManager.GetEmailEnvelopeForInterviewDeleted(emailTemplate, process, interview, roleUser.ExternalUserEmail);
+                    TokenResponse tokenResponse = await _tokenManager.GetToken();
+                    HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+                }
+
+            }
 
         }
 
