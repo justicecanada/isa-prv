@@ -168,20 +168,16 @@ namespace Interview.UI.Controllers
             var process = _state.ProcessId == null ? new Process() : await _dal.GetEntity<Process>((Guid)_state.ProcessId, true);
             ViewBag.Process = process;
 
-            // RoleUsers
-            var roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-            ViewBag.RoleUsers = roleUsers;
-
             // Existing Users
             var externalUsers = await _dal.GetExternalUsers();
             ViewBag.ExternalUsers = externalUsers;
 
             // Show Equities
-            bool showEquities = await GetShowEquities(roleUsers);           
+            bool showEquities = await GetShowEquities(((Process)process).RoleUsers);           
             ViewBag.ShowEquities = showEquities;
 
         }
-
+                                                                                         
         private void IndexRegisterClientResources()
         {
 

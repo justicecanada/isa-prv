@@ -6,6 +6,7 @@
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
     RoleUser roleUser = ViewBag.RoleUser;
+    List<Interview> interviews = ViewBag.Process.Interviews;
 
     string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
     string roleName = localizer[roleUser.RoleUserType.ToString()].Value;
@@ -25,6 +26,19 @@
         }
 
         equities = sb.ToString();
+    }
+
+}
+
+@functions {
+
+    private bool CanDeleteRoleUser(List<Interview> interviews, RoleUser roleUser)
+    {
+
+        bool result = !interviews.SelectMany(x => x.InterviewUsers.Where(x => x.UserId == roleUser.Id)).Any();
+
+        return result;
+
     }
 
 }
@@ -50,9 +64,12 @@
             <span class="glyphicon glyphicon-edit text-info"></span>
         </a>
         
-        <a class="deleteRecord" data-id="@roleUser.Id" href="#modalContainer">
-            <span class="glyphicon glyphicon-trash text-danger"></span>
-        </a>
+        @if (CanDeleteRoleUser(interviews, roleUser))
+        {
+            <a class="deleteRecord" data-id="@roleUser.Id" href="#modalContainer">
+                <span class="glyphicon glyphicon-trash text-danger"></span>
+            </a>
+        }
 
         @if ((bool)roleUser.IsExternal)
         {

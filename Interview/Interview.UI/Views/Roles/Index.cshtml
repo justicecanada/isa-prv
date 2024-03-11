@@ -36,9 +36,7 @@
     userLanguageItems.Insert(0, new SelectListItem(localizer["PleaseSelect"].Value, ""));
 
     bool showEquities = ViewBag.ShowEquities;
-
-    List<RoleUser> roleUsers = ViewBag.RoleUsers;
-    bool showLegend = roleUsers.Any(x => (bool)x.IsExternal);
+    bool showLegend = process.RoleUsers.Any(x => (bool)x.IsExternal);
 
 }
 
