@@ -6,6 +6,7 @@
 @{
 
     string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+    Process process = ViewBag.Process;
     RoleUser roleUser = ViewBag.RoleUser;
     string userName = $"{roleUser.UserLastname}, {roleUser.UserFirstname}";
 
@@ -20,6 +21,13 @@
 
     bool showEquities = ViewBag.ShowEquities;
     bool canEditRole = false;
+    if (roleUser.RoleUserType != RoleUserTypes.Candidate)
+    {
+        if (roleUser.RoleUserType == RoleUserTypes.BoardMember || roleUser.RoleUserType == RoleUserTypes.BoardMemberLead)
+            canEditRole = !process.Interviews.Any(x => x.InterviewUsers.Any(x => x.UserId == roleUser.Id));
+        else
+            canEditRole = true;
+    }
 
 }
 
