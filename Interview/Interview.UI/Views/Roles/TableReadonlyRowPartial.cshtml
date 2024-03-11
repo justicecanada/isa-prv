@@ -28,18 +28,7 @@
         equities = sb.ToString();
     }
 
-}
-
-@functions {
-
-    private bool CanDeleteRoleUser(List<Interview> interviews, RoleUser roleUser)
-    {
-
-        bool result = !interviews.SelectMany(x => x.InterviewUsers.Where(x => x.UserId == roleUser.Id)).Any();
-
-        return result;
-
-    }
+    bool canDeleteRoleUser = !interviews.Any(x => x.InterviewUsers.Any(x => x.UserId == roleUser.Id));
 
 }
 
@@ -64,7 +53,7 @@
             <span class="glyphicon glyphicon-edit text-info"></span>
         </a>
         
-        @if (CanDeleteRoleUser(interviews, roleUser))
+        @if (canDeleteRoleUser)
         {
             <a class="deleteRecord" data-id="@roleUser.Id" href="#modalContainer">
                 <span class="glyphicon glyphicon-trash text-danger"></span>
