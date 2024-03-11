@@ -126,6 +126,12 @@
   <data name="CandidateExternal" xml:space="preserve">
     <value>Email envoyé à un candidat externe</value>
   </data>
+  <data name="CandidateInterviewChanged" xml:space="preserve">
+    <value>Email sent when Interview details have changed (fr)</value>
+  </data>
+  <data name="CandidateInterviewDeleted" xml:space="preserve">
+    <value>Email sent when and Interview has been deleted or Candidate has been removed (fr)</value>
+  </data>
   <data name="CandidateInterviewReminder" xml:space="preserve">
     <value>Email envoyé à un candidat 2 jours avant l'entrevue</value>
   </data>

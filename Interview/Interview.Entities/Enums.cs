@@ -50,7 +50,9 @@ namespace Interview.Entities
         CandidateRegisteredTimeSlot = 1,
         CandidateAddedByHR = 2,
         CandidateInterviewReminder = 3,
-        CandidateExternal = 4
+        CandidateExternal = 4,
+        CandidateInterviewChanged = 5,
+        CandidateInterviewDeleted = 6
     }
 
     public enum InterviewStates
