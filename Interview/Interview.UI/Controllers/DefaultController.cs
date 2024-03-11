@@ -450,7 +450,7 @@ namespace Interview.UI.Controllers
                 }
             }
 
-            ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
+            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
             ViewBag.BoardMemberUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
             ViewBag.BoardMemberLeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
 
@@ -524,7 +524,9 @@ namespace Interview.UI.Controllers
                     InterviewId = interviewId
                 };
                 await _dal.DeleteEntity(dbInterviewUser);
-                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed,
+                    RemovedRoleUserId = dbInterviewUser.UserId
+                }); ;
                 addedInterviewUserId = await _dal.AddEntity<InterviewUser>(newInterviewUser);
                 result.Add(new InterviewUserAction() { InterviewUserId = (Guid)addedInterviewUserId, InterviewUserActionType = InterviewUserActionTypes.Added });
             }
@@ -532,7 +534,8 @@ namespace Interview.UI.Controllers
             {
                 // Delete
                 await _dal.DeleteEntity(dbInterviewUser);
-                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed,
+                    RemovedRoleUserId = dbInterviewUser.UserId });
             }
 
             return result;
@@ -574,30 +577,58 @@ namespace Interview.UI.Controllers
             TokenResponse tokenResponse = await _tokenManager.GetToken();
             GraphUser graphUser = null;
             HttpResponseMessage responseMessage = null;
+            string email = null;
 
-            foreach (InterviewUserAction interviewUserAction in interviewUserActions)
+            foreach (InterviewUserAction interviewUserAction in interviewUserActions.Where(x => x.InterviewUserActionType != InterviewUserActionTypes.NoAction))
             {
 
                 if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Added)
                 {
-
-                    // Handle emailing
                     interviewUser = dbInterviewUsers.Where(x => x.Id == interviewUserAction.InterviewUserId).First();
                     roleUser = process.RoleUsers.Where(x => x.Id == interviewUser.UserId).First();
-                    graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+
+                    if ((bool)roleUser.IsExternal)
+                        email = roleUser.ExternalUserEmail;
+                    else
+                    {
+                        graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+                        email = graphUser.mail;
+                    }
 
                     if (roleUser.RoleUserType == RoleUserTypes.Candidate)
                     {
+
                         if (User.IsInRole(RoleTypes.Admin.ToString()))
                         {
                             emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateAddedByHR).FirstOrDefault();
-                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, graphUser.mail);
+                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateAddedByHR(emailTemplate, process, vmInterview, email);
                         }
                         else
                         {
                             emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateRegisteredTimeSlot).FirstOrDefault();
-                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, graphUser.mail);
+                            emailEnvelope = _emailsManager.GetEmailEnvelopeForCandidateRegisteredTimeSlot(emailTemplate, process, vmInterview, email);
                         }
+                        responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+                    }
+
+                }
+                else if (interviewUserAction.InterviewUserActionType == InterviewUserActionTypes.Removed)
+                {
+
+                    roleUser = await _dal.GetEntity<RoleUser>(interviewUserAction.RemovedRoleUserId) as RoleUser;
+
+                    if (roleUser.RoleUserType == RoleUserTypes.Candidate)
+                    {
+                        if ((bool)roleUser.IsExternal)
+                            email = roleUser.ExternalUserEmail;
+                        else
+                        {
+                            graphUser = await _usersManager.GetUserInfoAsync(roleUser.UserId.ToString(), tokenResponse.access_token);
+                            email = graphUser.mail;
+                        }
+
+                        emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewDeleted).FirstOrDefault();
+                        emailEnvelope = _emailsManager.GetEmailEnvelopeForInterviewDeleted(emailTemplate, process, interview, email);
                         responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
                     }
                 }
