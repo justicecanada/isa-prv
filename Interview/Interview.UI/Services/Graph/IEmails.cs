@@ -18,6 +18,8 @@ namespace Interview.UI.Services.Graph
 
         EmailEnvelope GetEmailEnvelopeForCandidateExternal(EmailTemplate emailTemplate, ExternalUser externalUser, string callbackUrl);
 
+        EmailEnvelope GetEmailEnvelopeForInterviewChanged(EmailTemplate emailTemplate, Process process, Entities.Interview interview, string email);
+
     }
 
 }

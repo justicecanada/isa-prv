@@ -233,6 +233,57 @@ namespace Interview.UI.Services.Graph
 
         }
 
+        public EmailEnvelope GetEmailEnvelopeForInterviewChanged(EmailTemplate emailTemplate, Process process, Entities.Interview interview, string email)
+        {
+
+            EmailEnvelope result = null;
+
+            if (emailTemplate != null && process.Schedules.Count != 0)
+            {
+
+                string noProcess = process.NoProcessus;
+                string groupNiv = process.GroupNiv;
+                string startDate = interview.StartDate.Date.ToLongDateString();
+                DateTime time = DateTime.Today.Add(interview.StartDate.TimeOfDay);
+                string startTime = time.ToString(Constants.TimeFormat);
+                string startOral = "Figure this out";
+                string location = $"{interview.Location} {interview.Room}";
+                string contactName = string.IsNullOrEmpty(interview.ContactName) ? process.ContactName : interview.ContactName;
+                string contactNumber = string.IsNullOrEmpty(interview.ContactNumber) ? process.ContactNumber : interview.ContactNumber;
+                List<EmailRecipent> toRecipients = GetEmailRecipients(email);
+
+                string body = emailTemplate.EmailBody
+                    .Replace("{0}", noProcess)
+                    .Replace("{1}", groupNiv)
+                    .Replace("{2}", startDate)
+                    .Replace("{3}", startTime)
+                    .Replace("{4}", startOral)
+                    .Replace("{5}", location)
+                    .Replace("{6}", contactName)
+                    .Replace("{7}", contactNumber);
+
+                result = new EmailEnvelope()
+                {
+                    message = new EmailMessage()
+                    {
+                        subject = emailTemplate.EmailSubject,
+                        body = new EmailBody()
+                        {
+                            contentType = "HTML",
+                            content = body
+                        },
+                        toRecipients = toRecipients,
+                        //ccRecipients = GetEmailRecipients(emailTemplate.CcRecipients),
+                    },
+                    saveToSentItems = "false"
+                };
+
+            }
+
+            return result;
+
+        }
+
         #endregion
 
     }

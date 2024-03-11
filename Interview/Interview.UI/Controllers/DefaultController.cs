@@ -255,7 +255,8 @@ namespace Interview.UI.Controllers
                 }
                 else
                 {
-                    await _dal.UpdateEntity(interview);
+                    await HandleEmailCandidateIfInterviewChanged(interview);
+                    await _dal.UpdateEntity(interview);                  
                 }
 
                 return new JsonResult(new { result = true, item = vmInterviewModal })
@@ -332,6 +333,36 @@ namespace Interview.UI.Controllers
                     ModelState.AddModelError("VmStartTime", _localizer["InterviewVmStartDateAndDuration"].Value
                         .Replace("{min}", ((TimeSpan)process.MinTime).ToString())
                         .Replace("{max}", ((TimeSpan)process.MaxTime).ToString()));
+                }
+
+            }
+
+        }
+
+        private async Task HandleEmailCandidateIfInterviewChanged(Entities.Interview interview)
+        {
+
+            Entities.Interview dbInterview = await _dal.GetEntity<Entities.Interview>(interview.Id, true) as Entities.Interview;
+
+            // Check if the details of the interview have changed.
+            if (dbInterview.Room != interview.Room || dbInterview.Location != interview.Location || dbInterview.StartDate != interview.StartDate)
+            {
+                // Check if there is a Candidate to email
+                InterviewUser candidate = dbInterview.InterviewUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).FirstOrDefault();
+
+                if (candidate != null)
+                {
+                    Process process = await _dal.GetEntity<Process>((Guid)_state.ProcessId, true) as Entities.Process;
+                    List<EmailTemplate> emailTemplates = await _dal.GetEmailTemplatesByProcessId(process.Id);
+                    EmailTemplate emailTemplate = emailTemplates.Where(x => x.EmailType == EmailTypes.CandidateInterviewChanged).FirstOrDefault();
+
+                    if (emailTemplate != null)
+                    {
+                        RoleUser roleUser = process.RoleUsers.Where(x => x.Id == candidate.UserId).First();
+                        EmailEnvelope emailEnvelope = _emailsManager.GetEmailEnvelopeForInterviewChanged(emailTemplate, process, interview, roleUser.ExternalUserEmail);
+                        TokenResponse tokenResponse = await _tokenManager.GetToken();
+                        HttpResponseMessage responseMessage = await _emailsManager.SendEmailAsync(emailEnvelope, tokenResponse.access_token, User.Identity.Name);
+                    }
                 }
 
             }
