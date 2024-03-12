@@ -78,20 +78,18 @@
                             "<div>" + Resources.Dashboard.InPerson + ": " + data.numberinpersons + "</div>";
                     },
                 },
-                { data: "numbervirtuals" },
+                { data: "numberdaysofinterview" },
                 {
                     data: function (row, type, val, meta) {
                         return row;
                     },
                     render: function (data, type, full, meta) {
 
-                        var result = null;
+                        var result = "";
 
-                        //$(data.eeboardmembers).each(function () {
-                        //    $(this).each(function () {
-                        //        result = result + this.name + ": " + this.count;
-                        //    })
-                        //});
+                        $.each(data.eecandidates, function (key, value) {
+                            result = result + "<div>" + value.name + ": " + value.count + "</div>";
+                        });
 
                         return result;
 
@@ -103,9 +101,11 @@
                     },
                     render: function (data, type, full, meta) {
 
-                        var result = null;
+                        var result = "";
 
-
+                        $.each(data.eeboardmembers, function (key, value) {
+                            result = result + "<div>" + value.name + ": " + value.count + "</div>";
+                        });
 
                         return result;
 
