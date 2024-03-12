@@ -12,6 +12,15 @@
         Week: "Week",
         Day: "Day",
         List: "List"
+    },
+
+    Dashboard: {
+        Completed: "Completed",
+        Remaining: "Remaining",
+        InTimeSlot: "In Time Slot",
+        NotInTimeSlot: "Not in Time Slot",
+        Virtual: "Virtual",
+        InPerson: "In-Person",
     }
 
 }
