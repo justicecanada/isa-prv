@@ -121,7 +121,7 @@ namespace Interview.UI.Controllers
                     .Take(dtParameters.length)
                     .ToList()
             };
-            JsonSerializerOptions settings = new JsonSerializerOptions() { PropertyNamingPolicy = new LowerCaseNamingPolicy() };
+            JsonSerializerOptions settings = new JsonSerializerOptions() { PropertyNamingPolicy = new CustomLessThanDesirableNamingPolicy() };
             string result = System.Text.Json.JsonSerializer.Serialize(dtResult, settings);
 
             return result;
@@ -162,10 +162,18 @@ namespace Interview.UI.Controllers
 
     }
 
-    public class LowerCaseNamingPolicy : JsonNamingPolicy
+    public class CustomLessThanDesirableNamingPolicy : JsonNamingPolicy
     {
         public override string ConvertName(string name)
         {
+
+            if (name == "Draw")
+                return "draw";
+            if (name == "RecordsTotal")
+                return "recordsTotal";
+            if (name == "RecordsFiltered")
+                return "recordsFiltered";
+
             if (string.IsNullOrEmpty(name) || !char.IsUpper(name[0]))
                 return name;
 
