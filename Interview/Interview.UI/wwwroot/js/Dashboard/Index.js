@@ -4,16 +4,19 @@
     Url: "/Dashboard/GetResults",
     ProcessId: $("#ProcessId")[0],
     PeriodOfTimeType: $("#PeriodOfTimeType")[0],
-    StartDate: $("#startdate")[0],
-    EndDate: $("#enddate")[0],
+    StartDate: $("#StartDate")[0],
+    EndDate: $("#EndDate")[0],
+    BtnApply: $("#btnApply")[0],
 
     Init: function () {
 
         this.InitTable();
+        this.HandleButtons();
 
     },
 
     InitTable: function () {
+
 
         $(this.Table).DataTable({
             // Design Assets
@@ -112,6 +115,15 @@
                     },
                 },
             ],
+        });
+
+    },
+
+    HandleButtons: function () {
+
+
+        $(this.BtnApply).on("click", function () {
+            $(table.Table).DataTable().ajax.reload();
         });
 
     },

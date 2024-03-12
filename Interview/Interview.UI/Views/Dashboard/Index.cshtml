@@ -73,7 +73,8 @@
                 </div>
                 <div class="col-md-3">
                     @Html.ActionLink(localizer["Clear"].Value, "Index", "Dashboard", null, new { @class = "btn btn-default" })
-                    <input type="submit" value="@localizer["Apply"]" id="btnSave" class="btn btn-primary mr-2" formmethod="post" />
+                    @*<input type="submit" value="@localizer["Apply"]" id="btnSave" class="btn btn-primary mr-2" formmethod="post" />*@
+                    <button type="button" id="btnApply" class="btn btn-primary" value="@localizer["Apply"]">@localizer["Apply"]</button>
                 </div>
             </div>
 
