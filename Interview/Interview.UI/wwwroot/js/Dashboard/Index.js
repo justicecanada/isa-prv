@@ -7,6 +7,7 @@
     StartDate: $("#StartDate")[0],
     EndDate: $("#EndDate")[0],
     BtnApply: $("#btnApply")[0],
+    BtnClear: $("#btnClear")[0],
 
     Init: function () {
 
@@ -121,10 +122,22 @@
 
     HandleButtons: function () {
 
-
         $(this.BtnApply).on("click", function () {
             $(table.Table).DataTable().ajax.reload();
         });
+
+        $(this.BtnClear).on("click", function () {
+            $(table.ProcessId).val('');
+            $(table.PeriodOfTimeType).val('1');
+            $(table.StartDate).val('');
+            $(table.EndDate).val('');
+
+            window.setTimeout(function () {
+                // Let page redraw itself before reloading table with page values
+                $(table.Table).DataTable().ajax.reload();
+            }, 0);
+            
+        })
 
     },
 
