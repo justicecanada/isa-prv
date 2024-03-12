@@ -129,6 +129,8 @@ namespace Interview.UI.Services.DAL
                             .Include(x => x.Interviews)
                             .ThenInclude(x => x.InterviewUsers)
                             .Include(x => x.RoleUsers)
+                            .ThenInclude(x => x.RoleUserEquities)
+                            .ThenInclude(x => x.Equity)
                             .Include(x => x.Schedules)
                             .Include(x => x.ProcessGroups)
                             .ThenInclude(x => x.Group)
