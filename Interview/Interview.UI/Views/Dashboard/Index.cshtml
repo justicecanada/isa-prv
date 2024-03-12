@@ -56,7 +56,7 @@
         <h5 class="panel-title">@localizer["DahboardFilters"]</h5>
     </header>
     <div class="panel-body">
-        @using (Html.BeginForm("Filter", "Dashboard", null, FormMethod.Post, null, new { id = "formProcess" }))
+        @using (Html.BeginForm("Filter", "Dashboard", null, FormMethod.Post, null, new { id = "formFilters" }))
         {
 
             @Html.AntiForgeryToken()
@@ -72,8 +72,8 @@
                     @Html.EditorFor(x => x.StartDate, "Question", new { inputControl = Html.JusDatePickerFor(x => x.StartDate, new { date = Model.StartDate }) })
                 </div>
                 <div class="col-md-3">
-                    @Html.ActionLink(localizer["Clear"].Value, "Index", "Dashboard", null, new { @class = "btn btn-default" })
-                    <input type="submit" value="@localizer["Apply"]" id="btnSave" class="btn btn-primary mr-2" formmethod="post" />
+                    <button type="button" id="btnClear" class="btn btn-default" value="@localizer["Clear"]">@localizer["Clear"]</button>
+                    <button type="button" id="btnApply" class="btn btn-primary" value="@localizer["Apply"]">@localizer["Apply"]</button>
                 </div>
             </div>
 
@@ -93,12 +93,12 @@
     </div>
 </section>
 
-@{
+@*@{
     await Html.RenderPartialAsync("InterviewsRowPartial");
 }
-
+*@
 <div class="table-responsive">
-    <table id="roleInterviews" class="table table-striped" data-toggle="table" data-pagination="true">
+    <table id="tblResults" class="table table-striped" data-toggle="table" data-pagination="true">
         <thead>        
             <tr>
                 <th>@localizer["Dates"]</th>
@@ -111,29 +111,5 @@
                 <th>@localizer["NumberBoardMembers"]</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (VmDashboardItem dashboardItem in dashboardItems)
-            {
-                <tr>
-                    <td>@dashboardItem.Dates</td>
-                    <td>@dashboardItem.NumberSlots</td>
-                    <td>
-                        <div>@localizer["Completed"]: @dashboardItem.NumberProgressCompleted</div>
-                        <div>@localizer["Remaining"]: @dashboardItem.NumberProgressRemaining</div>
-                    </td>
-                    <td>
-                        <div>@localizer["InTimeSlot"]: @dashboardItem.NumberCandidateInSlots</div>
-                        <div>@localizer["NotInTimeSlot"]: @dashboardItem.NumberCandidateNotInSlots</div>
-                    </td>
-                    <td>
-                        <div>@localizer["Virtual"]: @dashboardItem.NumberVirtuals</div>
-                        <div>@localizer["InPerson"]: @dashboardItem.NumberInPersons</div>
-                    </td>
-                    <td>@dashboardItem.NumberDaysOfInterview</td>
-                    <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeCandidates))</td>
-                    <td>@Html.Raw(GetEeCandidateDetails(dashboardItem.EeBoardMembers))</td>
-                </tr>
-            }
-        </tbody>
     </table>
 </div>

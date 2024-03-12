@@ -10,7 +10,8 @@ namespace Interview.UI.Models.Dashboard
         public Guid? ProcessId { get; set; }
 
         [Display(Name = "PeriodOfTimeType")]
-        public VmPeriodOfTimeTypes? PeriodOfTimeType { get; set; }
+        public VmPeriodOfTimeTypes PeriodOfTimeType { get; set; }
+        //public string IntPeriodOfTime { get; set; }
 
         [Display(Name = "StartDate")]
         public DateTime? StartDate { get; set; }
