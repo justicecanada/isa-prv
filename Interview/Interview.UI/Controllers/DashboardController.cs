@@ -133,23 +133,22 @@ namespace Interview.UI.Controllers
 
             List<VmDashboardItem> result = null;
             List<Entities.Process> processResults = null;
+            DateTime startDate = vmFilter.StartDate == null ? DateTime.Now.AddYears(-1) : (DateTime)vmFilter.StartDate;
+            DateTime endDate = vmFilter.EndDate == null ? DateTime.Now.AddYears(1) : (DateTime)vmFilter.EndDate;
 
             if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
-                processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
+                processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, startDate, endDate);
             else if (User.IsInRole(RoleTypes.Owner.ToString()))
-                processResults = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
+                processResults = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
             else
-                processResults = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, vmFilter.StartDate, vmFilter.EndDate);
+                processResults = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
             processResults.OrderByDescending(x => x.CreatedDate);
 
             //// Equities
             List<Equity> equities = await _dal.GetAllEquities();
-            //ViewBag.Equities = equities;
 
             //// Stats
             string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-            //VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
-            //ViewBag.InterviewCounts = vmInterviewCounts;
 
             // Dashboard Items
             result = _statsManager.GetDashboardItems(processResults, equities, cultureName,
