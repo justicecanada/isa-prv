@@ -50,12 +50,11 @@ namespace Interview.UI.Controllers
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
 
             // Session Timeout
-            //_sessionTimeoutOptions = sessionTimeoutOptions;
             WebTemplateModel.Settings.SessionTimeout.Enabled = sessionTimeoutOptions.Value.Enabled;
             WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Base/Logout";
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Account/Logout";
             WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "Base/SessionValidity";
             WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
             WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
@@ -129,6 +128,14 @@ namespace Interview.UI.Controllers
             ViewBag.Message = message;
 
             return PartialView("ConfirmDeleteModal", result);
+
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+
+            return null;
 
         }
 

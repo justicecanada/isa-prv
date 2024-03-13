@@ -73,6 +73,18 @@ namespace Interview.UI.Controllers
 
         #endregion
 
+        #region Public Logout Methods
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+
+            return null;
+
+        }
+
+        #endregion
+
         #region Public Manage User Roles Methods
 
         [HttpGet]

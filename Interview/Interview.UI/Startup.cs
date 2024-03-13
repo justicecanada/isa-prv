@@ -57,11 +57,10 @@ namespace Interview.UI
             services.AddAutoMapper(typeof(MapperConfig));
 
             services.AddDistributedMemoryCache();
-            int timeout = System.Convert.ToInt16(Configuration["SessionTimeoutInMinutes"]);
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(Configuration.GetValue<double>("SessionTimeout:IdleTimeoutInMinutes"));
-                options.Cookie.Name = Configuration.GetValue<string>("SessionTimeout:CookieName");
+                options.IdleTimeout = TimeSpan.FromMinutes(Configuration.GetValue<double>("SessionTimeoutOptions:IdleTimeoutInMinutes"));
+                options.Cookie.Name = Configuration.GetValue<string>("SessionTimeoutOptions:CookieName");
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
