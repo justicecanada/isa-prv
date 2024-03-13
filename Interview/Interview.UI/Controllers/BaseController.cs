@@ -33,7 +33,7 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> localizer, IOptions<SessionTimeoutOptions> sessionTimeoutOptions) : base(modelAccessor)
         {
 
             _dal = dal;
@@ -48,6 +48,19 @@ namespace Interview.UI.Controllers
 
             // Identifier
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
+
+            // Session Timeout
+            //_sessionTimeoutOptions = sessionTimeoutOptions;
+            WebTemplateModel.Settings.SessionTimeout.Enabled = sessionTimeoutOptions.Value.Enabled;
+            WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Base/Logout";
+            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "Base/SessionValidity";
+            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
+            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.Method = "";
+            WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
 
         }
 

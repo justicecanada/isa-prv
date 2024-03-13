@@ -33,8 +33,9 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public GroupsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IToken tokenManager, 
-            IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IStringLocalizer<GroupsController> localizer) 
-            : base(modelAccessor, dal, baseLocalizer)
+            IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, IStringLocalizer<GroupsController> localizer, 
+            IOptions<SessionTimeoutOptions> sessionTimeoutOptions) 
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _state = state;
