@@ -54,8 +54,8 @@ namespace Interview.UI.Controllers
             WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Account/Logout";
-            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "Base/SessionValidity";
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
+            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
             WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
             WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
             WebTemplateModel.Settings.SessionTimeout.Method = "";
@@ -135,7 +135,24 @@ namespace Interview.UI.Controllers
         public IActionResult Logout()
         {
 
-            return null;
+            IActionResult result = null;
+
+            // Handle where to redirect
+            if (User.Identity.IsAuthenticated)
+                result = new RedirectToActionResult("LoggedOut", "Account", null);
+            else
+                result = new RedirectToActionResult("SessionEnded", "Account", null);
+
+            // Handle Session
+            HttpContext.Session.Clear();
+
+            return result;
+
+        }
+
+        [HttpGet]
+        public void SessionValidity()
+        {
 
         }
 

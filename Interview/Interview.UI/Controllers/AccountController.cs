@@ -73,13 +73,23 @@ namespace Interview.UI.Controllers
 
         #endregion
 
-        #region Public Logout Methods
+        #region Public LoggedOut and SessionEnded Methods
 
         [HttpGet]
-        public IActionResult Logout()
+        [AllowAnonymous]
+        public IActionResult LoggedOut()
         {
 
-            return null;
+            return View();
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SessionEnded()
+        {
+
+            return View();
 
         }
 
