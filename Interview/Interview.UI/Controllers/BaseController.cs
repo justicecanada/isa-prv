@@ -28,6 +28,7 @@ namespace Interview.UI.Controllers
         private string _buildId;
         private readonly IStringLocalizer<BaseController> _localizer;
         protected readonly DalSql _dal;
+        IOptions<SessionTimeoutOptions> _sessionTimeoutOptions;
 
         #endregion
 
@@ -50,16 +51,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
 
             // Session Timeout
-            WebTemplateModel.Settings.SessionTimeout.Enabled = sessionTimeoutOptions.Value.Enabled;
-            WebTemplateModel.Settings.SessionTimeout.Inactivity = sessionTimeoutOptions.Value.InactivityInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.ReactionTime = sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.SessionAlive = sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
-            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
-            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = sessionTimeoutOptions.Value.RefreshOnClick;
-            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.Method = "";
-            WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
+            _sessionTimeoutOptions = sessionTimeoutOptions;
 
         }
 
@@ -176,6 +168,18 @@ namespace Interview.UI.Controllers
             {
                 WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
             }
+
+            // Session Timeout
+            WebTemplateModel.Settings.SessionTimeout.Enabled = _sessionTimeoutOptions.Value.Enabled;
+            WebTemplateModel.Settings.SessionTimeout.Inactivity = _sessionTimeoutOptions.Value.InactivityInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.ReactionTime = _sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.SessionAlive = _sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
+            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
+            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = _sessionTimeoutOptions.Value.RefreshOnClick;
+            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = _sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.Method = "";
+            WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
 
         }
 
