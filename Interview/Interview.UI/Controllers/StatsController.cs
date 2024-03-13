@@ -27,8 +27,8 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public StatsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IStringLocalizer<BaseController> baseLocalizer, 
-            IState state, IStats statsManager) 
-            : base(modelAccessor, dal, baseLocalizer)
+            IState state, IStats statsManager, IOptions<SessionTimeoutOptions> sessionTimeoutOptions) 
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _state = state;

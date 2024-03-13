@@ -33,10 +33,9 @@ namespace Interview.UI.Controllers
 
         #region Constructors
 
-        public AccountController(IModelAccessor modelAccessor, DalSql dal, IToken tokenManager, IUsers userManager, 
-            IStringLocalizer<BaseController> baseLocalizer, IWebHostEnvironment hostEnvironment,
-            IMapper mapper, IStringLocalizer<AccountController> localizer)
-            : base(modelAccessor, dal, baseLocalizer)
+        public AccountController(IModelAccessor modelAccessor, DalSql dal, IToken tokenManager, IUsers userManager, IStringLocalizer<BaseController> baseLocalizer, 
+            IWebHostEnvironment hostEnvironment, IMapper mapper, IStringLocalizer<AccountController> localizer, IOptions<SessionTimeoutOptions> sessionTimeoutOptions)
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
 
             _tokenManager = tokenManager;
@@ -69,6 +68,28 @@ namespace Interview.UI.Controllers
                 result = new RedirectResult("/.auth/login/aad?post_login_redirect_uri=/Default/Index");
 
             return result;
+
+        }
+
+        #endregion
+
+        #region Public LoggedOut and SessionEnded Methods
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult LoggedOut()
+        {
+
+            return View();
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SessionEnded()
+        {
+
+            return View();
 
         }
 

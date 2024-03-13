@@ -1,10 +1,14 @@
-﻿@{
+﻿@inject IViewLocalizer localizer
+
+@{
     Layout = "~/Views/GoC.WebTemplate/_Layout.ErrorPage.Bilingual.cshtml";
 
     string exceptionId = ViewBag.ExceptionId;
 
 }
 
-<h1>Custom Error page</h1>
+<h1>@localizer["Title"]</h1>
 
-<p>ExceptionId = @exceptionId</p>
+<p>@localizer["Message"]</p>
+
+<p>@localizer["ExceptionId"] = @exceptionId</p>

@@ -43,8 +43,9 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public DefaultController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<DefaultController> localizer,
-            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager, IUsers usersManager) 
-            : base(modelAccessor, dal, baseLocalizer)
+            IStringLocalizer<BaseController> baseLocalizer, IToken tokenManager, IEmails emailsManager, IUsers usersManager
+            , IOptions<SessionTimeoutOptions> sessionTimeoutOptions) 
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _state = state;
