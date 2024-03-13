@@ -8,8 +8,6 @@
 
         public bool Enabled { get; set; }
 
-        public int IdleTimeoutInMinutes { get; set; }
-
         public int InactivityInMilliseconds { get; set; }
 
         public int ReactionTimeInMilliseconds { get; set; }
@@ -19,6 +17,8 @@
         public int RefreshLimitInMilliseconds { get; set; }
 
         public bool RefreshOnClick { get; set; }
+
+        public string Method { get; set; }
 
     }
 

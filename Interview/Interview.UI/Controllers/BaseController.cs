@@ -181,7 +181,7 @@ namespace Interview.UI.Controllers
             WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
             WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = _sessionTimeoutOptions.Value.RefreshOnClick;
             WebTemplateModel.Settings.SessionTimeout.RefreshLimit = _sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
-            WebTemplateModel.Settings.SessionTimeout.Method = "";
+            WebTemplateModel.Settings.SessionTimeout.Method = _sessionTimeoutOptions.Value.Method;
             WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
 
         }

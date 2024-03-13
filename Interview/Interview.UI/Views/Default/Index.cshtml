@@ -31,6 +31,8 @@
 
 }
 
+<h1>@localizer["Title"]</h1>
+
 @{
     await Html.RenderPartialAsync("NotificationPartial");
 }
@@ -41,7 +43,7 @@
 
 @*Only form control*@
 <div class="container mrgn-tp-md">
-    <div class="row well well-lg">
+    <div class="row col-md-12 well well-lg">
         @using (Html.BeginForm("SwitchProcess", "Default", null, FormMethod.Post, null, new { id = "formProcess" }))
         {
             @Html.AntiForgeryToken()            

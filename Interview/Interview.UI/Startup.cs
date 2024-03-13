@@ -59,7 +59,7 @@ namespace Interview.UI
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(Configuration.GetValue<double>("SessionTimeoutOptions:IdleTimeoutInMinutes"));
+                options.IdleTimeout = TimeSpan.FromMilliseconds(Configuration.GetValue<double>("SessionTimeoutOptions:DotNetSessionInMilliseconds"));
                 options.Cookie.Name = Configuration.GetValue<string>("SessionTimeoutOptions:CookieName");
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
