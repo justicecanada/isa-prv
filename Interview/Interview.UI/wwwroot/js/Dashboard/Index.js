@@ -8,6 +8,12 @@
     EndDate: $("#EndDate")[0],
     BtnApply: $("#btnApply")[0],
     BtnClear: $("#btnClear")[0],
+    Counts: {
+        Total: $("#totalInterviews")[0],
+        Completed: $("#completedInterviews")[0],
+        Remaining: $("#remainingInterviews")[0],
+        Days: $("#interviewDays")[0]
+    },
 
     Init: function () {
 
@@ -116,7 +122,14 @@
                     },
                 },
             ],
-        });
+        })
+            .on("xhr", function (e, settings, json, xhr) {
+                var counts = JSON.parse(json.partialview);
+                $(table.Counts.Total).html(counts.TotalInterviews);
+                $(table.Counts.Completed).html(counts.CompletedInterviews);
+                $(table.Counts.Remaining).html(counts.RemainingInterviews);
+                $(table.Counts.Days).html(counts.InterviewDays);
+            });
 
     },
 

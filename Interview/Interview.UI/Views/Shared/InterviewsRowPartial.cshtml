@@ -5,7 +5,7 @@
 
 @{
 
-    VmInterviewCounts interviewCounts = ViewBag.InterviewCounts;
+    //VmInterviewCounts interviewCounts = ViewBag.InterviewCounts;
 
 }
 
@@ -20,7 +20,9 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewCounts.TotalInterviews</strong>
+                    <strong>
+                        <div id="totalInterviews"></div>
+                    </strong>
                 </div>
             </div>
         </div>
@@ -30,12 +32,16 @@
         <div class="well well-sm text-center">
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@localizer["InterviewsCompleted"]</strong>
+                    <strong>
+                        @localizer["InterviewsCompleted"]
+                    </strong>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewCounts.CompletedInterviews</strong>
+                    <strong>
+                        <div id="completedInterviews"></div>
+                    </strong>
                 </div>
             </div>
         </div>
@@ -50,7 +56,9 @@
         </div>
         <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewCounts.RemainingInterviews</strong>
+                    <strong>
+                        <div id="remainingInterviews"></div>
+                    </strong>
                 </div>
             </div>
         </div>
@@ -65,7 +73,9 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <strong>@interviewCounts.InterviewDays</strong>
+                    <strong>
+                        <div id="interviewDays"></div>
+                    </strong>
                 </div>
             </div>
         </div>
