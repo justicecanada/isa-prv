@@ -115,18 +115,19 @@ namespace Interview.UI.Controllers
             List<Equity> equities = await _dal.GetAllEquities();
             List<VmDashboardItem> dashboardItems = _statsManager.GetDashboardItems(processes, equities, cultureName,
                 vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
-
-            //VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
+            VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processes);
+            string seralizedInterviewCounts = System.Text.Json.JsonSerializer.Serialize(vmInterviewCounts);
 
             DtResult<VmDashboardItem> dtResult = new DtResult<VmDashboardItem>
             {
                 Draw = dtParameters.draw,
-                RecordsTotal = dashboardItems.Count,        // This needs to be the full non paged result set.
-                RecordsFiltered = dashboardItems.Count,     // This needs to be the amount of filtered records.
+                RecordsTotal = dashboardItems.Count,
+                RecordsFiltered = dashboardItems.Count,
                 Data = dashboardItems
                     .Skip(dtParameters.start)
                     .Take(dtParameters.length)
-                    .ToList()
+                    .ToList(),
+                PartialView = seralizedInterviewCounts
             };
             JsonSerializerOptions settings = new JsonSerializerOptions() { PropertyNamingPolicy = new CustomLessThanDesirableNamingPolicy() };
             string result = System.Text.Json.JsonSerializer.Serialize(dtResult, settings);
