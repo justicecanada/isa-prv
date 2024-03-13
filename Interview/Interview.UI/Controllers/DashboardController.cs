@@ -31,8 +31,8 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public DashboardController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IStringLocalizer<BaseController> baseLocalizer, 
-            IStats statsManager) 
-            : base(modelAccessor, dal, baseLocalizer)
+            IStats statsManager, IOptions<SessionTimeoutOptions> sessionTimeoutOptions) 
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _statsManager = statsManager;

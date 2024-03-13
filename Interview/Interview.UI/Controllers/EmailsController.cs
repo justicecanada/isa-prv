@@ -32,8 +32,8 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public EmailsController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IStringLocalizer<BaseController> baseLocalizer, 
-            IToken tokenManager, IEmails emailsManager, IStringLocalizer<EmailsController> localizer) 
-            : base(modelAccessor, dal, baseLocalizer)
+            IToken tokenManager, IEmails emailsManager, IStringLocalizer<EmailsController> localizer, IOptions<SessionTimeoutOptions> sessionTimeoutOptions) 
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _state = state;

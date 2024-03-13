@@ -1,6 +1,7 @@
 ﻿
 @using Interview.Entities
 @using System.Text
+@inject IViewLocalizer localizer
 
 @{
 
@@ -45,11 +46,11 @@
 
 }
 
-<h1>Interview Booked</h1>
+<h1>@localizer["Title"]</h1>
 
 <div class="row">
     <div class="col-md-4 bold">
-        Location: 
+        @localizer["Location"]:
     </div>
     <div class="col-md-8">
         @vmInterview.Location
@@ -58,7 +59,7 @@
 
 <div class="row">
     <div class="col-md-4 bold">
-        Room:
+        @localizer["Room"]:
     </div>
     <div class="col-md-8">
         @vmInterview.Room
@@ -67,7 +68,7 @@
 
 <div class="row">
     <div class="col-md-4 bold">
-        Date and Time:
+        @localizer["DateAndTime"]:
     </div>
     <div class="col-md-8">
         @Html.Raw(GetInterviewDetails(vmInterview))
@@ -76,7 +77,7 @@
 
 <div class="row">
     <div class="col-md-4 bold">
-        Equities:
+        @localizer["Equities"]:
     </div>
     <div class="col-md-8">
         @Html.Raw(GetEquities(roleUserEquities, cultureName))

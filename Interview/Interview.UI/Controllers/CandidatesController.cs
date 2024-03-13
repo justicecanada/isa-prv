@@ -2,6 +2,7 @@
 using GoC.WebTemplate.Components.Core.Services;
 using Interview.Entities;
 using Interview.UI.Models;
+using Interview.UI.Models.AppSettings;
 using Interview.UI.Models.Graph;
 using Interview.UI.Services.DAL;
 using Interview.UI.Services.Graph;
@@ -9,6 +10,7 @@ using Interview.UI.Services.State;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using Process = Interview.Entities.Process;
 
@@ -31,8 +33,8 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public CandidatesController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> baseLocalizer, IMapper mapper, 
-            IState state, IToken tokenManager, IUsers userManager, IEmails emailsManager)
-            : base(modelAccessor, dal, baseLocalizer)
+            IState state, IToken tokenManager, IUsers userManager, IEmails emailsManager, IOptions<SessionTimeoutOptions> sessionTimeoutOptions)
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _state = state;
@@ -51,6 +53,7 @@ namespace Interview.UI.Controllers
 
             _state.ProcessId = processId;
             await SetInterviewsViewBag(processId, externalCandidateId);
+            HandleCommonPageMethods(false);
 
             return View();
 

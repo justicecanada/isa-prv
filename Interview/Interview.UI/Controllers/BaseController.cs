@@ -28,12 +28,13 @@ namespace Interview.UI.Controllers
         private string _buildId;
         private readonly IStringLocalizer<BaseController> _localizer;
         protected readonly DalSql _dal;
+        IOptions<SessionTimeoutOptions> _sessionTimeoutOptions;
 
         #endregion
 
         #region Constructors
 
-        public BaseController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> localizer) : base(modelAccessor)
+        public BaseController(IModelAccessor modelAccessor, DalSql dal, IStringLocalizer<BaseController> localizer, IOptions<SessionTimeoutOptions> sessionTimeoutOptions) : base(modelAccessor)
         {
 
             _dal = dal;
@@ -48,6 +49,9 @@ namespace Interview.UI.Controllers
 
             // Identifier
             WebTemplateModel.VersionIdentifier = AssemblyVersion;
+
+            // Session Timeout
+            _sessionTimeoutOptions = sessionTimeoutOptions;
 
         }
 
@@ -119,26 +123,66 @@ namespace Interview.UI.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+
+            IActionResult result = null;
+
+            // Handle where to redirect
+            if (User.Identity.IsAuthenticated)
+                result = new RedirectToActionResult("LoggedOut", "Account", null);
+            else
+                result = new RedirectToActionResult("SessionEnded", "Account", null);
+
+            // Handle Session
+            HttpContext.Session.Clear();
+
+            return result;
+
+        }
+
+        [HttpGet]
+        public string SessionValidity()
+        {
+            return "true";
+        }
+
         #endregion
 
         #region Protected Methods
 
-        protected void HandleCommonPageMethods()
+        protected void HandleCommonPageMethods(bool addTopMenuItems = true)
         {
 
             // This cannot be handled in the BaseController constructor because User is null at that time.
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
 
             // Top menu
-            WebTemplateModel.MenuLinks = new List<MenuLink>();
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
-            if (User.IsInRole(Roles.Admin))
+            if (addTopMenuItems)
             {
-                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
+                WebTemplateModel.MenuLinks = new List<MenuLink>();
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
+                if (User.IsInRole(Roles.Admin))
+                {
+                    WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
+                }
             }
+
+            // Session Timeout
+            WebTemplateModel.Settings.SessionTimeout.Enabled = _sessionTimeoutOptions.Value.Enabled;
+            WebTemplateModel.Settings.SessionTimeout.Inactivity = _sessionTimeoutOptions.Value.InactivityInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.ReactionTime = _sessionTimeoutOptions.Value.ReactionTimeInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.SessionAlive = _sessionTimeoutOptions.Value.SessionAliveInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.LogoutUrl = "Logout";
+            WebTemplateModel.Settings.SessionTimeout.RefreshCallBackUrl = "SessionValidity";
+            WebTemplateModel.Settings.SessionTimeout.RefreshOnClick = _sessionTimeoutOptions.Value.RefreshOnClick;
+            WebTemplateModel.Settings.SessionTimeout.RefreshLimit = _sessionTimeoutOptions.Value.RefreshLimitInMilliseconds;
+            WebTemplateModel.Settings.SessionTimeout.Method = _sessionTimeoutOptions.Value.Method;
+            WebTemplateModel.Settings.SessionTimeout.AdditionalData = "";
 
         }
 

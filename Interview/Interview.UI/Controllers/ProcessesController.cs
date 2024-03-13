@@ -32,8 +32,9 @@ namespace Interview.UI.Controllers
         #region Constructors
 
         public ProcessesController(IModelAccessor modelAccessor, DalSql dal, IMapper mapper, IState state, IOptions options, 
-            IStringLocalizer<BaseController> baseLocalizer, IStringLocalizer<ProcessesController> localizer) 
-            : base(modelAccessor, dal, baseLocalizer)
+            IStringLocalizer<BaseController> baseLocalizer, IStringLocalizer<ProcessesController> localizer, 
+            IOptions<SessionTimeoutOptions> sessionTimeoutOptions) 
+            : base(modelAccessor, dal, baseLocalizer, sessionTimeoutOptions)
         {
             _mapper = mapper;
             _state = state;

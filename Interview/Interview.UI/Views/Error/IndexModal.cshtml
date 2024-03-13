@@ -1,4 +1,4 @@
-﻿
+﻿@inject IViewLocalizer localizer
 
 @{
 
@@ -7,15 +7,14 @@
 }
 
 <header class="modal-header">
-    <h2 class="modal-title">Error</h2>
-    @*<div class="mfp-close"></div>*@
+    <h2 class="modal-title">@localizer["Title"]</h2>
     <button title="%title%" type="button" class="mfp-close">x</button>
 </header>
 
 <div class="modal-body">
 
-    <h1>Custom Error page</h1>
+    <p>@localizer["Message"]</p>
 
-    <p>ExceptionId = @exceptionId</p>
+    <p>@localizer["ExceptionId"] = @exceptionId</p>
 
 </div>
