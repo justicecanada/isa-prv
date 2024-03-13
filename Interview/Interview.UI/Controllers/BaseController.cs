@@ -143,9 +143,9 @@ namespace Interview.UI.Controllers
         }
 
         [HttpGet]
-        public void SessionValidity()
+        public string SessionValidity()
         {
-
+            return "true";
         }
 
         #endregion
