@@ -110,7 +110,14 @@ namespace Interview.UI.Controllers
         {
            
             VmFilter vmFilter = JsonConvert.DeserializeObject<VmFilter>(dtParameters.formfilter);
-            List<VmDashboardItem> dashboardItems = await GetDashboardItems(vmFilter);
+            string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            List<Process> processes = await GetProcesses(vmFilter, cultureName);
+            List<Equity> equities = await _dal.GetAllEquities();
+            List<VmDashboardItem> dashboardItems = _statsManager.GetDashboardItems(processes, equities, cultureName,
+                vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
+
+            //VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processResults);
+
             DtResult<VmDashboardItem> dtResult = new DtResult<VmDashboardItem>
             {
                 Draw = dtParameters.draw,
@@ -128,31 +135,20 @@ namespace Interview.UI.Controllers
 
         }
 
-        private async Task<List<VmDashboardItem>> GetDashboardItems(VmFilter vmFilter)
+        private async Task<List<Entities.Process>> GetProcesses(VmFilter vmFilter, string cultureName)
         {
 
-            List<VmDashboardItem> result = null;
-            List<Entities.Process> processResults = null;
+            List<Entities.Process> result = null;
             DateTime startDate = vmFilter.StartDate == null ? DateTime.Now.AddYears(-1) : (DateTime)vmFilter.StartDate;
             DateTime endDate = vmFilter.EndDate == null ? DateTime.Now.AddYears(1) : (DateTime)vmFilter.EndDate;
 
             if (User.IsInRole(RoleTypes.Admin.ToString()) || User.IsInRole(RoleTypes.System.ToString()))
-                processResults = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, startDate, endDate);
+                result = await _dal.GetAllProcessesForDashboard(vmFilter.ProcessId, startDate, endDate);
             else if (User.IsInRole(RoleTypes.Owner.ToString()))
-                processResults = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
+                result = await _dal.GetProcessesForGroupOwnerForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
             else
-                processResults = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
-            processResults.OrderByDescending(x => x.CreatedDate);
-
-            //// Equities
-            List<Equity> equities = await _dal.GetAllEquities();
-
-            //// Stats
-            string cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-
-            // Dashboard Items
-            result = _statsManager.GetDashboardItems(processResults, equities, cultureName,
-                vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
+                result = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
+            result.OrderByDescending(x => x.CreatedDate);
 
             return result;
 
