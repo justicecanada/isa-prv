@@ -60,7 +60,8 @@ namespace Interview.UI
             int timeout = System.Convert.ToInt16(Configuration["SessionTimeoutInMinutes"]);
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(timeout);
+                options.IdleTimeout = TimeSpan.FromSeconds(Configuration.GetValue<double>("SessionTimeout:IdleTimeoutInMinutes"));
+                options.Cookie.Name = Configuration.GetValue<string>("SessionTimeout:CookieName");
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -78,6 +79,7 @@ namespace Interview.UI
             services.AddScoped<IState, SessionState>();
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             services.Configure<EmailManagerOptions>(Configuration.GetSection("EmailManagerOptions"));
+            services.Configure<SessionTimeoutOptions>(Configuration.GetSection("SessionTimeoutOptions"));
             services.AddScoped<IToken, TokenManager>();
             services.AddScoped<IUsers, UserManager>();
             services.AddScoped<IEmails, EmailManager>();
