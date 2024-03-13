@@ -53,6 +53,7 @@ namespace Interview.UI.Controllers
 
             _state.ProcessId = processId;
             await SetInterviewsViewBag(processId, externalCandidateId);
+            HandleCommonPageMethods(false);
 
             return View();
 

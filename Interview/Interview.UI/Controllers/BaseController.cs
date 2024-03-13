@@ -152,21 +152,24 @@ namespace Interview.UI.Controllers
 
         #region Protected Methods
 
-        protected void HandleCommonPageMethods()
+        protected void HandleCommonPageMethods(bool addTopMenuItems = true)
         {
 
             // This cannot be handled in the BaseController constructor because User is null at that time.
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
 
             // Top menu
-            WebTemplateModel.MenuLinks = new List<MenuLink>();
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
-            WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
-            if (User.IsInRole(Roles.Admin))
+            if (addTopMenuItems)
             {
-                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
+                WebTemplateModel.MenuLinks = new List<MenuLink>();
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Home"].Value, Href = "/Default/Index" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["ProcessList"].Value, Href = "/Processes/Index" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["GroupList"].Value, Href = "/Groups/Index" });
+                WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["Dashboard"].Value, Href = "/Dashboard/Index" });
+                if (User.IsInRole(Roles.Admin))
+                {
+                    WebTemplateModel.MenuLinks.Add(new MenuLink() { Text = _localizer["UserRoles"].Value, Href = "/Account/ManageUserRoles" });
+                }
             }
 
             // Session Timeout
