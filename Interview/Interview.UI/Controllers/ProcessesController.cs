@@ -73,7 +73,9 @@ namespace Interview.UI.Controllers
 
             await _dal.DeleteEntity<Process>(id);
 
-            //_state.ProcessId = null;
+            if (_state.ProcessId == id)
+                _state.ProcessId = null;
+
             Notify(_localizer["NotifyDeleteSuccess"].Value, "success");
 
             return new JsonResult(new { result = true, id = id })
