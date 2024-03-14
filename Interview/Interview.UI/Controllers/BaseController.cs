@@ -158,6 +158,9 @@ namespace Interview.UI.Controllers
             // This cannot be handled in the BaseController constructor because User is null at that time.
             //https://github.com/wet-boew/cdts-DotNetTemplates/blob/master/samples/dotnet-coremvc-sample/Controllers/GoCWebTemplateSamplesController.cs
 
+            WebTemplateModel.ShowSignOutLink = true;
+            WebTemplateModel.Settings.SignOutLinkUrl = "Logout";
+
             // Top menu
             if (addTopMenuItems)
             {
