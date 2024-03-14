@@ -146,7 +146,6 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
             WebTemplateModel.HTMLHeaderElements.Add($"<link rel='stylesheet' href='/lib/jquery-DataTables/datatables.min.css'>");
 
-            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/Index.js?v={BuildId}\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src=\"/js/Default/InterviewTable.js?v={BuildId}\"></script>");
@@ -451,7 +450,7 @@ namespace Interview.UI.Controllers
                 }
             }
 
-            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
+            ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
             ViewBag.BoardMemberUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
             ViewBag.BoardMemberLeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
 
@@ -488,7 +487,7 @@ namespace Interview.UI.Controllers
                 {
                     // Delete
                     await _dal.DeleteEntity(dbInterviewUser);
-                    result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                    result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, RemovedRoleUserId = dbInterviewUser.UserId, InterviewUserActionType = InterviewUserActionTypes.Removed });
                 }
             }
             
