@@ -11,6 +11,7 @@ using Interview.UI.Services.Stats;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 using Newtonsoft.Json;
 using System;
 using System.Text.Json;
@@ -115,6 +116,10 @@ namespace Interview.UI.Controllers
             List<Equity> equities = await _dal.GetAllEquities();
             List<VmDashboardItem> dashboardItems = _statsManager.GetDashboardItems(processes, equities, cultureName,
                 vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
+
+            // Apply Seaarch filter
+            dashboardItems = SearchDashboardItems(dashboardItems, dtParameters.search);
+
             VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processes);
             string seralizedInterviewCounts = System.Text.Json.JsonSerializer.Serialize(vmInterviewCounts);
 
@@ -150,6 +155,26 @@ namespace Interview.UI.Controllers
             else
                 result = await _dal.GetProcessesForRoleUserForDashboard(EntraId, vmFilter.ProcessId, startDate, endDate);
             result.OrderByDescending(x => x.CreatedDate);
+
+            return result;
+
+        }
+
+        private List<VmDashboardItem> SearchDashboardItems(List<VmDashboardItem> dashboardItems, DtSearch dtSearch)
+        {
+
+            List<VmDashboardItem> result = new List<VmDashboardItem>();
+
+            if (!string.IsNullOrEmpty(dtSearch.value))
+            {
+                // DateTime.ToLongDateString will respect current culture.
+                result.AddRange(dashboardItems.Where(x => x.Date.ToLongDateString().ToLower().Contains(dtSearch.value.ToLower())).ToList());
+                result.AddRange(dashboardItems.Where(x => x.EeBoardMembers.Any(x => x.Value.Name.ToLower().Contains(dtSearch.value.ToLower()))).ToList());
+                result.AddRange(dashboardItems.Where(x => x.EeCandidates.Any(x => x.Value.Name.ToLower().Contains(dtSearch.value.ToLower()))).ToList());
+                result = result.DistinctBy(x => x.Id).ToList();
+            }
+            else
+                result = dashboardItems;
 
             return result;
 

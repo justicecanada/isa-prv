@@ -6,9 +6,12 @@
 
         public VmDashboardItem()
         {
+            Id = Guid.NewGuid();
             EeCandidates = new Dictionary<Guid, VmEeGroupItem>();
             EeBoardMembers = new Dictionary<Guid, VmEeGroupItem>();
         }
+
+        public Guid Id { get; set; }
 
         public DateTime Date { get; set; }
 

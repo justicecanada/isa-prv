@@ -34,7 +34,7 @@
             serverSide: true,
             // Paging Setups
             paging: true,
-            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+            lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
             pageLength: 10,
             pagingType: "full_numbers",
             // Custom Export Buttons
