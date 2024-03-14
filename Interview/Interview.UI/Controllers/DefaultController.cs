@@ -487,7 +487,7 @@ namespace Interview.UI.Controllers
                 {
                     // Delete
                     await _dal.DeleteEntity(dbInterviewUser);
-                    result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, InterviewUserActionType = InterviewUserActionTypes.Removed });
+                    result.Add(new InterviewUserAction() { InterviewUserId = dbInterviewUser.Id, RemovedRoleUserId = dbInterviewUser.UserId, InterviewUserActionType = InterviewUserActionTypes.Removed });
                 }
             }
             

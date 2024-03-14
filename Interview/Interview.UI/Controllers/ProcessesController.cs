@@ -168,8 +168,7 @@ namespace Interview.UI.Controllers
                 process.Schedules = GetSchedules(vmProcess);
                 processId = await _dal.AddEntity<Process>(process);
 
-                if (_state.ProcessId == null)
-                    _state.ProcessId = processId;
+                _state.ProcessId = processId;
 
                 return RedirectToAction("Index", "Emails", new { id = vmProcess.Id });
             }
