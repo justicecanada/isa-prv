@@ -34,7 +34,7 @@
             serverSide: true,
             // Paging Setups
             paging: true,
-            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+            lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
             pageLength: 10,
             pagingType: "full_numbers",
             // Custom Export Buttons
@@ -58,9 +58,15 @@
                     return JSON.stringify(d);
                 }
             },
+            //colReorder: {
+            //    columns: ':gt(1)'
+            //},
             columns: [
                 { data: "dates" },
-                { data: "numberslots" },
+                {
+                    data: "numberslots",
+                    orderable: false
+                },
                 {
                     data: function (row, type, val, meta) {
                         return row;
@@ -69,6 +75,7 @@
                         return "<div>" + Resources.Dashboard.Completed + ": " + data.numberprogresscompleted + "</div>" +
                             "<div>" + Resources.Dashboard.Remaining + ": " + data.numberprogressremaining + "</div>";
                     },
+                    orderable: false
                 },
                 {
                     data: function (row, type, val, meta) {
@@ -78,6 +85,7 @@
                         return "<div>" + Resources.Dashboard.InTimeSlot + ": " + data.numbercandidateinslots + "</div>" +
                             "<div>" + Resources.Dashboard.NotInTimeSlot + ": " + data.numbercandidatenotinslots + "</div>";
                     },
+                    orderable: false
                 },
                 {
                     data: function (row, type, val, meta) {
@@ -87,8 +95,12 @@
                         return "<div>" + Resources.Dashboard.Virtual + ": " + data.numbervirtuals + "</div>" +
                             "<div>" + Resources.Dashboard.InPerson + ": " + data.numberinpersons + "</div>";
                     },
+                    orderable: false
                 },
-                { data: "numberdaysofinterview" },
+                {
+                    data: "numberdaysofinterview",
+                    orderable: false
+                },
                 {
                     data: function (row, type, val, meta) {
                         return row;
@@ -104,6 +116,7 @@
                         return result;
 
                     },
+                    orderable: false
                 },
                 {
                     data: function (row, type, val, meta) {
@@ -120,6 +133,7 @@
                         return result;
 
                     },
+                    orderable: false
                 },
             ],
         })
