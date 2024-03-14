@@ -192,7 +192,6 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/Index.js?v={BuildId}'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-DataTables/datatables.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/Roles/TablePartial.js?v={BuildId}'></script>");
-            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/DeleteConfirmationModal.js?v={BuildId}'></script>");
 
         }
@@ -268,15 +267,20 @@ namespace Interview.UI.Controllers
         {
 
             bool result = false;
-
-            // Show Equities if current UserRole is in HR role
-            if (roleUsers == null)
-                roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
-
             TokenResponse tokenResponse = await _tokenManager.GetToken();
-            GraphUser graphUser = await _usersManager.GetUserInfoAsync(User.Identity.Name, tokenResponse.access_token);
-            RoleUser loggedInRoleUser = roleUsers.Where(x => x.UserId == graphUser.id).FirstOrDefault();
-       
+            GraphUser graphUser = await _usersManager.GetUserInfoAsync(User.Identity.Name, tokenResponse.access_token);           
+            RoleUser loggedInRoleUser = null;
+
+            // Look for loggedInRoleUser in list passed in from POST operation
+            if (roleUsers != null)
+                loggedInRoleUser = roleUsers.Where(x => x.UserId == graphUser.id).FirstOrDefault();
+            // If no loggedInRoleUser wasn't passed in from POST operation, look for user in DBV
+            if (loggedInRoleUser == null)
+            {
+                roleUsers = _state.ProcessId == null ? new List<RoleUser>() : await _dal.GetRoleUsersByProcessId((Guid)_state.ProcessId);
+                loggedInRoleUser = roleUsers.Where(x => x.UserId == graphUser.id).FirstOrDefault();
+            }
+
             if (loggedInRoleUser != null)
                 result = loggedInRoleUser.RoleUserType == RoleUserTypes.HR;
            
@@ -286,7 +290,7 @@ namespace Interview.UI.Controllers
                 if (User.IsInRole(RoleTypes.Owner.ToString()))
                 {
                     List<Group> groups = await _dal.GetGroupsByProcessId((Guid)_state.ProcessId);
-                    // There is a group user that has .HasAccessEE
+                    // There is a group user that has .HasAccessEEfs
                     result = groups.Any(x => x.GroupOwners.Any(x => x.HasAccessEE));
                 }
             }
@@ -303,7 +307,7 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailExternalExceptAlreadySent()
         {
 
-            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateRegisteredTimeSlot);
             var emailTemplate = emailTemplates.FirstOrDefault();
 
             if (emailTemplate == null)

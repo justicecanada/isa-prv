@@ -73,7 +73,9 @@ namespace Interview.UI.Controllers
 
             await _dal.DeleteEntity<Process>(id);
 
-            //_state.ProcessId = null;
+            if (_state.ProcessId == id)
+                _state.ProcessId = null;
+
             Notify(_localizer["NotifyDeleteSuccess"].Value, "success");
 
             return new JsonResult(new { result = true, id = id })
@@ -102,7 +104,6 @@ namespace Interview.UI.Controllers
             WebTemplateModel.HTMLHeaderElements.Add("<link rel=\"stylesheet\" href=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/magnific-popup.css\" />");
 
             // js
-            WebTemplateModel.HTMLBodyElements.Add("<script src=\"/lib/Magnific-Popup-master/Magnific-Popup-master/dist/jquery.magnific-popup.min.js\"></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/lib/jquery-ui-1.13.2.custom/jquery-ui.min.js'></script>");
             WebTemplateModel.HTMLBodyElements.Add($"<script src='/js/DeleteConfirmationModal.js?v={BuildId}'></script>");
 
@@ -167,8 +168,7 @@ namespace Interview.UI.Controllers
                 process.Schedules = GetSchedules(vmProcess);
                 processId = await _dal.AddEntity<Process>(process);
 
-                if (_state.ProcessId == null)
-                    _state.ProcessId = processId;
+                _state.ProcessId = processId;
 
                 return RedirectToAction("Index", "Emails", new { id = vmProcess.Id });
             }
