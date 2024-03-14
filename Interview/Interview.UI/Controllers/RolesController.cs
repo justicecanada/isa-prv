@@ -307,7 +307,7 @@ namespace Interview.UI.Controllers
         public async Task<IActionResult> EmailExternalExceptAlreadySent()
         {
 
-            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateExternal);
+            var emailTemplates = await _dal.GetEmailTemplatesByProcessId((Guid)_state.ProcessId, EmailTypes.CandidateRegisteredTimeSlot);
             var emailTemplate = emailTemplates.FirstOrDefault();
 
             if (emailTemplate == null)
