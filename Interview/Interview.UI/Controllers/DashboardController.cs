@@ -117,8 +117,10 @@ namespace Interview.UI.Controllers
             List<VmDashboardItem> dashboardItems = _statsManager.GetDashboardItems(processes, equities, cultureName,
                 vmFilter.PeriodOfTimeType == null ? VmPeriodOfTimeTypes.Daily : (VmPeriodOfTimeTypes)vmFilter.PeriodOfTimeType);
 
-            // Apply Seaarch filter
+            // Apply Search filter
             dashboardItems = SearchDashboardItems(dashboardItems, dtParameters.search);
+            // Order results
+            OrderDashboardItems(ref dashboardItems, dtParameters.order.ToList());
 
             VmInterviewCounts vmInterviewCounts = _statsManager.GetInterviewCounts(processes);
             string seralizedInterviewCounts = System.Text.Json.JsonSerializer.Serialize(vmInterviewCounts);
@@ -163,6 +165,11 @@ namespace Interview.UI.Controllers
         private List<VmDashboardItem> SearchDashboardItems(List<VmDashboardItem> dashboardItems, DtSearch dtSearch)
         {
 
+            // Ideally the jquery data table would perform client side searching / filtering on the rows in the DOM. 
+            // It appears that if you set the serverside setting to true, you forgoe all client side data operations.
+            // This post is from 2017: https://datatables.net/forums/discussion/comment/121079/#Comment_121079
+            // I haven't been able to find anything newer that would allow client side searching / filtering.
+
             List<VmDashboardItem> result = new List<VmDashboardItem>();
 
             if (!string.IsNullOrEmpty(dtSearch.value))
@@ -177,6 +184,23 @@ namespace Interview.UI.Controllers
                 result = dashboardItems;
 
             return result;
+
+        }
+
+        private void OrderDashboardItems(ref List<VmDashboardItem> dashboardItems, List<DtOrder> dtOrders)
+        {
+
+            // Only allow the date column to be ordered. Doesn't make sense to order other columns
+            string order = "desc";
+            DtOrder dtOrder = dtOrders.Where(x => x.column == 0).FirstOrDefault();
+
+            if (dtOrder != null)
+                order = dtOrder.dir;
+
+            if (order.ToLower() == "asc")
+                dashboardItems = dashboardItems.OrderBy(x => x.Date).ToList();
+            else
+                dashboardItems = dashboardItems.OrderByDescending(x => x.Date).ToList();
 
         }
 
