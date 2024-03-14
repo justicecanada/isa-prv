@@ -200,9 +200,8 @@ namespace Interview.UI.Controllers
                 result = await _dal.GetProcessesForGroupOwner(EntraId);
             else
                 result = await _dal.GetProcessesForRoleUser(EntraId);
-            result.OrderByDescending(x => x.CreatedDate);
 
-            return result;
+            return result.OrderBy(x => x.NoProcessus).ToList();
 
         }
 
