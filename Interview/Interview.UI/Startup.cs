@@ -46,6 +46,9 @@ namespace Interview.UI
             ConfigureLocalizationServices(services, builder);
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            SqlContext sqlContext = new SqlContext(new DbContextOptionsBuilder<SqlContext>().Options, Configuration["sql-connection-string"]);
+            sqlContext.Database.Migrate();
+
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration["sql-connection-string"]));
@@ -143,6 +146,15 @@ namespace Interview.UI
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}");
             });
+
+            // Run EF Migrations
+            //using (var scope = app.ApplicationServices.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    var context = services.GetRequiredService<SqlContext>();
+            //    context.Database.EnsureCreated();
+            //    context.Database.Migrate();
+            //}
 
         }
 
