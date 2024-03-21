@@ -450,7 +450,7 @@ namespace Interview.UI.Controllers
                 }
             }
 
-            ViewBag.CandidateUsers = roleUsers.Where(x => (x.RoleUserType == RoleUserTypes.Candidate && x.IsExternal == false)).ToList();
+            ViewBag.CandidateUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.Candidate).ToList();
             ViewBag.BoardMemberUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMember).ToList();
             ViewBag.BoardMemberLeadUsers = roleUsers.Where(x => x.RoleUserType == RoleUserTypes.BoardMemberLead).ToList();
 
