@@ -11,22 +11,14 @@ namespace Interview.UI.Data
 
         public SqlContext(DbContextOptions<SqlContext> options, IConfiguration config, IWebHostEnvironment hostEnvironment) : base(options)
         {
-
+            // For regular dependency injection
             _connectionString = config["sql-connection-string"];
-
-            //if (hostEnvironment.EnvironmentName.ToLower() != "development")
-            // Only use this...
-            //Database.Migrate();
-
         }
 
         public SqlContext(DbContextOptions<SqlContext> options, string connectionString) : base(options)
         {
-
+            // For Interview.UI.Tests
             _connectionString = connectionString;
-
-            //Database.EnsureCreatedAsync();
-
         }
 
         public DbSet<Interview.Entities.Process> Processes { get; set; }

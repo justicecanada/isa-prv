@@ -33,6 +33,8 @@ namespace Interview.UI.Services.Graph
         public async Task<GraphUser> GetUserInfoAsync(string userPrincipalName, string token)
         {
 
+            // https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#example-1-standard-users-request
+
             GraphUser result = null;
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{_host}/v1.0/users/{userPrincipalName}"))
             {

@@ -46,6 +46,13 @@ namespace Interview.UI
             ConfigureLocalizationServices(services, builder);
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            // This code will only run during app start up. If the database doesn't exist, it will ensure it is created up to the latest migration.
+            // If the database exists, it will ensure it is migrated to the latest migration. 
+            // This is done because the app is containerized, so any deployments with EF migrations will ensure the database schema is up to date
+            // for all downstream processing.
+            SqlContext sqlContext = new SqlContext(new DbContextOptionsBuilder<SqlContext>().Options, Configuration["sql-connection-string"]);
+            sqlContext.Database.Migrate();
+
             services.AddTransient<DalSql>();
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(Configuration["sql-connection-string"]));
@@ -143,6 +150,15 @@ namespace Interview.UI
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}");
             });
+
+            // Run EF Migrations
+            //using (var scope = app.ApplicationServices.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    var context = services.GetRequiredService<SqlContext>();
+            //    context.Database.EnsureCreated();
+            //    context.Database.Migrate();
+            //}
 
         }
 
