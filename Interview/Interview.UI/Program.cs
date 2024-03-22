@@ -1,3 +1,6 @@
+using Newtonsoft.Json;
+using System;
+
 namespace Interview.UI
 {
 
@@ -19,8 +22,10 @@ namespace Interview.UI
             }
             catch (Exception ex)
             {
+                var msgObj = GetExceptionDetails(ex);
+                var msg = JsonConvert.SerializeObject(msgObj);
                 ILogger logger = host.Services.GetService<ILogger<Program>>();
-                logger.LogCritical(ex, "In Program.cs");
+                logger.LogCritical(ex, msg);
             }
 
         }
@@ -42,6 +47,20 @@ namespace Interview.UI
                 var seeder = scope.ServiceProvider.GetService<Interview.UI.Services.Seeder.EquitySeeder>();
                 await seeder.EnsureEquities();
             }
+
+        }
+
+        private static object GetExceptionDetails(Exception exception)
+        {
+
+            object result = new
+            {
+                message = exception.Message,
+                stacktrace = exception.StackTrace,
+                innerException = exception.InnerException == null ? null : GetExceptionDetails(exception.InnerException)
+            };
+
+            return result;
 
         }
 
