@@ -35,8 +35,6 @@
         public string? EmailServiceSentFrom { get; set; }
         public string? DepartmentKey { get; set; }
 
-        public bool IsThisOneHere { get; set; }
-
         public List<EmailTemplate> EmailTemplates { get; set; }
         public List<Interview> Interviews { get; set; }
         public List<RoleUser> RoleUsers { get; set; }
