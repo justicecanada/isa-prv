@@ -45,17 +45,17 @@ namespace Interview.UI
             
             ConfigureLocalizationServices(services, builder);
             builder.AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+        
+            services.AddTransient<DalSql>();
+            services.AddDbContext<SqlContext>(options =>
+                options.UseSqlServer(Configuration["sql-connection-string"]));
 
             //// This code will only run during app start up. If the database doesn't exist, it will ensure it is created up to the latest migration.
             //// If the database exists, it will ensure it is migrated to the latest migration. 
             //// This is done because the app is containerized, so any deployments with EF migrations will ensure the database schema is up to date
             //// for all downstream processing.
-            //SqlContext sqlContext = new SqlContext(new DbContextOptionsBuilder<SqlContext>().Options, Configuration["sql-connection-string"]);
-            //sqlContext.Database.Migrate();
-
-            services.AddTransient<DalSql>();
-            services.AddDbContext<SqlContext>(options =>
-                options.UseSqlServer(Configuration["sql-connection-string"]));
+            SqlContext sqlContext = new SqlContext(new DbContextOptionsBuilder<SqlContext>().Options, Configuration["sql-connection-string"]);
+            sqlContext.Database.Migrate();
 
             builder.Services.AddAuthentication(AuthenticationBuilderExtensions.AUTHSCHEMENAME)
                     .AddAuth();
